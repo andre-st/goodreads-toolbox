@@ -1,0 +1,12 @@
+*~
+*.bak
+*.tmp
+*.csv
+*.swp
+*.xml
+*.html
+*.log
+*.tar.gz
+*.zip
+*.cookie
+test.pl

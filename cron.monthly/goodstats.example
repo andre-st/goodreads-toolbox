@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+#
+# This reminds users of having subscribed to my Goodreads services even when 
+# there were no news for a long time:
+#
+#   1. Answers doubts "I got no mails. Does it work?"
+#   2. The check-history might show worth to user
+#   3. Annoys users who have received nothing or are no longer interested 
+#        -> unsubscribe -> free resources
+#
+# Put me to: /etc/cron.monthly
+#
+
+readonly MAILFROM="datakadabra@gmail.com"
+readonly NET_NAMESPACE_ANON="ns_private"
+readonly MAILER="ifne /usr/sbin/sendmail -t"
+readonly MAILER_ANON="ifne ip netns exec ${NET_NAMESPACE_ANON} /usr/sbin/sendmail -t"
+readonly DAYS=31
+readonly LOGFILE="/var/log/good.log"
+
+
+mailtxt()
+{
+	gooduser="${1}"
+	mailto="${2}"
+
+	# Header:
+	echo "To: ${mailto}"
+	echo "From: ${MAILFROM}"
+	echo "List-Unsubscribe: <mailto:${MAILFROM}>"
+	echo "Subject: ${DAYS} Days \"New ratings on Goodreads.com\""
+	echo
+	
+	# Body:
+	echo "This is a regular reminder of your subscription and an activity confirmation,"
+	echo "providing you with a check-history of the last ${DAYS} days:"
+	echo
+	grep "${gooduser}" "${LOGFILE}" \
+		| tail -${DAYS}         \
+		| sed 's|^\(.* books\) .*$|  \1 ...|' # cut obvious/prevent line wrap in mail viewer
+	
+	# Signature:
+	echo
+	echo
+	echo "--"
+	echo "  This is an automatically generated email."
+	echo "   Just reply 'unsubscribe' to unsubscribe."
+	echo "    Add new books to your shelf at any time."
+	echo "     Via https://andre-st.github.io/goodreads/"
+}
+
+
+
+#=========================================================================================
+#         USER       MAILTO                   MAILER           REALNAME       ADD-DATE
+#=========================================================================================
+mailtxt   GOODUSERID1   USERMAIL1@EXAMPLE.COM   | ${MAILER}  # me             2017/01/12
+mailtxt   GOODUSERID2   USERMAIL2@EXAMPLE.COM   | ${MAILER}  # user name 2    2018/02/15
+

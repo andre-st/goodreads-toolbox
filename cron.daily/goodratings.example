@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+#
+# This reports new book ratings to some Goodreads users
+#
+# Put me to: /etc/cron.daily
+#
+
+readonly MAILFROM="datakadabra@gmail.com"
+readonly SCRIPT="/home/andre/work/programs/goodreads/recentrated.pl"
+readonly DB_DIR="/var/db/good"
+readonly NET_NAMESPACE_ANON="ns_private"
+readonly MAILERS=(
+		[0]="ifne /usr/sbin/sendmail -t"
+		[1]="ifne ip netns exec ${NET_NAMESPACE_ANON} /usr/sbin/sendmail -t" )
+
+
+
+
+# Script might not be present at the moment as its volume is still 
+# unmounted or encrypted. We retry every 5 minutes for one hour:
+#
+until [ -e "${SCRIPT}" ]
+do
+	/bin/sleep 5m
+	let retry++
+	if [ $retry -eq 12 ]
+	then
+		(>&2 echo "FATAL: Missing ${SCRIPT}")
+		exit 1
+	fi
+done
+
+
+
+chk()
+{
+	gooduser="${1}" 
+	goodshelf="${2}" 
+	mailto="${3}"
+	mailer="${MAILERS[${4:-0}]}"
+	csvname="${gooduser}-${goodshelf}.csv"
+	csvpath="${DB_DIR}/${csvname}"
+	csvbakpath="${DB_DIR}/${csvname}.recover"
+	
+	if [ -e "${csvbakpath}" ]
+	then
+		# Batch, script or mail auth failed last time. Recover and retry this time.
+		# Mailtext in ~/dead.letter
+		cp --preserve --force "${csvbakpath}" "${csvpath}" || exit 1
+	else
+		if [ -e "${csvpath}" ]
+		then
+			cp --preserve --force "${csvpath}" "${csvbakpath}" || exit 1
+		fi
+	fi
+	( "${SCRIPT}" "${gooduser}" "${goodshelf}" "${mailto}" "${MAILFROM}" | ${mailer} ) \
+		&& rm --force "${csvbakpath}"
+}
+
+
+
+#===========================================================================================
+#     USER       SHELF                      MAILTO                   MAILER    REALNAME     
+#===========================================================================================
+chk   12345678   "%E3%85%A1watch-ratings"   usermail1@example1.com   0       # me
+chk   12345678   "watch-ratings"            user@example2.com        0       # Mrs. Jane Doe
+chk   12345678   "to-follow"                mail3@example3.com       1       # Mr. John Doe
+
