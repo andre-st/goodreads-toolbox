@@ -1,0 +1,20 @@
+Repository Name:
+
+goodreads
+
+
+Description:
+
+Tools for Goodreads.com, such as an Amazon buyback price monitor to discover
+sales opportunities, or a "follow book" implementation to discover quality
+users and libraries
+
+
+Website:
+
+-
+
+
+Topics:
+
+
