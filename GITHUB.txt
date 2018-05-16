@@ -17,4 +17,25 @@ Website:
 
 Topics:
 
+goodreads
+goodreads-api
+goodreads-shelves
+perl-script
+perl-scripts
+statistics
+cronjob
+rating
+recommender
+recommendation
+reviews
+monitor
+monitoring
+follow
+notification
+notifications
+amazon
+tradein
+buyback
+price-monitoring
+
 
