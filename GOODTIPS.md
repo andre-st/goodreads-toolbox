@@ -46,8 +46,8 @@
   edit wrong or missing book/author info and add cover images by yourself,
   combine stray book editions (take over reviews etc.)
 
-- Rubén Martínez's Chrome-browser extension 
-  [Goodreads Ratings for Amazon](https://chrome.google.com/webstore/detail/goodreads-ratings-for-ama/fkkcefhhadenobhjnngfdahhlodolkjg); also reminder to look at the GR reviews too
+- [Goodreads Ratings for Amazon](https://chrome.google.com/webstore/detail/goodreads-ratings-for-ama/fkkcefhhadenobhjnngfdahhlodolkjg) – a Chrome-browser extension by Rubén Martínez; 
+  also reminds you of GR reviews when you're shopping on Amazon 
 
 - **Checking out users who rate good books**. 
   [This service](https://andre-st.github.io/goodreads/) notifies you of new ratings for specific books.
