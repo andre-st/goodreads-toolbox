@@ -30,7 +30,7 @@
   well with Goodreads own _"select multiple"_ feature beneath your
   shelf list: Pick your next book by intersection, e.g., _"to-read" +
   "non-fiction" + "lang-de"_. 
-  It's clearer than having hundreds of boooks in _"unread"_ over time,
+  It's clearer than having hundreds of books in _"unread"_ over time,
   and helps others discovering new books more easily.
   
 - **Decluttering my library** with cardboxes and GR-shelves labeled
