@@ -9,8 +9,6 @@ From the _Goodreads Feedback_ forum, [Elizabeth:](https://www.goodreads.com/topi
 > particularly well known or often read, and I'd like to know about who chooses
 > to read them. 
 
-Some of us have similar tastes so it's nice to see what else they read.
-
 
 ## This
 ```
@@ -39,7 +37,7 @@ Recently rated books in your "watch-ratings" shelf:
 2. enter your e-mail and shelf address
 
 
-## Don't
+## Dos and don'ts
 
 - don't use the "All" or "Read" shelves; be picky, use a separate single purpose shelf
 - don't run this on more than one of your shelves; it's possible but better use a single purpose shelf
