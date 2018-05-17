@@ -50,9 +50,7 @@ Recently rated books in your "watch-ratings" shelf:
 
 ## How to "follow books" using GNU/Linux
 
-1. have a [Goodreads.com](https://www.goodreads.com) account
-
-2. open a terminal and install the Goodreads Toolbox:
+1. open a terminal and install the Goodreads Toolbox:
 	``` sh
 	$ git clone https://github.com/andre-st/goodreads.git
 	$ cd goodreads
@@ -62,13 +60,13 @@ Recently rated books in your "watch-ratings" shelf:
 	$ sudo chown $USER:$USER /var/db/good /var/log/good.log
 	$ sudo perl -MCPAN -e 'install Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any'
 	```
-3. have a sendmail MTA set up (most simple thing is [ssmtp](https://wiki.debian.org/sSMTP)
+2. have a sendmail MTA set up (most simple thing is [ssmtp](https://wiki.debian.org/sSMTP)
    or [nullmailer](http://untroubled.org/nullmailer/)
    or [msmtp](http://msmtp.sourceforge.net), 
    with `/usr/sbin/sendmail` being symlinked to one of them), 
    configure default "From:"
    
-4. add a cron-job (I prefer [anacrony](https://en.wikipedia.org/wiki/Anacron "performs pending jobs if the computer was previously shut down") daemons: [dcron](https://github.com/dubiousjim/dcron) or [fcron](https://en.wikipedia.org/wiki/Fcron)):
+3. add a cron-job (I prefer [anacrony](https://en.wikipedia.org/wiki/Anacron "performs pending jobs if the computer was previously shut down") daemons: [dcron](https://github.com/dubiousjim/dcron) or [fcron](https://en.wikipedia.org/wiki/Fcron)):
 	edit `/etc/cron.daily/goodratings` and replace ARGUMENTS:
 	``` sh
 	#!/usr/bin/env sh
