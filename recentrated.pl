@@ -10,7 +10,7 @@ recentrated.pl - Searches a Goodreads.com shelf for new book-ratings
 
 =head1 VERSION
 
-2018-05-15 (Since 2018-01-09)
+2018-05-17 (Since 2018-01-09)
 
 =head1 ABOUT
 
@@ -25,7 +25,6 @@ use strict;
 use warnings;
 use 5.18.0;
 
-
 use FindBin;
 use lib "$FindBin::Bin/";
 use Log::Any '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
@@ -34,20 +33,23 @@ use Time::Piece;
 use Goodscrapes;
 
 
+
 say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [MAILTO] [MAILFROM]" and exit if $#ARGV < 0;
 
-
+# Program configuration:
 our $_good_user  = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
 our $_good_shelf = $ARGV[1] || '%23ALL%23';
 our $_mail_to    = $ARGV[2];
 our $_mail_from  = $ARGV[3];
 our $_csv_path   = "/var/db/good/${_good_user}-${_good_shelf}.csv";
+our $_max_rev_urls_per_book = 2;
+set_good_cache( '4 hours' );  # No meaning in production but dev/debugging
+
 
 
 my $csv      = ( -e $_csv_path  ?  csv( in => $_csv_path, key => 'id' )  :  undef );  # ref
 my @books    = query_good_books( $_good_user, $_good_shelf );
 my $num_hits = 0;
-
 
 if( $csv )
 {
@@ -61,6 +63,10 @@ if( $csv )
 		my $num_new_rat = $b->{num_ratings} - $csv->{$b->{id}}->{num_ratings};
 		
 		next if $num_new_rat <= 0;
+	
+		my @revs = query_good_reviews( $b->{id}, $since );
+		
+		next if !@revs;  # Number of ratings increased but no new reviews, what's that?
 		
 		$num_hits++;
 		
@@ -74,27 +80,35 @@ if( $csv )
 			print "Recently rated books in your \"${_good_shelf}\" shelf:\n";
 		}
 		
-		# "Book Title"
-		#  https://www.goodreads.com/book/show/609606
+		# "Book Title1"
+		#  https://www.goodreads.com/book/show/609606   [12 new]
+		#  
+		# "Book Title2"
 		#  https://www.goodreads.com/user/show/1234567  ***--  Joe User
 		#  https://www.goodreads.com/user/show/2345     *****  Lisa Jane
 		#
-		my @revs = query_good_reviews( $b->{id}, $since );
 		printf "\n  \"%s\"\n", $b->{title};
-		printf "   %s\n", $b->{url};
-		printf "   %-45s  %s  %s\n", 
-				$_->{user}->{profile_url},
-				$_->{rating_str},
-				$_->{user}->{name}
-			foreach (@revs);
+		
+		if( scalar @revs > $_max_rev_urls_per_book )  # Too many urls noisy
+		{
+			printf "   %-44s  [%d new]\n", $b->{url}, scalar @revs;
+		}
+		else
+		{
+			printf "   %-44s  %s  %s\n", 
+					$_->{user}->{profile_url},
+					$_->{rating_str},
+					$_->{user}->{name}
+				foreach (@revs);
+		}
 	}
 	
 	# E-mail signature if run for other users:
 	if( $_mail_from && $num_hits > 0 )
 	{
 		print "\n\n--\n" 
-		    . " This is an automatically generated email.\n" 
-		    . "  Just reply 'unsubscribe' to unsubscribe.\n" 
+		    . " Just reply 'unsubscribe' to unsubscribe.\n" 
+		    . "  Suggestions? Just reply to this e-mail.\n"
 		    . "   Add new books to your shelf at any time.\n"
 		    . "    Via https://andre-st.github.io/goodreads/\n";
 	}

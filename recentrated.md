@@ -10,17 +10,14 @@ Date: Wed, 10 Jan 2018 21:10:50 +0100
 Recently rated books in your "watch-ratings" shelf:
 
   "The Machine Question: Critical Perspectives on AI, Robots, and Ethics"
-   https://www.goodreads.com/book/show/14850530
    https://www.goodreads.com/user/show/54336239  *****  Alfred Leto
 
+  "Spam: A Shadow History of the Internet"
+   https://www.goodreads.com/book/show/16718273  [12 new]
+   
   "Understanding Beliefs"
-   https://www.goodreads.com/book/show/21977917
    https://www.goodreads.com/user/show/22346637  ****-  Rainer Bitz
    https://www.goodreads.com/user/show/24850532  **---  Lisa Short
-
-  "Spam: A Shadow History of the Internet"
-   https://www.goodreads.com/book/show/16718273
-   https://www.goodreads.com/user/show/65234325  ***--  Irene Schmidel
 
 ```
 
