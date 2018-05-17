@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 #
-# This reports new book ratings to some Goodreads users
+# Reports recent book ratings to some Goodreads members
 #
 # Put me to: /etc/cron.daily
 #
 
-readonly MAILFROM="datakadabra@gmail.com"
+readonly MAILFROM="YOUREMAIL@gmail.com"
 readonly SCRIPT="/home/andre/work/programs/goodreads/recentrated.pl"
 readonly DB_DIR="/var/db/good"
-readonly NET_NAMESPACE_ANON="ns_private"
 readonly MAILERS=(
 		[0]="ifne /usr/sbin/sendmail -t"
-		[1]="ifne ip netns exec ${NET_NAMESPACE_ANON} /usr/sbin/sendmail -t" )
-
+		[1]="ifne ip netns exec NS_PRIVATE /usr/sbin/sendmail -t"
+		[9]="cat" )
+		# 9 for debugging, CSV restored
 
 
 
@@ -34,12 +34,13 @@ done
 
 chk()
 {
-	gooduser="${1}" 
-	goodshelf="${2}" 
-	mailto="${3}"
-	mailer="${MAILERS[${4:-0}]}"
-	csvname="${gooduser}-${goodshelf}.csv"
-	csvpath="${DB_DIR}/${csvname}"
+	  gooduser="${1}" 
+	 goodshelf="${2}" 
+	    mailto="${3}"
+	  mailerid="${4:-0}"
+	    mailer="${MAILERS[$mailerid]}"
+	   csvname="${gooduser}-${goodshelf}.csv"
+	   csvpath="${DB_DIR}/${csvname}"
 	csvbakpath="${DB_DIR}/${csvname}.recover"
 	
 	if [ -e "${csvbakpath}" ]
@@ -54,15 +55,16 @@ chk()
 		fi
 	fi
 	( "${SCRIPT}" "${gooduser}" "${goodshelf}" "${mailto}" "${MAILFROM}" | ${mailer} ) \
+		&& [ "$mailerid" != "9" ]     \
 		&& rm --force "${csvbakpath}"
 }
 
 
 
-#===========================================================================================
-#     USER       SHELF                      MAILTO                   MAILER    REALNAME     
-#===========================================================================================
-chk   12345678   "%E3%85%A1watch-ratings"   usermail1@example1.com   0       # me
-chk   12345678   "watch-ratings"            user@example2.com        0       # Mrs. Jane Doe
-chk   12345678   "to-follow"                mail3@example3.com       1       # Mr. John Doe
+#============================================================================================================
+#    USER      SHELF                     MAILTO                  MAILER  REALNAME            DATE      LINE
+#============================================================================================================
+chk  12345678  "%E3%85%A1watch-ratings"  usermail1@example1.com  0       # me                18/01/12
+chk  12345678  "watch-ratings"           user@example2.com       0       # Mrs. Jane Doe     18/02/05
+chk  12345678  "to-follow"               mail3@example3.com      1       # Mr. John Doe      18/05/04
 
