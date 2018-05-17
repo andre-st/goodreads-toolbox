@@ -71,7 +71,7 @@ friends of that person (depends on used cookie).
 
 ## Feedback
 
-Use GitHub or see [AUTHORS.md](AUTHORS.md) file
+Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](AUTHORS.md) file
 
 
 ## Licence
