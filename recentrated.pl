@@ -96,7 +96,7 @@ if( $csv )
 		#
 		printf "\n  \"%s\"\n", $b->{title};
 		
-		if( scalar @revs > $_max_rev_urls_per_book )  # Too many urls noisy
+		if( scalar @revs > $_max_rev_urls_per_book )
 		{
 			printf "   %s  [%d new]\n", 
 					pretty_url( $b->{url} ),
