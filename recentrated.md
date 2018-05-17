@@ -1,6 +1,18 @@
 # recentrated.pl
 
-## Who's rating your fav books, and what else do they read?
+## Know when people rate or write reviews about a book
+
+From the _Goodreads Feedback_ forum, [Elizabeth:](https://www.goodreads.com/topic/show/18060629-follow-book)
+> I know this has been requested before, but I'd really like the opportunity to
+> follow a book. I'd like to know when people rate or write reviews about a
+> book and to be notified of such. I have some favorites that are not
+> particularly well known or often read, and I'd like to know about who chooses
+> to read them. 
+
+Some of us have similar tastes so it's nice to see what else they read.
+
+
+## This
 ```
 From: yourmail@example.com
 To: yourmail@example.com
@@ -20,25 +32,6 @@ Recently rated books in your "watch-ratings" shelf:
    https://www.goodreads.com/user/show/24850532  **---  Lisa Short
 
 ```
-
-
-## At Goodreads.com you can follow people but not books
-
-From the _Goodreads Feedback_ forum, [Elizabeth:](https://www.goodreads.com/topic/show/18060629-follow-book)
-> I know this has been requested before, but I'd really like the opportunity to
-> follow a book. I'd like to know when people rate or write reviews about a
-> book and to be notified of such. I have some favorites that are not
-> particularly well known or often read, and I'd like to know about who chooses
-> to read them. 
-
-Some of us have similar tastes so it's nice to see what else they read. 
-
-This touches the Book Discoverability Problem: Too many books, too little visibility...
-> A grand total of 3,657m new ISBNs were registered last year in the UK alone, 
-> a rise of 22% since 2009. With such a deluge of new books flooding the market every week, 
-> no wonder publishers think that lack of discoverability is the 
-> number one reason why they don't sell more books. (The Guardian, 2013)
-
 
 ## How to "follow books" without installation
 
