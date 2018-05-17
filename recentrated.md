@@ -19,7 +19,7 @@ Date: Wed, 10 Jan 2018 21:10:50 +0100
 
 Recently rated books in your "watch-ratings" shelf:
 
-  "The Machine Question: Critical Perspectives on AI, Robots, and Ethics"
+  "The Machine Question"
    https://www.goodreads.com/user/show/54336239  *****  Alfred Leto
 
   "Spam: A Shadow History of the Internet"
