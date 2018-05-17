@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Things That Improved My Goodreads.com Experience](#things-that-improved-my-goodreadscom-experience)
 - [Discovering Non-Fiction Books](#discovering-non-fiction-books)
+- [Feedback](#feedback)
 
 
 ## Things That Improved My Goodreads.com Experience
@@ -99,3 +100,8 @@
   - context/purpose/goal
   - credibility in the field
   - sources in footnotes/bibliography or unsupported?
+
+
+## Feedback
+
+Use GitHub or see [AUTHORS.md](AUTHORS.md) file
