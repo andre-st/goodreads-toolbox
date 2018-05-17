@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if git status --porcelain Goodscrapes.pm | grep "^M"
+then
+	podselect Goodscrapes.pm > Goodscrapes.pod \
+		&& git add Goodscrapes.pod
+fi
+
+
