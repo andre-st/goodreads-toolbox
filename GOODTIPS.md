@@ -47,7 +47,7 @@
   combine stray book editions (take over reviews etc.)
 
 - Rubén Martínez's Chrome-browser extension 
-  [Goodreads Ratings for Amazon](https://chrome.google.com/webstore/detail/goodreads-ratings-for-ama/fkkcefhhadenobhjnngfdahhlodolkjg)
+  [Goodreads Ratings for Amazon](https://chrome.google.com/webstore/detail/goodreads-ratings-for-ama/fkkcefhhadenobhjnngfdahhlodolkjg); also reminder to look at the GR reviews too
 
 - **Checking out users who rate good books**. 
   [This service](https://andre-st.github.io/goodreads/) notifies you of new ratings for specific books.
