@@ -42,18 +42,17 @@ Recently rated books in your "watch-ratings" shelf:
 - don't use the "All" or "Read" shelves; be picky, use a separate single purpose shelf
 - don't run this on more than one of your shelves; it's possible but better use a single purpose shelf
 - don't use this program with well known fiction books that get a lot of reviews; no insights, readers too random
+- create and [populate](http://i0.wp.com/theeverscholar.com/wp-content/uploads/2015/03/goodreads3.jpg) 
+	a Goodreads shelf, e.g., "watch-ratings": You can add and remove books at any time. 
+	New books will be checked automatically. 
+	Such a shelf prevents unnecessary mails and eases manual checks if this system is discontinued someday
 
 
 ## How to "follow books" using GNU/Linux
 
 1. have a [Goodreads.com](https://www.goodreads.com) account
 
-2. optionally create and [populate](http://i0.wp.com/theeverscholar.com/wp-content/uploads/2015/03/goodreads3.jpg) 
-	a Goodreads shelf, e.g., "watch-ratings": You can add and remove books at any time. 
-	New books will be checked automatically. 
-	Such a shelf prevents unnecessary mails and eases manual checks if this system is discontinued someday.
-	
-3. open a terminal and install the Goodreads Toolbox:
+2. open a terminal and install the Goodreads Toolbox:
 	``` sh
 	$ git clone https://github.com/andre-st/goodreads.git
 	$ cd goodreads
@@ -63,13 +62,13 @@ Recently rated books in your "watch-ratings" shelf:
 	$ sudo chown $USER:$USER /var/db/good /var/log/good.log
 	$ sudo perl -MCPAN -e 'install Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any'
 	```
-4. have a sendmail MTA set up (most simple thing is [ssmtp](https://wiki.debian.org/sSMTP)
+3. have a sendmail MTA set up (most simple thing is [ssmtp](https://wiki.debian.org/sSMTP)
    or [nullmailer](http://untroubled.org/nullmailer/)
    or [msmtp](http://msmtp.sourceforge.net), 
    with `/usr/sbin/sendmail` being symlinked to one of them), 
    configure default "From:"
    
-5. add a cron-job (I prefer [anacrony](https://en.wikipedia.org/wiki/Anacron "performs pending jobs if the computer was previously shut down") daemons: [dcron](https://github.com/dubiousjim/dcron) or [fcron](https://en.wikipedia.org/wiki/Fcron)):
+4. add a cron-job (I prefer [anacrony](https://en.wikipedia.org/wiki/Anacron "performs pending jobs if the computer was previously shut down") daemons: [dcron](https://github.com/dubiousjim/dcron) or [fcron](https://en.wikipedia.org/wiki/Fcron)):
 	edit `/etc/cron.daily/goodratings` and replace ARGUMENTS:
 	``` sh
 	#!/usr/bin/env sh
