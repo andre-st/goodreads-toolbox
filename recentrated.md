@@ -20,14 +20,14 @@ Date: Wed, 10 Jan 2018 21:10:50 +0100
 Recently rated books in your "watch-ratings" shelf:
 
   "The Machine Question"
-   https://www.goodreads.com/user/show/54336239  *****  Alfred Leto
+   www.goodreads.com/user/show/54336239  *****  Alfred Leto
 
   "Spam: A Shadow History of the Internet"
-   https://www.goodreads.com/book/show/16718273  [12 new]
+   www.goodreads.com/book/show/16718273  [12 new]
    
   "Understanding Beliefs"
-   https://www.goodreads.com/user/show/22346637  ****-  Rainer Bitz
-   https://www.goodreads.com/user/show/24850532  **---  Lisa Short
+   www.goodreads.com/user/show/22346637  ****-  Rainer Bitz
+   www.goodreads.com/user/show/24850532  **---  Lisa Short
 
 ```
 

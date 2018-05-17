@@ -33,7 +33,7 @@ use Time::Piece;
 use Goodscrapes;
 
 
-
+# Program synopsis:
 say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [MAILTO] [MAILFROM]" and exit if $#ARGV < 0;
 
 # Program configuration:
@@ -42,8 +42,15 @@ our $_good_shelf = $ARGV[1] || '%23ALL%23';
 our $_mail_to    = $ARGV[2];
 our $_mail_from  = $ARGV[3];
 our $_csv_path   = "/var/db/good/${_good_user}-${_good_shelf}.csv";
+
+# the more URLs, the longer and untempting the mail
 our $_max_rev_urls_per_book = 2;
-set_good_cache( '4 hours' );  # No meaning in production but dev/debugging
+
+# URLs in mail padded to average length, with "https://" stripped
+sub pretty_url { return sprintf '%-36s', substr( shift, 8 ); }
+
+# effect in dev/debugging only
+set_good_cache( '4 hours' );
 
 
 
@@ -81,22 +88,24 @@ if( $csv )
 		}
 		
 		# "Book Title1"
-		#  https://www.goodreads.com/book/show/609606   [12 new]
+		#  www.goodreads.com/book/show/609606   [12 new]
 		#  
 		# "Book Title2"
-		#  https://www.goodreads.com/user/show/1234567  ***--  Joe User
-		#  https://www.goodreads.com/user/show/2345     *****  Lisa Jane
+		#  www.goodreads.com/user/show/1234567  ***--  Joe User
+		#  www.goodreads.com/user/show/2345     *****  Lisa Jane
 		#
 		printf "\n  \"%s\"\n", $b->{title};
 		
 		if( scalar @revs > $_max_rev_urls_per_book )  # Too many urls noisy
 		{
-			printf "   %-44s  [%d new]\n", $b->{url}, scalar @revs;
+			printf "   %s  [%d new]\n", 
+					pretty_url( $b->{url} ),
+					scalar @revs;
 		}
 		else
 		{
-			printf "   %-44s  %s  %s\n", 
-					$_->{user}->{profile_url},
+			printf "   %s  %s  %s\n", 
+					pretty_url( $_->{user}->{profile_url} ),
 					$_->{rating_str},
 					$_->{user}->{name}
 				foreach (@revs);
