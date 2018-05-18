@@ -2,6 +2,7 @@
 
 if git status --porcelain Goodscrapes.pm | grep "^M"
 then
+	echo "Generating documentation: Goodscrapes.pod"
 	podselect Goodscrapes.pm > Goodscrapes.pod \
 		&& git add Goodscrapes.pod
 fi
