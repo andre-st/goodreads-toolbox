@@ -644,7 +644,7 @@ sub query_good_reviews
 
 
 
-=head2 C<(id => L<%user|"%user">,...)> query_good_followees( I<$user_id> )
+=head2 C<(id =E<gt> L<%user|"%user">,...)> query_good_followees( I<$user_id> )
 
 =over
 
