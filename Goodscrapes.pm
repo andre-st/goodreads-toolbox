@@ -410,11 +410,11 @@ sub amz_book_html
 
 
 
-=head2 C<(L<%book|"%book">,...)> extract_good_books( I<$shelf_tableview_html_str> )
+=head2 C<(L<%book|"%book">,...)> _extract_good_books( I<$shelf_tableview_html_str> )
 
 =cut
 
-sub extract_good_books
+sub _extract_good_books
 {
 	my $html = shift;
 	my @result;
@@ -451,11 +451,11 @@ sub extract_good_books
 
 
 
-=head2 C<(L<%user|"%user">,...)> extract_following( I<$following_page_html_str> )
+=head2 C<(L<%user|"%user">,...)> _extract_following( I<$following_page_html_str> )
 
 =cut
 
-sub extract_following
+sub _extract_following
 {
 	my $html = shift;
 	my @result;
@@ -483,11 +483,11 @@ sub extract_following
 
 
 
-=head2 C<(L<%user|"%user">,...)> extract_friends( I<$friends_page_html_str> )
+=head2 C<(L<%user|"%user">,...)> _extract_friends( I<$friends_page_html_str> )
 
 =cut
 
-sub extract_friends
+sub _extract_friends
 {
 	my $html = shift;
 	my @result;
@@ -515,11 +515,11 @@ sub extract_friends
 
 
 
-=head2 C<(L<%review|"%review">,...)> extract_good_reviews( I<$reviews_xhr_html_str> )
+=head2 C<(L<%review|"%review">,...)> _extract_good_reviews( I<$reviews_xhr_html_str> )
 
 =cut
 
-sub extract_good_reviews
+sub _extract_good_reviews
 {
 	my $html = shift;  # < is \u003c, > is \u003e,  " is \" literally
 	my @result;
@@ -614,7 +614,7 @@ sub query_good_books
 	my $page      = 1; 
 	my @books;
 	
-	@books = (@books, @_) while( @_ = extract_good_books( html( good_shelf_url( $uid, $shelf, $page++ ) ) ) );
+	@books = (@books, @_) while( @_ = _extract_good_books( html( good_shelf_url( $uid, $shelf, $page++ ) ) ) );
 	return @books;
 }
 
@@ -636,7 +636,7 @@ sub query_good_reviews
 	my $bid        = shift;
 	my $since      = shift;
 	my $since_date = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
-	my @revs       = extract_good_reviews( html( good_reviews_url( $bid ) ) );
+	my @revs       = _extract_good_reviews( html( good_reviews_url( $bid ) ) );
 	my @sel        = grep $_->{date} >= $since_date, @revs;
 	return @sel;
 }
@@ -663,13 +663,13 @@ sub query_acquaint
 	my $page;
 
 	$page = 1;
-	while( my @somef = extract_following( html( good_following_url( $uid, $page++ ) ) ) )
+	while( my @somef = _extract_following( html( good_following_url( $uid, $page++ ) ) ) )
 	{
 		$result{$_->{id}} = $_ foreach (@somef)
 	}
 	
 	$page = 1;
-	while( my @somef = extract_friends( html( good_friends_url( $uid, $page++ ) ) ) )
+	while( my @somef = _extract_friends( html( good_friends_url( $uid, $page++ ) ) ) )
 	{
 		$result{$_->{id}} = $_ foreach (@somef)
 	}

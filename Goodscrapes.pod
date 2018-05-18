@@ -222,13 +222,13 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<(L<%book|"%book">,...)> extract_good_books( I<$shelf_tableview_html_str> )
+=head2 C<(L<%book|"%book">,...)> _extract_good_books( I<$shelf_tableview_html_str> )
 
-=head2 C<(L<%user|"%user">,...)> extract_following( I<$following_page_html_str> )
+=head2 C<(L<%user|"%user">,...)> _extract_following( I<$following_page_html_str> )
 
-=head2 C<(L<%user|"%user">,...)> extract_friends( I<$friends_page_html_str> )
+=head2 C<(L<%user|"%user">,...)> _extract_friends( I<$friends_page_html_str> )
 
-=head2 C<(L<%review|"%review">,...)> extract_good_reviews( I<$reviews_xhr_html_str> )
+=head2 C<(L<%review|"%review">,...)> _extract_good_reviews( I<$reviews_xhr_html_str> )
 
 =head2 C<string> html( I<$url> )
 
