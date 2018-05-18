@@ -27,7 +27,7 @@ use 5.18.0;
 
 
 use FindBin;
-use lib "$FindBin::Bin/";
+use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use Goodscrapes;
 

@@ -26,7 +26,7 @@ use warnings;
 use 5.18.0;
 
 use FindBin;
-use lib "$FindBin::Bin/";
+use lib "$FindBin::Bin/lib/";
 use Log::Any '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
 use Text::CSV qw( csv );
 use Time::Piece;

@@ -9,4 +9,6 @@
 *.tar.gz
 *.zip
 *.cookie
+Makefile
+MYMETA.*
 test.pl
