@@ -260,7 +260,7 @@ sub good_shelf_url
 
 
 
-=head2 C<string> good_following_url( I<$user_id, $page_number> )
+=head2 C<string> good_followees_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
@@ -274,7 +274,7 @@ sub good_shelf_url
 
 =cut
 
-sub good_following_url
+sub good_followees_url
 {
 	my $uid  = shift;
 	my $page = shift;
@@ -451,11 +451,11 @@ sub _extract_books
 
 
 
-=head2 C<(L<%user|"%user">,...)> _extract_following( I<$following_page_html_str> )
+=head2 C<(L<%user|"%user">,...)> _extract_followees( I<$following_page_html_str> )
 
 =cut
 
-sub _extract_following
+sub _extract_followees
 {
 	my $html = shift;
 	my @result;
@@ -663,7 +663,7 @@ sub query_good_followees
 	my $page;
 
 	$page = 1;
-	while( my @somef = _extract_following( _html( good_following_url( $uid, $page++ ) ) ) )
+	while( my @somef = _extract_followees( _html( good_followees_url( $uid, $page++ ) ) ) )
 	{
 		$result{$_->{id}} = $_ foreach (@somef)
 	}

@@ -162,7 +162,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> good_following_url( I<$user_id, $page_number> )
+=head2 C<string> good_followees_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
@@ -224,7 +224,7 @@ https://github.com/andre-st/
 
 =head2 C<(L<%book|"%book">,...)> _extract_books( I<$shelf_tableview_html_str> )
 
-=head2 C<(L<%user|"%user">,...)> _extract_following( I<$following_page_html_str> )
+=head2 C<(L<%user|"%user">,...)> _extract_followees( I<$following_page_html_str> )
 
 =head2 C<(L<%user|"%user">,...)> _extract_friends( I<$friends_page_html_str> )
 
