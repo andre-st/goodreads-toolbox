@@ -142,7 +142,7 @@ our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
 =item * rating     => C<int>
 
 =item * rating_str => C<string> represention of rating, e.g., 3/5 as 
-                      "[***  ]" or "[TTT  ]" if there's additional text
+                      S<"[***  ]"> or S<"[TTT  ]"> if there's additional text
 
 =item * text       => C<string>
 
