@@ -410,11 +410,11 @@ sub amz_book_html
 
 
 
-=head2 C<(L<%book|"%book">,...)> _extract_good_books( I<$shelf_tableview_html_str> )
+=head2 C<(L<%book|"%book">,...)> _extract_books( I<$shelf_tableview_html_str> )
 
 =cut
 
-sub _extract_good_books
+sub _extract_books
 {
 	my $html = shift;
 	my @result;
@@ -515,11 +515,11 @@ sub _extract_friends
 
 
 
-=head2 C<(L<%review|"%review">,...)> _extract_good_reviews( I<$reviews_xhr_html_str> )
+=head2 C<(L<%review|"%review">,...)> _extract_reviews( I<$reviews_xhr_html_str> )
 
 =cut
 
-sub _extract_good_reviews
+sub _extract_reviews
 {
 	my $html = shift;  # < is \u003c, > is \u003e,  " is \" literally
 	my @result;
@@ -614,7 +614,7 @@ sub query_good_books
 	my $page      = 1; 
 	my @books;
 	
-	@books = (@books, @_) while( @_ = _extract_good_books( html( good_shelf_url( $uid, $shelf, $page++ ) ) ) );
+	@books = (@books, @_) while( @_ = _extract_books( html( good_shelf_url( $uid, $shelf, $page++ ) ) ) );
 	return @books;
 }
 
@@ -636,7 +636,7 @@ sub query_good_reviews
 	my $bid        = shift;
 	my $since      = shift;
 	my $since_date = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
-	my @revs       = _extract_good_reviews( html( good_reviews_url( $bid ) ) );
+	my @revs       = _extract_reviews( html( good_reviews_url( $bid ) ) );
 	my @sel        = grep $_->{date} >= $since_date, @revs;
 	return @sel;
 }
