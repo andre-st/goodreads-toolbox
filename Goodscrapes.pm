@@ -404,7 +404,7 @@ sub amz_url
 
 sub amz_book_html
 {
-	return html( amz_url( shift ) );
+	return _html( amz_url( shift ) );
 }
 
 
@@ -557,7 +557,7 @@ sub _extract_reviews
 
 
 
-=head2 C<string> html( I<$url> )
+=head2 C<string> _html( I<$url> )
 
 =over
 
@@ -567,7 +567,7 @@ sub _extract_reviews
 
 =cut
 
-sub html
+sub _html
 {
 	my $url  = shift or return '';
 	my $curl = WWW::Curl::Easy->new;
@@ -614,7 +614,7 @@ sub query_good_books
 	my $page      = 1; 
 	my @books;
 	
-	@books = (@books, @_) while( @_ = _extract_books( html( good_shelf_url( $uid, $shelf, $page++ ) ) ) );
+	@books = (@books, @_) while( @_ = _extract_books( _html( good_shelf_url( $uid, $shelf, $page++ ) ) ) );
 	return @books;
 }
 
@@ -636,7 +636,7 @@ sub query_good_reviews
 	my $bid        = shift;
 	my $since      = shift;
 	my $since_date = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
-	my @revs       = _extract_reviews( html( good_reviews_url( $bid ) ) );
+	my @revs       = _extract_reviews( _html( good_reviews_url( $bid ) ) );
 	my @sel        = grep $_->{date} >= $since_date, @revs;
 	return @sel;
 }
@@ -663,13 +663,13 @@ sub query_acquaint
 	my $page;
 
 	$page = 1;
-	while( my @somef = _extract_following( html( good_following_url( $uid, $page++ ) ) ) )
+	while( my @somef = _extract_following( _html( good_following_url( $uid, $page++ ) ) ) )
 	{
 		$result{$_->{id}} = $_ foreach (@somef)
 	}
 	
 	$page = 1;
-	while( my @somef = _extract_friends( html( good_friends_url( $uid, $page++ ) ) ) )
+	while( my @somef = _extract_friends( _html( good_friends_url( $uid, $page++ ) ) ) )
 	{
 		$result{$_->{id}} = $_ foreach (@somef)
 	}

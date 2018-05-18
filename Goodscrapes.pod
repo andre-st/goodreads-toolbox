@@ -230,7 +230,7 @@ https://github.com/andre-st/
 
 =head2 C<(L<%review|"%review">,...)> _extract_reviews( I<$reviews_xhr_html_str> )
 
-=head2 C<string> html( I<$url> )
+=head2 C<string> _html( I<$url> )
 
 =over
 
