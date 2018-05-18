@@ -58,7 +58,7 @@ our @EXPORT = qw(
 		amz_book_html 
 		query_good_books 
 		query_good_reviews
-		query_acquaint );
+		query_good_followees );
 
 
 use WWW::Curl::Easy;
@@ -644,19 +644,19 @@ sub query_good_reviews
 
 
 
-=head2 {id=>L<%user|"%user">} query_acquaint( I<$user_id> )
-
-=head3 Preconditions
+=head2 C<(id => L<%user|"%user">,...)> query_good_followees( I<$user_id> )
 
 =over
 
-=item * set_good_cookie()
+=item * Precondition: set_good_cookie()
+
+=item * returns friends and followees
 
 =back
 
 =cut
 
-sub query_acquaint
+sub query_good_followees
 {
 	my $uid  = shift;
 	my %result;

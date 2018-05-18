@@ -59,7 +59,7 @@ STDOUT->autoflush( 1 );
 print STDOUT "Getting list of users known to #${_good_user}... ";
 
 my $t0           = time();
-my %people       = query_acquaint( $_good_user );
+my %people       = query_good_followees( $_good_user );
 my @people_ids   = keys %people;
 my $people_count = scalar @people_ids;
 my $people_done  = 0;

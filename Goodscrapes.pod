@@ -248,13 +248,13 @@ https://github.com/andre-st/
 
 =back
 
-=head2 {id=>L<%user|"%user">} query_acquaint( I<$user_id> )
-
-=head3 Preconditions
+=head2 C<(id => L<%user|"%user">,...)> query_good_followees( I<$user_id> )
 
 =over
 
-=item * set_good_cookie()
+=item * Precondition: set_good_cookie()
+
+=item * returns friends and followees
 
 =back
 
