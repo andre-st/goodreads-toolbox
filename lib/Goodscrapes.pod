@@ -68,21 +68,21 @@ https://github.com/andre-st/
 
 =over
 
-=item * id          => C<string>
+=item * id        => C<string>
 
-=item * name        => C<string>
+=item * name      => C<string>
 
-=item * age         => C<int>
+=item * age       => C<int>
 
-=item * is_friend   => C<bool>
+=item * is_friend => C<bool>
 
-=item * is_author   => C<bool>
+=item * is_author => C<bool>
 
-=item * is_female   => C<bool>
+=item * is_female => C<bool>
 
-=item * profile_url => C<string>
+=item * url       => C<string> URL to the user's profile page
 
-=item * img_url     => C<string>
+=item * img_url   => C<string>
 
 =back
 
@@ -99,7 +99,8 @@ https://github.com/andre-st/
 
 =item * rating     => C<int>
 
-=item * rating_str => C<string> represention of rating, e.g., 3 as "***--"
+=item * rating_str => C<string> represention of rating, e.g., 3/5 as 
+                      "[***  ]" or "[TTT  ]" if there's additional text
 
 =item * text       => C<string>
 

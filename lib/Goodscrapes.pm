@@ -110,21 +110,21 @@ our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
 
 =over
 
-=item * id          => C<string>
+=item * id        => C<string>
 
-=item * name        => C<string>
+=item * name      => C<string>
 
-=item * age         => C<int>
+=item * age       => C<int>
 
-=item * is_friend   => C<bool>
+=item * is_friend => C<bool>
 
-=item * is_author   => C<bool>
+=item * is_author => C<bool>
 
-=item * is_female   => C<bool>
+=item * is_female => C<bool>
 
-=item * profile_url => C<string>
+=item * url       => C<string> URL to the user's profile page
 
-=item * img_url     => C<string>
+=item * img_url   => C<string>
 
 =back
 
@@ -141,7 +141,8 @@ our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
 
 =item * rating     => C<int>
 
-=item * rating_str => C<string> represention of rating, e.g., 3 as "***--"
+=item * rating_str => C<string> represention of rating, e.g., 3/5 as 
+                      "[***  ]" or "[TTT  ]" if there's additional text
 
 =item * text       => C<string>
 
@@ -468,14 +469,14 @@ sub _extract_followees
 		my $img = $1 if $row =~ /src="([^"]+)/;
 		my $id  = $uid ? $uid : $aid;
 		push @result, { 
-				id          => $id, 
-				name        => $nam, 
-				profile_url => good_user_url( $id, $aid ),
-				img_url     => $img,
-				age         => undef,
-				is_author   => $aid, 
-				is_female   => undef,
-				is_friend   => 0 };
+				id        => $id, 
+				name      => $nam, 
+				url       => good_user_url( $id, $aid ),
+				img_url   => $img,
+				age       => undef,
+				is_author => $aid, 
+				is_female => undef,
+				is_friend => 0 };
 	}
 	return @result;
 }
@@ -500,14 +501,14 @@ sub _extract_friends
 		my $img = $1 if $row =~ /src="([^"]+)/;
 		my $id  = $uid ? $uid : $aid;
 		push @result, { 
-				id          => $id, 
-				name        => $nam, 
-				profile_url => good_user_url( $id, $aid ),
-				img_url     => $img, 
-				age         => undef,
-				is_author   => $aid, 
-				is_female   => undef,
-				is_friend   => 1 };
+				id        => $id, 
+				name      => $nam, 
+				url       => good_user_url( $id, $aid ),
+				img_url   => $img, 
+				age       => undef,
+				is_author => $aid, 
+				is_female => undef,
+				is_friend => 1 };
 	}
 	return @result;
 }
@@ -523,31 +524,33 @@ sub _extract_reviews
 {
 	my $html = shift;  # < is \u003c, > is \u003e,  " is \" literally
 	my @result;
+	
 	while( $html =~ /div id=\\"review_\d+(.*?)div class=\\"clear/gs )
-	{
+	{		
 		my $row = $1;
 		my $rid = $1 if $row =~ /\/review\/show\/([0-9]+)/;
 		my $uid = $1 if $row =~   /\/user\/show\/([0-9]+)/;
 		my $nam = $1 if $row =~ /alt=\\"([^\\]+)/;   # alt=\"David T\"
 		my $rat = () =  $row =~ /staticStar p10/g;   # count occurances
 		my $dat = $1 if $row =~ /([A-Z][a-z][a-z] \d+, \d{4})/;
+		my $txt = $1 if $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/;
 		
 		push @result, {
 				id   => $rid,
 				user => { 
-					id          => $uid, 
-					name        => $nam, 
-					profile_url => good_user_url( $uid ),
-					img_url     => undef,  # TODO
-					age         => undef,
-					is_author   => undef,
-					is_female   => undef,
-					is_friend   => undef
+					id        => $uid, 
+					name      => $nam, 
+					url       => good_user_url( $uid ),
+					img_url   => undef,  # TODO
+					age       => undef,
+					is_author => undef,
+					is_female => undef,
+					is_friend => undef
 				},
 				rating     => $rat,
-				rating_str => '*' x $rat . '-' x (5-$rat),  # ***--  Or stars \x{2605} and \x{2606}?
+				rating_str => '[' . ($txt ? 'T' : '*') x $rat . ' ' x (5-$rat) . ']',
 				review_url => good_review_url( $rid ),
-				text       => undef,  # TODO
+				text       => $txt,
 				date       => Time::Piece->strptime( $dat, '%b %d, %Y' ),
 				book_id    => undef };
 	}

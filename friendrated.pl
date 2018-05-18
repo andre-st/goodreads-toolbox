@@ -127,7 +127,7 @@ foreach my $pid (@people_ids)
 			"\t\t</user>\n",
 			$pid,
 			$people{$pid}->{name},
-			$people{$pid}->{profile_url},
+			$people{$pid}->{url},
 			$people{$pid}->{img_url};
 }
 say $fh "\t</users>";

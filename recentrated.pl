@@ -88,26 +88,21 @@ if( $csv )
 		}
 		
 		# "Book Title1"
-		#  www.goodreads.com/book/show/609606   [12 new]
+		#  www.goodreads.com/book/show/609606   [9 new]
 		#  
 		# "Book Title2"
-		#  www.goodreads.com/user/show/1234567  ***--  Joe User
-		#  www.goodreads.com/user/show/2345     *****  Lisa Jane
+		#  www.goodreads.com/user/show/1234567  [TTT  ]
+		#  www.goodreads.com/user/show/2345     [*****]
 		#
 		printf "\n  \"%s\"\n", $b->{title};
 		
 		if( scalar @revs > $_max_rev_urls_per_book )
 		{
-			printf "   %s  [%d new]\n", 
-					pretty_url( $b->{url} ),
-					scalar @revs;
+			printf "   %s  [%d new]\n", pretty_url( $b->{url} ), scalar @revs;
 		}
 		else
 		{
-			printf "   %s  %s  %s\n", 
-					pretty_url( $_->{user}->{profile_url} ),
-					$_->{rating_str},
-					$_->{user}->{name}
+			printf "   %s  %s\n", pretty_url( $_->{user}->{url} ), $_->{rating_str}
 				foreach (@revs);
 		}
 	}
@@ -116,10 +111,14 @@ if( $csv )
 	if( $_mail_from && $num_hits > 0 )
 	{
 		print "\n\n--\n" 
-		    . " Just reply 'unsubscribe' to unsubscribe.\n" 
-		    . "  Suggestions? Just reply to this e-mail.\n"
-		    . "   Add new books to your shelf at any time.\n"
-		    . "    Via https://andre-st.github.io/goodreads/\n";
+		    . " [***  ] 3/5 stars rating without text      \n"
+		    . " [TTT  ] 3/5 stars rating with add. text    \n"
+		    . " [9 new] ratings better viewed on book page \n"
+		    . " \n"
+		    . " Just reply 'unsubscribe' to unsubscribe.   \n" 
+		    . " Suggestions? Just reply to this e-mail.    \n"
+		    . " Add new books to your shelf at any time.   \n"
+		    . " Via https://andre-st.github.io/goodreads/  \n";
 	}
 	
 	# Cronjob audits:
