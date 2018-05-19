@@ -142,10 +142,13 @@ our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
 
 =item * book_id    => C<string>
 
-=item * rating     => C<int>
+=item * rating     => C<int> 
+                      with 0 meaning no rating, "added" or "marked it as abandoned" 
+                      or something similar
 
-=item * rating_str => C<string> represention of rating, e.g., 3/5 as 
-                      S<"[***  ]"> or S<"[TTT  ]"> if there's additional text
+=item * rating_str => C<string> 
+                      represention of rating, e.g., 3/5 as S<"[***  ]"> or S<"[TTT  ]"> 
+                      if there's additional text
 
 =item * text       => C<string>
 

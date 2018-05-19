@@ -83,16 +83,25 @@ if( $csv )
 			print "To: ${_mail_to}\n";
 			print "From: ${_mail_from}\n"                       if $_mail_from;
 			print "List-Unsubscribe: <mailto:${_mail_from}>\n"  if $_mail_from;
+			print "Content-Type: text/plain; charset=utf-8\n";
 			print "Subject: New ratings on Goodreads.com\n\n";  # 2x \n hdr end
 			print "Recently rated books in your \"${_good_shelf}\" shelf:\n";
 		}
 		
-		# "Book Title1"
-		#  www.goodreads.com/book/show/609606   [9 new]
+		
+		#  ASCII design isn't responsive, and the GMail web client neither uses fixed
+		#  width fonts nor treats multiple space characters as defined, even on large
+		#  screens. It treats plain text mails as HTML text. I don't do HTML mails,
+		#  so mobile GMail web users will have the disadvantage.
+		#
+		#<-------------------- 78 chars per line i.a.w. RFC 2822 --------------------->
+		#
+		#  "Book Title1"
+		#   www.goodreads.com/book/show/609606   [9 new]
 		#  
-		# "Book Title2"
-		#  www.goodreads.com/user/show/1234567  [TTT  ]
-		#  www.goodreads.com/user/show/2345     [*****]
+		#  "Book Title2"
+		#   www.goodreads.com/user/show/1234567  [TTT  ]
+		#   www.goodreads.com/user/show/2345     [*****]
 		#
 		printf "\n  \"%s\"\n", $b->{title};
 		
