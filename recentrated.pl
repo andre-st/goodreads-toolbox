@@ -107,10 +107,10 @@ if( $csv )
 		}
 	}
 	
-	# E-mail signature if run for other users:
+	# E-mail signature block if run for other users:
 	if( $_mail_from && $num_hits > 0 )
 	{
-		print "\n\n--\n" 
+		print "\n\n-- \n"  # RFC 3676 sig delimiter (w/ space char)
 		    . " [***  ] 3/5 stars rating without text      \n"
 		    . " [TTT  ] 3/5 stars rating with add. text    \n"
 		    . " [9 new] ratings better viewed on book page \n"
