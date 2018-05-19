@@ -67,7 +67,7 @@ friends of that person (depends on used cookie).
 
 - books in the upper value range are usually well-known titles, fiction, classics, no surprises
 - female GR members tend to give 4 and 5 stars pretty generously, and their networks are female
-  - program settings should be very harsh: min rating of 5 and rated by min 5 followees
+  - start with harsh program settings: min rating of 5 and rated by min 5 followees
 
 
 ## Feedback
