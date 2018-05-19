@@ -530,7 +530,6 @@ sub _extract_reviews
 {
 	my $html = shift;  # < is \u003c, > is \u003e,  " is \" literally
 	my @result;
-	
 	while( $html =~ /div id=\\"review_\d+(.*?)div class=\\"clear/gs )
 	{		
 		my $row = $1;
@@ -540,7 +539,6 @@ sub _extract_reviews
 		my $rat = () =  $row =~ /staticStar p10/g;   # count occurances
 		my $dat = $1 if $row =~ /([A-Z][a-z][a-z] \d+, \d{4})/;
 		my $txt = $1 if $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/;
-		
 		push @result, {
 				id   => $rid,
 				user => { 
@@ -554,7 +552,7 @@ sub _extract_reviews
 					is_friend => undef
 				},
 				rating     => $rat,
-				rating_str => '[' . ($txt ? 'T' : '*') x $rat . ' ' x (5-$rat) . ']',
+				rating_str => $rat ? ('[' . ($txt ? 'T' : '*') x $rat . ' ' x (5-$rat) . ']') : '[added]',
 				review_url => good_review_url( $rid ),
 				text       => $txt,
 				date       => Time::Piece->strptime( $dat, '%b %d, %Y' ),
