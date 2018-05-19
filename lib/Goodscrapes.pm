@@ -37,6 +37,9 @@ our $VERSION = '1.60';  # X.XX version format required by Perl
 =item * slow: version with concurrent AnyEvent::HTTP requests was marginally 
         faster, so I sticked with simpler code; but might be up to my system
 
+=item * text pattern matching, no ECMAScript execution and DOM parsing
+        (so far sufficient)
+
 =back
 
 
