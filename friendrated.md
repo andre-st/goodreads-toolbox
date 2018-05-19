@@ -22,8 +22,7 @@ From the _Goodreads Feedback_ forum, [Anne:](https://www.goodreads.com/topic/sho
 ```
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ chmod +x friendrated.pl
-$ sudo perl -MCPAN -e 'install Cache::FileCache, WWW::Curl::Easy'
+$ sudo make friendrated
 $ ./friendrated.pl YOURGOODUSERNUMBER out.xml
 
 Getting list of users known to #18418712... 164 users (0.18s)
