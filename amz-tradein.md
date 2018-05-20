@@ -2,7 +2,7 @@
 
 ## Autom. Amazon-Trade-In-Preisliste für Goodreads-Bücher
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
+![Maintenance](https://img.shields.io/maintenance/yes/2015.svg)
 
 ```
 $ ./gr-tradein.pl 18418712 books-for-sale
