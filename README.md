@@ -7,7 +7,7 @@ and a tools provider for web-based (home-)library management.
 
 
 
-## [amz-tradein.pl](amz-tradein.md)
+## ~~[amz-tradein.pl](amz-tradein.md)~~
 
 This script fetched Amazon Trade-In prices for all books in a Goodreads.com
 shelf ("resales" or "donations"). It automated regular manual bid-checking for 
