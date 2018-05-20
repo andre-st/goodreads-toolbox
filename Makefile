@@ -1,4 +1,5 @@
 # André's Goodreads Toolbox Makefile
+# Some day I'll try a MakeMaker Makefile.PL 
 
 RR_LOGFILE = /var/log/good.log
 RR_DB_DIR  = /var/db/good
