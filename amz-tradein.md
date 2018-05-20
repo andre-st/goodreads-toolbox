@@ -2,6 +2,8 @@
 
 ## Autom. Amazon-Trade-In-Preisliste für Goodreads-Bücher
 
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://bitbucket.org/lbesson/ansi-colors)
+
 ```
 $ ./gr-tradein.pl 18418712 books-for-sale
 EUR 8,50   Schneekreuzer. Alle drei Teile in einem Band
