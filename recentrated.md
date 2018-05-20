@@ -1,5 +1,8 @@
 # recentrated.pl
 
+![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+
+
 ## Know when people rate or write reviews about a book
 
 From the _Goodreads Feedback_ forum, [Elizabeth:](https://www.goodreads.com/topic/show/18060629-follow-book)
