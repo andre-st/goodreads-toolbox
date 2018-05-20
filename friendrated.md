@@ -54,8 +54,8 @@ pretty HTML file.
 I use `xsltproc`, which is part of the `libxslt` library.
 
 You can `^C`-break the script and continue later without having to re-read all
-resources again, as reading from Goodreads.com is very time consuming. The
-script internally uses a **file-cache** which is busted after 21 days
+online sources again, as reading from Goodreads.com is very time consuming.
+The script internally uses a local **file-cache** which is busted after 21 days
 (saves to /tmp/FileCache/).
 
 You will need to save your Goodreads cookie to the file `./friendrated.cookie`.
