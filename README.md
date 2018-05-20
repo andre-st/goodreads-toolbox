@@ -1,5 +1,7 @@
 # André's Goodreads Toolbox
 
+![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+
 [Goodreads.com](http://www.goodreads.com/) is the world largest book community 
 and a tools provider for web-based (home-)library management.
 
