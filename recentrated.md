@@ -47,9 +47,9 @@ Recently rated books in your "watch-ratings" shelf:
 1. visit [https://andre-st.github.io/goodreads/](https://andre-st.github.io/goodreads/) 
 2. enter your e-mail and shelf address
 
-### Self-hosted on GNU/Linux:
+### Self-hosted:
 
-1. open a terminal and install the Goodreads Toolbox:
+1. open a GNU/Linux terminal and install the Goodreads Toolbox:
 	``` sh
 	$ git clone https://github.com/andre-st/goodreads.git
 	$ cd goodreads
