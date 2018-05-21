@@ -42,12 +42,12 @@ Recently rated books in your "watch-ratings" shelf:
 
 ## How to "follow books" 
 
-### Without installation:
+### Installation-free:
 
 1. visit [https://andre-st.github.io/goodreads/](https://andre-st.github.io/goodreads/) 
 2. enter your e-mail and shelf address
 
-### Using GNU/Linux:
+### Self-hosted on GNU/Linux:
 
 1. open a terminal and install the Goodreads Toolbox:
 	``` sh
@@ -61,7 +61,7 @@ Recently rated books in your "watch-ratings" shelf:
    with `/usr/sbin/sendmail` being symlinked to one of them), 
    configure default "From:"
    
-3. add a cron-job (I prefer [anacrony](https://en.wikipedia.org/wiki/Anacron "performs pending jobs if the computer was previously shut down") daemons: [dcron](https://github.com/dubiousjim/dcron) or [fcron](https://en.wikipedia.org/wiki/Fcron)):
+3. add a cron-job (I prefer [anacrony](https://en.wikipedia.org/wiki/Anacron "performs pending jobs if the computer was previously shut down") daemons such as [dcron](https://github.com/dubiousjim/dcron) or [fcron](https://en.wikipedia.org/wiki/Fcron)):
 	edit `/etc/cron.daily/goodratings` and replace ARGUMENTS:
 	``` sh
 	#!/usr/bin/env sh
