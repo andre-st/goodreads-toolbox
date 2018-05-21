@@ -9,7 +9,7 @@
 ## Things That Improved My Goodreads.com Experience
 
 - **Grouping shelves** with a prefix, e.g., _"region-usa"_,
-  _"region-..."_. Goodreads sorts shelf lists in alphabetical order (non-mobile version).
+  _"region-..."_. Goodreads sorts shelf lists in alphabetical order.
   Related but scattered shelves impair findability.  
   - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with Unicode 0x3161: ㅡ
   - pseudo sub-shelves in Goodreads: _"parent-child"_
