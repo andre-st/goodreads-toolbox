@@ -19,8 +19,8 @@
 - **Creating an "abandoned" shelf** to compensate the missing reading-status. 
   Have the exclusive-checkbox [activated](https://www.goodreads.com/shelf/edit)
 
-- **Tracking physical book location** with shelves such as _"shelf-a1"_ or 
-  _"shelf-berlin-kitchen-c2"_ if the amount of books exceeds memory (Future me)
+- **Tracking physical book location** with shelves such as _"shelf-kitchen"_ or 
+  _"shelf-berlin"_ if the amount of books exceeds memory (Future me)
 
 - **Limiting the number of shelves** to max. 1 page. 
   Coarse-grained better than fine-grained, easier to navigate.
