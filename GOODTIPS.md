@@ -60,11 +60,11 @@
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
   Chrome browser extension: 
   ```
-  Description : Goodreads Shelves
-  Example     : https://www.goodreads.com/review/list/13055874?per_page=20&sort=reviews&view=table&shelf=ㅡxx-xx&page=2
-  Pattern     : (https://www\.goodreads\.com/review/list/[^?]+)(?=(?:.*[?&](page=\d+))?)(?=(?:.*[?&](shelf=[^&]+))?)
-  Redirect to : $1?per_page=100&sort=rating&order=d&view=covers&$2&$3
-  Pattern type: Regular Expression
+  Description: Goodreads Shelves
+  Example    : https://www.goodreads.com/review/list/13055874?per_page=20&sort=reviews&view=table&shelf=ㅡxx-xx&page=2
+  Pattern    : (https://www\.goodreads\.com/review/list/[^?]+)(?=(?:.*[?&](page=\d+))?)(?=(?:.*[?&](shelf=[^&]+))?)
+  Redirect   : $1?per_page=100&sort=rating&order=d&view=covers&$2&$3
+  Patt. Type : Regular Expression
   ```
   Always "100 books per page, sort by user-ratings with the highest first, covers-view". 
   The expression takes inexact matches like "page" ∈ "per_page", randomly ordered or missing 
