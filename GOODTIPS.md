@@ -23,8 +23,8 @@
   _"shelf-berlin-kitchen-c2"_ if the amount of books exceeds memory (Future me)
 
 - **Limiting the number of shelves** to max. 1 page. 
-  Coarse-grained better than fine-grained, shelf should have a chance to contain more than 3 books
-  and shouldn't overlap too much with other shelves (_"politics-economy-history"_, _"software-testing-infosec"_, …).
+  Coarse-grained better than fine-grained, shelf should have a chance to contain more than 3 books.
+  Merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_.
   Anemic shelves also render functions such as "select multiple" (intersection) useless.
 
 - **Adding unread books to my custom shelves too.** This works
