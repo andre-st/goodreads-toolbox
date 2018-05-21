@@ -23,9 +23,10 @@
   _"shelf-berlin-kitchen-c2"_ if the amount of books exceeds memory (Future me)
 
 - **Limiting the number of shelves** to max. 1 page. 
-  Coarse-grained better than fine-grained, shelf should have a chance to contain more than 3 books.
-  Merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_.
+  Coarse-grained better than fine-grained, easier to navigate.
   Anemic shelves also render functions such as "select multiple" (intersection) useless.
+  - avoid shelves that will likely never contain more than 3 books
+  - merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_
 
 - **Adding unread books to my custom shelves too.** This works
   well with Goodreads own _"select multiple"_ feature beneath your
