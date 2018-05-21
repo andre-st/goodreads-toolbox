@@ -40,24 +40,14 @@ Recently rated books in your "watch-ratings" shelf:
  ...   
 ```
 
-## How to "follow books" without installation
+## How to "follow books" 
+
+### Without installation:
 
 1. visit [https://andre-st.github.io/goodreads/](https://andre-st.github.io/goodreads/) 
 2. enter your e-mail and shelf address
 
-
-## Dos and don'ts
-
-- don't use the "All" or "Read" shelves; be picky, use a separate single purpose shelf
-- don't run this on more than one of your shelves; it's possible but better use a single purpose shelf
-- don't use this program with well known fiction books that get a lot of reviews; no insights, readers too random
-- create and [populate](http://i0.wp.com/theeverscholar.com/wp-content/uploads/2015/03/goodreads3.jpg) 
-	a Goodreads shelf, e.g., "watch-ratings": You can add and remove books at any time. 
-	New books will be checked automatically. 
-	Such a shelf prevents unnecessary mails and eases manual checks if this system is discontinued someday
-
-
-## How to "follow books" using GNU/Linux
+### Using GNU/Linux:
 
 1. open a terminal and install the Goodreads Toolbox:
 	``` sh
@@ -86,6 +76,17 @@ Recently rated books in your "watch-ratings" shelf:
 	$ sudo chmod +x /etc/cron.daily/goodratings
 	```
 	See also [cron.daily/goodratings.example](cron.daily/goodratings.example)
+
+
+## Dos and don'ts
+
+- don't use the "All" or "Read" shelves; be picky, use a separate single purpose shelf
+- don't run this on more than one of your shelves; it's possible but better use a single purpose shelf
+- don't use this program with well known fiction books that get a lot of reviews; no insights, readers too random
+- create and [populate](http://i0.wp.com/theeverscholar.com/wp-content/uploads/2015/03/goodreads3.jpg) 
+	a Goodreads shelf, e.g., "watch-ratings": You can add and remove books at any time. 
+	New books will be checked automatically. 
+	Such a shelf prevents unnecessary mails and eases manual checks if this system is discontinued someday
 
 
 ## Feedback
