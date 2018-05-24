@@ -78,7 +78,7 @@ Recently rated books in your "watch-ratings" shelf:
 	See also [cron.daily/goodratings.example](cron.daily/goodratings.example)
 
 
-## Dos and don'ts
+### Dos and don'ts:
 
 - don't use the "All" or "Read" shelves; be picky, use a separate single purpose shelf
 - don't run this on more than one of your shelves; it's possible but better use a single purpose shelf
