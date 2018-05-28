@@ -9,7 +9,7 @@
 ## Things That Improved My Goodreads.com Experience
 
 - **Grouping shelves** with a prefix, e.g., _"region-usa"_,
-  _"region-..."_. Goodreads sorts shelf lists in alphabetical order (non-mobile version).
+  _"region-..."_. Goodreads sorts shelf lists in alphabetical order.
   Related but scattered shelves impair findability.  
   - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with Unicode 0x3161: ㅡ
   - pseudo sub-shelves in Goodreads: _"parent-child"_
@@ -19,12 +19,14 @@
 - **Creating an "abandoned" shelf** to compensate the missing reading-status. 
   Have the exclusive-checkbox [activated](https://www.goodreads.com/shelf/edit)
 
-- **Tracking physical book location** with shelves such as _"shelf-a1"_ or 
-  _"shelf-berlin-kitchen-c2"_ if the amount of books exceeds memory (Future me)
+- **Tracking physical book location** with shelves such as _"shelf-kitchen"_ or 
+  _"shelf-berlin"_ if the amount of books exceeds memory (Future me)
 
 - **Limiting the number of shelves** to max. 1 page. 
-  Coarse-grained better than fine-grained, shelf should have a chance to contain more than 3 books.
+  Coarse-grained better than fine-grained, easier to navigate.
   Anemic shelves also render functions such as "select multiple" (intersection) useless.
+  - avoid shelves that will likely never contain more than 3 books
+  - merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_
 
 - **Adding unread books to my custom shelves too.** This works
   well with Goodreads own _"select multiple"_ feature beneath your
@@ -58,8 +60,11 @@
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
   Chrome browser extension: 
   ```
-  Shelves: (https://www\.goodreads\.com/review/list/[^?]+)(?=(?:.*[?&](page=\d+))?)(?=(?:.*[?&](shelf=[^&]+))?)
-  always : $1?per_page=100&sort=rating&order=d&view=covers&$2&$3
+  Description: Goodreads Shelves
+  Example    : https://www.goodreads.com/review/list/13055874?per_page=20&sort=reviews&view=table&shelf=ㅡxx-xx&page=2
+  Pattern    : (https://www\.goodreads\.com/review/list/[^?]+)(?=(?:.*[?&](page=\d+))?)(?=(?:.*[?&](shelf=[^&]+))?)
+  Redirect   : $1?per_page=100&sort=rating&order=d&view=covers&$2&$3
+  Type       : Regular Expression
   ```
   Always "100 books per page, sort by user-ratings with the highest first, covers-view". 
   The expression takes inexact matches like "page" ∈ "per_page", randomly ordered or missing 
@@ -79,6 +84,7 @@
 - [Google Alerts](https://www.google.com/alerts): "new book" + "specific interest"
 - follow [Goodreads users](https://www.goodreads.com/user/18418712-andr/following) with interesting libraries
 - inspect Goodreads books [common among members you follow](https://github.com/andre-st/goodreads/blob/master/friendrated.md)
+- check the Amazon profiles of users who comment good books
 - follow small or specialized publishers through a [Twitter list](https://twitter.com/voidyll/lists/books), RSS-feed or newsletter (works so lala)
 - reddit, quora, ...
 - the better book sites:
