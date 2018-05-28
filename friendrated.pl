@@ -85,8 +85,6 @@ foreach my $pid (@people_ids)
 	
 	next if $p->{is_author};  # Just normal members
 	
-	last if $people_done > 3;
-	
 	printf STDOUT "[%3d%%] %-25s #%-10s\t", $people_done/$people_count*100, $p->{name}, $pid;
 	
 	my $t0   = time();
