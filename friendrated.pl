@@ -29,6 +29,7 @@ use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use IO::File;
 use XML::Writer;
+use File::Basename;
 use Goodscrapes;
 
 
@@ -56,7 +57,9 @@ set_good_cache( '21 days' );
 STDOUT->autoflush( 1 );
 
 
-############################ Collect user data ###############################
+
+#=========================== Collect user data ===============================
+
 print STDOUT "Getting list of users known to #${_good_user}... ";
 
 my $t0           = time();
@@ -69,7 +72,8 @@ printf STDOUT "%d users (%.2fs)\n", $people_count, time()-$t0;
 
 
 
-############################ Collect book data ###############################
+#=========================== Collect book data ===============================
+
 my %books;      # {bookid} => %book
 my %faved_for;  # {bookid}{favorerid}
                 # favorers hash-type because of uniqueness;
@@ -80,6 +84,8 @@ foreach my $pid (@people_ids)
 	my $p = $people{$pid};
 	
 	next if $p->{is_author};  # Just normal members
+	
+	last if $people_done > 3;
 	
 	printf STDOUT "[%3d%%] %-25s #%-10s\t", $people_done/$people_count*100, $p->{name}, $pid;
 	
@@ -102,7 +108,8 @@ say STDOUT "\nPerfect! Got favourites of ${people_done} users.";
 
 
 
-######################## Write results to XML file ###########################
+#======================= Write results to XML file ===========================
+
 print STDOUT "Writing results to \"$_out_path\"... ";
 
 my $num_finds = 0;
@@ -110,14 +117,12 @@ my $num_finds = 0;
 my $f = IO::File->new( $_out_path, 'w' ) 
 		or die "FATAL: Cannot write to $_out_path ($!)";
 
-my $w = XML::Writer->new( 
-		OUTPUT    => $f, NEWLINES    => 1, 
-		DATA_MODE => 1,  DATA_INDENT => "\t" );
+my $w = XML::Writer->new( OUTPUT => $f, DATA_MODE => 1, DATA_INDENT => "\t" );
 
 $w->xmlDecl( 'UTF-8' );
 $w->startTag( 'good', 
 		'version'     => '1.0', 
-		'generator'   => __FILE__, 
+		'generator'   => basename( $0 ),
 		'customer'    => $_good_user,
 		'minfavorers' => $_min_favorers,
 		'minrating'   => $_min_rating );
@@ -125,11 +130,11 @@ $w->startTag( 'good',
 $w->startTag( 'users' );
 foreach my $pid (@people_ids)
 {
-	$w->startTag   ( 'user' , 'id' => $pid             );
-	$w->dataElement( 'name' , $people{$pid}->{name}    );
-	$w->dataElement( 'url'  , $people{$pid}->{url}     );
-	$w->dataElement( 'img'  , $people{$pid}->{img_url} );
-	$w->endTag     ( 'user'                            );
+	$w->startTag   ( 'user'  , 'id' => $pid             );
+	$w->dataElement( 'name'  , $people{$pid}->{name}    );
+	$w->dataElement( 'url'   , $people{$pid}->{url}     );
+	$w->dataElement( 'img'   , $people{$pid}->{img_url} );
+	$w->endTag     ( 'user'                             );
 }
 $w->endTag  ( 'users' );
 $w->startTag( 'books' );
@@ -141,12 +146,12 @@ foreach my $bid (keys %faved_for)
 	next if $num_favorers < $_min_favorers;
 	$num_finds++;
 	
-	$w->startTag   ( 'book'    , 'id' => $bid            );
-	$w->dataElement( 'mentions', $num_favorers           );
-	$w->dataElement( 'title'   , $books{$bid}->{title}   );
-	$w->dataElement( 'url'     , $books{$bid}->{url}     );
-	$w->dataElement( 'img'     , $books{$bid}->{img_url} );
-	$w->startTag   ( 'favorers'                          );
+	$w->startTag   ( 'book'      , 'id' => $bid            );
+	$w->dataElement( 'mentions'  , $num_favorers           );
+	$w->dataElement( 'title'     , $books{$bid}->{title}   );
+	$w->dataElement( 'url'       , $books{$bid}->{url}     );
+	$w->dataElement( 'img'       , $books{$bid}->{img_url} );
+	$w->startTag   ( 'favorers'                            );
 	
 	$w->emptyTag( 'user', 'id' => $_ ) foreach (@favorer_ids);
 	
