@@ -114,8 +114,7 @@ print STDOUT "Writing results to \"$_out_path\"... ";
 
 my $num_finds = 0;
 
-my $f = IO::File->new( $_out_path, 'w' ) 
-		or die "FATAL: Cannot write to $_out_path ($!)";
+my $f = IO::File->new( $_out_path, 'w' ) or die "FATAL: Cannot write to $_out_path ($!)";
 
 my $w = XML::Writer->new( OUTPUT => $f, DATA_MODE => 1, DATA_INDENT => "\t" );
 
