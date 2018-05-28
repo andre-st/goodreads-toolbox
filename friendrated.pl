@@ -20,20 +20,23 @@ see friendrated.md
 
 ###############################################################################
 
-
 use strict;
 use warnings;
 use 5.18.0;
 
-
 use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
+use IO::File;
+use XML::Writer;
 use Goodscrapes;
 
 
+# Program synopsys:
 say STDERR "Usage: $0 GOODUSERNUMBER [OUTXMLPATH] [MINFAVORERS] [MINRATING]" and exit if $#ARGV < 0;
 
+
+# Program configuration:
 our $_good_user    = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
 our $_out_path     = $ARGV[1] || "$_good_user.xml";
 our $_min_favorers = $ARGV[2] || 3;
@@ -53,9 +56,7 @@ set_good_cache( '21 days' );
 STDOUT->autoflush( 1 );
 
 
-
-# Collect user data:
-# 
+############################ Collect user data ###############################
 print STDOUT "Getting list of users known to #${_good_user}... ";
 
 my $t0           = time();
@@ -68,8 +69,7 @@ printf STDOUT "%d users (%.2fs)\n", $people_count, time()-$t0;
 
 
 
-# Collect book data:
-# 
+############################ Collect book data ###############################
 my %books;      # {bookid} => %book
 my %faved_for;  # {bookid}{favorerid}
                 # favorers hash-type because of uniqueness;
@@ -102,36 +102,37 @@ say STDOUT "\nPerfect! Got favourites of ${people_done} users.";
 
 
 
-# Write results to XML file:
-# 
+######################## Write results to XML file ###########################
 print STDOUT "Writing results to \"$_out_path\"... ";
+
 my $num_finds = 0;
-open( my $fh, '>', $_out_path );
 
-say $fh '<?xml version="1.0" encoding="UTF-8"?>';
-say $fh # Document program arguments in result file:
-		'<good generator="friendrated.pl"' .
-		' version="1.0"'                   .
-		" customer=\"$_good_user\""        .
-		" minfavorers=\"$_min_favorers\""  .
-		" minrating=\"$_min_rating\" >";
+my $f = IO::File->new( $_out_path, 'w' ) 
+		or die "FATAL: Cannot write to $_out_path ($!)";
 
-say $fh "\t<users>";
+my $w = XML::Writer->new( 
+		OUTPUT    => $f, NEWLINES    => 1, 
+		DATA_MODE => 1,  DATA_INDENT => "\t" );
+
+$w->xmlDecl( 'UTF-8' );
+$w->startTag( 'good', 
+		'version'     => '1.0', 
+		'generator'   => __FILE__, 
+		'customer'    => $_good_user,
+		'minfavorers' => $_min_favorers,
+		'minrating'   => $_min_rating );
+
+$w->startTag( 'users' );
 foreach my $pid (@people_ids)
 {
-	printf $fh 
-			"\t\t<user id=\"%s\">\n"  .
-			"\t\t\t<name>%s</name>\n" .
-			"\t\t\t<url>%s</url>\n"   .
-			"\t\t\t<img>%s</img>\n"   .
-			"\t\t</user>\n",
-			$pid,
-			$people{$pid}->{name},
-			$people{$pid}->{url},
-			$people{$pid}->{img_url};
+	$w->startTag   ( 'user' , 'id' => $pid             );
+	$w->dataElement( 'name' , $people{$pid}->{name}    );
+	$w->dataElement( 'url'  , $people{$pid}->{url}     );
+	$w->dataElement( 'img'  , $people{$pid}->{img_url} );
+	$w->endTag     ( 'user'                            );
 }
-say $fh "\t</users>";
-say $fh "\t<books>";
+$w->endTag  ( 'users' );
+$w->startTag( 'books' );
 foreach my $bid (keys %faved_for)
 {
 	my @favorer_ids  = keys $faved_for{$bid};
@@ -140,31 +141,23 @@ foreach my $bid (keys %faved_for)
 	next if $num_favorers < $_min_favorers;
 	$num_finds++;
 	
-	say $fh "\t\t<book id=\"$bid\">";
-	printf $fh 
-			"\t\t\t<mentions>%d</mentions>\n" .
-			"\t\t\t<title>%s</title>\n"       .
-			"\t\t\t<url>%s</url>\n"           .
-			"\t\t\t<img>%s</img>\n",
-			$num_favorers,
-			$books{$bid}->{title},
-			$books{$bid}->{url},
-			$books{$bid}->{img_url};
+	$w->startTag   ( 'book'    , 'id' => $bid            );
+	$w->dataElement( 'mentions', $num_favorers           );
+	$w->dataElement( 'title'   , $books{$bid}->{title}   );
+	$w->dataElement( 'url'     , $books{$bid}->{url}     );
+	$w->dataElement( 'img'     , $books{$bid}->{img_url} );
+	$w->startTag   ( 'favorers'                          );
 	
-	say $fh "\t\t\t<favorers>";
-	say $fh "\t\t\t\t<user id=\"$_\" />" foreach (@favorer_ids);
-	say $fh "\t\t\t</favorers>";
-	say $fh "\t\t</book>";
+	$w->emptyTag( 'user', 'id' => $_ ) foreach (@favorer_ids);
+	
+	$w->endTag( 'favorers' );
+	$w->endTag( 'book'     );
 }
-say $fh "\t</books>";
-say $fh '</good>';
-
-close $fh;
+$w->endTag( 'books' );
+$w->endTag( 'good'  );
+$w->end();
 printf STDOUT "%d books\n", $num_finds;
 
-
-# Good bye.
-# 
 printf STDOUT "Total time: %.0f minutes\n", (time()-$_tstart)/60;
 
 

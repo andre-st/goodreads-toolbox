@@ -12,7 +12,7 @@ help : Makefile
 
 .PHONY : base
 base :
-	perl -MCPAN -e 'install Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any'
+	perl -MCPAN -e 'install Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any, XML::Writer'
 	chmod +x *.pl
 
 
