@@ -36,6 +36,7 @@ use Goodscrapes;
 # Program synopsis:
 say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [MAILTO] [MAILFROM]" and exit if $#ARGV < 0;
 
+
 # Program configuration:
 our $_good_user  = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
 our $_good_shelf = $ARGV[1] || '%23ALL%23';
@@ -123,7 +124,7 @@ if( $csv )
 		    . " [***  ] 3/5 stars rating without text      \n"
 		    . " [TTT  ] 3/5 stars rating with add. text    \n"
 		    . " [9 new] ratings better viewed on book page \n"
-		    . " \n"
+		    . "                                            \n"
 		    . " Just reply 'unsubscribe' to unsubscribe.   \n" 
 		    . " Add new books to your shelf at any time.   \n"
 		    . " Via https://andre-st.github.io/goodreads/  \n";
