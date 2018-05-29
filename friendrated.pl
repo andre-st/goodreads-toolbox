@@ -38,16 +38,16 @@ say STDERR "Usage: $0 GOODUSERNUMBER [OUTXMLPATH] [MINFAVORERS] [MINRATING]" and
 
 
 # Program configuration:
-our $_good_user    = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
-our $_out_path     = $ARGV[1] || "$_good_user.xml";
-our $_min_favorers = $ARGV[2] || 3;
-our $_min_rating   = $ARGV[3] || 4;  # Highly rated books only (4 and 5 stars)
-our $_cookie_path  = 'friendrated.cookie';
-our $_shelf        = 'read';
-our $_tstart       = time();
+our $GOODUSER    = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
+our $OUTPATH     = $ARGV[1] || "${GOODUSER}.xml";
+our $MINFAVORERS = $ARGV[2] || 3;
+our $MINRATING   = $ARGV[3] || 4;  # Highly rated books only (4 and 5 stars)
+our $COOKIEPATH  = 'friendrated.cookie';
+our $SHELF       = 'read';
+our $TSTART      = time();
 
 # Followed and friend list is private, some 'Read' shelves are private
-set_good_cookie_file( $_cookie_path );  
+set_good_cookie_file( $COOKIEPATH );  
 
 # Don't scrape everything again on mistakes or parameter changes or power
 # blackout or when I break ^C and continue at a later timepoint.
@@ -60,10 +60,10 @@ STDOUT->autoflush( 1 );
 
 #=========================== Collect user data ===============================
 
-print STDOUT "Getting list of users known to #${_good_user}... ";
+print STDOUT "Getting list of users known to #${GOODUSER}... ";
 
 my $t0           = time();
-my %people       = query_good_followees( $_good_user );
+my %people       = query_good_followees( $GOODUSER );
 my @people_ids   = keys %people;
 my $people_count = scalar @people_ids;
 my $people_done  = 0;
@@ -88,18 +88,18 @@ foreach my $pid (@people_ids)
 	printf STDOUT "[%3d%%] %-25s #%-10s\t", $people_done/$people_count*100, $p->{name}, $pid;
 	
 	my $t0   = time();
-	my @bok  = query_good_books( $pid, $_shelf );
+	my @bok  = query_good_books( $pid, $SHELF );
 	my $nfav = 0;
 		
 	foreach my $b (@bok)
 	{
-		next if $b->{user_rating} < $_min_rating;
+		next if $b->{user_rating} < $MINRATING;
 		$nfav++;
 		$faved_for{ $b->{id} }{ $pid } = 1;
 		$books{ $b->{id} } = $b;
 	}
 	
-	printf STDOUT "%4d %s\t%4d favs\t%.2fs\n", scalar( @bok ), $_shelf, $nfav, time()-$t0;
+	printf STDOUT "%4d %s\t%4d favs\t%.2fs\n", scalar( @bok ), $SHELF, $nfav, time()-$t0;
 }
 
 say STDOUT "\nPerfect! Got favourites of ${people_done} users.";
@@ -108,11 +108,11 @@ say STDOUT "\nPerfect! Got favourites of ${people_done} users.";
 
 #======================= Write results to XML file ===========================
 
-print STDOUT "Writing results to \"$_out_path\"... ";
+print STDOUT "Writing results to \"$OUTPATH\"... ";
 
 my $num_finds = 0;
 
-my $f = IO::File->new( $_out_path, 'w' ) or die "FATAL: Cannot write to $_out_path ($!)";
+my $f = IO::File->new( $OUTPATH, 'w' ) or die "FATAL: Cannot write to $OUTPATH ($!)";
 
 my $w = XML::Writer->new( OUTPUT => $f, DATA_MODE => 1, DATA_INDENT => "\t" );
 
@@ -120,9 +120,9 @@ $w->xmlDecl( 'UTF-8' );
 $w->startTag( 'good', 
 		'version'     => '1.0', 
 		'generator'   => basename( $0 ),
-		'customer'    => $_good_user,
-		'minfavorers' => $_min_favorers,
-		'minrating'   => $_min_rating );
+		'customer'    => $GOODUSER,
+		'minfavorers' => $MINFAVORERS,
+		'minrating'   => $MINRATING );
 
 $w->startTag( 'users' );
 foreach my $pid (@people_ids)
@@ -140,7 +140,7 @@ foreach my $bid (keys %faved_for)
 	my @favorer_ids  = keys $faved_for{$bid};
 	my $num_favorers = scalar @favorer_ids;
 	
-	next if $num_favorers < $_min_favorers;
+	next if $num_favorers < $MINFAVORERS;
 	$num_finds++;
 	
 	$w->startTag   ( 'book'      , 'id' => $bid            );
@@ -160,7 +160,7 @@ $w->endTag( 'good'  );
 $w->end();
 printf STDOUT "%d books\n", $num_finds;
 
-printf STDOUT "Total time: %.0f minutes\n", (time()-$_tstart)/60;
+printf STDOUT "Total time: %.0f minutes\n", (time()-$TSTART)/60;
 
 
 

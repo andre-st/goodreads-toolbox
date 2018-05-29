@@ -104,11 +104,14 @@ use lib "$FindBin::Bin/lib/";
 use Goodscrapes;
 
 
+# Program synopsis:
 say STDERR "Usage: $0 GOOD_USER_NUMBER [GOOD_SHELF]\nSee source code for more info." and exit if $#ARGV < 0;
 
-our $_good_user  = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
-our $_good_shelf = $ARGV[1] || '%23ALL%23';
-our $_is_debug   = 0;
+
+# Program configuration:
+our $GOODUSER  = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
+our $GOODSHELF = $ARGV[1] || '%23ALL%23';
+
 
 
 sub extract_amz_price
@@ -118,7 +121,7 @@ sub extract_amz_price
 }
 
 
-my @books = query_good_books( $_good_user, $_good_shelf );
+my @books = query_good_books( $GOODUSER, $GOODSHELF );
 foreach my $b (@books)
 {
 	my $price = extract_amz_price( amz_book_html( $b ) );

@@ -38,14 +38,14 @@ say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [MAILTO] [MAILFROM]" and exit i
 
 
 # Program configuration:
-our $_good_user  = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
-our $_good_shelf = $ARGV[1] || '%23ALL%23';
-our $_mail_to    = $ARGV[2];
-our $_mail_from  = $ARGV[3];
-our $_csv_path   = "/var/db/good/${_good_user}-${_good_shelf}.csv";
+our $GOODUSER  = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
+our $GOODSHELF = $ARGV[1] || '%23ALL%23';
+our $MAILTO    = $ARGV[2];
+our $MAILFROM  = $ARGV[3];
+our $CSVPATH   = "/var/db/good/${GOODUSER}-${GOODSHELF}.csv";
 
 # the more URLs, the longer and untempting the mail
-our $_max_rev_urls_per_book = 2;
+our $MAX_REVURLS_PER_BOOK = 2;
 
 # URLs in mail padded to average length, with "https://" stripped
 sub pretty_url { return sprintf '%-36s', substr( shift, 8 ); }
@@ -55,13 +55,13 @@ set_good_cache( '4 hours' );
 
 
 
-my $csv      = ( -e $_csv_path  ?  csv( in => $_csv_path, key => 'id' )  :  undef );  # ref
-my @books    = query_good_books( $_good_user, $_good_shelf );
+my $csv      = ( -e $CSVPATH  ?  csv( in => $CSVPATH, key => 'id' )  :  undef );  # ref
+my @books    = query_good_books( $GOODUSER, $GOODSHELF );
 my $num_hits = 0;
 
 if( $csv )
 {
-	my $mtime = (stat $_csv_path)[9];
+	my $mtime = (stat $CSVPATH)[9];
 	my $since = Time::Piece->strptime( $mtime, '%s' );
 	
 	foreach my $b (@books)
@@ -79,14 +79,14 @@ if( $csv )
 		$num_hits++;
 		
 		# E-Mail header and first body line:
-		if( $_mail_to && $num_hits == 1 )
+		if( $MAILTO && $num_hits == 1 )
 		{
-			print "To: ${_mail_to}\n";
-			print "From: ${_mail_from}\n"                       if $_mail_from;
-			print "List-Unsubscribe: <mailto:${_mail_from}>\n"  if $_mail_from;
+			print "To: ${MAILTO}\n";
+			print "From: ${MAILFROM}\n"                       if $MAILFROM;
+			print "List-Unsubscribe: <mailto:${MAILFROM}>\n"  if $MAILFROM;
 			print "Content-Type: text/plain; charset=utf-8\n";
 			print "Subject: New ratings on Goodreads.com\n\n";  # 2x \n hdr end
-			print "Recently rated books in your \"${_good_shelf}\" shelf:\n";
+			print "Recently rated books in your \"${GOODSHELF}\" shelf:\n";
 		}
 		
 		
@@ -106,7 +106,7 @@ if( $csv )
 		#
 		printf "\n  \"%s\"\n", $b->{title};
 		
-		if( scalar @revs > $_max_rev_urls_per_book )
+		if( scalar @revs > $MAX_REVURLS_PER_BOOK )
 		{
 			printf "   %s  [%d new]\n", pretty_url( $b->{url} ), scalar @revs;
 		}
@@ -118,7 +118,7 @@ if( $csv )
 	}
 	
 	# E-mail signature block if run for other users:
-	if( $_mail_from && $num_hits > 0 )
+	if( $MAILFROM && $num_hits > 0 )
 	{
 		print "\n\n-- \n"  # RFC 3676 sig delimiter (w/ space char)
 		    . " [***  ] 3/5 stars rating without text      \n"
@@ -132,8 +132,8 @@ if( $csv )
 	
 	# Cronjob audits:
 	$_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s"', 
-			$num_hits, scalar @books, $_good_user, $_good_shelf );
+			$num_hits, scalar @books, $GOODUSER, $GOODSHELF );
 }
 
-csv( in => \@books, out => $_csv_path, headers => [qw( id num_ratings )] );
+csv( in => \@books, out => $CSVPATH, headers => [qw( id num_ratings )] );
 
