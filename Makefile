@@ -1,4 +1,4 @@
-# André's Goodreads Toolbox Makefile
+# AndrÃ©'s Goodreads Toolbox Makefile
 # Some day I'll try a MakeMaker Makefile.PL 
 
 RR_LOGFILE = /var/log/good.log
@@ -30,9 +30,9 @@ friendrated : base
 ## make recentrated:  Installs Perl modules and creates database and log in /var
 .PHONY : recentrated
 recentrated : base recentrated.pl
-	mkdir -p ${RR_DB_DIR}
-	touch ${RR_LOGFILE}
-	chown --reference=recentrated.pl ${RR_DB_DIR} ${RR_LOGFILE}
+	mkdir -p "${RR_DB_DIR}"
+	touch "${RR_LOGFILE}"
+	chown --reference=recentrated.pl "${RR_DB_DIR}" "${RR_LOGFILE}"
 
 
 ## make all        :  Installs all programs
@@ -42,8 +42,8 @@ all : recentrated friendrated
 ## make uninstall  :  Deletes work and log files in /var
 .PHONY : uninstall
 uninstall :
-	rm -r ${RR_DB_DIR} 
-	rm -r ${RR_LOGFILE}
+	rm -r "${RR_DB_DIR}"
+	rm -r "${RR_LOGFILE}"
 
 
 
