@@ -43,8 +43,8 @@ all : recentrated friendrated
 ## make uninstall  :  Deletes work and log files in /var
 .PHONY : uninstall
 uninstall :
-	rm -r "${RR_DB_DIR}"
-	rm -r "${RR_LOGFILE}"
+	rm -rf "${RR_DB_DIR}"
+	rm -rf "${RR_LOGFILE}"
 
 
 
