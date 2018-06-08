@@ -43,7 +43,8 @@ Getting list of users known to #18418712... 164 users (0.18s)
 Perfect! Got favourites of 164 users.
 Writing results to "out.xml"... 271 books (0.31s)
 Total time: 3 minutes
-
+```
+```
 $ xsltproc friendrated.xsl out.xml > out.html
 ```
 
