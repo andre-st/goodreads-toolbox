@@ -66,10 +66,10 @@
   Type       : Regular Expression
   ```
   ```
-  Description: Goodreads Editions: Expanded details
+  Description: Goodreads Editions: Expanded details, 100 per page
   Example    : https://www.goodreads.com/work/editions/80128-silence-on-the-wire?expanded=false&utf8=✓&sort=num_ratings&filter_by_format=Nook
   Pattern    : (https://www\.goodreads\.com/work/editions/[^\?]*)\?*(.*)
-  Redirect   : $1?expanded=true&$2
+  Redirect   : $1?expanded=true&$2&per_page=100
   Type       : Regular Expression
   ```
   All expressions takes inexact matches like "page" ∈ "per_page", randomly ordered or missing 
