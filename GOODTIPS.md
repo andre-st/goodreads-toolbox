@@ -73,7 +73,7 @@
   Type       : Regular Expression
   ```
   All expressions takes inexact matches like "page" ∈ "per_page", randomly ordered or missing 
-  parameters and Unicode values into account.
+  parameters and Unicode values into account. Given duplicate query arguments, the last one applies.
   
 ## Discovering Non-Fiction Books
 - checkout the bibliography section of a good book (best signal-to-noise ratio); I use a separate _"bibliogr-to-check"_ Goodreads shelf to keep track of unchecked books
