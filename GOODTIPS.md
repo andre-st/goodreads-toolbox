@@ -59,15 +59,14 @@
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
   Chrome browser extension: 
   ```
-  Description: Goodreads Shelves
+  Description: Goodreads Shelves: 100 books per page, sort by user-rating (highest first), covers-view
   Example    : https://www.goodreads.com/review/list/13055874?per_page=20&sort=reviews&view=table&shelf=ㅡxx-xx&page=2
   Pattern    : (https://www\.goodreads\.com/review/list/[^?]+)(?=(?:.*[?&](page=\d+))?)(?=(?:.*[?&](shelf=[^&]+))?)
   Redirect   : $1?per_page=100&sort=rating&order=d&view=covers&$2&$3
   Type       : Regular Expression
   ```
-  Always "100 books per page, sort by user-ratings with the highest first, covers-view". 
   ```
-  Description: Goodreads.com: Editions with expanded details
+  Description: Goodreads Editions: Expanded details
   Example    : https://www.goodreads.com/work/editions/80128-silence-on-the-wire?expanded=false&utf8=✓&sort=num_ratings&filter_by_format=Nook
   Pattern    : (https://www\.goodreads\.com/work/editions/[^\?]*)\?*(.*)
   Redirect   : $1?expanded=true&$2
