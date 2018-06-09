@@ -66,7 +66,14 @@
   Type       : Regular Expression
   ```
   Always "100 books per page, sort by user-ratings with the highest first, covers-view". 
-  The expression takes inexact matches like "page" ∈ "per_page", randomly ordered or missing 
+  ```
+  Description: Goodreads.com: Editions with expanded details
+  Example    : https://www.goodreads.com/work/editions/80128-silence-on-the-wire?expanded=false&utf8=✓&sort=num_ratings&filter_by_format=Nook
+  Pattern    : (https://www\.goodreads\.com/work/editions/[^\?]*)\?*(.*)
+  Redirect   : $1?expanded=true&$2
+  Type       : Regular Expression
+  ```
+  All expressions takes inexact matches like "page" ∈ "per_page", randomly ordered or missing 
   parameters and Unicode values into account.
   
 ## Discovering Non-Fiction Books
