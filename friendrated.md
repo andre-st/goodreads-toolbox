@@ -5,7 +5,7 @@
 
 ## Books common among the people I follow
 
-From the _Goodreads Feedback_ forum, [Sophie](https://www.goodreads.com/topic/show/1573755-most-popular-books-among-friends?page=1) or [Anne:](https://www.goodreads.com/topic/show/19320371-recommendations)
+From the _Goodreads Feedback_ forum, [Sophie 2013](https://www.goodreads.com/topic/show/1573755-most-popular-books-among-friends?page=1) or [Anne 2018:](https://www.goodreads.com/topic/show/19320371-recommendations)
 > I often choose a book to read if many of the people I follow have read it
 > (and rated it high). Anyway, to find these kind of books isn't always easy
 > especially if they are published many years ago and do not pop up in my news
