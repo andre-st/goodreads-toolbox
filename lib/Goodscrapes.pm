@@ -246,6 +246,8 @@ sub set_good_cache
 
 =item * "&per_page=100" has no effect (GR actually loads 5x 20 books via JavaScript)
 
+=item * "&print=true" not included, any advantages?
+
 =item * "&view=table" puts I<all> book data in code, although invisible (display=none)
 
 =item * "&sort=rating" is important for `friendrated.pl` with its book limit:
