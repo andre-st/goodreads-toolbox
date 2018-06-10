@@ -104,13 +104,6 @@
   - get your keywords right: you have to already know the technical terms/categories you like to learn about
   - despite notable [exceptions](https://www.goodreads.com/user/show/2531665-charlene), 90% female book-community accounts offer either fiction only or shallow non-fiction
 - bookmark interesting titles now and inspect them later, books must arouse interest also after one month; I use multiple Amazon wishlists (also shows current 2nd hand prices, my comments and priorization), I have a separate "(lost interest)" wishlist as an alternative to deletion
-- evaluate:
-  - author and publisher (other titles - loonies?)
-  - audience/pre-requirements
-  - time of writing
-  - context/purpose/goal
-  - credibility in the field
-  - sources in footnotes/bibliography or unsupported?
 
 
 ## Feedback
