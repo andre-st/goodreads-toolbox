@@ -34,6 +34,7 @@
   and helps others discovering new books more easily. Pick your next book by intersection, e.g.,
   - _"to-read" + "non-fiction" + "lang-german"_
   - _"to-read" + "fiction" + "politics"_
+  
   ![Intersection](https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Set_intersection.svg/320px-Set_intersection.svg.png)
   
 - **Decluttering my library** with cardboxes and GR-shelves labeled
