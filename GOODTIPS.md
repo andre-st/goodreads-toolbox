@@ -32,7 +32,7 @@
   well with Goodreads own _"[select multiple](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)"_ feature beneath your
   shelf list. It's clearer than having hundreds of books in _"unread"_ over time,
   and helps others discovering new books more easily. Pick your next book by intersection, e.g.,
-  - _"to-read" + "non-fiction" + "lang-de"_
+  - _"to-read" + "non-fiction" + "lang-german"_
   - _"to-read" + "fiction" + "politics"_
   
 - **Decluttering my library** with cardboxes and GR-shelves labeled
