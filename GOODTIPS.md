@@ -24,7 +24,7 @@
 
 - **Limiting the number of shelves** to max. 1 page. 
   Coarse-grained better than fine-grained, easier to navigate.
-  Anemic shelves also render functions such as "[select multiple](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)" shelves (intersection ∩) useless.
+  Anemic shelves also render functions such as "[select multiple shelves](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)" (intersection ∩) useless.
   - avoid shelves that will likely never contain more than 3 books
   - merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_
 
