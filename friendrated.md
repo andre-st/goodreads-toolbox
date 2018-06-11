@@ -19,7 +19,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 ![Screenshot](friendrated.png?raw=true "Screenshot")
 
 
-## How to generate this using GNU/Linux
+## How to generate this using the GNU/Linux operating system
 
 ```
 $ git clone https://github.com/andre-st/goodreads.git
