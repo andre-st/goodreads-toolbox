@@ -24,14 +24,14 @@
 
 - **Limiting the number of shelves** to max. 1 page. 
   Coarse-grained better than fine-grained, easier to navigate.
-  Anemic shelves also render functions such as "[select multiple](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)" shelves (intersection \cap) useless.
+  Anemic shelves also render functions such as "[select multiple](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)" shelves (intersection ⋂) useless.
   - avoid shelves that will likely never contain more than 3 books
   - merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_
 
 - **Adding unread books to my custom shelves too.** This works
   well with Goodreads own _"[select multiple](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)"_ feature beneath your
   shelf list. It's clearer than having hundreds of books in _"unread"_ over time,
-  and helps others discovering new books more easily. Pick your next book by intersection, e.g.,
+  and helps others discovering new books more easily. Pick your next book by intersection ⋂, e.g.,
   - _"to-read" + "non-fiction" + "lang-german"_
   - _"to-read" + "fiction" + "politics"_
   
