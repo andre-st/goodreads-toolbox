@@ -58,6 +58,7 @@
   shelves, by rewriting Goodreads URLs via Einar Egilsson's 
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
   Chrome browser extension: 
+  
   _"I just wish GR would remember sort settings"_
   ```
   Description: Goodreads Shelves: 100 books per page, sort by user-rating (highest first), covers-view
