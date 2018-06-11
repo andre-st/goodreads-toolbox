@@ -30,9 +30,9 @@
 
 - **Adding unread books to my custom shelves too.** This works
   well with Goodreads own _"select multiple"_ feature beneath your
-  shelf list: Pick your next book by intersection, e.g., _"to-read"+"non-fiction"+"lang-de"_  or  _"to-read"+"fiction"+"politics"_. 
-  It's clearer than having hundreds of books in _"unread"_ over time,
+  shelf list. It's clearer than having hundreds of books in _"unread"_ over time,
   and helps others discovering new books more easily.
+  - pick your next book by intersection, e.g., _"to-read" + "non-fiction" + "lang-de"_  or  _"to-read" + "fiction" + "politics"_
   
 - **Decluttering my library** with cardboxes and GR-shelves labeled
   _"donations"_ and _"resales"_. My city library took 30 books
