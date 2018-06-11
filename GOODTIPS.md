@@ -30,10 +30,10 @@
 
 - **Adding unread books to my custom shelves too.** This works
   well with Goodreads own _"[select multiple](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)"_ feature beneath your
-  shelf list. It's clearer than having hundreds of books in _"unread"_ over time,
+  shelf list. It's clearer than having hundreds of books in _"want-to-read"_ over time,
   and helps others discovering new books more easily. Pick your next book by intersection ∩, e.g.,
-  - _"to-read" + "non-fiction" + "lang-german"_
-  - _"to-read" + "fiction" + "politics"_
+  - _"want-to-read" + "non-fiction" + "lang-german"_
+  - _"want-to-read" + "fiction" + "politics"_
   
   ![Intersection](https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Set_intersection.svg/320px-Set_intersection.svg.png)
   
