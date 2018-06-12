@@ -13,7 +13,7 @@
   Related but scattered shelves impair findability.  
   - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with Unicode 0x3161: ㅡ
   - pseudo sub-shelves in Goodreads: _"parent-child"_
-  - having sub-shelves _"computing-yyy"_, _"computing-zzz"_, ..., there is an extra _"computing"_ shelf with all books from the children shelves
+  - having sub-shelves _"computer-history"_, _"computer-networks"_, ..., there is an extra _"computer"_ shelf with all books from the children shelves
 
 - **Creating a "more-urgent" shelf** from unread books
 
