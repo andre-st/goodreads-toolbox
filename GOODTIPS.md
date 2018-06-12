@@ -12,7 +12,7 @@
   _"region-..."_. Goodreads sorts shelf lists in alphabetical order.
   Related but scattered shelves impair findability.  
   - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with Unicode 0x3161: ㅡ
-  - pseudo sub-shelves _"computer-history"_, _"computer-networks"_ have an extra _"computer"_ super-shelf which contains _all_ books from the children shelves
+  - pseudo sub-shelves _"computer-history"_, _"computer-networks"_ have an extra _"computer"_ super-shelf which contains _all_ books from the sub-shelves
 
 - **Creating a "more-urgent" shelf** from unread books
 
