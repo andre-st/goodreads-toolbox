@@ -37,6 +37,8 @@
   
   ![Intersection](https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Set_intersection.svg/320px-Set_intersection.svg.png)
   
+- **Negative shelves**, or [non-shelves](https://www.goodreads.com/topic/show/19369665-reverse-results-on-my-shelf#comment_id_181173145): e.g., _"fiction"_ + "lang-de" + "non-computing"_ would exclude nerd fiction
+  
 - **Decluttering my library** with cardboxes and GR-shelves labeled
   _"donations"_ and _"resales"_. My city library took 30 books
   after receiving a link to my donations shelf.  Such link may also appear in
