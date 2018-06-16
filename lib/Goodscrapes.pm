@@ -12,7 +12,8 @@ use utf8;
 
 =head1 NAME
 
-Goodscrapes - Simple Goodreads.com scraping helpers
+Goodscrapes - Simple Goodreads.com scraping helpers, less limited 
+              alternative to the official API (which isn't faster too)
 
 
 =head1 VERSION
