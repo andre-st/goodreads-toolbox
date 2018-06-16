@@ -36,7 +36,7 @@ our $VERSION = '1.60';  # X.XX version format required by Perl
 =over
 
 =item * slow: version with concurrent AnyEvent::HTTP requests was marginally 
-	   faster, so I sticked with simpler code; doesn't actually matter
+        faster, so I sticked with simpler code; doesn't actually matter
         due to Amazon's and Goodreads' request throttling. You can only
         speed things up significantly with a pool of computers and unique 
         IP addresses...
