@@ -12,8 +12,7 @@ use utf8;
 
 =head1 NAME
 
-Goodscrapes - Simple Goodreads.com scraping helpers, less limited 
-              alternative to the official API (which isn't faster too)
+Goodscrapes - Simple Goodreads.com scraping helpers
 
 
 =head1 VERSION
@@ -29,6 +28,17 @@ Goodscrapes - Simple Goodreads.com scraping helpers, less limited
 =cut
 
 our $VERSION = '1.60';  # X.XX version format required by Perl
+
+
+=head1 COMPARED TO THE OFFICIAL API
+
+=over
+
+=item * less limited, e.g., reading shelves of other members
+
+=item * official API is slow too
+
+=back
 
 
 =head1 KNOWN LIMITATIONS AND BUGS
