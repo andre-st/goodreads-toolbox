@@ -38,6 +38,10 @@ our $VERSION = '1.60';  # X.XX version format required by Perl
 
 =item * official API is slow too
 
+=item * theoretically this library is more likely to break, 
+        but Goodreads progresses very very slowly: nothing
+	actually broke since 2014 (I started this)
+
 =back
 
 
