@@ -44,10 +44,11 @@ our $MAILTO    = $ARGV[2];
 our $MAILFROM  = $ARGV[3];
 our $CSVPATH   = "/var/db/good/${GOODUSER}-${GOODSHELF}.csv";
 
-# the more URLs, the longer and untempting the mail
+# The more URLs, the longer and untempting the mail.
+# If number exceeded, we link to the book page with *all* reviews.
 our $MAX_REVURLS_PER_BOOK = 2;
 
-# URLs in mail padded to average length, with "https://" stripped
+# GR-URLs in mail padded to average length, with "https://" stripped
 sub pretty_url { return sprintf '%-36s', substr( shift, 8 ); }
 
 # effect in dev/debugging only
