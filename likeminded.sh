@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+GOODUSERNUMBER="18418712"
+GOODUSERNAME="andre"
+#GOODSHELF="%E3%85%A1watch-ratings"
+GOODSHELF="%23ALL%23"
+POSTFIX="-lm"
+LOGPATH="${GOODUSERNUMBER}-${GOODUSERNAME}${POSTFIX}.log"
+
+
+(
+	./likeminded.pl "${GOODUSERNUMBER}" "${GOODSHELF}"
+	
+) | tee "$LOGPATH"
+

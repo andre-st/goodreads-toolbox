@@ -24,6 +24,14 @@ among the people I follow" feature request in the Goodreads forums.
 [Learn more](friendrated.md)
 
 
+## [likeminded.pl](likeminded.md)
+
+Prints Goodreads members who are interested in the same books as you.
+It's a poor man's solution to the "Finding people based on the books they've read"
+feature request in the Goodreads forums.
+[Learn more](likeminded.md)
+
+
 ## ~~[amz-tradein.pl](amz-tradein.md)~~
 
 This script fetched Amazon Trade-In prices for all books in a Goodreads.com

@@ -28,6 +28,11 @@ dev :
 friendrated : base
 
 
+## make likeminded:  Installs Perl modules
+.PHONY : likeminded
+likeminded : base
+
+
 ## make recentrated:  Installs Perl modules and creates database and log in /var
 .PHONY : recentrated
 recentrated : base recentrated.pl
