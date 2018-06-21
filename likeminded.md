@@ -39,9 +39,9 @@ $ cd goodreads
 $ sudo make likeminded
 $ ./likeminded.pl YOURGOODUSERNUMBER [OPTIONAL_SHELFNAME_WITH_SELECTED_BOOKS]
 
-Loading books from "favourites" may take a while...
+Loading books from "ALL" may take a while...
 Loading reviews for 299 books:
-[  1%] Bärentango: Mit Risikomanagement Projekte zu     300 memb    24.00s
+[  1%] BÃ¤rentango: Mit Risikomanagement Projekte zu     300 memb    24.00s
 [  1%] Metadata                                         110 memb    10.00s
 [  2%] Politik der Mikroentscheidungen: Edward Snowd      7 memb     2.00s
 [  2%] Toolbox for the Agile Coach - Visualization       57 memb     9.00s
