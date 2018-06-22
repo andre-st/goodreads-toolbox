@@ -97,8 +97,8 @@ shelf additions etc.
 
 - maximum of 300 members per book; this means there is a huge number of readers 
   not considered in our statistics, but 300 is better than nothing; everything else
-  requires full access to the Goodreads database or indexing millions of books from
-  the outside which would take forever (throttled access)
+  requires full access to the Goodreads database or indexing millions of members 
+  and books from the outside which would take forever (throttled access)
 - there are members with 94.857 ratings, likely bots
 - lists members with private accounts (reviews still readable)
 - 50% similarity is unrealistic (why?), 3% minimum got me 10 of 31.398 members (299 books),
