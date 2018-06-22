@@ -54,12 +54,12 @@ my %seen;       # {userid => count}
 printf "Loading reviews for %d books:\n", $books_count;
 foreach my $b (@books)
 {
-	printf STDOUT "[%3d%%] %-45s\t", ++$books_done/$books_count*100, substr( $b->{title}, 0, 45 );
+	printf "[%3d%%] %-45s\t", ++$books_done/$books_count*100, substr( $b->{title}, 0, 45 );
 	
 	my $t0   = time();
 	my @revs = query_good_reviews( $b->{id} );
 	
-	printf STDOUT "%4d memb\t%.2fs\n", scalar @revs, time()-$t0;
+	printf "%4d memb\t%.2fs\n", scalar @revs, time()-$t0;
 		
 	$seen{ $_->{user}->{id} }++ foreach (@revs);
 }
@@ -74,7 +74,7 @@ foreach my $userid (sort { $seen{$a} <=> $seen{$b} } keys %seen)
 	next if $userid == $GOODUSER;
 	next if $simil  <  $MINSIMIL;
 	
-	printf STDOUT "%2d.\t%3d books\t%2d%%\thttps://www.goodreads.com/user/show/%s\n", 
+	printf "%2d.\t%3d books\t%2d%%\thttps://www.goodreads.com/user/show/%s\n", 
 			$line++, $seen{ $userid }, $simil, $userid;
 }
 
