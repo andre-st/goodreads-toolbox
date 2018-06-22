@@ -42,12 +42,11 @@ our $GOODUSER    = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads us
 our $OUTPATH     = $ARGV[1] || "${GOODUSER}.xml";
 our $MINFAVORERS = $ARGV[2] || 3;
 our $MINRATING   = $ARGV[3] || 4;  # Highly rated books only (4 and 5 stars)
-our $COOKIEPATH  = 'friendrated.cookie';
-our $SHELF       = 'read';
+our $GOODSHELF   = 'read';
 our $TSTART      = time();
 
 # Followed and friend list is private, some 'Read' shelves are private
-set_good_cookie_file( $COOKIEPATH );  
+set_good_cookie_file();  
 
 # Don't scrape everything again on mistakes or parameter changes or power
 # blackout or when I break ^C and continue at a later timepoint.
@@ -88,7 +87,7 @@ foreach my $pid (@people_ids)
 	printf STDOUT "[%3d%%] %-25s #%-10s\t", $people_done/$people_count*100, $p->{name}, $pid;
 	
 	my $t0   = time();
-	my @bok  = query_good_books( $pid, $SHELF );
+	my @bok  = query_good_books( $pid, $GOODSHELF );
 	my $nfav = 0;
 		
 	foreach my $b (@bok)
@@ -99,7 +98,7 @@ foreach my $pid (@people_ids)
 		$books{ $b->{id} } = $b;
 	}
 	
-	printf STDOUT "%4d %s\t%4d favs\t%.2fs\n", scalar( @bok ), $SHELF, $nfav, time()-$t0;
+	printf STDOUT "%4d %s\t%4d favs\t%.2fs\n", scalar( @bok ), $GOODSHELF, $nfav, time()-$t0;
 }
 
 say STDOUT "\nPerfect! Got favourites of ${people_done} users.";
@@ -121,6 +120,7 @@ $w->startTag( 'good',
 		'version'     => '1.0', 
 		'generator'   => basename( $0 ),
 		'customer'    => $GOODUSER,
+		'shelf'       => $GOODSHELF,
 		'minfavorers' => $MINFAVORERS,
 		'minrating'   => $MINRATING );
 

@@ -59,8 +59,9 @@ online sources again, as reading from Goodreads.com is very time consuming.
 The script internally uses a **file-cache** which is busted after 21 days
 and saves to /tmp/FileCache/.
 
-You will need to save your Goodreads cookie to the file `./friendrated.cookie`.
-I use Chrome's DevTools Network-view to copy the cookie content.
+You will need to save your Goodreads cookie to the dotfile `.cookie` 
+in the project directory. I use Chrome's DevTools Network-view to copy 
+the cookie content.
 
 "0 read 0 favs" is either an empty shelf or a shelf accessible only to
 friends of that person (depends on used cookie).
