@@ -106,7 +106,7 @@ shelf additions etc.
 - your Goodreads account must be viewable by 
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
   which is the default
-- program is slow (throttled and I have no botnet with numerous IP addresses) but 
+- program is slow (throttled and I have no work-sharing botnet with numerous IP addresses) but 
   [good enough](https://en.wikipedia.org/wiki/Principle_of_good_enough) since you run it 4x a year
 
 
