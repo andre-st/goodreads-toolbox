@@ -12,10 +12,6 @@ or [Wren (2014)](https://www.goodreads.com/topic/show/1790589-what-if-there-was-
 or [Kara (2015)](https://www.goodreads.com/topic/show/17019858-compare-books-suggestion)
 or [Samantha (2016)](https://www.goodreads.com/topic/show/18167287-users-like-you-feature-suggestion)
 or [Jacob (2017)](https://www.goodreads.com/topic/show/18433578-find-me-a-friend-with-same-taste-for-books)
-or [Thorin](https://www.goodreads.com/topic/show/1259264-finding-others-with-similar-taste)
-or [Chris (2017)](https://www.goodreads.com/topic/show/18681693-find-others-with-similar-content)
-or [Liz](https://www.goodreads.com/topic/show/18798134-find-people-who-read-the-same-books-i-do)
-or [Blake](https://www.goodreads.com/topic/show/6376-recommendations)
 or [Superbunny (2018)](https://www.goodreads.com/topic/show/19361289-searching-others-with-similar-taste-to-mine)
 or [Marc (2018)](https://www.goodreads.com/topic/show/19252693-new-suggestion-to-find-like-minded-people)
 or [Mehran (2018)](https://www.goodreads.com/topic/show/19397936-finding-people-based-on-the-books-they-ve-read):
