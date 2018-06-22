@@ -102,9 +102,8 @@ shelf additions etc.
 - your Goodreads account must be viewable by 
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
   which is the default
-- program is slow (throttled and I have no work-sharing botnet with numerous IP addresses) but 
-  [good enough](https://en.wikipedia.org/wiki/Principle_of_good_enough) since you run it 4x a year
-- "...most number of shared books (...) would be a list of children's books (...) There would have to be some sort of selection, probably by shelf"—`likeminded.pl` has a shelf parameter
+- slow but good enough since you run it 4x a year
+- "...most number of shared books would be a list of children's books"—`likeminded.pl` has a shelf parameter (some sort of selection)
 
 
 ## Considerable alternative implementations
