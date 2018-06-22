@@ -18,7 +18,7 @@ or [Marc](https://www.goodreads.com/topic/show/19252693-new-suggestion-to-find-l
 or [Superbunny](https://www.goodreads.com/topic/show/19361289-searching-others-with-similar-taste-to-mine)
 or [Blake](https://www.goodreads.com/topic/show/6376-recommendations)
 or [Wren](https://www.goodreads.com/topic/show/1790589-what-if-there-was-a-recommended-friends-feature) 
-or [Mehran](https://www.goodreads.com/topic/show/19397936-finding-people-based-on-the-books-they-ve-read):
+or [Mehran (2018)](https://www.goodreads.com/topic/show/19397936-finding-people-based-on-the-books-they-ve-read):
 > Is there a way to search for people who have read books X, Y, and Z? Or maybe
 > a way for you to find people who have many books in common with you, without
 > going through people manually? If such features don't exist, Goodreads should
