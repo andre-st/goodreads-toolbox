@@ -9,4 +9,5 @@
 *.tar.gz
 *.zip
 *.cookie
+*.sh
 test.pl
