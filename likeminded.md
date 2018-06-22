@@ -108,7 +108,13 @@ shelf additions etc.
   which is the default
 - program is slow (throttled and I have no work-sharing botnet with numerous IP addresses) but 
   [good enough](https://en.wikipedia.org/wiki/Principle_of_good_enough) since you run it 4x a year
+- "...most number of shared books (...) would be a list of children's books (...) There would have to be some sort of selection, probably by shelf"  - this program has a shelf parameter
 
+## Considerable alternative implementations
+
+- compare by author, not book (too narrow)
+- include ratings
+- clustering multidimensional data
 
 
 ## Feedback
