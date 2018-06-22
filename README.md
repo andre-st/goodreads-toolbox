@@ -52,7 +52,11 @@ to people who don't know Linux etc. You probably won't need this directory.
 
 - [A few things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
 
-    
+
+## suggestions
+
+- all the books by a certain author that (friends of) your friends have read ([Simon](https://www.goodreads.com/topic/show/757601-find-out-all-the-books-by-a-certain-author-that-your-friends-have-read))
+
 
 ## modest remark
 
