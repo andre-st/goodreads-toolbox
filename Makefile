@@ -1,5 +1,8 @@
 # André's Goodreads Toolbox Makefile
 # Some day I'll try a MakeMaker Makefile.PL 
+# 
+# TODO: perl -MCPAN exit code 0 despite errors
+# 
 
 RR_LOGFILE = /var/log/good.log
 RR_DB_DIR  = /var/db/good
@@ -42,7 +45,7 @@ recentrated : base recentrated.pl
 
 
 ## make all        :  Installs all programs
-all : recentrated friendrated
+all : recentrated friendrated likeminded
 
 
 ## make uninstall  :  Deletes work and log files in /var
