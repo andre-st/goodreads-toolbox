@@ -102,19 +102,19 @@ shelf additions etc.
 - there are members with 94.857 ratings, likely bots
 - lists members with private accounts (reviews still readable)
 - 50% similarity is unrealistic (why?), 3% minimum got me 10 of 31.398 members (299 books),
-  with 5 members actually worth investigating
+  with 5 members actually worth investigating, and only 1 already on my list of 137 followees
 - your Goodreads account must be viewable by 
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
   which is the default
 - program is slow (throttled and I have no work-sharing botnet with numerous IP addresses) but 
   [good enough](https://en.wikipedia.org/wiki/Principle_of_good_enough) since you run it 4x a year
-- "...most number of shared books (...) would be a list of children's books (...) There would have to be some sort of selection, probably by shelf"  - this program has a shelf parameter
+- "...most number of shared books (...) would be a list of children's books (...) There would have to be some sort of selection, probably by shelf"—`likeminded.pl` has a shelf parameter
+
 
 ## Considerable alternative implementations
 
 - compare by author, not book (too narrow)
 - include ratings
-- clustering multidimensional data
 
 
 ## Feedback
