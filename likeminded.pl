@@ -44,14 +44,14 @@ STDOUT->autoflush( 1 );
 
 
 
-printf STDOUT "Loading books from \"%s\" may take a while...\n", $SHELF;
+printf "Loading books from \"%s\" may take a while...\n", $SHELF;
 my @books       = query_good_books( $GOODUSER, $SHELF );
 my $books_count = scalar @books;
 my $books_done  = 0;
 my %seen;       # {userid => count}
 
 
-printf STDOUT "Loading reviews for %d books:\n", $books_count;
+printf "Loading reviews for %d books:\n", $books_count;
 foreach my $b (@books)
 {
 	printf STDOUT "[%3d%%] %-45s\t", ++$books_done/$books_count*100, substr( $b->{title}, 0, 45 );
@@ -65,7 +65,7 @@ foreach my $b (@books)
 }
 
 
-printf STDOUT "\nMembers (N=%d) with %d%% similarity or better:\n", scalar keys %seen, $MINSIMIL;
+printf "\nMembers (N=%d) with %d%% similarity or better:\n", scalar keys %seen, $MINSIMIL;
 my $line = 1;
 foreach my $userid (sort { $seen{$a} <=> $seen{$b} } keys %seen) 
 {
@@ -79,4 +79,4 @@ foreach my $userid (sort { $seen{$a} <=> $seen{$b} } keys %seen)
 }
 
 
-printf STDOUT "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60;
+printf "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60;
