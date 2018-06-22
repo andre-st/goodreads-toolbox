@@ -69,10 +69,6 @@ online sources again, as reading from Goodreads.com is very time consuming.
 The script internally uses a **file-cache** which is busted after 21 days
 and saves to /tmp/FileCache/.
 
-You will need to save your Goodreads cookie to the dotfile `.cookie` 
-in the project directory. I use Chrome's DevTools Network-view to copy 
-the cookie content.
-
 
 
 ## Observations and limitations
@@ -83,7 +79,8 @@ the cookie content.
 - lists members with private accounts (reviews still readable)
 - 50% similarity is unrealistic (why?), 3% got me 10 members for 299 books,
   with 5 members actually worth investigating
-
+- your Goodreads account needs to be public
+  
 
 
 ## Feedback

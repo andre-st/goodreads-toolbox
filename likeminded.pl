@@ -39,7 +39,6 @@ our $SHELF    = $ARGV[1] || '%23ALL%23';
 our $MINSIMIL = $ARGV[2] || 3;  # between 0 and 100 (exact match)
 our $TSTART   = time();
 
-set_good_cookie_file();  
 set_good_cache( '21 days' );
 STDOUT->autoflush( 1 );
 
