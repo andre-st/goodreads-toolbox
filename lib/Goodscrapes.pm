@@ -19,7 +19,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-05-15
+=item * Updated: 2018-06-21
 
 =item * Since: 2014-11-05
 
@@ -27,7 +27,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =cut
 
-our $VERSION = '1.60';  # X.XX version format required by Perl
+our $VERSION = '1.65';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -88,7 +88,8 @@ use Cache::FileCache;
 use Time::Piece;  # Core module, no extra install
 
 
-our $_useragent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
+our $USERAGENT  = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
+our $COOKIEPATH = '.cookie';
 our $_cookie    = undef;
 our $_cache     = new Cache::FileCache();
 our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
@@ -205,13 +206,13 @@ sub set_good_cookie
 
 
 
-=head2 C<void> set_good_cookie_file( I<$path_to_cookie_file> )
+=head2 C<void> set_good_cookie_file( I<$path_to_cookie_file = '.cookie'> )
 
 =cut
 
 sub set_good_cookie_file
 {
-	my $path = shift;
+	my $path = shift || $COOKIEPATH;
 	local $/=undef;
 	open my $fh, "<", $path or die
 			"FATAL: Please save a Goodreads cookie to \"$path\". ".
@@ -374,14 +375,25 @@ sub good_user_url
 
 
 
-=head2 C<string> good_reviews_url( I<$book_id> )
+=head2 C<string> _good_reviews_url( I<$book_id, $can_sort_newest, $page_number> )
+
+=over
+
+=item * "&sort=newest" reduces the number of reviews for some reason (also observable 
+        on the Goodreads website), so only use if really needed
+
+=item * the maximum of retrievable reviews is 300 (state 2018-06-22)
+
+=back
 
 =cut
 
-sub good_reviews_url
+sub _good_reviews_url
 {
-	my $bid = shift;
-	return "https://www.goodreads.com/book/reviews/${bid}?sort=newest";
+	my $bid  = shift;
+	my $sort = shift;
+	my $page = shift;
+	return "https://www.goodreads.com/book/reviews/${bid}?".( $sort ? 'sort=newest&' : '' )."page=${page}";
 }
 
 
@@ -542,13 +554,15 @@ sub _extract_friends
 
 
 
-=head2 C<(L<%review|"%review">,...)> _extract_reviews( I<$reviews_xhr_html_str> )
+=head2 C<(L<%review|"%review">,...)> _extract_reviews( I<$since_time_piece, $reviews_xhr_html_str> )
 
 =cut
 
 sub _extract_reviews
 {
-	my $html = shift;  # < is \u003c, > is \u003e,  " is \" literally
+	my $since_tpiece = shift;
+	my $html         = shift;  # < is \u003c, > is \u003e,  " is \" literally
+	
 	my @result;
 	while( $html =~ /div id=\\"review_\d+(.*?)div class=\\"clear/gs )
 	{		
@@ -559,6 +573,11 @@ sub _extract_reviews
 		my $rat = () =  $row =~ /staticStar p10/g;   # count occurances
 		my $dat = $1 if $row =~ /([A-Z][a-z][a-z] \d+, \d{4})/;
 		my $txt = $1 if $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/;
+		
+		my $dat_tpiece = Time::Piece->strptime( $dat, '%b %d, %Y' );
+		
+		next if $dat_tpiece < $since_tpiece;
+		
 		push @result, {
 				id   => $rid,
 				user => { 
@@ -575,7 +594,7 @@ sub _extract_reviews
 				rating_str => $rat ? ('[' . ($txt ? 'T' : '*') x $rat . ' ' x (5-$rat) . ']') : '[added]',
 				review_url => good_review_url( $rid ),
 				text       => $txt,
-				date       => Time::Piece->strptime( $dat, '%b %d, %Y' ),
+				date       => $dat_tpiece,
 				book_id    => undef };
 	}
 	return @result;
@@ -606,7 +625,7 @@ sub _html
 	
 	$curl->setopt( $curl->CURLOPT_URL,            $url  );
 	$curl->setopt( $curl->CURLOPT_REFERER,        $url  );  # https://www.goodreads.com/...  [F5]
-	$curl->setopt( $curl->CURLOPT_USERAGENT,      $_useragent );
+	$curl->setopt( $curl->CURLOPT_USERAGENT,      $USERAGENT );
 	$curl->setopt( $curl->CURLOPT_HEADER,         0     );
 	$curl->setopt( $curl->CURLOPT_WRITEDATA,      \$buf );
 	$curl->setopt( $curl->CURLOPT_HTTPGET,        1     );
@@ -641,18 +660,20 @@ sub query_good_books
 	my $page      = 1; 
 	my @books;
 	
-	@books = (@books, @_) while( @_ = _extract_books( _html( good_shelf_url( $uid, $shelf, $page++ ) ) ) );
+	@books = (@books, @_) 
+		while( @_ = _extract_books( _html( good_shelf_url( $uid, $shelf, $page++ ) ) ) );
+	
 	return @books;
 }
 
 
 
 
-=head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece> )
+=head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece = undef> )
 
 =over
 
-=item * latest reviews first
+=item * access seems less throttled / faster than querying books
 
 =back
 
@@ -662,10 +683,18 @@ sub query_good_reviews
 {
 	my $bid        = shift;
 	my $since      = shift;
-	my $since_date = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
-	my @revs       = _extract_reviews( _html( good_reviews_url( $bid ) ) );
-	my @sel        = grep $_->{date} >= $since_date, @revs;
-	return @sel;
+	my $since_date = $since 
+			? Time::Piece->strptime( $since->ymd,  '%Y-%m-%d' )  # Nullified time in GR too
+			: Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' ); 
+	
+	my $needs_sort = defined $since;
+	my $page       = 1;
+	my @revs;
+
+	@revs = (@revs, @_) 
+		while( @_ = _extract_reviews( $since_date, _html( _good_reviews_url( $bid, $needs_sort, $page++ ) ) ) );
+	
+	return @revs;
 }
 
 

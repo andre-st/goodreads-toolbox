@@ -11,18 +11,33 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-05-15
+=item * Updated: 2018-06-21
 
 =item * Since: 2014-11-05
 
 =back
+
+=head1 COMPARED TO THE OFFICIAL API
+
+=over
+
+=item * less limited, e.g., reading shelves of other members
+
+=item * official API is slow too
+
+=item * theoretically this library is more likely to break, 
+        but Goodreads progresses very very slowly: nothing
+	actually broke since 2014 (I started this)
+
+=back
+
 
 =head1 KNOWN LIMITATIONS AND BUGS
 
 =over
 
 =item * slow: version with concurrent AnyEvent::HTTP requests was marginally 
-	   faster, so I sticked with simpler code; doesn't actually matter
+        faster, so I sticked with simpler code; doesn't actually matter
         due to Amazon's and Goodreads' request throttling. You can only
         speed things up significantly with a pool of computers and unique 
         IP addresses...
@@ -133,7 +148,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<void> set_good_cookie_file( I<$path_to_cookie_file> )
+=head2 C<void> set_good_cookie_file( I<$path_to_cookie_file = '.cookie'> )
 
 =head2 C<void> set_good_cache( I<$maximum_age_in_words> )
 
@@ -160,6 +175,8 @@ https://github.com/andre-st/
 =item * page with a list of books (not all books)
 
 =item * "&per_page=100" has no effect (GR actually loads 5x 20 books via JavaScript)
+
+=item * "&print=true" not included, any advantages?
 
 =item * "&view=table" puts I<all> book data in code, although invisible (display=none)
 
@@ -212,7 +229,16 @@ https://github.com/andre-st/
 
 =head2 C<string> good_user_url( I<$user_id, $is_author = 0> )
 
-=head2 C<string> good_reviews_url( I<$book_id> )
+=head2 C<string> _good_reviews_url( I<$book_id, $can_sort_newest, $page_number> )
+
+=over
+
+=item * "&sort=newest" reduces the number of reviews for some reason (also observable 
+        on the Goodreads website), so only use if really needed
+
+=item * the maximum of retrievable reviews is 300 (state 2018-06-22)
+
+=back
 
 =head2 C<string> good_review_url( I<$review_id> )
 
@@ -238,7 +264,7 @@ https://github.com/andre-st/
 
 =head2 C<(L<%user|"%user">,...)> _extract_friends( I<$friends_page_html_str> )
 
-=head2 C<(L<%review|"%review">,...)> _extract_reviews( I<$reviews_xhr_html_str> )
+=head2 C<(L<%review|"%review">,...)> _extract_reviews( I<$since_time_piece, $reviews_xhr_html_str> )
 
 =head2 C<string> _html( I<$url> )
 
@@ -250,11 +276,11 @@ https://github.com/andre-st/
 
 =head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name, $max_books = 2700> )
 
-=head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece> )
+=head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece = undef> )
 
 =over
 
-=item * latest reviews first
+=item * access seems less throttled / faster than querying books
 
 =back
 
