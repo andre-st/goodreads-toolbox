@@ -252,7 +252,7 @@ sub set_good_cache
 
 
 
-=head2 C<string> good_shelf_url( I<$user_id, $shelf_name, $page_number> )
+=head2 C<string> _good_shelf_url( I<$user_id, $shelf_name, $page_number> )
 
 =head3 Notes on the URL
 
@@ -277,7 +277,7 @@ sub set_good_cache
 
 =cut
 
-sub good_shelf_url  
+sub _good_shelf_url  
 {
 	my $uid   = shift;
 	my $shelf = shift;
@@ -288,7 +288,7 @@ sub good_shelf_url
 
 
 
-=head2 C<string> good_followees_url( I<$user_id, $page_number> )
+=head2 C<string> _good_followees_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
@@ -302,7 +302,7 @@ sub good_shelf_url
 
 =cut
 
-sub good_followees_url
+sub _good_followees_url
 {
 	my $uid  = shift;
 	my $page = shift;
@@ -312,7 +312,7 @@ sub good_followees_url
 
 
 
-=head2 C<string> good_friends_url( I<$user_id, $page_number> )
+=head2 C<string> _good_friends_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
@@ -332,7 +332,7 @@ sub good_followees_url
 
 =cut
 
-sub good_friends_url
+sub _good_friends_url
 {
 	my $uid  = shift;
 	my $page = shift;
@@ -661,7 +661,7 @@ sub query_good_books
 	my @books;
 	
 	@books = (@books, @_) 
-		while( @_ = _extract_books( _html( good_shelf_url( $uid, $shelf, $page++ ) ) ) );
+		while( @_ = _extract_books( _html( _good_shelf_url( $uid, $shelf, $page++ ) ) ) );
 	
 	return @books;
 }
@@ -719,13 +719,13 @@ sub query_good_followees
 	my $page;
 
 	$page = 1;
-	while( my @somef = _extract_followees( _html( good_followees_url( $uid, $page++ ) ) ) )
+	while( my @somef = _extract_followees( _html( _good_followees_url( $uid, $page++ ) ) ) )
 	{
 		$result{$_->{id}} = $_ foreach (@somef)
 	}
 	
 	$page = 1;
-	while( my @somef = _extract_friends( _html( good_friends_url( $uid, $page++ ) ) ) )
+	while( my @somef = _extract_friends( _html( _good_friends_url( $uid, $page++ ) ) ) )
 	{
 		$result{$_->{id}} = $_ foreach (@somef)
 	}

@@ -166,7 +166,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> good_shelf_url( I<$user_id, $shelf_name, $page_number> )
+=head2 C<string> _good_shelf_url( I<$user_id, $shelf_name, $page_number> )
 
 =head3 Notes on the URL
 
@@ -189,7 +189,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> good_followees_url( I<$user_id, $page_number> )
+=head2 C<string> _good_followees_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
@@ -201,7 +201,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> good_friends_url( I<$user_id, $page_number> )
+=head2 C<string> _good_friends_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
