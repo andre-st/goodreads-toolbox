@@ -114,7 +114,7 @@ shelf additions etc.
 ## Considerable alternative implementations
 
 - compare by author, not book (too narrow)
-- include ratings
+- include ratings: only top-rated on both sides, or similar rating
 
 
 ## Feedback
