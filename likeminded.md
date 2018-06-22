@@ -74,7 +74,7 @@ and saves to /tmp/FileCache/.
 ## Observations and limitations
 
 - maximum of 300 members per book; this means there is a huge number of readers 
-  not considered in our statistic, but 300 is better than nothing
+  not considered in our statistics, but 300 is better than nothing
 - there are members with 94.857 ratings, likely bots
 - lists members with private accounts (reviews still readable)
 - 50% similarity is unrealistic (why?), 3% got me 10 members for 299 books,
