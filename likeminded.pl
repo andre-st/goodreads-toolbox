@@ -65,7 +65,7 @@ foreach my $b (@books)
 }
 
 
-printf STDOUT "\nMembers (N=%d) with %d%% similarity or better:\n", scalar %seen, $MINSIMIL;
+printf STDOUT "\nMembers (N=%d) with %d%% similarity or better:\n", scalar keys %seen, $MINSIMIL;
 my $line = 1;
 foreach my $userid (sort { $seen{$a} <=> $seen{$b} } keys %seen) 
 {
@@ -74,7 +74,8 @@ foreach my $userid (sort { $seen{$a} <=> $seen{$b} } keys %seen)
 	next if $userid == $GOODUSER;
 	next if $simil  <  $MINSIMIL;
 	
-	printf STDOUT "%2d.\t%2d%%\thttps://www.goodreads.com/user/show/%s\n", $line++, $simil, $userid;
+	printf STDOUT "%2d.\t%3d books\t%2d%%\thttps://www.goodreads.com/user/show/%s\n", 
+			$line++, $seen{ $userid }, $simil, $userid;
 }
 
 

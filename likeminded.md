@@ -17,16 +17,19 @@ From the _Goodreads Feedback_ forum, [Mehran](https://www.goodreads.com/topic/sh
 ## This
 ```
 Members (N=20237) with 3% similarity or better:
- 1.	 3%	https://www.goodreads.com/user/show/67562484
- 2.	 3%	https://www.goodreads.com/user/show/655723
- 3.	 3%	https://www.goodreads.com/user/show/31846270
- 4.	 3%	https://www.goodreads.com/user/show/30088931
- 5.	 3%	https://www.goodreads.com/user/show/5759543
- 6.	 3%	https://www.goodreads.com/user/show/4100763
- 7.	 4%	https://www.goodreads.com/user/show/34285875
- 8.	 4%	https://www.goodreads.com/user/show/269235
- 9.	 7%	https://www.goodreads.com/user/show/71105042
-10.	12%	https://www.goodreads.com/user/show/17281774
+ 1.    6 books    2%    https://www.goodreads.com/user/show/1651956
+ 2.    6 books    2%    https://www.goodreads.com/user/show/70085980
+...
+34.    9 books    3%    https://www.goodreads.com/user/show/67562484
+35.    9 books    3%    https://www.goodreads.com/user/show/655723
+36.   10 books    3%    https://www.goodreads.com/user/show/31846270
+37.   11 books    3%    https://www.goodreads.com/user/show/30088931
+38.   11 books    3%    https://www.goodreads.com/user/show/4100763
+39.   11 books    3%    https://www.goodreads.com/user/show/5759543
+40.   13 books    4%    https://www.goodreads.com/user/show/34285875
+41.   14 books    4%    https://www.goodreads.com/user/show/269235
+42.   22 books    7%    https://www.goodreads.com/user/show/71105042
+43.   36 books   12%    https://www.goodreads.com/user/show/17281774
 
 ```
 
@@ -52,13 +55,15 @@ Loading reviews for 299 books:
 [ 99%] Simulation neuronaler Netze                        5 memb     0.00s
 [100%] C64 Benutzerhandbuch Deutsch                       1 memb     2.00s
 
-Members (N=20237) with 3% similarity or better:
- 1.	 3%	https://www.goodreads.com/user/show/67562484
- 2.	 3%	https://www.goodreads.com/user/show/655723
- 3.	 3%	https://www.goodreads.com/user/show/31846270
+Members (N=31398) with 2% similarity or better:
+ 1.    6 books    2%    https://www.goodreads.com/user/show/1651956
+ 2.    6 books    2%    https://www.goodreads.com/user/show/70085980
 ...
+41.   14 books    4%    https://www.goodreads.com/user/show/269235
+42.   22 books    7%    https://www.goodreads.com/user/show/71105042
+43.   36 books   12%    https://www.goodreads.com/user/show/17281774
 
-Total time: 37 minutes
+Total time: 54 minutes
 ```
 
 
@@ -69,18 +74,27 @@ online sources again, as reading from Goodreads.com is very time consuming.
 The script internally uses a **file-cache** which is busted after 21 days
 and saves to /tmp/FileCache/.
 
+"In common with you" means that your match has at least one of _your_
+books in his shelves. So this program checks all of _your_ books and counts 
+how often it saw a Goodreads member commenting on any of them: reviews, ratings,
+shelf additions etc.
 
 
-## Observations and limitations
+## Observations and serious limitations
 
 - maximum of 300 members per book; this means there is a huge number of readers 
-  not considered in our statistics, but 300 is better than nothing
+  not considered in our statistics, but 300 is better than nothing; everything else
+  requires full access to the Goodreads database or indexing millions of books from
+  the outside which would take forever
 - there are members with 94.857 ratings, likely bots
 - lists members with private accounts (reviews still readable)
-- 50% similarity is unrealistic (why?), 3% got me 10 members for 299 books,
+- 50% similarity is unrealistic (why?), 3% minimum got me 10 of 31.398 members (299 books),
   with 5 members actually worth investigating
-- your Goodreads account needs to be public
-  
+- your Goodreads account must be viewable by 
+  ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) (default)
+- program is slow (throttled, no botnet with numerous IP addresses) but 
+  [good enough(tm)](https://en.wikipedia.org/wiki/Principle_of_good_enough) since you run it 4x a year
+
 
 
 ## Feedback
