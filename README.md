@@ -41,21 +41,15 @@ program in 2015.
 [Learn more](amz-tradein.md)
 
 
-### www/
+## www/
 
 Static webpages that I use to offer [this software as a service](https://andre-st.github.io/goodreads/) 
 to people who don't know Linux etc. You probably won't need this directory.
 
 
-
 ## further reading 
 
 - [A few things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
-
-
-## suggestions
-
-- all the books by a certain author that (friends of) your friends have read ([Simon](https://www.goodreads.com/topic/show/757601-find-out-all-the-books-by-a-certain-author-that-your-friends-have-read))
 
 
 ## modest remark
