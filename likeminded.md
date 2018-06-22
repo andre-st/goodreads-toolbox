@@ -16,7 +16,7 @@ From the _Goodreads Feedback_ forum, [Mehran](https://www.goodreads.com/topic/sh
 
 ## This
 ```
-Members (N=20237) with 3% similarity or better:
+Members (N=31398) with 2% similarity or better:
  1.    6 books    2%    https://www.goodreads.com/user/show/1651956
  2.    6 books    2%    https://www.goodreads.com/user/show/70085980
 ...
