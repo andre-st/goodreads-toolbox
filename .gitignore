@@ -9,5 +9,4 @@
 *.tar.gz
 *.zip
 *.cookie
-MYMETA.*
 test.pl
