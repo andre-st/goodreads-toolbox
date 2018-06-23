@@ -19,7 +19,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-06-21
+=item * Updated: 2018-06-23
 
 =item * Since: 2014-11-05
 
@@ -27,20 +27,20 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =cut
 
-our $VERSION = '1.65';  # X.XX version format required by Perl
+our $VERSION = '1.70';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
 
 =over
 
-=item * less limited, e.g., reading shelves of other members
+=item * less limited, e.g., reading shelves and reviews of other members
 
 =item * official API is slow too
 
 =item * theoretically this library is more likely to break, 
         but Goodreads progresses very very slowly: nothing
-	actually broke since 2014 (I started this)
+        actually broke since 2014 (I started this)
 
 =back
 
@@ -52,11 +52,11 @@ our $VERSION = '1.65';  # X.XX version format required by Perl
 =item * slow: version with concurrent AnyEvent::HTTP requests was marginally 
         faster, so I sticked with simpler code; doesn't actually matter
         due to Amazon's and Goodreads' request throttling. You can only
-        speed things up significantly with a pool of computers and unique 
-        IP addresses...
+        speed things up significantly with a pool of work-sharing computers 
+        and unique IP addresses...
 
-=item * text pattern matching, no ECMAScript execution and DOM parsing
-        (so far sufficient)
+=item * just text pattern matching, no ECMAScript execution and DOM parsing
+        (so far sufficient and faster)
 
 =back
 
@@ -78,10 +78,13 @@ our @EXPORT = qw(
 		set_good_cache 
 		amz_book_html 
 		query_good_books 
+		query_good_user
+		query_good_author_books
 		query_good_reviews
 		query_good_followees );
 
 
+use HTML::Entities;
 use WWW::Curl::Easy;
 use Cache::Cache qw( $EXPIRES_NEVER $EXPIRES_NOW );
 use Cache::FileCache;
@@ -104,6 +107,8 @@ our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
 
 =item * never cast 'id' to int or use %d format string, despite digits only
 
+=item * don't expect all attributes set (C<undef>), this depends on context
+
 =back
 
 
@@ -125,6 +130,8 @@ our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
 
 =item * img_url     => C<string>
 
+=item * author      => C<L<%user|"%user">>
+
 =back
 
 
@@ -132,21 +139,23 @@ our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
 
 =over
 
-=item * id        => C<string>
+=item * id         => C<string>
 
-=item * name      => C<string>
+=item * name       => C<string>
 
-=item * age       => C<int>
+=item * age        => C<int>
 
-=item * is_friend => C<bool>
+=item * is_friend  => C<bool>
 
-=item * is_author => C<bool>
+=item * is_author  => C<bool>
 
-=item * is_female => C<bool>
+=item * is_female  => C<bool> (not supported yet)
 
-=item * url       => C<string> URL to the user's profile page
+=item * is_private => C<bool>
 
-=item * img_url   => C<string>
+=item * url        => C<string> URL to the user's profile page
+
+=item * img_url    => C<string>
 
 =back
 
@@ -155,25 +164,25 @@ our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
 
 =over
 
-=item * id         => C<string>
+=item * id          => C<string>
 
-=item * user       => C<L<%user|"%user">>
+=item * user        => C<L<%user|"%user">>
 
-=item * book_id    => C<string>
+=item * book_id     => C<string>
 
-=item * rating     => C<int> 
-                      with 0 meaning no rating, "added" or "marked it as abandoned" 
-                      or something similar
+=item * rating      => C<int> 
+                       with 0 meaning no rating, "added" or "marked it as abandoned" 
+                       or something similar
 
-=item * rating_str => C<string> 
-                      represention of rating, e.g., 3/5 as S<"[***  ]"> or S<"[TTT  ]"> 
-                      if there's additional text
+=item * rating_str  => C<string> 
+                       represention of rating, e.g., 3/5 as S<"[***  ]"> or S<"[TTT  ]"> 
+                       if there's additional text
 
-=item * text       => C<string>
+=item * text        => C<string>
 
-=item * date       => C<Time::Piece>
+=item * date        => C<Time::Piece>
 
-=item * review_url => C<string>
+=item * review_url  => C<string>
 
 =back
 
@@ -252,7 +261,7 @@ sub set_good_cache
 
 
 
-=head2 C<string> _good_shelf_url( I<$user_id, $shelf_name, $page_number> )
+=head2 C<string> _shelf_url( I<$user_id, $shelf_name, $page_number> )
 
 =head3 Notes on the URL
 
@@ -277,7 +286,7 @@ sub set_good_cache
 
 =cut
 
-sub _good_shelf_url  
+sub _shelf_url  
 {
 	my $uid   = shift;
 	my $shelf = shift;
@@ -288,7 +297,7 @@ sub _good_shelf_url
 
 
 
-=head2 C<string> _good_followees_url( I<$user_id, $page_number> )
+=head2 C<string> _followees_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
@@ -302,7 +311,7 @@ sub _good_shelf_url
 
 =cut
 
-sub _good_followees_url
+sub _followees_url
 {
 	my $uid  = shift;
 	my $page = shift;
@@ -312,7 +321,7 @@ sub _good_followees_url
 
 
 
-=head2 C<string> _good_friends_url( I<$user_id, $page_number> )
+=head2 C<string> _friends_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
@@ -332,7 +341,7 @@ sub _good_followees_url
 
 =cut
 
-sub _good_friends_url
+sub _friends_url
 {
 	my $uid  = shift;
 	my $page = shift;
@@ -342,30 +351,24 @@ sub _good_friends_url
 
 
 
-=head2 C<string> good_book_url( I<L<%book|"%book">> )
-
-=over
-
-=item * Requires at least {id=>string}
-
-=back
+=head2 C<string> _book_url( I<$book_id> )
 
 =cut
 
-sub good_book_url
+sub _book_url
 {
-	my $book = shift;
-	return 'https://www.goodreads.com/book/show/' . $book->{id};
+	my $bid = shift;
+	return "https://www.goodreads.com/book/show/${bid}";
 }
 
 
 
 
-=head2 C<string> good_user_url( I<$user_id, $is_author = 0> )
+=head2 C<string> _user_url( I<$user_id, $is_author = 0> )
 
 =cut
 
-sub good_user_url
+sub _user_url
 {
 	my $uid    = shift;
 	my $is_aut = shift || 0;
@@ -375,12 +378,12 @@ sub good_user_url
 
 
 
-=head2 C<string> _good_reviews_url( I<$book_id, $can_sort_newest, $page_number> )
+=head2 C<string> _reviews_url( I<$book_id, $can_sort_newest, $page_number> )
 
 =over
 
 =item * "&sort=newest" reduces the number of reviews for some reason (also observable 
-        on the Goodreads website), so only use if really needed
+        on the Goodreads website), so only use if really needed (&sort=default)
 
 =item * the maximum of retrievable reviews is 300 (state 2018-06-22)
 
@@ -388,7 +391,7 @@ sub good_user_url
 
 =cut
 
-sub _good_reviews_url
+sub _reviews_url
 {
 	my $bid  = shift;
 	my $sort = shift;
@@ -399,14 +402,28 @@ sub _good_reviews_url
 
 
 
-=head2 C<string> good_review_url( I<$review_id> )
+=head2 C<string> _review_url( I<$review_id> )
 
 =cut
 
-sub good_review_url
+sub _review_url
 {
 	my $rid = shift;
 	return "https://www.goodreads.com/review/show/${rid}";
+}
+
+
+
+
+=head2 C<string> _author_books_url( I<$user_id, $page_number> )
+
+=cut
+
+sub _author_books_url
+{
+	my $uid  = shift;
+	my $page = shift;
+	return "https://www.goodreads.com/author/list/${uid}?per_page=100&page=${page}";
 }
 
 
@@ -464,6 +481,9 @@ sub _extract_books
 		my $isbn = $1 if $row =~ /<label>isbn<\/label><div class="value">\s*([0-9X\-]*)/;
 		my $numr = $1 if $row =~ /<label>num ratings<\/label><div class="value">\s*([0-9]+)/;
 		my $img  = $1 if $row =~ /<img [^>]* src="([^"]+)"/;
+		my $auid = $1 if $row =~ /author\/show\/([0-9]+)/;
+		my $aunm = $1 if $row =~ /author\/show\/[^>]+>([^<]+)/;
+		   $aunm = decode_entities( $aunm );
 		
 		# Count occurances; dont match "staticStars" (trailing s) or "staticStar p0"
 		my $urat = () = $row =~ /staticStar p10/g;
@@ -471,18 +491,76 @@ sub _extract_books
 		# Extract title
 		# + Remove HTML in "Title <span style="...">(Volume 35)</span>"
 		# + Reduce "   " to " " and remove line breaks
+		# + Replace &quot; etc with " etc
 		my $tit  = $1 if $row =~ /<label>title<\/label><div class="value">\s*<a[^>]+>\s*(.*?)\s*<\/a>/s;
 		   $tit  =~ s/\<[^\>]+\>//g;
 		   $tit  =~ s/( {1,}|[\r\n])/ /g;  
+		   $tit  = decode_entities( $tit );
 		
 		push @result, { 
 				id          => $id, 
 				title       => $tit, 
 				isbn        => $isbn, 
+				author      => { 
+					id         => $auid,
+					name       => $aunm,
+					url        => _user_url( $auid, 1 ),
+					img_url    => undef,
+					is_autor   => 1,
+					is_private => 0,
+					is_female  => undef,
+					is_friend  => undef
+				},
 				num_ratings => $numr, 
 				user_rating => $urat, 
-				url         => good_book_url({ id => $id }),
+				url         => _book_url( $id ),
 				img_url     => $img };
+	}
+	return @result;
+}
+
+
+
+
+=head2 C<(L<%book|"%book">,...)> _extract_author_books( I<$html_str> )
+
+=cut
+
+sub _extract_author_books
+{
+	my $html  = shift;
+	my $auimg = $1 if $html =~ /(https:\/\/images.gr-assets.com\/authors\/.*?\.jpg)/gs;
+	   $auimg = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png' if !$auimg;
+	my $auid  = $1 if $html =~ /author\/show\/([0-9]+)/;
+	my $aunm  = $1 if $html =~ /<h1>Books by ([^<]+)/;
+	   $aunm  = decode_entities( $aunm );
+	
+	my @result;
+	while( $html =~ /<tr itemscope itemtype="http:\/\/schema.org\/Book">(.*?)<\/tr>/gs )
+	{
+		my $row  = $1;
+		my $id   = $1 if $row =~ /book\/show\/([0-9]+)/;
+		my $tit  = $1 if $row =~ /<span itemprop='name'>([^<]+)/;
+		my $img  = $1 if $row =~ /src="[^"]+/;
+		
+		push @result, {
+			id          => $id,
+			title       => decode_entities( $tit ),
+			isbn        => undef,
+			author      => {
+				id         => $auid,
+				name       => $aunm,
+				url        => _user_url( $auid, 1 ),
+				img_url    => $auimg,
+				is_author  => 1,
+				is_private => 0,
+				is_female  => undef,
+				is_friend  => undef
+			},
+			num_ratings => undef,
+			user_rating => undef,
+			url         => _book_url( $id ),
+			img_url     => $img }
 	}
 	return @result;
 }
@@ -504,17 +582,20 @@ sub _extract_followees
 		my $uid = $1 if $row =~   /\/user\/show\/([0-9]+)/;
 		my $aid = $1 if $row =~ /\/author\/show\/([0-9]+)/;
 		my $nam = $1 if $row =~ /img alt="([^"]+)/;
+		   $nam = decode_entities( $nam );
 		my $img = $1 if $row =~ /src="([^"]+)/;
 		my $id  = $uid ? $uid : $aid;
+		
 		push @result, { 
-				id        => $id, 
-				name      => $nam, 
-				url       => good_user_url( $id, $aid ),
-				img_url   => $img,
-				age       => undef,
-				is_author => $aid, 
-				is_female => undef,
-				is_friend => 0 };
+				id         => $id, 
+				name       => $nam, 
+				url        => _user_url( $id, $aid ),
+				img_url    => $img,
+				age        => undef,
+				is_author  => $aid, 
+				is_private => undef,
+				is_female  => undef,
+				is_friend  => 0 };
 	}
 	return @result;
 }
@@ -536,17 +617,20 @@ sub _extract_friends
 		my $uid = $1 if $row =~   /\/user\/show\/([0-9]+)/;
 		my $aid = $1 if $row =~ /\/author\/show\/([0-9]+)/;
 		my $nam = $1 if $row =~ /img alt="([^"]+)/;
+		   $nam = decode_entities( $nam );
 		my $img = $1 if $row =~ /src="([^"]+)/;
 		my $id  = $uid ? $uid : $aid;
+		
 		push @result, { 
-				id        => $id, 
-				name      => $nam, 
-				url       => good_user_url( $id, $aid ),
-				img_url   => $img, 
-				age       => undef,
-				is_author => $aid, 
-				is_female => undef,
-				is_friend => 1 };
+				id         => $id, 
+				name       => $nam, 
+				url        => _user_url( $id, $aid ),
+				img_url    => $img, 
+				age        => undef,
+				is_author  => $aid, 
+				is_private => undef,
+				is_female  => undef,
+				is_friend  => 1 };
 	}
 	return @result;
 }
@@ -562,6 +646,7 @@ sub _extract_reviews
 {
 	my $since_tpiece = shift;
 	my $html         = shift;  # < is \u003c, > is \u003e,  " is \" literally
+	my $bid          = $1 if $html =~ /%2Fbook%2Fshow%2F([0-9]+)/;
 	
 	my @result;
 	while( $html =~ /div id=\\"review_\d+(.*?)div class=\\"clear/gs )
@@ -569,10 +654,18 @@ sub _extract_reviews
 		my $row = $1;
 		my $rid = $1 if $row =~ /\/review\/show\/([0-9]+)/;
 		my $uid = $1 if $row =~   /\/user\/show\/([0-9]+)/;
-		my $nam = $1 if $row =~ /alt=\\"([^\\]+)/;   # alt=\"David T\"
+		
+		# img alt=\"David T\"   
+		# img alt=\"0\"
+		# img alt="\u0026quot;Greg Adkins\u0026quot;\"
+		my $nam = $1 if $row =~ /img alt=\\"(.*?)\\"/;   
+		   $nam = '"0"' if $nam eq '0';              # Avoid eval to false somewhere
+		   $nam = decode_entities( $nam );
+		   
 		my $rat = () =  $row =~ /staticStar p10/g;   # count occurances
 		my $dat = $1 if $row =~ /([A-Z][a-z][a-z] \d+, \d{4})/;
 		my $txt = $1 if $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/;
+		   $txt = $txt ? decode_entities( $txt ) : '';  # I expected rather '' than undef, so...
 		
 		my $dat_tpiece = Time::Piece->strptime( $dat, '%b %d, %Y' );
 		
@@ -581,21 +674,22 @@ sub _extract_reviews
 		push @result, {
 				id   => $rid,
 				user => { 
-					id        => $uid, 
-					name      => $nam, 
-					url       => good_user_url( $uid ),
-					img_url   => undef,  # TODO
-					age       => undef,
-					is_author => undef,
-					is_female => undef,
-					is_friend => undef
+					id         => $uid, 
+					name       => $nam, 
+					url        => _user_url( $uid ),
+					img_url    => undef,  # TODO
+					age        => undef,
+					is_author  => undef,
+					is_private => undef,
+					is_female  => undef,
+					is_friend  => undef
 				},
 				rating     => $rat,
 				rating_str => $rat ? ('[' . ($txt ? 'T' : '*') x $rat . ' ' x (5-$rat) . ']') : '[added]',
-				review_url => good_review_url( $rid ),
+				review_url => _review_url( $rid ),
 				text       => $txt,
 				date       => $dat_tpiece,
-				book_id    => undef };
+				book_id    => $bid };
 	}
 	return @result;
 }
@@ -661,7 +755,26 @@ sub query_good_books
 	my @books;
 	
 	@books = (@books, @_) 
-		while( @_ = _extract_books( _html( _good_shelf_url( $uid, $shelf, $page++ ) ) ) );
+		while( @_ = _extract_books( _html( _shelf_url( $uid, $shelf, $page++ ) ) ) );
+	
+	return @books;
+}
+
+
+
+
+=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$user_id> )
+
+=cut
+
+sub query_good_author_books
+{
+	my $uid  = shift;
+	my $page = 1;
+	my @books;
+	
+	@books = (@books, @_)
+		while( @_ = _extract_author_books( _html( _author_books_url( $uid, $page++ ) ) ) );
 	
 	return @books;
 }
@@ -692,7 +805,7 @@ sub query_good_reviews
 	my @revs;
 
 	@revs = (@revs, @_) 
-		while( @_ = _extract_reviews( $since_date, _html( _good_reviews_url( $bid, $needs_sort, $page++ ) ) ) );
+		while( @_ = _extract_reviews( $since_date, _html( _reviews_url( $bid, $needs_sort, $page++ ) ) ) );
 	
 	return @revs;
 }
@@ -714,24 +827,28 @@ sub query_good_reviews
 
 sub query_good_followees
 {
-	my $uid  = shift;
+	my $uid = shift;
 	my %result;
 	my $page;
 
 	$page = 1;
-	while( my @somef = _extract_followees( _html( _good_followees_url( $uid, $page++ ) ) ) )
+	while( my @somef = _extract_followees( _html( _followees_url( $uid, $page++ ) ) ) )
 	{
 		$result{$_->{id}} = $_ foreach (@somef)
 	}
 	
 	$page = 1;
-	while( my @somef = _extract_friends( _html( _good_friends_url( $uid, $page++ ) ) ) )
+	while( my @somef = _extract_friends( _html( _friends_url( $uid, $page++ ) ) ) )
 	{
 		$result{$_->{id}} = $_ foreach (@somef)
 	}
 	
 	return %result;
 }
+
+
+
+
 
 
 1;

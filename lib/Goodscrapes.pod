@@ -11,7 +11,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-06-21
+=item * Updated: 2018-06-23
 
 =item * Since: 2014-11-05
 
@@ -21,13 +21,13 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * less limited, e.g., reading shelves of other members
+=item * less limited, e.g., reading shelves and reviews of other members
 
 =item * official API is slow too
 
 =item * theoretically this library is more likely to break, 
         but Goodreads progresses very very slowly: nothing
-	actually broke since 2014 (I started this)
+        actually broke since 2014 (I started this)
 
 =back
 
@@ -39,11 +39,11 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 =item * slow: version with concurrent AnyEvent::HTTP requests was marginally 
         faster, so I sticked with simpler code; doesn't actually matter
         due to Amazon's and Goodreads' request throttling. You can only
-        speed things up significantly with a pool of computers and unique 
-        IP addresses...
+        speed things up significantly with a pool of work-sharing computers 
+        and unique IP addresses...
 
-=item * text pattern matching, no ECMAScript execution and DOM parsing
-        (so far sufficient)
+=item * just text pattern matching, no ECMAScript execution and DOM parsing
+        (so far sufficient and faster)
 
 =back
 
@@ -60,6 +60,8 @@ https://github.com/andre-st/
 =over
 
 =item * never cast 'id' to int or use %d format string, despite digits only
+
+=item * don't expect all attributes set (C<undef>), this depends on context
 
 =back
 
@@ -82,6 +84,8 @@ https://github.com/andre-st/
 
 =item * img_url     => C<string>
 
+=item * author      => C<L<%user|"%user">>
+
 =back
 
 
@@ -89,21 +93,23 @@ https://github.com/andre-st/
 
 =over
 
-=item * id        => C<string>
+=item * id         => C<string>
 
-=item * name      => C<string>
+=item * name       => C<string>
 
-=item * age       => C<int>
+=item * age        => C<int>
 
-=item * is_friend => C<bool>
+=item * is_friend  => C<bool>
 
-=item * is_author => C<bool>
+=item * is_author  => C<bool>
 
-=item * is_female => C<bool>
+=item * is_female  => C<bool> (not supported yet)
 
-=item * url       => C<string> URL to the user's profile page
+=item * is_private => C<bool>
 
-=item * img_url   => C<string>
+=item * url        => C<string> URL to the user's profile page
+
+=item * img_url    => C<string>
 
 =back
 
@@ -112,25 +118,25 @@ https://github.com/andre-st/
 
 =over
 
-=item * id         => C<string>
+=item * id          => C<string>
 
-=item * user       => C<L<%user|"%user">>
+=item * user        => C<L<%user|"%user">>
 
-=item * book_id    => C<string>
+=item * book_id     => C<string>
 
-=item * rating     => C<int> 
-                      with 0 meaning no rating, "added" or "marked it as abandoned" 
-                      or something similar
+=item * rating      => C<int> 
+                       with 0 meaning no rating, "added" or "marked it as abandoned" 
+                       or something similar
 
-=item * rating_str => C<string> 
-                      represention of rating, e.g., 3/5 as S<"[***  ]"> or S<"[TTT  ]"> 
-                      if there's additional text
+=item * rating_str  => C<string> 
+                       represention of rating, e.g., 3/5 as S<"[***  ]"> or S<"[TTT  ]"> 
+                       if there's additional text
 
-=item * text       => C<string>
+=item * text        => C<string>
 
-=item * date       => C<Time::Piece>
+=item * date        => C<Time::Piece>
 
-=item * review_url => C<string>
+=item * review_url  => C<string>
 
 =back
 
@@ -166,7 +172,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> _good_shelf_url( I<$user_id, $shelf_name, $page_number> )
+=head2 C<string> _shelf_url( I<$user_id, $shelf_name, $page_number> )
 
 =head3 Notes on the URL
 
@@ -189,7 +195,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> _good_followees_url( I<$user_id, $page_number> )
+=head2 C<string> _followees_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
@@ -201,7 +207,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> _good_friends_url( I<$user_id, $page_number> )
+=head2 C<string> _friends_url( I<$user_id, $page_number> )
 
 =head3 Notes on the URL
 
@@ -219,28 +225,24 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> good_book_url( I<L<%book|"%book">> )
+=head2 C<string> _book_url( I<$book_id> )
 
-=over
+=head2 C<string> _user_url( I<$user_id, $is_author = 0> )
 
-=item * Requires at least {id=>string}
-
-=back
-
-=head2 C<string> good_user_url( I<$user_id, $is_author = 0> )
-
-=head2 C<string> _good_reviews_url( I<$book_id, $can_sort_newest, $page_number> )
+=head2 C<string> _reviews_url( I<$book_id, $can_sort_newest, $page_number> )
 
 =over
 
 =item * "&sort=newest" reduces the number of reviews for some reason (also observable 
-        on the Goodreads website), so only use if really needed
+        on the Goodreads website), so only use if really needed (&sort=default)
 
 =item * the maximum of retrievable reviews is 300 (state 2018-06-22)
 
 =back
 
-=head2 C<string> good_review_url( I<$review_id> )
+=head2 C<string> _review_url( I<$review_id> )
+
+=head2 C<string> _author_books_url( I<$user_id, $page_number> )
 
 =head2 C<string> amz_url( I<L<%book|"%book">> )
 
@@ -260,6 +262,8 @@ https://github.com/andre-st/
 
 =head2 C<(L<%book|"%book">,...)> _extract_books( I<$shelf_tableview_html_str> )
 
+=head2 C<(L<%book|"%book">,...)> _extract_author_books( I<$html_str> )
+
 =head2 C<(L<%user|"%user">,...)> _extract_followees( I<$following_page_html_str> )
 
 =head2 C<(L<%user|"%user">,...)> _extract_friends( I<$friends_page_html_str> )
@@ -275,6 +279,8 @@ https://github.com/andre-st/
 =back
 
 =head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name, $max_books = 2700> )
+
+=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$user_id> )
 
 =head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece = undef> )
 
