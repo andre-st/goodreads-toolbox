@@ -113,7 +113,9 @@ if( $csv )
 		}
 		else
 		{
-			printf "   %s  %s\n", pretty_url( $_->{user}->{url} ), $_->{rating_str}
+			printf( "   %s  %s\n", 
+					pretty_url( $_->{text} ? $_->{review_url} : $_->{user}->{url} ), 
+					$_->{rating_str} ) 
 				foreach (@revs);
 		}
 	}
