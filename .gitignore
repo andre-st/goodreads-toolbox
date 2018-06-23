@@ -10,4 +10,5 @@
 *.zip
 *.cookie
 *.sh
+*.xcf
 test.pl

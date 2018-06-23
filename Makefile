@@ -6,7 +6,6 @@
 
 RR_LOGFILE = /var/log/good.log
 RR_DB_DIR  = /var/db/good
-ON_ERROR   = (echo "Please send your error messages to datakadabra@gmail.com" && false)
 
 
 .PHONY : help
@@ -16,7 +15,7 @@ help : Makefile
 
 .PHONY : base
 base :
-	perl -MCPAN -e 'install Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any, XML::Writer' || $(ON_ERROR)
+	perl -MCPAN -e 'install HTML::Entities, Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any, XML::Writer'
 	chmod +x *.pl
 
 
