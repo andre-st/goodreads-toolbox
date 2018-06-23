@@ -24,9 +24,23 @@ or [Mehran (2018)](https://www.goodreads.com/topic/show/19397936-finding-people-
 
 
 ## This
+```
+Members (N=31398) with 2% similarity or better:
+ 1.    6 books    2%    https://www.goodreads.com/user/show/1651956
+ 2.    6 books    2%    https://www.goodreads.com/user/show/70085980
+...
+34.    9 books    3%    https://www.goodreads.com/user/show/67562484
+35.    9 books    3%    https://www.goodreads.com/user/show/655723
+36.   10 books    3%    https://www.goodreads.com/user/show/31846270
+37.   11 books    3%    https://www.goodreads.com/user/show/30088931
+38.   11 books    3%    https://www.goodreads.com/user/show/4100763
+39.   11 books    3%    https://www.goodreads.com/user/show/5759543
+40.   13 books    4%    https://www.goodreads.com/user/show/34285875
+41.   14 books    4%    https://www.goodreads.com/user/show/269235
+42.   22 books    7%    https://www.goodreads.com/user/show/71105042
+43.   36 books   12%    https://www.goodreads.com/user/show/17281774
 
-![Screenshot](likeminded.png?raw=true "Screenshot")
-
+```
 
 
 ## How to generate this on a GNU/Linux operating system
@@ -37,26 +51,27 @@ $ cd goodreads
 $ sudo make likeminded
 $ ./likeminded.pl YOURGOODUSERNUMBER [OPTIONAL_SHELFNAME_WITH_SELECTED_BOOKS]
 
-Loading books from "ALL" may take a while... 108 books
-Loading books of 95 authors:
-[  1%]  #2793763   Schuberth, Richard         6 books    0.03s
-[  2%]  #1339033   Lohoff, Ernst              4 books    0.05s
-[  3%]  #2949412   Huang, Andrew "bunnie"     6 books    0.04s
+Loading books from "ALL" may take a while...
+Loading reviews for 299 books:
+[  1%] Bärentango: Mit Risikomanagement Projekte zu    300 memb    24.17s
+[  1%] Metadata                                         110 memb    10.09s
+[  2%] Politik der Mikroentscheidungen: Edward Snowd      7 memb     2.13s
+[  2%] Toolbox for the Agile Coach - Visualization       57 memb     9.01s
+[  3%] IT-Projektmanagement Kompakt                      24 memb     3.00s
+[  3%] Introduction to Mathematical Thinking            300 memb     0.33s
 ...
-[ 97%]  #476506    Pullum, Laura L.           2 books    0.05s
-[ 98%]  #379757    Patri, Giacomo             3 books    0.04s
-[100%]  #16159494  Fertl, Herbert L.          1 books    0.03s
-Done.
-Loading reviews for 1625 author books:
-[  0%]  #119570    Psychiatric Power: Lectures at the Coll    287 memb    0.07s
-[  0%]  #18456429  What is an Author?                         277 memb    0.05s
-[  1%]  #80386     Aesthetics, Method, and Epistemology       217 memb    0.03s
+[ 98%] Gilgamesch, Graphic Novel                          7 memb     3.01s
+[ 99%] Simulation neuronaler Netze                        5 memb     0.50s
+[100%] C64 Benutzerhandbuch Deutsch                       1 memb     2.11s
+
+Members (N=31398) with 2% similarity or better:
+ 1.    6 books    2%    https://www.goodreads.com/user/show/1651956
+ 2.    6 books    2%    https://www.goodreads.com/user/show/70085980
 ...
-[ 99%]  #3343671   White Collar                                49 memb    0.04s
-[ 99%]  #12369034  Gravures Rebelles: 4 Romans Graphiques       2 memb    0.00s
-[100%]  #33257775  Abweichende Meinungen zu Israel              1 memb    0.01s
-Done.
-Writing members (N=39129) with 5% similarity or better to "likeminded-18418712.html"...
+41.   14 books    4%    https://www.goodreads.com/user/show/269235
+42.   22 books    7%    https://www.goodreads.com/user/show/71105042
+43.   36 books   12%    https://www.goodreads.com/user/show/17281774
+
 Total time: 54 minutes
 ```
 
@@ -68,6 +83,10 @@ online sources again, as reading from Goodreads.com is very time consuming.
 The script internally uses a **file-cache** which is busted after 21 days
 and saves to /tmp/FileCache/.
 
+"In common with you" means that your match has at least one of _your_
+books in his shelves. So this program checks all of _your_ books and counts 
+how often it saw a Goodreads member commenting on any of them: reviews, ratings,
+shelf additions etc.
 
 
 ## Observations and serious limitations
@@ -78,19 +97,19 @@ and saves to /tmp/FileCache/.
   and books from the outside which would take forever (throttled access)
 - there are members with 94.857 ratings, likely bots
 - lists members with private accounts (reviews still readable)
+- 50% similarity is unrealistic (why?), 3% minimum got me 10 of 31.398 members (299 books),
+  with 5 members actually worth investigating, and only 1 already on my list of 137 followees
 - your Goodreads account must be viewable by 
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
   which is the default
 - slow but good enough since you run it 4x a year
 - "...most number of shared books would be a list of children's books"—`likeminded.pl` has a shelf parameter (some sort of selection)
-- my first implementation compared the books, not the authors, and
-  turned out to be too narrow in order to produce satisfying results:
-  Given a minimum of 9 common books (similarity of 3%), 
-  got 10 of 31.398 members (299 books),
-  with 5 members actually worth investigating, 
-  and only 1 member already on my list of 137 followees.
-  A minimum of 6 common books (2%) listed 43 matches, more or less interesting
 
+
+## Considerable alternative implementations
+
+- compare by author, not book (too narrow)
+- include ratings: only top-rated on both sides, or similar rating
 
 
 ## Feedback
