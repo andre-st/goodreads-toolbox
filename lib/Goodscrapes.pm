@@ -225,7 +225,8 @@ sub set_good_cookie_file
 	local $/=undef;
 	open my $fh, "<", $path or die
 			"FATAL: Please save a Goodreads cookie to \"$path\". ".
-			"Copy the cookie, for example, from Chrome's DevTools Network-view.";
+			"Copy the cookie, for example, from Chrome's DevTools Network-view: ".
+			"https://www.youtube.com/watch?v=o_CYdZBPDCg";
 	
 	binmode $fh;
 	set_good_cookie( <$fh> );
