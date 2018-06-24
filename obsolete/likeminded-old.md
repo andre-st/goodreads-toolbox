@@ -1,6 +1,6 @@
 # likeminded.pl
 
-![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+![Maintenance](https://img.shields.io/maintenance/no/2018.svg)
 
 
 ## Finding people based on the books they've read
