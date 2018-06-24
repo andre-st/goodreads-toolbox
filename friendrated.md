@@ -59,7 +59,7 @@ online sources again, as reading from Goodreads.com is very time consuming.
 The script internally uses a **file-cache** which is busted after 21 days
 and saves to /tmp/FileCache/.
 
-You will need to save your Goodreads cookie to the dotfile `.cookie` 
+You will need to [save your Goodreads cookie](https://www.youtube.com/watch?v=o_CYdZBPDCg) to the dotfile `.cookie` 
 in the project directory. I use Chrome's DevTools Network-view to copy 
 the cookie content.
 
