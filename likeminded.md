@@ -89,7 +89,7 @@ and saves to /tmp/FileCache/.
 	  I've got 10 of 31.398 members,
 	  with 5 members actually worth investigating, 
 	  and only 1 member already on my hand-curated list of 137 followees
-	- a minimum of 6 common books (2%) listed 43 matches, more or less interesting
+	- a minimum of 6 common books (2%) listed 43 members, more or less interesting
 	- the new authors-version takes longer but yields better results, e.g.,
 	  many more matches with my hand-curated followees list
 
