@@ -88,7 +88,7 @@ and saves to /tmp/FileCache/.
   Given a minimum of 9 common books (similarity of 3%), 
   got 10 of 31.398 members (299 books),
   with 5 members actually worth investigating, 
-  and only 1 member already on my list of 137 followees.
+  and only 1 member already on my hand-curated list of 137 followees.
   A minimum of 6 common books (2%) listed 43 matches, more or less interesting
 
 
