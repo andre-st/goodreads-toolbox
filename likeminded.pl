@@ -34,14 +34,14 @@ use Goodscrapes;
 
 
 # Program synopsis
-say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [SIMILARITY]" and exit if $#ARGV < 0;
+say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [SIMILARITY0TO100] [OUTFILE]" and exit if $#ARGV < 0;
 
 
 # Program configuration:
 our $GOODUSER = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
 our $SHELF    = $ARGV[1] || '%23ALL%23';
 our $MINSIMIL = $ARGV[2] || 5;  # between 0 and 100 (exact match)
-our $OUTPATH  = "likeminded-${GOODUSER}.html";
+our $OUTPATH  = $ARGV[3] || "likeminded-${GOODUSER}.html";
 our $TSTART   = time();
 
 set_good_cache( '21 days' );
@@ -49,44 +49,44 @@ STDOUT->autoflush( 1 );
 
 
 
-my %authors_read_by;  # {userid}{authorid}
-my %authors;          # {userid => name}
+my %authors_read_by;  # {$userid}->{$auid}
+my %authors;          # {$userid => %author}
 my @books;
 
 
 
 # ----------------------------------------------------------------------------
 # Load basic data:
-# ----------------------------------------------------------------------------
+# 
 printf "Loading books from \"%s\" may take a while... ", $SHELF;
 my @user_books = query_good_books( $GOODUSER, $SHELF );
 printf "%d books\n", scalar @user_books;
 
 
 # ----------------------------------------------------------------------------
-# Reduce user's books to a few authors and query author's books:
-# ----------------------------------------------------------------------------
+# Reduce user's books to a few authors and query authors books:
+# 
 $authors{ $_->{author}->{id} } = $_->{author} foreach (@user_books);
 
-my $authors_count = scalar keys %authors;
-my $authors_done  = 0;
+my $aucount = scalar keys %authors;
+my $audone  = 0;
 
-printf "Loading books of %d authors:\n", $authors_count;
-foreach my $aid (keys %authors)
+printf "Loading books of %d authors:\n", $aucount;
+foreach my $auid (keys %authors)
 {
-	$authors_done++;
+	$audone++;
 	
-	next if $aid eq "1000834";  # "NOT A BOOK" author page: 3.000+ books
+	next if $auid eq "1000834";  # "NOT A BOOK" author page: 3.000+ books
 	
-	printf "[%3d%%]  #%-8s  %-25s\t", $authors_done/$authors_count*100, $aid, $authors{ $aid }->{name};
+	printf "[%3d%%]  #%-8s  %-25s\t", $audone/$aucount*100, $auid, $authors{ $auid }->{name};
 	
-	my $t0 = time();
-	my @au_books = query_good_author_books( $aid );
-	@books = (@books, @au_books);
+	my $t0      = time();
+	my @aubooks = query_good_author_books( $auid );
+	@books      = (@books, @aubooks);
 	
-	$authors{ $aid } = $au_books[0]->{author};  # Update some values, e.g., img_url @TODO ugly
+	$authors{ $auid } = $aubooks[0]->{author};  # Update some values, e.g., img_url @TODO ugly
 	
-	printf "%3d books\t%.2fs\n", scalar @au_books, time()-$t0;
+	printf "%3d books\t%.2fs\n", scalar @aubooks, time()-$t0;
 }
 say "Done.";
 
@@ -94,15 +94,14 @@ say "Done.";
 # ----------------------------------------------------------------------------
 # Query reviews for all author books:
 # Problem: lot of duplicates (not combined as editions), but with own reviewers
-# ----------------------------------------------------------------------------
-my $books_count = scalar @books;
-my $books_done  = 0;
+# 
+my $bocount = scalar @books;
+my $bodone  = 0;
 
-printf "Loading reviews for %d author books:\n", $books_count;
+printf "Loading reviews for %d author books:\n", $bocount;
 foreach my $b (@books)
 {
-	printf "[%3d%%]  #%-8s  %-40s\t", 
-			++$books_done/$books_count*100, $b->{id}, substr( $b->{title}, 0, 40 );
+	printf "[%3d%%]  #%-8s  %-40s\t", ++$bodone/$bocount*100, $b->{id}, substr( $b->{title}, 0, 40 );
 	
 	my $t0   = time();
 	my @revs = query_good_reviews( $b->{id} );
@@ -115,13 +114,13 @@ say "Done.";
 
 
 # ----------------------------------------------------------------------------
-# Checking members for bots, private accounts etc
-# ----------------------------------------------------------------------------
+# Check members for bots, private accounts etc:
+# 
 
 
 # ----------------------------------------------------------------------------
 # Generate result view:
-# ----------------------------------------------------------------------------
+# 
 printf "Writing members (N=%d) with %d%% similarity or better to \"%s\"... ", 
 	scalar keys %authors_read_by, $MINSIMIL, $OUTPATH;
 
@@ -150,8 +149,8 @@ $w->endTag( 'tr' );
 my $line = 1;
 foreach my $userid (sort { scalar keys $authors_read_by{$b} <=> scalar keys $authors_read_by{$a} } keys %authors_read_by) 
 {
-	my $common_authors_count = scalar keys $authors_read_by{ $userid };
-	my $simil                = $common_authors_count/$authors_count*100;
+	my $common_aucount = scalar keys $authors_read_by{ $userid };
+	my $simil          = $common_aucount / $aucount * 100;
 	
 	next if $userid == $GOODUSER;
 	next if $simil  <  $MINSIMIL;
@@ -165,18 +164,18 @@ foreach my $userid (sort { scalar keys $authors_read_by{$b} <=> scalar keys $aut
 	$w->endTag( 'a'  );
 	$w->endTag( 'td' );
 	$w->startTag( 'td' );
-	$w->dataElement( 'span', sprintf( '%d (%d%%)', $common_authors_count, $simil ) );
+	$w->dataElement( 'span', sprintf( '%d (%d%%)', $common_aucount, $simil ) );
 	$w->endTag( 'td' );
 	$w->startTag( 'td' );
 	
-	foreach my $authorid (keys $authors_read_by{ $userid })
+	foreach my $auid (keys $authors_read_by{ $userid })
 	{
 		$w->startTag( 'div' );
-		$w->emptyTag( 'img', 'src' => $authors{ $authorid }->{img_url} );
-		$w->dataElement( 'span',      $authors{ $authorid }->{name}    );
+		$w->emptyTag( 'img', 'src' => $authors{ $auid }->{img_url} );
+		$w->dataElement( 'span',      $authors{ $auid }->{name}    );
 		$w->endTag( 'div' );
 	}
-			
+		
 	$w->endTag( 'td' );
 	$w->endTag( 'tr' );
 }
