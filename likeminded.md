@@ -84,7 +84,7 @@ and saves to /tmp/FileCache/.
 - slow but good enough since you run it 4x a year
 - "...most number of shared books would be a list of children's books"—`likeminded.pl` has a shelf parameter (some sort of selection)
 
-#### First version compared books, not authors:
+**First version compared books, not authors:**
 - turned out to be too narrow in order to produce satisfying results
 - given 299 books and a minimum of 9 _common_ books (3% similarity), 
   I've got 10 of 31.398 members,
