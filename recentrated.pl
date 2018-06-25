@@ -99,11 +99,11 @@ if( $csv )
 		#<-------------------- 78 chars per line i.a.w. RFC 2822 --------------------->
 		#
 		#  "Book Title1"
-		#   www.goodreads.com/book/show/609606   [9 new]
+		#   www.goodreads.com/book/show/609606     [9 new]
 		#  
 		#  "Book Title2"
-		#   www.goodreads.com/user/show/1234567  [TTT  ]
-		#   www.goodreads.com/user/show/2345     [*****]
+		#   www.goodreads.com/review/show/1234567  [TTT  ]
+		#   www.goodreads.com/user/show/2345       [*****]
 		#
 		printf "\n  \"%s\"\n", $b->{title};
 		
