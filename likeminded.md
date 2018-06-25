@@ -107,7 +107,7 @@ Creative Commons BY-SA
 
 ## See also
 
-- [friendrated.pl](friendrated.pl) - Books common among the people I follow
-- [recentrated.pl](recentrated.pl) - Know when people rate or write reviews about a book
+- [friendrated.pl](friendrated.md) - Books common among the people I follow
+- [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 
 
