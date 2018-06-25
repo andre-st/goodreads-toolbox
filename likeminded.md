@@ -103,3 +103,11 @@ Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](A
 ## Licence
 
 Creative Commons BY-SA
+
+
+## See also
+
+- [friendrated.pl](friendrated.pl) - Books common among the people I follow
+- [recentrated.pl](recentrated.pl) - Know when people rate or write reviews about a book
+
+
