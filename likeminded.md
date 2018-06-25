@@ -91,7 +91,7 @@ and saves to /tmp/FileCache/.
   with 5 members actually worth investigating, 
   and only 1 member already on my hand-curated list of 137 followees
 - a minimum of 6 common books (2%) listed 43 members, more or less interesting
-- we learn: books combinations tend to become unique quickly
+- we learn: book combinations tend to become unique quickly
 - the new authors-version takes longer but yields better results, e.g.,
   many more matches with my hand-curated followees list
 
