@@ -11,7 +11,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-06-23
+=item * Updated: 2018-06-25
 
 =item * Since: 2014-11-05
 
@@ -278,7 +278,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name, $max_books = 2700> )
+=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
 
 =head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$user_id> )
 

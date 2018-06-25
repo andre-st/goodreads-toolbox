@@ -19,7 +19,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-06-23
+=item * Updated: 2018-06-25
 
 =item * Since: 2014-11-05
 
@@ -476,7 +476,7 @@ sub _extract_books
 	my $html = shift;
 	my @result;
 	while( $html =~ /<tr id="review_\d+" class="bookalike review">(.*?)<\/tr>/gs ) # each book row
-	{
+	{	
 		my $row  = $1;
 		my $id   = $1 if $row =~ /data-resource-id="([0-9]+)"/;
 		my $isbn = $1 if $row =~ /<label>isbn<\/label><div class="value">\s*([0-9X\-]*)/;
@@ -743,7 +743,7 @@ sub _html
 
 
 
-=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name, $max_books = 2700> )
+=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
 
 =cut
 
@@ -751,8 +751,8 @@ sub query_good_books
 {
 	my $uid       = shift;
 	my $shelf     = shift;
-	my $max_books = shift || 2700;  # TODO
 	my $page      = 1; 
+	my $max_books = 2700;   # TODO
 	my @books;
 	
 	@books = (@books, @_) 
@@ -804,7 +804,7 @@ sub query_good_reviews
 	my $needs_sort = defined $since;
 	my $page       = 1;
 	my @revs;
-
+	
 	@revs = (@revs, @_) 
 		while( @_ = _extract_reviews( $since_date, _html( _reviews_url( $bid, $needs_sort, $page++ ) ) ) );
 	
