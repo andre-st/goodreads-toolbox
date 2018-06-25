@@ -25,7 +25,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make friendrated
-$ ./friendrated.pl YOURGOODUSERNUMBER out.xml
+$ ./friendrated.pl YOURGOODUSERNUMBER
 
 Getting list of users known to #18418712... 164 users (0.18s)
 [  0%] Aron Mellendar            #21254511    247 read      94 favs     0.41s
@@ -41,27 +41,20 @@ Getting list of users known to #18418712... 164 users (0.18s)
 [100%] David                     #7634567     142 read      58 favs     0.01s
 
 Perfect! Got favourites of 164 users.
-Writing results to "out.xml"... 271 books (0.31s)
+Writing results to "friendrated-1234567.html"... 271 books (0.31s)
 Total time: 3 minutes
-```
-```
-$ xsltproc friendrated.xsl out.xml > out.html
 ```
 
 ### Note:
-
-You will need an XSLT processor in order to transform the XML file into a
-pretty HTML file.
-I use `xsltproc`, which is part of the `libxslt` library.
 
 You can `^C`-break the script and continue later without having to re-read all
 online sources again, as reading from Goodreads.com is very time consuming.
 The script internally uses a **file-cache** which is busted after 21 days
 and saves to /tmp/FileCache/.
 
-You will need to [save your Goodreads cookie](https://www.youtube.com/watch?v=o_CYdZBPDCg) to the dotfile `.cookie` 
-in the project directory. I use Chrome's DevTools Network-view to copy 
-the cookie content.
+You will need to [save your Goodreads cookie](https://www.youtube.com/watch?v=o_CYdZBPDCg) 
+to the dotfile `.cookie` in the project directory. I use Chrome's DevTools Network-view 
+to copy the cookie content.
 
 "0 read 0 favs" is either an empty shelf or a shelf accessible only to
 friends of that person (depends on used cookie).

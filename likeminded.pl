@@ -27,9 +27,8 @@ use 5.18.0;
 use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
+use POSIX qw( strftime );
 use IO::File;
-use XML::Writer;
-use File::Basename;
 use Goodscrapes;
 
 
@@ -78,7 +77,7 @@ foreach my $auid (keys %authors)
 	
 	next if $auid eq "1000834";  # "NOT A BOOK" author page: 3.000+ books
 	
-	printf "[%3d%%]  #%-8s  %-25s\t", $audone/$aucount*100, $auid, $authors{ $auid }->{name};
+	printf "[%3d%%] %-25s #%-8s\t", $audone/$aucount*100, $authors{ $auid }->{name}, $auid;
 	
 	my $t0      = time();
 	my @aubooks = query_good_author_books( $auid );
@@ -86,7 +85,7 @@ foreach my $auid (keys %authors)
 	
 	$authors{ $auid } = $aubooks[0]->{author};  # Update some values, e.g., img_url @TODO ugly
 	
-	printf "%3d books\t%.2fs\n", scalar @aubooks, time()-$t0;
+	printf "%3d books\t%6.2fs\n", scalar @aubooks, time()-$t0;
 }
 say "Done.";
 
@@ -101,12 +100,12 @@ my $bodone  = 0;
 printf "Loading reviews for %d author books:\n", $bocount;
 foreach my $b (@books)
 {
-	printf "[%3d%%]  #%-8s  %-40s\t", ++$bodone/$bocount*100, $b->{id}, substr( $b->{title}, 0, 40 );
+	printf "[%3d%%] %-40s  #%-8s\t", ++$bodone/$bocount*100, substr( $b->{title}, 0, 40 ), $b->{id};
 	
 	my $t0   = time();
 	my @revs = query_good_reviews( $b->{id} );
 	
-	printf "%4d memb\t%.2fs\n", scalar @revs, time()-$t0;
+	printf "%4d memb\t%6.2fs\n", scalar @revs, time()-$t0;
 	
 	$authors_read_by{ $_->{user}->{id} }{ $b->{author}->{id} } = 1 foreach (@revs);
 }
@@ -119,72 +118,86 @@ say "Done.";
 
 
 # ----------------------------------------------------------------------------
-# Generate result view:
+# Write results to HTML file:
 # 
 printf "Writing members (N=%d) with %d%% similarity or better to \"%s\"... ", 
 	scalar keys %authors_read_by, $MINSIMIL, $OUTPATH;
 
-my $f = IO::File->new( $OUTPATH, 'w' ) or die "FATAL: Cannot write to $OUTPATH ($!)";
-my $w = XML::Writer->new( OUTPUT => $f, DATA_MODE => 1, DATA_INDENT => "\t" );
+my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "FATAL: Cannot write to $OUTPATH ($!)";
+my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 
-$w->xmlDecl( 'UTF-8' );
-$w->doctype( 'html' );
-$w->startTag( 'html' );
-$w->startTag( 'head' );
-$w->dataElement( 'title', 'Goodreads members who read my authors' );
-$w->startTag( 'style', 'type' => 'text/css' );
-$w->comment( "\nbody   { font-family: sans-serif; }" .
-             "\ntd div { float: left; display: inline-block; height: 95px; max-width: 50px; background-color: #eeeddf; font-size: 8pt; text-align: center; margin: 0.25em; }\n" );
-$w->endTag( 'style' );
-$w->endTag( 'head' );
-$w->startTag( 'body' );
-$w->startTag( 'table', 'border' => '1', 'width' => '100%' );
-$w->startTag( 'tr' );
-$w->dataElement( 'th', '#'       );
-$w->dataElement( 'th', 'Member'  );
-$w->dataElement( 'th', 'Common'  );
-$w->dataElement( 'th', 'Authors' );
-$w->endTag( 'tr' );
+print $fh qq{
+		<!DOCTYPE html>
+		<html>
+		<head>
+		<title>
+		  Goodreads members with similar taste
+		</title>
+		<style>
+		td div 
+		{
+		  background-color: #eeeddf;
+		  float     : left; 
+		  display   : inline-block; 
+		  height    : 95px; 
+		  max-width : 50px; 
+		  font-size : 8pt; 
+		  text-align: center; 
+		  margin    : 0.25em;
+		}
+		</style>
+		</head>
+		<body style="font-family: sans-serif;">
+		<table border="1" width="100%" cellpadding="6">
+		<caption>
+		  Members who read at least 
+		  ${MINSIMIL}% of the authors in 
+		  ${GOODUSER}'s shelf "$SHELF", on $now
+		</caption>
+		<tr>
+		<th>#</th>  
+		<th>Member</th>  
+		<th>Common</th>  
+		<th>Authors</th>  
+		</tr>
+		};
 
-my $line = 1;
-foreach my $userid (sort { scalar keys $authors_read_by{$b} <=> scalar keys $authors_read_by{$a} } keys %authors_read_by) 
+my $line;
+foreach my $userid (sort { scalar keys $authors_read_by{$b} <=> 
+                           scalar keys $authors_read_by{$a} } keys %authors_read_by) 
 {
 	my $common_aucount = scalar keys $authors_read_by{ $userid };
-	my $simil          = $common_aucount / $aucount * 100;
+	my $simil          = int( $common_aucount / $aucount * 100 + 0.5 );  # round
 	
 	next if $userid == $GOODUSER;
 	next if $simil  <  $MINSIMIL;
-
-	$w->startTag( 'tr' );
-	$w->dataElement( 'td', $line++ );
-	$w->startTag( 'td' );
-	$w->startTag( 'a', 'href' => "https://www.goodreads.com/user/show/${userid}", 'target' => '_blank' );
-	$w->emptyTag( 'img', 'src' => '' );
-	$w->dataElement( 'span', $userid );
-	$w->endTag( 'a'  );
-	$w->endTag( 'td' );
-	$w->startTag( 'td' );
-	$w->dataElement( 'span', sprintf( '%d (%d%%)', $common_aucount, $simil ) );
-	$w->endTag( 'td' );
-	$w->startTag( 'td' );
 	
-	foreach my $auid (keys $authors_read_by{ $userid })
-	{
-		$w->startTag( 'div' );
-		$w->emptyTag( 'img', 'src' => $authors{ $auid }->{img_url} );
-		$w->dataElement( 'span',      $authors{ $auid }->{name}    );
-		$w->endTag( 'div' );
-	}
-		
-	$w->endTag( 'td' );
-	$w->endTag( 'tr' );
+	$line++;
+	print $fh qq{
+			<tr>
+			<td>$line</td>
+			<td><a href="https://www.goodreads.com/user/show/${userid}" target="_blank">$userid</a></td>
+			<td>$common_aucount ($simil%)</td>
+			<td>
+			};
+			
+	print $fh qq{
+			<div><img src="$authors{$_}->{img_url}">$authors{$_}->{name}</div>
+			} foreach (keys $authors_read_by{ $userid });
+
+	print $fh qq{
+			</td>
+			</tr>
+			};
 }
 
-$w->endTag( 'table' );
-$w->endTag( 'body'  );
-$w->endTag( 'html'  );
-$w->end();
+print $fh qq{
+		</table>
+		</body>
+		</html> 
+		};
 
+undef $fh;
 
 printf "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60;
 

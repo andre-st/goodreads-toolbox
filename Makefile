@@ -15,7 +15,7 @@ help : Makefile
 
 .PHONY : base
 base :
-	perl -MCPAN -e 'install HTML::Entities, Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any, XML::Writer'
+	perl -MCPAN -e 'install HTML::Entities, Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any'
 	chmod +x *.pl
 
 
