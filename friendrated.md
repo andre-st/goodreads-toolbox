@@ -42,7 +42,7 @@ Getting list of users known to #18418712... 164 users (0.18s)
 
 Perfect! Got favourites of 164 users.
 Writing results to "friendrated-1234567.html"... 271 books (0.31s)
-Total time: 34 minutes
+Total time: 18 minutes
 ```
 
 ### Note:
