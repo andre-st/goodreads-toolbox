@@ -99,3 +99,8 @@ Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](A
 Creative Commons BY-SA
 
 
+## See also
+
+- [likeminded.pl](likeminded.md) - Find Goodreads members with similar book taste
+- [friendrated.pl](friendrated.md) - Books common among the people I follow
+
