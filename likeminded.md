@@ -82,7 +82,7 @@ and saves to /tmp/FileCache/.
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
   which is the default
 - slow but good enough since you run it 4x a year
-- "...most number of shared books would be a list of children's books"—`likeminded.pl` has a shelf parameter (some sort of selection)
+- "_...most number of shared books would be a list of children's books_"—`likeminded.pl` has a shelf parameter (sort of selection)
 
 **First version compared books, not authors:**
 - turned out to be too narrow in order to produce satisfying results
@@ -93,7 +93,7 @@ and saves to /tmp/FileCache/.
 - a minimum of 6 common books (2%) listed 43 members, more or less interesting
 - we learn: book combinations tend to become unique quickly
 - the new authors-version takes longer but yields better results, e.g.,
-  many more matches with my hand-curated followees list
+  more matches with my hand-curated followees list
 
 
 ## Feedback
