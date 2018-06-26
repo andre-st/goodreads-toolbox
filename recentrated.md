@@ -23,14 +23,14 @@ Date: Wed, 10 Jan 2018 21:10:50 +0100
 Recently rated books in your "watch-ratings" shelf:
 
   "The Machine Question"
-   www.goodreads.com/user/show/54336239  [*****]
+   www.goodreads.com/user/show/54336239   [*****]
 
   "Spam: A Shadow History of the Internet"
-   www.goodreads.com/book/show/16718273  [9 new]
+   www.goodreads.com/book/show/16718273   [9 new]
 
   "Understanding Beliefs"
-   www.goodreads.com/user/show/22346637  [TTTT ]
-   www.goodreads.com/user/show/24850532  [**   ]
+   www.goodreads.com/review/show/22346637 [TTTT ]
+   www.goodreads.com/user/show/24850532   [**   ]
 
 
 --
