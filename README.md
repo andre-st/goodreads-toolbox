@@ -51,6 +51,7 @@ to people who don't know Linux etc. You probably won't need this directory.
 
 - [A few things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
 - [Official group for developers on Goodreads](https://www.goodreads.com/group/show/8095-goodreads-developers)
+- [Goodreads Technology Stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt)
 
 
 ## modest remark
