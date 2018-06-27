@@ -42,7 +42,9 @@ our $VERSION = '1.70';  # X.XX version format required by Perl
         but Goodreads progresses very very slowly: nothing
         actually broke since 2014 (I started this);
         actually their API seems to change more often than
-        their web pages
+        their web pages; they can and do disable API functions 
+	without being noticed by the more important users, they 
+	cannot easily disable important webpages that we use
 
 =back
 
