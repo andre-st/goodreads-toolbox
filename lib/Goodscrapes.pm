@@ -750,7 +750,7 @@ sub _check_page
 	#  
 	# TODO Pattern best guess from Screenshot and the other examples
 	# 
-	die "[FATAL] Goodreads if over capacity. Continue later to ensure data quality."
+	die "[FATAL] Goodreads is over capacity. Continue later to ensure data quality."
 		if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
 
 	
