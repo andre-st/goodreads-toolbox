@@ -36,11 +36,13 @@ our $VERSION = '1.70';  # X.XX version format required by Perl
 
 =item * less limited, e.g., reading shelves and reviews of other members
 
-=item * official API is slow too
+=item * official API is slow too; API users are even second-class citizen
 
 =item * theoretically this library is more likely to break, 
         but Goodreads progresses very very slowly: nothing
-        actually broke since 2014 (I started this)
+        actually broke since 2014 (I started this);
+        actually their API seems to change more often than
+        their web pages
 
 =back
 
