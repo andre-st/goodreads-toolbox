@@ -27,7 +27,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =cut
 
-our $VERSION = '1.70';  # X.XX version format required by Perl
+our $VERSION = '1.74';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -702,11 +702,83 @@ sub _extract_reviews
 
 
 
+=head2 C<bool> _check_page( I<$url, $html> )
+
+=over
+
+=item * sign-in page (https://www.goodreads.com/user/sign_in) or in-page message: warn and continue
+
+=item * page unavailable, Goodreads request took too long: warn and continue
+
+=item * page not found: warn and continue
+
+=item * over capacity: scraping process dies
+
+=item * maintenance mode: scraping process dies
+
+=cut
+
+sub _check_page
+{
+	my $url  = shift;
+	my $html = shift;
+	
+	# Try to be precise, don't stop just because someone wrote a pattern 
+	# in his review or a book title. Characters such as < and > are 
+	# encoded in user texts:
+	
+	
+	say STDERR "[WARN] Sign-in for $url => Cookie invalid or not set: set_good_cookie_file()"
+		and return 0
+			if $html =~ /<head>\s*<title>\s*Sign in\s*<\/title>/s;
+	
+	
+	say STDERR "[WARN] Not found: $url"
+		and return 0
+			if $html =~ /<head>\s*<title>\s*Page not found\s*<\/title>/s;
+	
+	
+	# "<?>Goodreads is over capacity.</?> 
+	#  <?>You can never have too many books, but Goodreads can sometimes
+	#  have too many visitors. Don't worry! We are working to increase 
+	#  our capacity.</?>
+	#  <?>Please reload the page to try again.</?>
+	#  <a ...>get the latest on Twitter</a>"
+	#  https://pbs.twimg.com/media/DejvR6dUwAActHc.jpg
+	#  https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
+	#  https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
+	#  
+	# TODO Pattern best guess from Screenshot and the other examples
+	# 
+	die "[FATAL] Goodreads if over capacity. Continue later to ensure data quality."
+		if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
+
+	
+	# "<?>Goodreads is down for maintenance.</?>
+	#  <?>We expect to be back within minutes. Please try again soon!<?>
+	#  <a ...>Get the latest on Twitter</a>"
+	#  https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
+	#  https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
+	#  
+	# TODO Pattern best guess given the other examples
+	# 
+	die "[FATAL] Goodreads is down for maintenance. Continue later."
+		if $html =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;
+	
+	
+	return 1;  # Allow caching etc
+}
+
+
+
+
 =head2 C<string> _html( I<$url> )
 
 =over
 
 =item * HTML body of a web document
+
+=item * might stop process on severe problems
 
 =back
 
@@ -734,12 +806,13 @@ sub _html
 	my $curl_ret = $curl->perform;
 	$result      = $buf;
 	
-	die "FATAL: $curl_ret " 
-	          . $curl->strerror( $curl_ret ) . " " 
-	          . $curl->errbuf
+	die "[FATAL] $curl_ret " 
+	           . $curl->strerror( $curl_ret ) . " " 
+	           . $curl->errbuf
 		unless $curl_ret == 0;
-	
-	$_cache->set( $url, $result, $_cache_age );
+		
+	# Don't cache error pages for the URL, but don't stop, though
+	$_cache->set( $url, $result, $_cache_age ) if _check_page( $url, $result );
 	
 	return $result;
 }
