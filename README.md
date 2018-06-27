@@ -50,7 +50,7 @@ to people who don't know Linux etc. You probably won't need this directory.
 ## further reading 
 
 - [A few things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
-- [Official group for developers on Goodreads](https://www.goodreads.com/group/show/8095-goodreads-developers)
+- [Official group for developers on Goodreads](https://www.goodreads.com/group/show/8095-goodreads-developers) or [here](https://www.goodreads.com/group/show/351159-goodreads-dev)
 - [Goodreads technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt)
 - [Crunchbase on Goodreads](https://www.crunchbase.com/organization/goodreads), incl. Recent News & Activity 
 
