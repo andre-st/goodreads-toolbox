@@ -45,7 +45,7 @@ Writing results to "friendrated-1234567.html"... 271 books (0.31s)
 Total time: 18 minutes
 ```
 
-### Note:
+**Note:**
 
 You can break the process with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later without having to re-read all
 online sources again, as reading from Goodreads.com is very time consuming.
