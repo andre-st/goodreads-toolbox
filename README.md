@@ -59,5 +59,5 @@ These programs are never as performant and usable as native Goodreads solutions
 with direct _unthrottled_ access to their databases and seamless integration 
 with their user interface etc. It's the poor man's version and rather prototypish to see 
 if it's any good at all. 
-I avoid developing features I won’t personally use because I won’t notice when they break.
+Furthermore, I avoid developing features I won’t personally use because I won’t notice when they break.
 I only unit-test the base library.
