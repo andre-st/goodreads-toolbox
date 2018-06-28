@@ -33,9 +33,3 @@ EUR 0,10   Politik als Beruf
 2. Perl ist oft vorinstalliert
 3. amz-tradein.pl ausführbar machen (chmod +x) und starten, Hilfe erscheint
 4. bei Startfehler evtl. das Perl-Modul WWW::Curl::Easy z.B. über [cpan](http://perl.about.com/od/packagesmodules/qt/perlcpan.htm) installieren
-
-
-## Nutzungslizenz
-Creative Commons BY-SA
-
-
