@@ -71,11 +71,6 @@ friends of that person (depends on used cookie).
 Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](AUTHORS.md) file
 
 
-## Licence
-
-Creative Commons BY-SA
-
-
 ## See also
 
 - [likeminded.pl](likeminded.md) - Find Goodreads members with similar book taste
