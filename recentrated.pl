@@ -52,7 +52,7 @@ our $MAX_REVURLS_PER_BOOK = 2;
 sub pretty_url { return sprintf '%-36s', substr( shift, 8 ); }
 
 # effect in dev/debugging only
-set_good_cache( '4 hours' );
+# set_good_cache( '4 hours' );
 
 
 
