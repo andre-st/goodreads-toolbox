@@ -30,8 +30,8 @@ Goodscrapes - Simple Goodreads.com scraping helpers
         actually broke since 2014 (I started this);
         actually their API seems to change more often than
         their web pages; they can and do disable API functions 
-        without being noticed by the more important users, they 
-        cannot easily disable important webpages that we use
+        without being noticed by the majority, but they cannot
+        easily disable important webpages that we use too
 
 =back
 
@@ -248,7 +248,7 @@ https://github.com/andre-st/
 
 =head2 C<string> _author_books_url( I<$user_id, $page_number> )
 
-=head2 C<string> amz_url( I<L<%book|"%book">> )
+=head2 C<string> _amz_url( I<L<%book|"%book">> )
 
 =over
 

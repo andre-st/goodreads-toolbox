@@ -434,7 +434,7 @@ sub _author_books_url
 
 
 
-=head2 C<string> amz_url( I<L<%book|"%book">> )
+=head2 C<string> _amz_url( I<L<%book|"%book">> )
 
 =over
 
@@ -444,7 +444,7 @@ sub _author_books_url
 
 =cut
 
-sub amz_url
+sub _amz_url
 {
 	my $book = shift;
 	return $book->{isbn} ? 'http://www.amazon.de/gp/product/' . $book->{isbn} : undef;
@@ -465,7 +465,7 @@ sub amz_url
 
 sub amz_book_html
 {
-	return _html( amz_url( shift ) );
+	return _html( _amz_url( shift ) );
 }
 
 
