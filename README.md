@@ -54,12 +54,3 @@ to people who don't know Linux etc. You probably won't need this directory.
 - [Goodreads technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt)
 - [Crunchbase on Goodreads](https://www.crunchbase.com/organization/goodreads), incl. Recent News & Activity 
 
-
-## modest remark
-
-These programs are never as performant and usable as native Goodreads solutions
-with direct _unthrottled_ access to their databases and seamless integration 
-with their user interface etc. It's the poor man's version and rather prototypish to see 
-if it's any good at all. 
-Furthermore, I avoid developing features I won’t personally use because I won’t notice when they break.
-I only unit-test the base library.
