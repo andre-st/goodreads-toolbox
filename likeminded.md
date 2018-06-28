@@ -72,6 +72,7 @@ and saves to /tmp/FileCache/.
 
 ## Observations and serious limitations
 
+**Latest version:**
 - maximum of 300 members per book; this means there is a huge number of readers 
   not considered in our statistics, but 300 is better than nothing; everything else
   requires full access to the Goodreads database or indexing millions of members 

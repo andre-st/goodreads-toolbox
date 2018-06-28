@@ -12,23 +12,23 @@ Checks all the books in a Goodreads.com shelf for new ratings and notifies you
 via e-mail. This helps discover new users with quality libraries.
 You can [subscribe there](https://andre-st.github.io/goodreads/) if you don't
 want to install anything.
-It's a poor man's solution to the "follow book" feature request in the Goodreads forums. 
+It's a naive implementation of the "follow book" feature requested in the Goodreads forums. 
 [Learn more](recentrated.md)
 
 
 ## [friendrated.pl](friendrated.md)
 
 Prints all books which have been rated 4 or 5 stars by 3 or more persons you
-follow (including friends). It's a poor man's solution to the "books common
-among the people I follow" feature request in the Goodreads forums.
+follow (including friends). It's a naive implementation of the "books common
+among the people I follow" feature requested in the Goodreads forums.
 [Learn more](friendrated.md)
 
 
 ## [likeminded.pl](likeminded.md)
 
 Prints Goodreads members who are interested in the same books as you.
-It's a poor man's solution to the "Finding people based on the books they've read"
-feature request in the Goodreads forums.
+It's a naive implementation of the "Finding people based on the books they've read"
+feature requested in the Goodreads forums.
 [Learn more](likeminded.md)
 
 
@@ -50,12 +50,7 @@ to people who don't know Linux etc. You probably won't need this directory.
 ## further reading 
 
 - [A few things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
+- [Official group for developers on Goodreads](https://www.goodreads.com/group/show/8095-goodreads-developers) or [here](https://www.goodreads.com/group/show/351159-goodreads-dev) or [here](https://www.goodreads.com/group/show/216431-think-big-book-club)
+- [Goodreads technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt)
+- [Crunchbase on Goodreads](https://www.crunchbase.com/organization/goodreads), incl. Recent News & Activity 
 
-
-## modest remark
-
-These programs are never as performant and usable as native Goodreads solutions
-with direct _unthrottled_ access to their databases and seamless integration 
-with their user interface etc. 
-I avoid developing features I won’t personally use because I won’t notice when they break.
-I only unit-test the base library.

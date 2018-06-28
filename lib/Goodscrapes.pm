@@ -43,8 +43,8 @@ our $VERSION = '1.74';  # X.XX version format required by Perl
         actually broke since 2014 (I started this);
         actually their API seems to change more often than
         their web pages; they can and do disable API functions 
-        without being noticed by the more important users, they 
-        cannot easily disable important webpages that we use
+        without being noticed by the majority, but they cannot
+        easily disable important webpages that we use too
 
 =back
 
@@ -750,7 +750,7 @@ sub _check_page
 	#  
 	# TODO Pattern best guess from Screenshot and the other examples
 	# 
-	die "[FATAL] Goodreads if over capacity. Continue later to ensure data quality."
+	die "[FATAL] Goodreads is over capacity. Continue later to ensure data quality."
 		if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
 
 	
