@@ -102,11 +102,6 @@ and saves to /tmp/FileCache/.
 Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](AUTHORS.md) file
 
 
-## Licence
-
-Creative Commons BY-SA
-
-
 ## See also
 
 - [friendrated.pl](friendrated.md) - Books common among the people I follow
