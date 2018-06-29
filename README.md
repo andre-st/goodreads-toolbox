@@ -53,4 +53,4 @@ to people who don't know Linux etc. You probably won't need this directory.
 - [official group for developers on Goodreads](https://www.goodreads.com/group/show/8095-goodreads-developers) or [here](https://www.goodreads.com/group/show/351159-goodreads-dev) or [here](https://www.goodreads.com/group/show/216431-think-big-book-club)
 - [Goodreads technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt)
 - [Crunchbase on Goodreads](https://www.crunchbase.com/organization/goodreads), incl. Recent News & Activity 
-- [André's Goodreads account](https://www.goodreads.com/user/show/18418712-andr)
+- [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
