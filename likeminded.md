@@ -43,8 +43,8 @@ Loading books of 95 authors:
 [  2%] Lohoff, Ernst              #1339033    4 books    0.05s
 [  3%] Huang, Andrew "bunnie"     #2949412    6 books    0.04s
 [  4%] Pullum, Laura L.           #476506     2 books    0.05s
+[  5%] Patri, Giacomo             #379757     3 books    0.04s
 ...
-[ 98%] Patri, Giacomo             #379757     3 books    0.04s
 [100%] Fertl, Herbert L.          #16159494   1 books    0.03s
 Done.
 Loading reviews for 1625 author books:
@@ -52,8 +52,8 @@ Loading reviews for 1625 author books:
 [  0%] What is an Author?                        #18456429    277 memb    0.05s
 [  1%] Aesthetics, Method, and Epistemology      #80386       217 memb    0.03s
 [  1%] White Collar                              #3343671      49 memb    0.04s
+[  1%] Gravures Rebelles: 4 Romans Graphiques    #12369034      2 memb    0.00s
 ...
-[ 99%] Gravures Rebelles: 4 Romans Graphiques    #12369034      2 memb    0.00s
 [100%] Abweichende Meinungen zu Israel           #33257775      1 memb    0.01s
 Done.
 Writing members (N=39129) with 5% similarity or better to "likeminded-18418712.html"...
