@@ -52,6 +52,6 @@ to people who don't know Linux etc. You probably won't need this directory.
 - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
 - [GR developers group](https://www.goodreads.com/group/show/8095-goodreads-developers) or [here](https://www.goodreads.com/group/show/351159-goodreads-dev) or [here](https://www.goodreads.com/group/show/216431-think-big-book-club)
 - [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt)
-- [Glassdoor on GR](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), workplace reviews by anon. employees
+- [GR workplace reviews](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), anonymously on Glassdoor
 - [Crunchbase on GR](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
 - [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
