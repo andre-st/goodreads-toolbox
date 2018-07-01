@@ -256,6 +256,7 @@ sub test_good_cookie()
 	# TODO: call in set_good_cookie() or by the lib-user separately?
 	
 	say STDERR "[WARN] Not yet implemented: test_good_cookie()";
+	return 1;
 }
 
 
