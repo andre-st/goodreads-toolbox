@@ -299,6 +299,8 @@ https://github.com/andre-st/
 
 =item * maintenance mode: scraping process dies
 
+=back
+
 =head2 C<string> _html( I<$url> )
 
 =over

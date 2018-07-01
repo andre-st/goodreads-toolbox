@@ -741,6 +741,8 @@ sub _extract_reviews
 
 =item * maintenance mode: scraping process dies
 
+=back
+
 =cut
 
 sub _check_page
