@@ -160,6 +160,14 @@ https://github.com/andre-st/
 
 =head2 C<void> set_good_cookie_file( I<$path_to_cookie_file = '.cookie'> )
 
+=head2 C<bool> test_good_cookie()
+
+=over
+
+=item * not supported at the moment
+
+=back
+
 =head2 C<void> set_good_cache( I<$maximum_age_in_words> )
 
 =over
@@ -281,6 +289,9 @@ https://github.com/andre-st/
 =item * sign-in page (https://www.goodreads.com/user/sign_in) or in-page message: warn and continue
 
 =item * page unavailable, Goodreads request took too long: warn and continue
+
+=item * page unavailable, An unexpected error occurred. We will investigate this problem as soon 
+        as possible — please check back soon!: scraping process dies as this will show up for subsequent URLs too
 
 =item * page not found: warn and continue
 

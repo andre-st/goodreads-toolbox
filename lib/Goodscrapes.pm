@@ -240,6 +240,27 @@ sub set_good_cookie_file
 
 
 
+=head2 C<bool> test_good_cookie()
+
+=over
+
+=item * not supported at the moment
+
+=back
+
+=cut
+
+sub test_good_cookie()
+{
+	# TODO: check against a page that needs sign-in
+	# TODO: call in set_good_cookie() or by the lib-user separately?
+	
+	say STDERR "[WARN] Not yet implemented: test_good_cookie()";
+}
+
+
+
+
 =head2 C<void> set_good_cache( I<$maximum_age_in_words> )
 
 =over
