@@ -228,7 +228,7 @@ sub set_good_cookie_file
 	my $path = shift || $COOKIEPATH;
 	local $/=undef;
 	open my $fh, "<", $path or die
-			"FATAL: Please save a Goodreads cookie to \"$path\". ".
+			"[FATAL] Please save a Goodreads cookie to \"$path\". ".
 			"Copy the cookie, for example, from Chrome's DevTools Network-view: ".
 			"https://www.youtube.com/watch?v=o_CYdZBPDCg";
 	
@@ -710,6 +710,9 @@ sub _extract_reviews
 
 =item * page unavailable, Goodreads request took too long: warn and continue
 
+=item * page unavailable, An unexpected error occurred. We will investigate this problem as soon 
+        as possible — please check back soon!: scraping process dies as this will show up for subsequent URLs too
+
 =item * page not found: warn and continue
 
 =item * over capacity: scraping process dies
@@ -736,6 +739,10 @@ sub _check_page
 	say STDERR "[WARN] Not found: $url"
 		and return 0
 			if $html =~ /<head>\s*<title>\s*Page not found\s*<\/title>/s;
+	
+	
+	die "[FATAL] Goodreads encountered an unexpected error. Continue later to ensure data quality."
+		if $html =~ /<head>\s*<title>\s*Goodreads - unexpected error\s*<\/title>/s;
 	
 	
 	# "<?>Goodreads is over capacity.</?> 
