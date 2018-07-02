@@ -19,7 +19,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-06-27
+=item * Updated: 2018-07-02
 
 =item * Since: 2014-11-05
 
@@ -27,7 +27,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =cut
 
-our $VERSION = '1.74';  # X.XX version format required by Perl
+our $VERSION = '1.75';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -295,7 +295,9 @@ sub test_good_cookie()
 
 =item * e.g., during development time
 
-=item * e.g., during long running sessions (cheap recovery on crash or pause)
+=item * e.g., during long running sessions (cheap recovery on crash, power blackout or pauses)
+
+=item * if process is to repeat with different parameters
 
 =item * pass something like C<"60 minutes">, C<"6 hours">, C<"6 days">
 
@@ -751,16 +753,17 @@ sub _extract_reviews
 
 =over
 
-=item * sign-in page (https://www.goodreads.com/user/sign_in) or in-page message: warn and continue
+=item * warns if sign-in page (https://www.goodreads.com/user/sign_in) or in-page message
 
-=item * page unavailable, Goodreads request took too long: warn and continue
+=item * warns if "page unavailable, Goodreads request took too long"
 
-=item * page unavailable, An unexpected error occurred. We will investigate this problem as soon 
-        as possible — please check back soon!: scraping process dies as this will show up for subsequent URLs too
+=item * warns if "page not found"  #TODO
 
-=item * page not found: warn and continue
+=item * dies if page unavailable: "An unexpected error occurred. 
+        We will investigate this problem as soon as possible — please 
+        check back soon!"
 
-=item * over capacity: scraping process dies
+=item * dies if over capacity:
 	 "<?>Goodreads is over capacity.</?> 
 	  <?>You can never have too many books, but Goodreads can sometimes
 	  have too many visitors. Don't worry! We are working to increase 
@@ -771,7 +774,7 @@ sub _extract_reviews
 	  https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
 	  https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
 	  
-=item * maintenance mode: scraping process dies
+=item * dies if maintenance mode:
 	 "<?>Goodreads is down for maintenance.</?>
 	  <?>We expect to be back within minutes. Please try again soon!<?>
 	  <a ...>Get the latest on Twitter</a>"
@@ -791,7 +794,6 @@ sub _check_page
 	# in his review or a book title. Characters such as < and > are 
 	# encoded in user texts:
 	
-	
 	say STDERR "[WARN] Sign-in for $url => Cookie invalid or not set: set_good_cookie_file()"
 		and return 0
 			if $html =~ /<head>\s*<title>\s*Sign in\s*<\/title>/s;
@@ -807,11 +809,13 @@ sub _check_page
 	
 	
 	die "[FATAL] Goodreads is over capacity. Continue later to ensure data quality."
-		if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;   # TODO guessed pattern
+		if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
+		# TODO guessed pattern
 	
 	
 	die "[FATAL] Goodreads is down for maintenance. Continue later."
-		if $html =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;  # TODO guessed pattern
+		if $html =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;
+		# TODO guessed pattern
 	
 	
 	return 1;  # Allow caching etc

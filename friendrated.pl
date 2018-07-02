@@ -46,12 +46,7 @@ our $TSTART      = time();
 
 # Followed and friend list is private, some 'Read' shelves are private
 set_good_cookie_file();  
-
-# Don't scrape everything again on mistakes or parameter changes or power
-# blackout or when I break ^C and continue at a later timepoint.
 set_good_cache( '21 days' );
-
-# Don't wait for \n
 STDOUT->autoflush( 1 );
 
 
@@ -116,14 +111,11 @@ print "Writing results to \"$OUTPATH\"... ";
 my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "FATAL: Cannot write to $OUTPATH ($!)";
 my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 
-
 print $fh qq{
 		<!DOCTYPE html>
 		<html>
 		<head>
-		<title>
-		  Books common among friends and followees
-		</title>
+		<title> Books common among friends and followees </title>
 		</head>
 		<body style="font-family: sans-serif;">
 		<table border="1" width="100%" cellpadding="6">
@@ -134,10 +126,10 @@ print $fh qq{
 		  $GOODUSER, on $now
 		</caption>
 		<tr>
-		<th>#</th>  
-		<th>Cover</th>  
-		<th>Title</th>  
-		<th>Rated</th>  
+		<th>#</th> 
+		<th>Cover</th>
+		<th>Title</th>
+		<th>Rated</th>
 		<th>Rated by</th>
 		</tr>
 		};
@@ -156,14 +148,16 @@ foreach my $bid (sort { scalar keys $faved_for{$b} <=>
 			<tr>
 			<td          >$num_finds</td>
 			<td><img src="$books{$bid}->{img_url}"></td>
-			<td><a  href="$books{$bid}->{url}" target="_blank">$books{$bid}->{title}</a></td>
+			<td><a  href="$books{$bid}->{url}" target="_blank"
+			             >$books{$bid}->{title}</a></td>
 			<td          >${num_favorers}x</td>
 			<td>
 			};
 	
 	print $fh qq{
 			<a  href="$people{$_}->{url}"     target="_blank">
-			<img src="$people{$_}->{img_url}" title="$people{$_}->{name}">
+			<img src="$people{$_}->{img_url}" 
+			   title="$people{$_}->{name}">
 			</a>
 			} foreach (@favorer_ids);
 	

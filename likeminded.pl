@@ -136,9 +136,7 @@ print $fh qq{
 		<!DOCTYPE html>
 		<html>
 		<head>
-		<title>
-		  Goodreads members with similar taste
-		</title>
+		<title> Goodreads members with similar taste </title>
 		<style>
 		td div 
 		{
