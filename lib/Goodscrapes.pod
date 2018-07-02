@@ -148,6 +148,16 @@ https://github.com/andre-st/
 
 
 
+=head2 C<bool> is_bad_author( I<$user_id> )
+
+=over
+
+=item * authors blacklist
+
+=item * "NOT A BOOK" authors (3.000+ books)
+
+=back
+
 =head2 C<void> set_good_cookie( I<$cookie_content_str> )
 
 =over
@@ -296,9 +306,23 @@ https://github.com/andre-st/
 =item * page not found: warn and continue
 
 =item * over capacity: scraping process dies
-
+	 "<?>Goodreads is over capacity.</?> 
+	  <?>You can never have too many books, but Goodreads can sometimes
+	  have too many visitors. Don't worry! We are working to increase 
+	  our capacity.</?>
+	  <?>Please reload the page to try again.</?>
+	  <a ...>get the latest on Twitter</a>"
+	  https://pbs.twimg.com/media/DejvR6dUwAActHc.jpg
+	  https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
+	  https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
+	  
 =item * maintenance mode: scraping process dies
-
+	 "<?>Goodreads is down for maintenance.</?>
+	  <?>We expect to be back within minutes. Please try again soon!<?>
+	  <a ...>Get the latest on Twitter</a>"
+	  https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
+	  https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
+	  
 =back
 
 =head2 C<string> _html( I<$url> )

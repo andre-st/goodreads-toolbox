@@ -27,7 +27,7 @@ use 5.18.0;
 use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
-use POSIX qw( strftime );
+use POSIX       qw( strftime );
 use IO::File;
 use Goodscrapes;
 
@@ -58,8 +58,11 @@ my @books;
 # Load basic data:
 # 
 printf "Loading books from \"%s\" may take a while... ", $SHELF;
+
 my @user_books = query_good_books( $GOODUSER, $SHELF );
+
 printf "%d books\n", scalar @user_books;
+
 
 
 # ----------------------------------------------------------------------------
@@ -75,19 +78,20 @@ foreach my $auid (keys %authors)
 {
 	$audone++;
 	
-	next if $auid eq "1000834";  # "NOT A BOOK" author page: 3.000+ books
+	next if is_bad_author( $auid );
 	
 	printf "[%3d%%] %-25s #%-8s\t", $audone/$aucount*100, $authors{ $auid }->{name}, $auid;
 	
 	my $t0      = time();
 	my @aubooks = query_good_author_books( $auid );
-	@books      = (@books, @aubooks);
+	   @books   = (@books, @aubooks);
 	
 	$authors{ $auid } = $aubooks[0]->{author};  # Update some values, e.g., img_url @TODO ugly
 	
 	printf "%3d books\t%6.2fs\n", scalar @aubooks, time()-$t0;
 }
 say "Done.";
+
 
 
 # ----------------------------------------------------------------------------
@@ -112,9 +116,11 @@ foreach my $b (@books)
 say "Done.";
 
 
+
 # ----------------------------------------------------------------------------
 # Check members for bots, private accounts etc:
 # 
+
 
 
 # ----------------------------------------------------------------------------

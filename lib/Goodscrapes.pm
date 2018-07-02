@@ -77,6 +77,7 @@ https://github.com/andre-st/
 
 use base 'Exporter';
 our @EXPORT = qw( 
+		is_bad_author
 		set_good_cookie 
 		set_good_cookie_file 
 		set_good_cache 
@@ -196,6 +197,28 @@ our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
 
 
 =head1 SUBROUTINES
+
+
+
+=head2 C<bool> is_bad_author( I<$user_id> )
+
+=over
+
+=item * authors blacklist
+
+=item * "NOT A BOOK" authors (3.000+ books)
+
+=back
+
+=cut
+
+sub is_bad_author
+{
+	my $auid = shift;
+	return 1 if $auid eq "1000834";  # "NOT A BOOK" 
+	return 0;
+}
+
 
 
 
@@ -738,9 +761,23 @@ sub _extract_reviews
 =item * page not found: warn and continue
 
 =item * over capacity: scraping process dies
-
+	 "<?>Goodreads is over capacity.</?> 
+	  <?>You can never have too many books, but Goodreads can sometimes
+	  have too many visitors. Don't worry! We are working to increase 
+	  our capacity.</?>
+	  <?>Please reload the page to try again.</?>
+	  <a ...>get the latest on Twitter</a>"
+	  https://pbs.twimg.com/media/DejvR6dUwAActHc.jpg
+	  https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
+	  https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
+	  
 =item * maintenance mode: scraping process dies
-
+	 "<?>Goodreads is down for maintenance.</?>
+	  <?>We expect to be back within minutes. Please try again soon!<?>
+	  <a ...>Get the latest on Twitter</a>"
+	  https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
+	  https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
+	  
 =back
 
 =cut
@@ -769,32 +806,12 @@ sub _check_page
 		if $html =~ /<head>\s*<title>\s*Goodreads - unexpected error\s*<\/title>/s;
 	
 	
-	# "<?>Goodreads is over capacity.</?> 
-	#  <?>You can never have too many books, but Goodreads can sometimes
-	#  have too many visitors. Don't worry! We are working to increase 
-	#  our capacity.</?>
-	#  <?>Please reload the page to try again.</?>
-	#  <a ...>get the latest on Twitter</a>"
-	#  https://pbs.twimg.com/media/DejvR6dUwAActHc.jpg
-	#  https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
-	#  https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
-	#  
-	# TODO Pattern best guess from Screenshot and the other examples
-	# 
 	die "[FATAL] Goodreads is over capacity. Continue later to ensure data quality."
-		if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
-
+		if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;   # TODO guessed pattern
 	
-	# "<?>Goodreads is down for maintenance.</?>
-	#  <?>We expect to be back within minutes. Please try again soon!<?>
-	#  <a ...>Get the latest on Twitter</a>"
-	#  https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
-	#  https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
-	#  
-	# TODO Pattern best guess given the other examples
-	# 
+	
 	die "[FATAL] Goodreads is down for maintenance. Continue later."
-		if $html =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;
+		if $html =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;  # TODO guessed pattern
 	
 	
 	return 1;  # Allow caching etc
