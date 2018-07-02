@@ -10,7 +10,7 @@ friendrated.pl
 
 =head1 VERSION
 	
-2018-06-25 (Since 2018-05-10)
+2018-07-02 (Since 2018-05-10)
 
 =head1 ABOUT
 

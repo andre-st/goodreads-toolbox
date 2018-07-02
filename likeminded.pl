@@ -10,7 +10,7 @@ likeminded.pl
 
 =head1 VERSION
 	
-2018-06-23 (Since 2018-06-23)
+2018-07-02 (Since 2018-06-22)
 
 =head1 ABOUT
 
