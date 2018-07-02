@@ -302,30 +302,30 @@ https://github.com/andre-st/
 
 =item * warns if "page unavailable, Goodreads request took too long"
 
-=item * warns if "page not found"  #TODO
+=item * warns if "page not found" (TODO)
 
 =item * dies if page unavailable: "An unexpected error occurred. 
         We will investigate this problem as soon as possible — please 
         check back soon!"
 
-=item * dies if over capacity:
-	 "<?>Goodreads is over capacity.</?> 
-	  <?>You can never have too many books, but Goodreads can sometimes
-	  have too many visitors. Don't worry! We are working to increase 
-	  our capacity.</?>
-	  <?>Please reload the page to try again.</?>
-	  <a ...>get the latest on Twitter</a>"
-	  https://pbs.twimg.com/media/DejvR6dUwAActHc.jpg
-	  https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
-	  https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
-	  
-=item * dies if maintenance mode:
-	 "<?>Goodreads is down for maintenance.</?>
-	  <?>We expect to be back within minutes. Please try again soon!<?>
-	  <a ...>Get the latest on Twitter</a>"
-	  https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
-	  https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
-	  
+=item * dies if over capacity (TODO UNTESTED):
+        "<?>Goodreads is over capacity.</?> 
+        <?>You can never have too many books, but Goodreads can sometimes
+        have too many visitors. Don't worry! We are working to increase 
+        our capacity.</?>
+        <?>Please reload the page to try again.</?>
+        <a ...>get the latest on Twitter</a>"
+        https://pbs.twimg.com/media/DejvR6dUwAActHc.jpg
+        https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
+        https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
+
+=item * dies if maintenance mode (TODO UNTESTED):
+        "<?>Goodreads is down for maintenance.</?>
+        <?>We expect to be back within minutes. Please try again soon!<?>
+        <a ...>Get the latest on Twitter</a>"
+        https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
+        https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
+
 =back
 
 =head2 C<string> _html( I<$url> )

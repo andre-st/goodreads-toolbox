@@ -99,9 +99,8 @@ use Time::Piece;  # Core module, no extra install
 our $USERAGENT  = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
 our $COOKIEPATH = '.cookie';
 our $_cookie    = undef;
-our $_cache     = new Cache::FileCache();
 our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
-
+our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 
 =head1 DATA STRUCTURES
@@ -757,30 +756,30 @@ sub _extract_reviews
 
 =item * warns if "page unavailable, Goodreads request took too long"
 
-=item * warns if "page not found"  #TODO
+=item * warns if "page not found" (TODO)
 
 =item * dies if page unavailable: "An unexpected error occurred. 
         We will investigate this problem as soon as possible — please 
         check back soon!"
 
-=item * dies if over capacity:
-	 "<?>Goodreads is over capacity.</?> 
-	  <?>You can never have too many books, but Goodreads can sometimes
-	  have too many visitors. Don't worry! We are working to increase 
-	  our capacity.</?>
-	  <?>Please reload the page to try again.</?>
-	  <a ...>get the latest on Twitter</a>"
-	  https://pbs.twimg.com/media/DejvR6dUwAActHc.jpg
-	  https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
-	  https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
-	  
-=item * dies if maintenance mode:
-	 "<?>Goodreads is down for maintenance.</?>
-	  <?>We expect to be back within minutes. Please try again soon!<?>
-	  <a ...>Get the latest on Twitter</a>"
-	  https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
-	  https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
-	  
+=item * dies if over capacity (TODO UNTESTED):
+        "<?>Goodreads is over capacity.</?> 
+        <?>You can never have too many books, but Goodreads can sometimes
+        have too many visitors. Don't worry! We are working to increase 
+        our capacity.</?>
+        <?>Please reload the page to try again.</?>
+        <a ...>get the latest on Twitter</a>"
+        https://pbs.twimg.com/media/DejvR6dUwAActHc.jpg
+        https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
+        https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
+
+=item * dies if maintenance mode (TODO UNTESTED):
+        "<?>Goodreads is down for maintenance.</?>
+        <?>We expect to be back within minutes. Please try again soon!<?>
+        <a ...>Get the latest on Twitter</a>"
+        https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
+        https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
+
 =back
 
 =cut
@@ -798,24 +797,18 @@ sub _check_page
 		and return 0
 			if $html =~ /<head>\s*<title>\s*Sign in\s*<\/title>/s;
 	
-	
 	say STDERR "[WARN] Not found: $url"
 		and return 0
 			if $html =~ /<head>\s*<title>\s*Page not found\s*<\/title>/s;
 	
-	
 	die "[FATAL] Goodreads encountered an unexpected error. Continue later to ensure data quality."
 		if $html =~ /<head>\s*<title>\s*Goodreads - unexpected error\s*<\/title>/s;
 	
-	
 	die "[FATAL] Goodreads is over capacity. Continue later to ensure data quality."
 		if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
-		# TODO guessed pattern
-	
 	
 	die "[FATAL] Goodreads is down for maintenance. Continue later."
 		if $html =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;
-		# TODO guessed pattern
 	
 	
 	return 1;  # Allow caching etc
@@ -843,7 +836,9 @@ sub _html
 	my $buf;
 	my $result;
 	
-	$result = $_cache->get( $url );
+	$result = $_cache->get( $url ) 
+		if $_cache_age ne $EXPIRES_NOW;
+	
 	return $result if defined $result;
 	
 	$curl->setopt( $curl->CURLOPT_URL,            $url  );
@@ -864,7 +859,8 @@ sub _html
 		unless $curl_ret == 0;
 		
 	# Don't cache error pages for the URL, but don't stop, though
-	$_cache->set( $url, $result, $_cache_age ) if _check_page( $url, $result );
+	$_cache->set( $url, $result, $_cache_age ) 
+		if _check_page( $url, $result );
 	
 	return $result;
 }
