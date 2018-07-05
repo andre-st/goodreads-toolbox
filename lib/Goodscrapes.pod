@@ -11,7 +11,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-07-05
+=item * Updated: 2018-07-06
 
 =item * Since: 2014-11-05
 
