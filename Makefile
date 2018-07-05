@@ -22,7 +22,7 @@ base :
 ## make dev        :  Setups .git directory (symlinks ./git-hooks etc)
 .PHONY : dev
 dev :
-	@echo "TODO"
+	ln -s ../../git-hooks/pre-commit ./.git/hooks/pre-commit
 
 
 ## make friendrated:  Installs Perl modules
@@ -49,7 +49,7 @@ recentrated : base recentrated.pl
 
 
 ## make all        :  Installs all programs
-all : recentrated friendrated likeminded similarauth
+all : dev recentrated friendrated likeminded similarauth
 
 
 ## make uninstall  :  Deletes work and log files in /var
