@@ -3,7 +3,7 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
 
-## Finding _all_ similar authors
+## Finding all similar authors
 
 From the _Goodreads Feedback_ forum, 
 [Anne (2018)](https://www.goodreads.com/topic/show/19438988-finding-similar-authors):
@@ -38,11 +38,6 @@ Loading similar authors for 96 authors:
 [  5%] Dillmann, Renate          #9835498	  0 similar	  0.00s
 [  6%] Decker, Peter             #361391	  0 similar	  0.00s
 [  7%] Bockelmann, Eske          #6219827	  0 similar	  0.00s
-[  8%] Sanglard, Fabien          #7456185	  0 similar	  0.00s
-[  9%] Kraft, Philip             #1180805	  0 similar	  0.00s
-[ 10%] Koop, Andreas             #4166708	  0 similar	  0.00s
-[ 11%] Gerrard, Paul             #3170891	  0 similar	  0.00s
-[ 12%] Zinsmeister, Annett       #5828020	  0 similar	  0.00s
 ...
 [ 99%] Rubinštejn, Alexander N. #9879051	  0 similar	  0.00s
 [100%] O'Neill, Ryan "Elfmaster" #15065556	  0 similar	  0.00s
@@ -61,7 +56,7 @@ and saves to /tmp/FileCache/.
 
 
 
-## Observations and serious limitations
+## Observations and limitations
 
 - many authors (in my shelf) have no similar authors (data from Goodreads)
 
