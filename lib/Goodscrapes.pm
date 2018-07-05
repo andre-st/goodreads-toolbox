@@ -235,7 +235,7 @@ sub require_good_userid
 
 =item * returns a shelf which includes all books if no name given
 
-=item * kill current process with error message if malformed name
+=item * kills the current process with an error message if name is malformed
 
 =back
 
