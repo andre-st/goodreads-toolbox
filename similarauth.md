@@ -30,16 +30,16 @@ $ ./likeminded.pl YOURGOODUSERNUMBER [OPTIONAL_SHELFNAME_WITH_SELECTED_BOOKS]
 
 Loading books from "ALL" may take a while... 108 books
 Loading similar authors for 96 authors:
-[  0%] Huhn, Willy               #17326001	  0 similar	  0.00s
-[  1%] Gse, Don Murdoch          #8506208	 24 similar	  0.00s
-[  2%] Foucault, Michel          #1260		 19 similar	  0.00s
-[  3%] Siedersleben, Johannes    #1878894	  0 similar	  0.00s
-[  4%] Mattheck, Claus           #1960		  0 similar	  0.00s
-[  5%] Dillmann, Renate          #9835498	  0 similar	  0.00s
-[  6%] Decker, Peter             #361391	  0 similar	  0.00s
-[  7%] Bockelmann, Eske          #6219827	  0 similar	  0.00s
+[  0%] Huhn, Willy               #17326001	  0 similar	  2.56s
+[  1%] Gse, Don Murdoch          #8506208	 24 similar	  2.13s
+[  2%] Foucault, Michel          #1260		 19 similar	  2.41s
+[  3%] Siedersleben, Johannes    #1878894	  0 similar	  1.11s
+[  4%] Mattheck, Claus           #1960		  0 similar	  1.43s
+[  5%] Dillmann, Renate          #9835498	  0 similar	  1.51s
+[  6%] Decker, Peter             #361391	  0 similar	  2.12s
+[  7%] Bockelmann, Eske          #6219827	  0 similar	  2.20s
 ...
-[100%] O'Neill, Ryan "Elfmaster" #15065556	  0 similar	  0.00s
+[100%] O'Neill, Ryan "Elfmaster" #15065556	  0 similar	  2.43s
 Done.
 Writing authors (N=360) to "similarauth-18418712.html"...
 Total time: 8 minutes
