@@ -32,6 +32,14 @@ feature requested in the Goodreads forums.
 [Learn more](likeminded.md)
 
 
+## [similarauth.pl](similarauth.md)
+
+Prints authors who Goodreads thinks are similar to all the authors you're reading.
+It's a naive implementation of the "Finding [all] similar authors"
+feature requested in the Goodreads forums.
+[Learn more](likeminded.md)
+
+
 ## ~~[amz-tradein.pl](amz-tradein.md)~~
 
 This script fetched Amazon Trade-In prices for all books in a Goodreads.com

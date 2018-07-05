@@ -34,6 +34,8 @@ our $VERSION = '1.75';  # X.XX version format required by Perl
 
 =over
 
+=item * focuses on analysing, not updating info on GR
+
 =item * less limited, e.g., reading shelves and reviews of other members
 
 =item * official API is slow too; API users are even second-class citizen
@@ -85,6 +87,7 @@ our @EXPORT = qw(
 		query_good_books 
 		query_good_user
 		query_good_author_books
+		query_similar_authors
 		query_good_reviews
 		query_good_followees );
 
@@ -96,11 +99,12 @@ use Cache::FileCache;
 use Time::Piece;  # Core module, no extra install
 
 
-our $USERAGENT  = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
-our $COOKIEPATH = '.cookie';
-our $_cookie    = undef;
-our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
-our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
+our $USERAGENT    = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
+our $COOKIEPATH   = '.cookie';
+our $NOUSERIMGURL = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png';
+our $_cookie      = undef;
+our $_cache_age   = $EXPIRES_NOW;  # see set_good_cache()
+our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 
 =head1 DATA STRUCTURES
@@ -109,7 +113,8 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =over
 
-=item * never cast 'id' to int or use %d format string, despite digits only
+=item * never cast 'id' to int or use %d format string, despite digits only, 
+        compare as strings
 
 =item * don't expect all attributes set (C<undef>), this depends on context
 
@@ -499,6 +504,26 @@ sub _amz_url
 
 
 
+=head2 C<string> _similar_authors_url( I<$author_id> )
+
+=over
+
+=item * page number > N just returns same page, so no easy stop criteria;
+        not sure, if there's more than page, though
+
+=back
+
+=cut
+
+sub _similar_authors_url
+{
+	my $uid  = shift;
+	return "https://www.goodreads.com/author/similar/${uid}";
+}
+
+
+
+
 =head2 C<string> amz_book_html( I<L<%book|"%book">> )
 
 =over
@@ -543,10 +568,10 @@ sub _extract_books
 		# + Remove HTML in "Title <span style="...">(Volume 35)</span>"
 		# + Reduce "   " to " " and remove line breaks
 		# + Replace &quot; etc with " etc
-		my $tit  = $1 if $row =~ /<label>title<\/label><div class="value">\s*<a[^>]+>\s*(.*?)\s*<\/a>/s;
-		   $tit  =~ s/\<[^\>]+\>//g;
-		   $tit  =~ s/( {1,}|[\r\n])/ /g;  
-		   $tit  = decode_entities( $tit );
+		my $tit = $1 if $row =~ /<label>title<\/label><div class="value">\s*<a[^>]+>\s*(.*?)\s*<\/a>/s;
+		   $tit =~ s/\<[^\>]+\>//g;
+		   $tit =~ s/( {1,}|[\r\n])/ /g;  
+		   $tit = decode_entities( $tit );
 		
 		push @result, { 
 				id          => $id, 
@@ -581,7 +606,7 @@ sub _extract_author_books
 {
 	my $html  = shift;
 	my $auimg = $1 if $html =~ /(https:\/\/images.gr-assets.com\/authors\/.*?\.jpg)/gs;
-	   $auimg = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png' if !$auimg;
+	   $auimg = $NOUSERIMGURL if !$auimg;
 	my $auid  = $1 if $html =~ /author\/show\/([0-9]+)/;
 	my $aunm  = $1 if $html =~ /<h1>Books by ([^<]+)/;
 	   $aunm  = decode_entities( $aunm );
@@ -741,6 +766,48 @@ sub _extract_reviews
 				text       => $txt,
 				date       => $dat_tpiece,
 				book_id    => $bid };
+	}
+	return @result;
+}
+
+
+
+
+=head2 C<(L<%user|"%user">,...)> _extract_similar_authors( I<$user_id_to_skip, $similar_page_html_str> )
+
+=cut
+
+sub _extract_similar_authors
+{
+	my $uid_to_skip = shift;
+	my $html        = shift;
+	
+	my @result;
+	while( $html =~ /<li class='listElement'>(.*?)<\/li>/gs )
+	{	
+		# TODO skip first
+		
+		my $row  = $1;
+		my $auid = $1 if $row =~ /author\/show\/([0-9]+)/;
+		
+		next if $auid eq $uid_to_skip;
+		
+		my $auimg = $1 if $row =~ /(https:\/\/images\.gr-assets\.com\/authors\/[^"]+)/;
+		   $auimg = $NOUSERIMGURL if !$auimg;
+		
+		my $aunm = $1 if $row =~ /class="bookTitle" href="\/author\/show\/[^>]+>([^<]+)/;
+		   $aunm = decode_entities( $aunm );
+		   
+		push @result, {
+				id         => $auid,
+				name       => $aunm, 
+				url        => _user_url( $auid, 1 ),
+				img_url    => $auimg,
+				age        => undef,
+				is_author  => 1,
+				is_private => 0,
+				is_female  => undef,
+				is_friend  => undef };
 	}
 	return @result;
 }
@@ -945,7 +1012,7 @@ sub query_good_reviews
 
 =item * Precondition: set_good_cookie()
 
-=item * returns friends and followees
+=item * returns friends AND followees
 
 =back
 
@@ -974,6 +1041,16 @@ sub query_good_followees
 
 
 
+
+=head2 C<(L<%user|"%user">,...)> query_similar_authors( I<$author_id> )
+	
+=cut
+
+sub query_similar_authors
+{
+	my $uid = shift;
+	return _extract_similar_authors( $uid, _html( _similar_authors_url( $uid ) ) );
+}
 
 
 

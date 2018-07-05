@@ -75,3 +75,4 @@ Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](A
 
 - [likeminded.pl](likeminded.md) - Find Goodreads members with similar book taste
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
+- [similarauth.pl](similarauth.md) - Find all similar authors

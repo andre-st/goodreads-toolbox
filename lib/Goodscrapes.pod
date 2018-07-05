@@ -21,6 +21,8 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
+=item * focuses on analysing, not updating info on GR
+
 =item * less limited, e.g., reading shelves and reviews of other members
 
 =item * official API is slow too; API users are even second-class citizen
@@ -63,7 +65,8 @@ https://github.com/andre-st/
 
 =over
 
-=item * never cast 'id' to int or use %d format string, despite digits only
+=item * never cast 'id' to int or use %d format string, despite digits only, 
+        compare as strings
 
 =item * don't expect all attributes set (C<undef>), this depends on context
 
@@ -276,6 +279,15 @@ https://github.com/andre-st/
 
 =back
 
+=head2 C<string> _similar_authors_url( I<$author_id> )
+
+=over
+
+=item * page number > N just returns same page, so no easy stop criteria;
+        not sure, if there's more than page, though
+
+=back
+
 =head2 C<string> amz_book_html( I<L<%book|"%book">> )
 
 =over
@@ -293,6 +305,8 @@ https://github.com/andre-st/
 =head2 C<(L<%user|"%user">,...)> _extract_friends( I<$friends_page_html_str> )
 
 =head2 C<(L<%review|"%review">,...)> _extract_reviews( I<$since_time_piece, $reviews_xhr_html_str> )
+
+=head2 C<(L<%user|"%user">,...)> _extract_similar_authors( I<$user_id_to_skip, $similar_page_html_str> )
 
 =head2 C<bool> _check_page( I<$url, $html> )
 
@@ -356,7 +370,9 @@ https://github.com/andre-st/
 
 =item * Precondition: set_good_cookie()
 
-=item * returns friends and followees
+=item * returns friends AND followees
 
 =back
 
+=head2 C<(L<%user|"%user">,...)> query_similar_authors( I<$author_id> )
+	

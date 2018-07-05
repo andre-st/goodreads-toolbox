@@ -35,6 +35,11 @@ friendrated : base
 likeminded : base
 
 
+## make similarauth:  Installs Perl modules
+.PHONY : similarauth
+similarauth : base
+
+
 ## make recentrated:  Installs Perl modules and creates database and log in /var
 .PHONY : recentrated
 recentrated : base recentrated.pl
@@ -44,7 +49,7 @@ recentrated : base recentrated.pl
 
 
 ## make all        :  Installs all programs
-all : recentrated friendrated likeminded
+all : recentrated friendrated likeminded similarauth
 
 
 ## make uninstall  :  Deletes work and log files in /var
