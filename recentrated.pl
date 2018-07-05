@@ -38,7 +38,7 @@ say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [MAILTO] [MAILFROM]" and exit i
 
 
 # Program configuration:
-our $GOODUSER  = demand_good_userid( $ARGV[0] );
+our $GOODUSER  = require_good_userid( $ARGV[0] );
 our $GOODSHELF = $ARGV[1] || '%23ALL%23';
 our $MAILTO    = $ARGV[2];
 our $MAILFROM  = $ARGV[3];

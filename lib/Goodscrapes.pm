@@ -79,7 +79,7 @@ https://github.com/andre-st/
 
 use base 'Exporter';
 our @EXPORT = qw( 
-		demand_good_userid
+		require_good_userid
 		is_bad_author
 		set_good_cookie 
 		set_good_cookie_file 
@@ -204,7 +204,7 @@ our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =head1 SUBROUTINES
 
 
-=head2 C<bool> demand_good_userid( I<$user_id> )
+=head2 C<bool> require_good_userid( I<$user_id> )
 
 =over
 
@@ -214,7 +214,7 @@ our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =cut
 
-sub demand_good_userid
+sub require_good_userid
 {
 	my $uid = shift;
 	return $1 if $ARGV[0] =~ /(\d+)/ 

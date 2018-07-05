@@ -150,7 +150,7 @@ https://github.com/andre-st/
 =head1 SUBROUTINES
 
 
-=head2 C<bool> demand_good_userid( I<$user_id> )
+=head2 C<bool> require_good_userid( I<$user_id> )
 
 =over
 

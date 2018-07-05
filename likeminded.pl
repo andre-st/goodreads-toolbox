@@ -37,7 +37,7 @@ say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [SIMILARITY0TO100] [OUTFILE]" a
 
 
 # Program configuration:
-our $GOODUSER = demand_good_userid( $ARGV[0] );
+our $GOODUSER = require_good_userid( $ARGV[0] );
 our $SHELF    = $ARGV[1] || '%23ALL%23';
 our $MINSIMIL = $ARGV[2] || 5;  # between 0 and 100 (exact match)
 our $OUTPATH  = $ARGV[3] || "likeminded-${GOODUSER}.html";

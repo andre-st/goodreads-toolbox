@@ -37,7 +37,7 @@ say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [OUTFILE]" and exit if $#ARGV <
 
 
 # Program configuration:
-our $GOODUSER = demand_good_userid( $ARGV[0] );
+our $GOODUSER = require_good_userid( $ARGV[0] );
 our $SHELF    = $ARGV[1] || '%23ALL%23';
 our $OUTPATH  = $ARGV[2] || "similarauth-${GOODUSER}.html";
 our $TSTART   = time();
