@@ -58,6 +58,7 @@ and saves to /tmp/FileCache/.
 ## Observations and limitations
 
 - many authors (in my shelf) have no similar authors (data from Goodreads)
+- actual value of this isn't the 'seen' part but just having a long list with authors
 
 
 
