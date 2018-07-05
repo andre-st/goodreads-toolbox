@@ -109,8 +109,8 @@ say STDERR "Usage: $0 GOOD_USER_NUMBER [GOOD_SHELF]\nSee source code for more in
 
 
 # Program configuration:
-our $GOODUSER  = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
-our $GOODSHELF = $ARGV[1] || '%23ALL%23';
+our $GOODUSER = demand_good_userid( $ARGV[0] );
+our $SHELF    = $ARGV[1] || '%23ALL%23';
 
 
 
@@ -121,7 +121,7 @@ sub extract_amz_price
 }
 
 
-my @books = query_good_books( $GOODUSER, $GOODSHELF );
+my @books = query_good_books( $GOODUSER, $SHELF );
 foreach my $b (@books)
 {
 	my $price = extract_amz_price( amz_book_html( $b ) );

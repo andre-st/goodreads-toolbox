@@ -27,7 +27,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =cut
 
-our $VERSION = '1.80';  # X.XX version format required by Perl
+our $VERSION = '1.81';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -79,6 +79,7 @@ https://github.com/andre-st/
 
 use base 'Exporter';
 our @EXPORT = qw( 
+		demand_good_userid
 		is_bad_author
 		set_good_cookie 
 		set_good_cookie_file 
@@ -201,6 +202,25 @@ our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 
 =head1 SUBROUTINES
+
+
+=head2 C<bool> demand_good_userid( I<$user_id> )
+
+=over
+
+=item * returns valid Goodreads user id or kills process with an error
+
+=back
+
+=cut
+
+sub demand_good_userid
+{
+	my $uid = shift;
+	return $1 if $ARGV[0] =~ /(\d+)/ 
+		or die "[FATAL] Invalid Goodreads user ID \"$uid\". Look at your shelf URLs.";
+}
+
 
 
 

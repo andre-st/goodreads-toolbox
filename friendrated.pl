@@ -37,7 +37,7 @@ say STDERR "Usage: $0 GOODUSERNUMBER [OUTFILE] [MINFAVORERS] [MINRATING]" and ex
 
 
 # Program configuration:
-our $GOODUSER    = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
+our $GOODUSER    = demand_good_userid( $ARGV[0] );
 our $OUTPATH     = $ARGV[1] || "friendrated-${GOODUSER}.html";
 our $MINFAVORERS = $ARGV[2] || 3;
 our $MINRATING   = $ARGV[3] || 4;  # Highly rated books only (4 and 5 stars)

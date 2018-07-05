@@ -38,7 +38,7 @@ say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [MAILTO] [MAILFROM]" and exit i
 
 
 # Program configuration:
-our $GOODUSER  = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
+our $GOODUSER  = demand_good_userid( $ARGV[0] );
 our $GOODSHELF = $ARGV[1] || '%23ALL%23';
 our $MAILTO    = $ARGV[2];
 our $MAILFROM  = $ARGV[3];

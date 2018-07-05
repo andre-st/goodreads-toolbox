@@ -150,6 +150,13 @@ https://github.com/andre-st/
 =head1 SUBROUTINES
 
 
+=head2 C<bool> demand_good_userid( I<$user_id> )
+
+=over
+
+=item * returns valid Goodreads user id or kills process with an error
+
+=back
 
 =head2 C<bool> is_bad_author( I<$user_id> )
 

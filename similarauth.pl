@@ -37,7 +37,7 @@ say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [OUTFILE]" and exit if $#ARGV <
 
 
 # Program configuration:
-our $GOODUSER = $1 if $ARGV[0] =~ /(\d+)/ or die "FATAL: Invalid Goodreads user ID";
+our $GOODUSER = demand_good_userid( $ARGV[0] );
 our $SHELF    = $ARGV[1] || '%23ALL%23';
 our $OUTPATH  = $ARGV[2] || "similarauth-${GOODUSER}.html";
 our $TSTART   = time();
@@ -78,14 +78,15 @@ foreach my $auid (keys %known_authors)
 	$audone++;
 	next if is_bad_author( $auid );
 
-	printf "[%3d%%] %-25s #%-8s\t", $audone/$aucount*100, $known_authors{ $auid }->{name}, $auid;
+	printf "[%3d%%] %-25s #%-8s\t", $audone/$aucount*100, 
+				$known_authors{ $auid }->{name}, $auid;
 	
 	my $t0  = time();
 	my @sim = query_similar_authors( $auid );
-	foreach my $s (@sim)
+	foreach (@sim)
 	{
-		$found_authors{ $s->{id} } = $s;
-		$seen{ $s->{id} }{ $auid } = 1;
+		$found_authors{ $_->{id} }          = $_;
+		$seen         { $_->{id} }{ $auid } = 1;
 	}
 	
 	printf "%3d similar\t%6.2fs\n", scalar @sim, time()-$t0;
@@ -99,7 +100,7 @@ say "Done.";
 # 
 printf "Writing authors (N=%d) to \"%s\"... ", scalar keys %seen, $OUTPATH;
 
-my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "FATAL: Cannot write to $OUTPATH ($!)";
+my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 
 print $fh qq{
@@ -124,9 +125,9 @@ my $line;
 foreach my $auid (sort { scalar keys $seen{$b} <=> 
                          scalar keys $seen{$a} } keys %seen) 
 {
-	my $seen_count = scalar keys $seen{$auid};
-	
 	next if exists $known_authors{$auid};
+	
+	my $seen_count = scalar keys $seen{$auid};
 	
 	$line++;
 	print $fh qq{
