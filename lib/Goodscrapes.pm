@@ -806,8 +806,6 @@ sub _extract_similar_authors
 	my @result;
 	while( $html =~ /<li class='listElement'>(.*?)<\/li>/gs )
 	{	
-		# TODO skip first
-		
 		my $row  = $1;
 		my $auid = $1 if $row =~ /author\/show\/([0-9]+)/;
 		
