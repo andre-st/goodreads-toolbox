@@ -19,7 +19,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-07-02
+=item * Updated: 2018-07-05
 
 =item * Since: 2014-11-05
 
@@ -27,7 +27,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =cut
 
-our $VERSION = '1.75';  # X.XX version format required by Perl
+our $VERSION = '1.80';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
