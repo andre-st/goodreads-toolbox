@@ -80,6 +80,7 @@ https://github.com/andre-st/
 use base 'Exporter';
 our @EXPORT = qw( 
 		require_good_userid
+		require_good_shelfname
 		is_bad_author
 		set_good_cookie 
 		set_good_cookie_file 
@@ -204,6 +205,7 @@ our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =head1 SUBROUTINES
 
 
+
 =head2 C<string> require_good_userid( I<$user_id_to_verify> )
 
 =over
@@ -220,6 +222,32 @@ sub require_good_userid
 	my $uid = shift;
 	return $1 if $ARGV[0] =~ /(\d+)/ 
 		or die "[FATAL] Invalid Goodreads user ID \"$uid\". Look at your shelf URLs.";
+}
+
+
+
+
+=head2 C<string> require_good_shelfname( I<$name_to_verify> )
+
+=over
+
+=item * returns the given shelf name if valid 
+
+=item * returns a shelf which includes all books if no name given
+
+=item * kill current process with error message if malformed name
+
+=back
+
+=cut
+
+sub require_good_shelfname
+{
+	my $name = shift || '%23ALL%23';
+	die "[FATAL] Invalid Goodreads shelf name \"$name\". Look at your shelf URLs."
+		if $name =~ /[^%a-zA-Z0-9\-]/;
+	
+	return $name;
 }
 
 

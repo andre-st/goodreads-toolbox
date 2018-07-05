@@ -105,12 +105,12 @@ use Goodscrapes;
 
 
 # Program synopsis:
-say STDERR "Usage: $0 GOOD_USER_NUMBER [GOOD_SHELF]\nSee source code for more info." and exit if $#ARGV < 0;
+say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME]\nSee source code for more info." and exit if $#ARGV < 0;
 
 
 # Program configuration:
-our $GOODUSER = require_good_userid( $ARGV[0] );
-our $SHELF    = $ARGV[1] || '%23ALL%23';
+our $GOODUSER = require_good_userid   ( $ARGV[0] );
+our $SHELF    = require_good_shelfname( $ARGV[1] );
 
 
 

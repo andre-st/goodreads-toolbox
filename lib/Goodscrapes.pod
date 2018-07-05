@@ -150,12 +150,25 @@ https://github.com/andre-st/
 =head1 SUBROUTINES
 
 
+
 =head2 C<string> require_good_userid( I<$user_id_to_verify> )
 
 =over
 
 =item * returns a sanitized, valid Goodreads user id or kills 
         the current process with an error message
+
+=back
+
+=head2 C<string> require_good_shelfname( I<$name_to_verify> )
+
+=over
+
+=item * returns the given shelf name if valid 
+
+=item * returns a shelf which includes all books if no name given
+
+=item * kill current process with error message if malformed name
 
 =back
 
