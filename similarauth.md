@@ -34,9 +34,9 @@ Loading similar authors for 96 authors:
 [  1%] Gse, Don Murdoch          #8506208	 24 similar	  2.13s
 [  2%] Foucault, Michel          #1260		 19 similar	  2.41s
 [  3%] Siedersleben, Johannes    #1878894	  0 similar	  1.11s
-[  4%] Mattheck, Claus           #1960		  0 similar	  1.43s
+[  4%] Mattheck, Claus           #1960		  0 similar	  3.27s
 [  5%] Dillmann, Renate          #9835498	  0 similar	  1.51s
-[  6%] Decker, Peter             #361391	  0 similar	  2.12s
+[  6%] Decker, Peter             #361391	  0 similar	  2.42s
 [  7%] Bockelmann, Eske          #6219827	  0 similar	  2.20s
 ...
 [100%] O'Neill, Ryan "Elfmaster" #15065556	  0 similar	  2.43s
