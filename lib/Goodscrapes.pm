@@ -245,7 +245,7 @@ sub require_good_shelfname
 {
 	my $name = shift || '%23ALL%23';
 	die "[FATAL] Invalid Goodreads shelf name \"$name\". Look at your shelf URLs."
-		if $name =~ /[^%a-zA-Z0-9\-]/;
+		if $name =~ /[^%a-zA-Z0-9_\-]/;
 	
 	return $name;
 }
