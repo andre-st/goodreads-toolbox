@@ -39,7 +39,6 @@ Loading similar authors for 96 authors:
 [  6%] Decker, Peter             #361391	  0 similar	  0.00s
 [  7%] Bockelmann, Eske          #6219827	  0 similar	  0.00s
 ...
-[ 99%] Rubinštejn, Alexander N. #9879051	  0 similar	  0.00s
 [100%] O'Neill, Ryan "Elfmaster" #15065556	  0 similar	  0.00s
 Done.
 Writing authors (N=360) to "similarauth-18418712.html"...
