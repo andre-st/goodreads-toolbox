@@ -204,11 +204,12 @@ our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =head1 SUBROUTINES
 
 
-=head2 C<bool> require_good_userid( I<$user_id> )
+=head2 C<string> require_good_userid( I<$user_id_to_verify> )
 
 =over
 
-=item * returns valid Goodreads user id or kills process with an error
+=item * returns a sanitized, valid Goodreads user id or kills 
+        the current process with an error message
 
 =back
 
