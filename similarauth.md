@@ -1,4 +1,4 @@
-# likeminded.pl
+# similarauth.pl
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
