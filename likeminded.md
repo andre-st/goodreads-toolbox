@@ -70,7 +70,7 @@ and saves to /tmp/FileCache/.
 
 
 
-## Observations and serious limitations
+## Observations and limitations
 
 **Latest version:**
 - maximum of 300 members per book; this means there is a huge number of readers 
