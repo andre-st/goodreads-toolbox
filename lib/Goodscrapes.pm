@@ -368,11 +368,9 @@ sub set_good_cache
 
 =head2 C<string> _shelf_url( I<$user_id, $shelf_name, $page_number> )
 
-=head3 Notes on the URL
-
 =over
 
-=item * page with a list of books (not all books)
+=item * URL for a page with a list of books (not all books)
 
 =item * "&per_page=100" has no effect (GR actually loads 5x 20 books via JavaScript)
 
@@ -404,11 +402,9 @@ sub _shelf_url
 
 =head2 C<string> _followees_url( I<$user_id, $page_number> )
 
-=head3 Notes on the URL
-
 =over
 
-=item * page with a list of the people $user is following
+=item * URL for a page with a list of the people $user is following
 
 =item * B<Warning:> changes to the URL structure will bust the file-cache
 
@@ -428,11 +424,9 @@ sub _followees_url
 
 =head2 C<string> _friends_url( I<$user_id, $page_number> )
 
-=head3 Notes on the URL
-
 =over
 
-=item * page with a list of people befriended to C<$user_id>
+=item * URL for a page with a list of people befriended to C<$user_id>
 
 =item * "&sort=date_added" (as opposed to 'last online') avoids 
         moving targets while reading page by page
