@@ -155,7 +155,7 @@ foreach my $bid (sort { scalar keys $faved_for{$b} <=>
 			};
 	
 	print $fh qq{
-			<a  href="$people{$_}->{url}"     target="_blank">
+			<a  href="$people{$_}->{url}" target="_blank">
 			<img src="$people{$_}->{img_url}" 
 			   title="$people{$_}->{name}">
 			</a>

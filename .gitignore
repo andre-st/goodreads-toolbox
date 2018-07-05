@@ -13,5 +13,5 @@
 *.xcf
 test.pl
 TODO.txt
-cve
-
+cve*
+lib/Goodgrief*
