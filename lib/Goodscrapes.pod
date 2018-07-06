@@ -174,7 +174,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<bool> is_bad_author( I<$user_id> )
+=head2 C<bool> is_bad_author( I<$author_id> )
 
 =over
 
@@ -224,7 +224,7 @@ https://github.com/andre-st/
 
 =head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
 
-=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$user_id> )
+=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$author_id> )
 
 =head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece = undef> )
 
@@ -353,7 +353,7 @@ https://github.com/andre-st/
 
 =head2 C<(L<%review|"%review">,...)> _extract_reviews( I<$since_time_piece, $reviews_xhr_html_str> )
 
-=head2 C<(L<%user|"%user">,...)> _extract_similar_authors( I<$user_id_to_skip, $similar_page_html_str> )
+=head2 C<(L<%user|"%user">,...)> _extract_similar_authors( I<$author_id_to_skip, $similar_page_html_str> )
 
 =head2 C<bool> _check_page( I<$url, $html> )
 

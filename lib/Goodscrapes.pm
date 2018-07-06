@@ -255,7 +255,7 @@ sub require_good_shelfname
 
 
 
-=head2 C<bool> is_bad_author( I<$user_id> )
+=head2 C<bool> is_bad_author( I<$author_id> )
 
 =over
 
@@ -389,7 +389,7 @@ sub query_good_books
 
 
 
-=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$user_id> )
+=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$author_id> )
 
 =cut
 
@@ -963,7 +963,7 @@ sub _extract_reviews
 
 
 
-=head2 C<(L<%user|"%user">,...)> _extract_similar_authors( I<$user_id_to_skip, $similar_page_html_str> )
+=head2 C<(L<%user|"%user">,...)> _extract_similar_authors( I<$author_id_to_skip, $similar_page_html_str> )
 
 =cut
 
