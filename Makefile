@@ -1,13 +1,16 @@
 # André's Goodreads Toolbox Makefile
 # Some day I'll try a MakeMaker Makefile.PL 
 # 
-# TODO: perl -MCPAN exit code 0 despite errors
-# 
 
 RR_LOGFILE = /var/log/good.log
 RR_DB_DIR  = /var/db/good
 
 
+LIBCURLDEV_ERR = "Requires: libcurl-dev (on Debian or Ubuntu try `apt-get install libcurl-dev` before running this)"
+LIBCURLDEV    := $(shell command -v curl-config 2> /dev/null)
+
+
+# Prints all comments with two leading # characters in this Makefile
 .PHONY : help
 help : Makefile
 	@sed -n 's/^## //p' $<
@@ -15,6 +18,9 @@ help : Makefile
 
 .PHONY : base
 base :
+ifndef LIBCURLDEV
+	$(error ${LIBCURLDEV_ERR})
+endif
 	perl -MCPAN -e 'install HTML::Entities, Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any'
 	chmod +x *.pl
 
@@ -30,7 +36,7 @@ dev :
 friendrated : base
 
 
-## make likeminded:  Installs Perl modules
+## make likeminded :  Installs Perl modules
 .PHONY : likeminded
 likeminded : base
 
@@ -52,7 +58,7 @@ recentrated : base recentrated.pl
 all : dev recentrated friendrated likeminded similarauth
 
 
-## make uninstall  :  Deletes work and log files in /var
+## make uninstall  :  Deletes work- and log-files in /var
 .PHONY : uninstall
 uninstall :
 	rm -rf "${RR_DB_DIR}"
