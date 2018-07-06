@@ -154,7 +154,7 @@ our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =item * name       => C<string>
 
-=item * age        => C<int>
+=item * age        => C<int> (not supported yet)
 
 =item * is_friend  => C<bool>
 
@@ -162,7 +162,7 @@ our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =item * is_female  => C<bool> (not supported yet)
 
-=item * is_private => C<bool>
+=item * is_private => C<bool> (not supported yet)
 
 =item * url        => C<string> URL to the user's profile page
 
