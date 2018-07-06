@@ -86,7 +86,7 @@
 - notice books mentioned in magazine articles
 - notice names dropped in magazine articles and check them against Amazon
 - scan interesting websites/blogs for books 
-  - internal search or google `site:goodblog.com book`
+  - internal search or google for `book site:anygoodblog.com`
   - [HackerNewsBooks.com](https://hackernewsbooks.com/)
   - [top books on Reddit](http://booksreddit.com/)
   - [RedditFavorites.com](https://redditfavorites.com/books)
