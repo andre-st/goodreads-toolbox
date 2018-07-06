@@ -81,7 +81,7 @@ use base 'Exporter';
 our @EXPORT = qw( 
 		require_good_userid
 		require_good_shelfname
-		is_bad_author
+		is_bad_profile
 		set_good_cookie 
 		set_good_cookie_file 
 		set_good_cache 
@@ -255,22 +255,24 @@ sub require_good_shelfname
 
 
 
-=head2 C<bool> is_bad_author( I<$author_id> )
+=head2 C<bool> is_bad_profile( I<$user_or_author_id> )
 
 =over
 
-=item * authors blacklist
+=item * blacklist with users and authors who dirty and slow down any analysis
 
 =item * "NOT A BOOK" authors (3.000+ books)
+
+=item * known non-orgs with 100.000+ books (probably bots or analytics accounts)
 
 =back
 
 =cut
 
-sub is_bad_author
+sub is_bad_profile
 {
-	my $auid = shift;
-	return 1 if $auid eq "1000834";  # "NOT A BOOK" 
+	my $uid = shift;
+	return 1 if $uid eq "1000834";  # "NOT A BOOK" author
 	return 0;
 }
 

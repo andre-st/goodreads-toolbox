@@ -78,7 +78,7 @@ foreach my $auid (keys %authors)
 {
 	$audone++;
 	
-	next if is_bad_author( $auid );
+	next if is_bad_profile( $auid );
 	
 	printf "[%3d%%] %-25s #%-8s\t", $audone/$aucount*100, $authors{ $auid }->{name}, $auid;
 	

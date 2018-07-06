@@ -76,7 +76,7 @@ printf "Loading similar authors for %d authors:\n", $aucount;
 foreach my $auid (keys %known_authors)
 {
 	$audone++;
-	next if is_bad_author( $auid );
+	next if is_bad_profile( $auid );
 
 	printf "[%3d%%] %-25s #%-8s\t", $audone/$aucount*100, 
 				$known_authors{ $auid }->{name}, $auid;

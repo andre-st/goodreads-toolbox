@@ -174,13 +174,15 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<bool> is_bad_author( I<$author_id> )
+=head2 C<bool> is_bad_profile( I<$user_or_author_id> )
 
 =over
 
-=item * authors blacklist
+=item * blacklist with users and authors who dirty and slow down any analysis
 
 =item * "NOT A BOOK" authors (3.000+ books)
+
+=item * known non-orgs with 100.000+ books (probably bots or analytics accounts)
 
 =back
 
