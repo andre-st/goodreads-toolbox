@@ -166,6 +166,8 @@ our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =item * url        => C<string> URL to the user's profile page
 
+=item * works_url  => C<string> URL to the author's distinct works (is_author == 1)
+
 =item * img_url    => C<string>
 
 =back
@@ -366,7 +368,7 @@ sub set_good_cache
 
 
 
-=head2 C<string> _shelf_url( I<$user_id, $shelf_name, $page_number> )
+=head2 C<string> _shelf_url( I<$user_id, $shelf_name, $page_number = 1> )
 
 =over
 
@@ -393,14 +395,14 @@ sub _shelf_url
 {
 	my $uid   = shift;
 	my $shelf = shift;
-	my $page  = shift;
+	my $page  = shift || 1;
 	return "https://www.goodreads.com/review/list/${uid}?shelf=${shelf}&page=${page}&view=table&sort=rating&order=d";
 }
 
 
 
 
-=head2 C<string> _followees_url( I<$user_id, $page_number> )
+=head2 C<string> _followees_url( I<$user_id, $page_number = 1> )
 
 =over
 
@@ -415,14 +417,14 @@ sub _shelf_url
 sub _followees_url
 {
 	my $uid  = shift;
-	my $page = shift;
+	my $page = shift || 1;
 	return "https://www.goodreads.com/user/${uid}/following?page=${page}";
 }
 
 
 
 
-=head2 C<string> _friends_url( I<$user_id, $page_number> )
+=head2 C<string> _friends_url( I<$user_id, $page_number = 1> )
 
 =over
 
@@ -443,7 +445,7 @@ sub _followees_url
 sub _friends_url
 {
 	my $uid  = shift;
-	my $page = shift;
+	my $page = shift || 1;
 	return "https://www.goodreads.com/friend/user/${uid}?page=${page}&skip_mutual_friends=false&sort=date_added";
 }
 
@@ -477,7 +479,7 @@ sub _user_url
 
 
 
-=head2 C<string> _reviews_url( I<$book_id, $can_sort_newest, $page_number> )
+=head2 C<string> _reviews_url( I<$book_id, $can_sort_newest, $page_number = 1> )
 
 =over
 
@@ -494,7 +496,7 @@ sub _reviews_url
 {
 	my $bid  = shift;
 	my $sort = shift;
-	my $page = shift;
+	my $page = shift || 1;
 	return "https://www.goodreads.com/book/reviews/${bid}?".( $sort ? 'sort=newest&' : '' )."page=${page}";
 }
 
@@ -514,14 +516,14 @@ sub _review_url
 
 
 
-=head2 C<string> _author_books_url( I<$user_id, $page_number> )
+=head2 C<string> _author_books_url( I<$user_id, $page_number = 1> )
 
 =cut
 
 sub _author_books_url
 {
 	my $uid  = shift;
-	my $page = shift;
+	my $page = shift || 1;
 	return "https://www.goodreads.com/author/list/${uid}?per_page=100&page=${page}";
 }
 
@@ -624,6 +626,7 @@ sub _extract_books
 					id         => $auid,
 					name       => $aunm,
 					url        => _user_url( $auid, 1 ),
+					works_url  => _author_books_url( $auid ),
 					img_url    => undef,
 					is_autor   => 1,
 					is_private => 0,
@@ -670,6 +673,7 @@ sub _extract_author_books
 				id         => $auid,
 				name       => $aunm,
 				url        => _user_url( $auid, 1 ),
+				works_url  => _author_books_url( $auid ),
 				img_url    => $auimg,
 				is_author  => 1,
 				is_private => 0,
@@ -709,6 +713,7 @@ sub _extract_followees
 				id         => $id, 
 				name       => $nam, 
 				url        => _user_url( $id, $aid ),
+				works_url  => $aid ? _author_books_url( $aid ) : undef,
 				img_url    => $img,
 				age        => undef,
 				is_author  => $aid, 
@@ -744,6 +749,7 @@ sub _extract_friends
 				id         => $id, 
 				name       => $nam, 
 				url        => _user_url( $id, $aid ),
+				works_url  => $aid ? _author_books_url( $aid ) : undef,
 				img_url    => $img, 
 				age        => undef,
 				is_author  => $aid, 
@@ -796,6 +802,7 @@ sub _extract_reviews
 					id         => $uid, 
 					name       => $nam, 
 					url        => _user_url( $uid ),
+					works_url  => undef,
 					img_url    => undef,  # TODO
 					age        => undef,
 					is_author  => undef,
@@ -843,6 +850,7 @@ sub _extract_similar_authors
 				id         => $auid,
 				name       => $aunm, 
 				url        => _user_url( $auid, 1 ),
+				works_url  => _author_books_url( $auid ),
 				img_url    => $auimg,
 				age        => undef,
 				is_author  => 1,

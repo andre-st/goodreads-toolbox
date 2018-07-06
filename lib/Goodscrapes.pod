@@ -116,6 +116,8 @@ https://github.com/andre-st/
 
 =item * url        => C<string> URL to the user's profile page
 
+=item * works_url  => C<string> URL to the author's distinct works (is_author == 1)
+
 =item * img_url    => C<string>
 
 =back
@@ -220,7 +222,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> _shelf_url( I<$user_id, $shelf_name, $page_number> )
+=head2 C<string> _shelf_url( I<$user_id, $shelf_name, $page_number = 1> )
 
 =over
 
@@ -241,7 +243,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> _followees_url( I<$user_id, $page_number> )
+=head2 C<string> _followees_url( I<$user_id, $page_number = 1> )
 
 =over
 
@@ -251,7 +253,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> _friends_url( I<$user_id, $page_number> )
+=head2 C<string> _friends_url( I<$user_id, $page_number = 1> )
 
 =over
 
@@ -271,7 +273,7 @@ https://github.com/andre-st/
 
 =head2 C<string> _user_url( I<$user_id, $is_author = 0> )
 
-=head2 C<string> _reviews_url( I<$book_id, $can_sort_newest, $page_number> )
+=head2 C<string> _reviews_url( I<$book_id, $can_sort_newest, $page_number = 1> )
 
 =over
 
@@ -284,7 +286,7 @@ https://github.com/andre-st/
 
 =head2 C<string> _review_url( I<$review_id> )
 
-=head2 C<string> _author_books_url( I<$user_id, $page_number> )
+=head2 C<string> _author_books_url( I<$user_id, $page_number = 1> )
 
 =head2 C<string> _amz_url( I<L<%book|"%book">> )
 

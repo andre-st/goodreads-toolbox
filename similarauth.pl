@@ -134,7 +134,7 @@ foreach my $auid (sort { scalar keys $seen{$b} <=>
 			<tr>
 			<td>$line</td>
 			<td>
-			<a  href="$found_authors{$auid}->{url}" target="_blank">
+			<a  href="$found_authors{$auid}->{works_url}" target="_blank">
 			<img src="$found_authors{$auid}->{img_url}" height="80" />
 			          $found_authors{$auid}->{name}
 			</a></td>
