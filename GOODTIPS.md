@@ -93,9 +93,9 @@
 - search [books.google.com](https://www.google.com/search?tbm=bks&q=specific+interest) for "specific interest"
 - [Google Alerts](https://www.google.com/alerts): "new book" + "specific interest"
 - follow [Goodreads users](https://www.goodreads.com/user/18418712-andr/following) with interesting libraries
-  - find Goodreads members [with similar taste](https://github.com/andre-st/goodreads/blob/master/likeminded.md)
-- investigate a list of [authors similar to the authors in your shelves](https://github.com/andre-st/goodreads/blob/master/similarauth.md) on Goodreads
-- inspect Goodreads books [common among members you follow](https://github.com/andre-st/goodreads/blob/master/friendrated.md)
+  - find Goodreads members [with similar taste](https://github.com/andre-st/goodreads/blob/master/likeminded.md) (Toolbox)
+- investigate a list of [authors similar to the authors in your shelves](https://github.com/andre-st/goodreads/blob/master/similarauth.md) on Goodreads (Toolbox)
+- inspect Goodreads books [common among members you follow](https://github.com/andre-st/goodreads/blob/master/friendrated.md) (Toolbox)
 - check the Amazon profiles of users who comment good books
 - follow small or specialized publishers through a [Twitter list](https://twitter.com/voidyll/lists/books), RSS-feed or newsletter (works so lala)
 - reddit, quora, ...
