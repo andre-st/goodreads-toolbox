@@ -149,7 +149,7 @@ https://github.com/andre-st/
 
 =back
 
-=head1 SUBROUTINES
+=head1 PUBLIC SUBROUTINES
 
 
 
@@ -222,6 +222,50 @@ https://github.com/andre-st/
 
 =back
 
+=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
+
+=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$user_id> )
+
+=head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece = undef> )
+
+=over
+
+=item * access seems less throttled / faster than querying books
+
+=back
+
+=head2 C<(id =E<gt> L<%user|"%user">,...)> query_good_followees( I<$user_id> )
+
+=over
+
+=item * Precondition: set_good_cookie()
+
+=item * returns friends AND followees
+
+=back
+
+=head2 C<(L<%user|"%user">,...)> query_similar_authors( I<$author_id> )
+	
+=head2 C<string> amz_book_html( I<L<%book|"%book">> )
+
+=over
+
+=item * HTML body of an Amazon article page
+
+=back
+
+=head1 PRIVATE SUBROUTINES
+
+
+
+=head2 C<string> _amz_url( I<L<%book|"%book">> )
+
+=over
+
+=item * Requires at least {isbn=>string}
+
+=back
+
 =head2 C<string> _shelf_url( I<$user_id, $shelf_name, $page_number = 1> )
 
 =over
@@ -288,13 +332,7 @@ https://github.com/andre-st/
 
 =head2 C<string> _author_books_url( I<$user_id, $page_number = 1> )
 
-=head2 C<string> _amz_url( I<L<%book|"%book">> )
-
-=over
-
-=item * Requires at least {isbn=>string}
-
-=back
+=head2 C<string> _author_followings_url( I<$author_id, $page_number = 1> )
 
 =head2 C<string> _similar_authors_url( I<$author_id> )
 
@@ -302,14 +340,6 @@ https://github.com/andre-st/
 
 =item * page number > N just returns same page, so no easy stop criteria;
         not sure, if there's more than page, though
-
-=back
-
-=head2 C<string> amz_book_html( I<L<%book|"%book">> )
-
-=over
-
-=item * HTML body of an Amazon article page
 
 =back
 
@@ -369,27 +399,3 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
-
-=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$user_id> )
-
-=head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece = undef> )
-
-=over
-
-=item * access seems less throttled / faster than querying books
-
-=back
-
-=head2 C<(id =E<gt> L<%user|"%user">,...)> query_good_followees( I<$user_id> )
-
-=over
-
-=item * Precondition: set_good_cookie()
-
-=item * returns friends AND followees
-
-=back
-
-=head2 C<(L<%user|"%user">,...)> query_similar_authors( I<$author_id> )
-	

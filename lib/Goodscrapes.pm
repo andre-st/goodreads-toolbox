@@ -204,7 +204,7 @@ our $_cache       = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 
 
-=head1 SUBROUTINES
+=head1 PUBLIC SUBROUTINES
 
 
 
@@ -363,6 +363,169 @@ sub test_good_cookie()
 sub set_good_cache
 {
 	$_cache_age = shift;
+}
+
+
+
+
+=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
+
+=cut
+
+sub query_good_books
+{
+	my $uid       = shift;
+	my $shelf     = shift;
+	my $page      = 1; 
+	my $max_books = 2700;   # TODO
+	my @books;
+	
+	@books = (@books, @_) 
+		while( @_ = _extract_books( _html( _shelf_url( $uid, $shelf, $page++ ) ) ) );
+	
+	return @books;
+}
+
+
+
+
+=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$user_id> )
+
+=cut
+
+sub query_good_author_books
+{
+	my $uid  = shift;
+	my $page = 1;
+	my @books;
+	
+	@books = (@books, @_)
+		while( @_ = _extract_author_books( _html( _author_books_url( $uid, $page++ ) ) ) );
+	
+	return @books;
+}
+
+
+
+
+=head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece = undef> )
+
+=over
+
+=item * access seems less throttled / faster than querying books
+
+=back
+
+=cut
+
+sub query_good_reviews
+{
+	my $bid        = shift;
+	my $since      = shift;
+	my $since_date = $since 
+			? Time::Piece->strptime( $since->ymd,  '%Y-%m-%d' )  # Nullified time in GR too
+			: Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' ); 
+	
+	my $needs_sort = defined $since;
+	my $page       = 1;
+	my @revs;
+	
+	@revs = (@revs, @_) 
+		while( @_ = _extract_reviews( $since_date, _html( _reviews_url( $bid, $needs_sort, $page++ ) ) ) );
+	
+	return @revs;
+}
+
+
+
+
+=head2 C<(id =E<gt> L<%user|"%user">,...)> query_good_followees( I<$user_id> )
+
+=over
+
+=item * Precondition: set_good_cookie()
+
+=item * returns friends AND followees
+
+=back
+
+=cut
+
+sub query_good_followees
+{
+	my $uid = shift;
+	my %result;
+	my $page;
+
+	$page = 1;
+	while( my @somef = _extract_followees( _html( _followees_url( $uid, $page++ ) ) ) )
+	{
+		$result{$_->{id}} = $_ foreach (@somef)
+	}
+	
+	$page = 1;
+	while( my @somef = _extract_friends( _html( _friends_url( $uid, $page++ ) ) ) )
+	{
+		$result{$_->{id}} = $_ foreach (@somef)
+	}
+	
+	return %result;
+}
+
+
+
+
+=head2 C<(L<%user|"%user">,...)> query_similar_authors( I<$author_id> )
+	
+=cut
+
+sub query_similar_authors
+{
+	my $uid = shift;
+	return _extract_similar_authors( $uid, _html( _similar_authors_url( $uid ) ) );
+}
+
+
+
+
+=head2 C<string> amz_book_html( I<L<%book|"%book">> )
+
+=over
+
+=item * HTML body of an Amazon article page
+
+=back
+
+=cut
+
+sub amz_book_html
+{
+	return _html( _amz_url( shift ) );
+}
+
+
+
+
+
+
+=head1 PRIVATE SUBROUTINES
+
+
+
+=head2 C<string> _amz_url( I<L<%book|"%book">> )
+
+=over
+
+=item * Requires at least {isbn=>string}
+
+=back
+
+=cut
+
+sub _amz_url
+{
+	my $book = shift;
+	return $book->{isbn} ? 'http://www.amazon.de/gp/product/' . $book->{isbn} : undef;
 }
 
 
@@ -530,20 +693,15 @@ sub _author_books_url
 
 
 
-=head2 C<string> _amz_url( I<L<%book|"%book">> )
-
-=over
-
-=item * Requires at least {isbn=>string}
-
-=back
+=head2 C<string> _author_followings_url( I<$author_id, $page_number = 1> )
 
 =cut
 
-sub _amz_url
+sub _author_followings_url
 {
-	my $book = shift;
-	return $book->{isbn} ? 'http://www.amazon.de/gp/product/' . $book->{isbn} : undef;
+	my $uid  = shift;
+	my $page = shift || 1;
+	return "https://www.goodreads.com/author_followings?id=${uid}&page=${page}";
 }
 
 
@@ -564,24 +722,6 @@ sub _similar_authors_url
 {
 	my $uid  = shift;
 	return "https://www.goodreads.com/author/similar/${uid}";
-}
-
-
-
-
-=head2 C<string> amz_book_html( I<L<%book|"%book">> )
-
-=over
-
-=item * HTML body of an Amazon article page
-
-=back
-
-=cut
-
-sub amz_book_html
-{
-	return _html( _amz_url( shift ) );
 }
 
 
@@ -983,123 +1123,6 @@ sub _html
 
 
 
-
-=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
-
-=cut
-
-sub query_good_books
-{
-	my $uid       = shift;
-	my $shelf     = shift;
-	my $page      = 1; 
-	my $max_books = 2700;   # TODO
-	my @books;
-	
-	@books = (@books, @_) 
-		while( @_ = _extract_books( _html( _shelf_url( $uid, $shelf, $page++ ) ) ) );
-	
-	return @books;
-}
-
-
-
-
-=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$user_id> )
-
-=cut
-
-sub query_good_author_books
-{
-	my $uid  = shift;
-	my $page = 1;
-	my @books;
-	
-	@books = (@books, @_)
-		while( @_ = _extract_author_books( _html( _author_books_url( $uid, $page++ ) ) ) );
-	
-	return @books;
-}
-
-
-
-
-=head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece = undef> )
-
-=over
-
-=item * access seems less throttled / faster than querying books
-
-=back
-
-=cut
-
-sub query_good_reviews
-{
-	my $bid        = shift;
-	my $since      = shift;
-	my $since_date = $since 
-			? Time::Piece->strptime( $since->ymd,  '%Y-%m-%d' )  # Nullified time in GR too
-			: Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' ); 
-	
-	my $needs_sort = defined $since;
-	my $page       = 1;
-	my @revs;
-	
-	@revs = (@revs, @_) 
-		while( @_ = _extract_reviews( $since_date, _html( _reviews_url( $bid, $needs_sort, $page++ ) ) ) );
-	
-	return @revs;
-}
-
-
-
-
-=head2 C<(id =E<gt> L<%user|"%user">,...)> query_good_followees( I<$user_id> )
-
-=over
-
-=item * Precondition: set_good_cookie()
-
-=item * returns friends AND followees
-
-=back
-
-=cut
-
-sub query_good_followees
-{
-	my $uid = shift;
-	my %result;
-	my $page;
-
-	$page = 1;
-	while( my @somef = _extract_followees( _html( _followees_url( $uid, $page++ ) ) ) )
-	{
-		$result{$_->{id}} = $_ foreach (@somef)
-	}
-	
-	$page = 1;
-	while( my @somef = _extract_friends( _html( _friends_url( $uid, $page++ ) ) ) )
-	{
-		$result{$_->{id}} = $_ foreach (@somef)
-	}
-	
-	return %result;
-}
-
-
-
-
-=head2 C<(L<%user|"%user">,...)> query_similar_authors( I<$author_id> )
-	
-=cut
-
-sub query_similar_authors
-{
-	my $uid = shift;
-	return _extract_similar_authors( $uid, _html( _similar_authors_url( $uid ) ) );
-}
 
 
 
