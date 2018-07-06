@@ -51,7 +51,7 @@ our $VERSION = '1.81';  # X.XX version format required by Perl
 =back
 
 
-=head1 KNOWN LIMITATIONS AND BUGS
+=head1 LIMITATIONS
 
 =over
 

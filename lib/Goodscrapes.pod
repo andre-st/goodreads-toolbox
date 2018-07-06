@@ -38,7 +38,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 =back
 
 
-=head1 KNOWN LIMITATIONS AND BUGS
+=head1 LIMITATIONS
 
 =over
 
