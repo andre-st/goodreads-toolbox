@@ -1038,6 +1038,13 @@ sub _extract_similar_authors
         https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
         https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
 
+=item * dies if website temporarily unavailable (TODO UNTESTED):
+        Our website is currently unavailable while we make some improvements
+        to our service. We'll be open for business again soon,
+        please come back shortly to try again. <?>
+        Thank you for your patience. (No Alice error)
+        https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/hostedimages/1404319071i/10224522.png
+
 =back
 
 =cut
@@ -1059,13 +1066,19 @@ sub _check_page
 		and return 0
 			if $html =~ /<head>\s*<title>\s*Page not found\s*<\/title>/s;
 	
-	die "[FATAL] Goodreads encountered an unexpected error. Continue later to ensure data quality."
+	
+	my $later = "Continue later to ensure data quality.";
+	
+	die "[FATAL] Goodreads temporarily unavailable. $later"
+		if $html =~ /Our website is currently unavailable while we make some improvements/s; # TODO improvec
+			
+	die "[FATAL] Goodreads encountered an unexpected error. $later"
 		if $html =~ /<head>\s*<title>\s*Goodreads - unexpected error\s*<\/title>/s;
 	
-	die "[FATAL] Goodreads is over capacity. Continue later to ensure data quality."
+	die "[FATAL] Goodreads is over capacity. $later"
 		if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
 	
-	die "[FATAL] Goodreads is down for maintenance. Continue later."
+	die "[FATAL] Goodreads is down for maintenance. $later"
 		if $html =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;
 	
 	

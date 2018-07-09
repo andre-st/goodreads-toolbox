@@ -389,6 +389,13 @@ https://github.com/andre-st/
         https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
         https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
 
+=item * dies if website temporarily unavailable (TODO UNTESTED):
+        Our website is currently unavailable while we make some improvements
+        to our service. We'll be open for business again soon,
+        please come back shortly to try again. <?>
+        Thank you for your patience. (No Alice error)
+        https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/hostedimages/1404319071i/10224522.png
+
 =back
 
 =head2 C<string> _html( I<$url> )
