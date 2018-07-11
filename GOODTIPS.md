@@ -23,7 +23,7 @@
   _"shelf-berlin"_ if the amount of books exceeds memory (Future me)
 
 - **Limiting the number of shelves** to max. 1 page. 
-  Coarse-grained better than fine-grained, easier to navigate.
+  Few coarse-grained shelves better than 100+ fine-grained shelves, easier to navigate and easier to keep up-to-date for every book.
   Anemic shelves also render functions such as "[select multiple shelves](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)" (intersection ∩) useless.
   - avoid shelves that will likely never contain more than 3 books
   - merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_
