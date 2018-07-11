@@ -103,7 +103,7 @@
   - [NewBooksNetwork.com](http://newbooksnetwork.com/)
 - recommendation engines hardly work for me: Goodreads never, Amazon sometimes
 - [Bookstragram](https://www.instagram.com/explore/tags/bookstagram/) does not work for me
-- [BookTube](https://en.wikipedia.org/wiki/BookTube) does not work for me, girls club
+- [BookTube](https://en.wikipedia.org/wiki/BookTube) does not work for me, girls club & primarily fiction
 - common bestseller lists do not work for me
 - Parakweet's BookVibe closed in 2016, they sent you a list of books that your friends are talking about on Twitter
 - ...
