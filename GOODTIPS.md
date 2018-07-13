@@ -11,7 +11,7 @@
 - **Grouping shelves** with a prefix, e.g., _"region-usa"_,
   _"region-..."_. Goodreads sorts shelf lists in alphabetical order.
   Related but scattered shelves impair findability.  
-  - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with Unicode 0x3161: ㅡ
+  - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with "z_" or Unicode 0x3161: ㅡ
   - next to pseudo sub-shelves _"computer-history"_, _"computer-networks"_ and so on I'm using a separate _"computer"_ pseudo super-shelf which contains _all_ books from the sub-shelves
 
 - **Creating a "more-urgent" shelf** from unread books
