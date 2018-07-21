@@ -25,6 +25,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make friendrated
+$ ./friendrated.pl --help
 $ ./friendrated.pl YOURGOODUSERNUMBER
 
 Getting list of users known to #18418712... 164 users (0.18s)

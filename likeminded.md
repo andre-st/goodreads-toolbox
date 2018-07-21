@@ -35,7 +35,8 @@ or [Mehran (2018)](https://www.goodreads.com/topic/show/19397936-finding-people-
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make likeminded
-$ ./likeminded.pl YOURGOODUSERNUMBER [OPTIONAL_SHELFNAME_WITH_SELECTED_BOOKS]
+$ ./likeminded.pl --help
+$ ./likeminded.pl YOURGOODUSERNUMBER
 
 Loading books from "ALL" may take a while... 108 books
 Loading books of 95 authors:
@@ -48,18 +49,29 @@ Loading books of 95 authors:
 [100%] Fertl, Herbert L.          #16159494   1 books    0.03s
 Done.
 Loading reviews for 1625 author books:
-[  0%] Psychiatric Power: Lectures at the Coll   #119570      287 memb    0.07s
-[  0%] What is an Author?                        #18456429    277 memb    0.05s
-[  1%] Aesthetics, Method, and Epistemology      #80386       217 memb    0.03s
-[  1%] White Collar                              #3343671      49 memb    0.04s
-[  1%] Gravures Rebelles: 4 Romans Graphiques    #12369034      2 memb    0.00s
+[  0%] First as Tragedy, Then as Farce           #6636487	 2278 memb	  4.20s
+[  0%] Welcome to the Desert of the Real: Five   #18914	 1637 memb	  4.86s
+[  0%] How to Read Lacan                         #18919	 1426 memb	  3.92s
+[  0%] Living in the End Times                   #7324538	 1476 memb	  3.70s
+[  0%] Looking Awry: An Introduction to Jacques  #18911	 1317 memb	  3.47s
+[  0%] The Parallax View                         #18910	 1039 memb	  3.35s
+[  0%] The Year of Dreaming Dangerously          #15901602	  949 memb	  3.08s
+[  0%] The Utes Must Go!: American Expansion an  #21843423	    3 memb	  0.03s
+[  0%] Saving The West                           #23786701	    1 memb	  0.01s
+[  0%] Descriptive Check List: Together With Sh  #6517166	    0 memb	  0.01s
+[  0%] Old Fences, New Neighbors                 #17461487	    0 memb	  0.03s
+[  0%] Little Brother (Little Brother, #1)       #25547383	 5885 memb	324.83s
+[  0%] The Hardware Hacker: Adventures in Makin  #30804383	  219 memb	  0.25s
+[  0%] Hacking the Xbox: An Introduction to Rev  #984394	  206 memb	  0.26s
+[  1%] The Essential Guide to Electronics in Sh  #33401673	   27 memb	  0.11s
+[  1%] Adventures in Hearing God's Voice         #39296237	    2 memb	  0.03s
+[  1%] The Sublime Object of Ideology            #18912	 2229 memb	 69.87s
 ...
-[100%] Abweichende Meinungen zu Israel           #33257775      1 memb    0.01s
+[100%] Maker Pro: Essays on Making a Living as   #24214717	   33 memb	  0.09s
 Done.
 Writing members (N=39129) with 5% similarity or better to "likeminded-18418712.html"...
 Total time: 54 minutes
 ```
-
 
 **Note:**
 
@@ -73,10 +85,15 @@ and saves to /tmp/FileCache/.
 ## Observations and limitations
 
 **Latest version:**
-- maximum of 300 reviews per book (Goodreads limitation); this means there is a huge number of readers 
-  not considered in our statistics, but 300 is better than nothing; everything else
-  requires full access to the Goodreads database or indexing millions of members 
-  and books from the outside which would take forever (throttled access)
+- you should use a special purpose shelf (--shelf parameter) to control/reduce 
+  the program's runtime; loading data could take a month with too many books
+  (start with 100 books)
+- the more popular your literature, the longer the program's runtime and the 
+  more questionable its results (too generic) - or: more fun with good but rare books
+- there's no way to load _all_ reviews of a book, but the program tries different 
+  things to get as much reviews as possible (tweaks see --help parameter).
+  This means there is a number of readers not considered in our statistics, 
+  but what we get is good enough, though
 - there are members with 94.857 ratings, likely bots
 - lists members with private accounts (reviews still readable)
 - your Goodreads account must be viewable by 

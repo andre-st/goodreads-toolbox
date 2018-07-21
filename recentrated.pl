@@ -1,24 +1,91 @@
 #!/usr/bin/env perl
 
-###############################################################################
+#<--------------------------------- 79 chars --------------------------------->|
 
 =pod
 
 =head1 NAME
 
-recentrated.pl - Searches a Goodreads.com shelf for new book-ratings
+recentrated - know when people rate or write reviews about a book
+
+
+=head1 SYNOPSIS
+
+B<recentrated.pl> I<GOODUSERNUMBER> [I<SHELFNAME>] [I<MAILTO>] [I<MAILFROM>]
+
+You find your GOODUSERNUMBER by looking at your shelf URLs.
+
+
+=head1 OPTIONS
+
+=over 4
+
+=item I<SHELFNAME>
+
+name of the shelf with a selecton of books to be checked, 
+default is "%23ALL%23"
+
+=item I<MAILTO>
+
+prepend an email header and append a helpful email signature to 
+the program output. This tool does not send mails by its own.
+You would have to pipe its output into a C<sendmail> programm.
+
+=item I<MAILFROM>
+
+add an unsubscribe email header and a contact address for
+administrative issues to the programm output
+
+=back
+
+
+=head1 EXAMPLES
+
+$ ./recentrated.pl 55554444
+
+$ ./recentrated.pl 55554444 read my@mail.com
+
+$ ./recentrated.pl 55554444 read friend@mail.com admin@mail.com
+
+
+=head1 FILES
+
+Log written to C</var/log/good.log>
+
+Database stored in C</var/db/good/>
+
+
+=head1 AUTHOR
+
+Written by Andre St. <https://github.com/andre-st>
+
+
+=head1 REPORTING BUGS
+
+Report bugs to <datakadabra@gmail.com> or use Github's issue tracker
+<https://github.com/andre-st/goodreads/issues>
+
+
+=head1 COPYRIGHT
+
+Copyright (C) Free Software Foundation, Inc.
+This is free software. You may redistribute copies of it under the terms of
+the GNU General Public License <https://www.gnu.org/licenses/gpl.html>.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+=head1 SEE ALSO
+
+More info in recentrated.md
+
 
 =head1 VERSION
 
-2018-05-17 (Since 2018-01-09)
-
-=head1 ABOUT
-
-see recentrated.md
+2018-07-18 (Since 2018-01-09)
 
 =cut
 
-###############################################################################
+#<--------------------------------- 79 chars --------------------------------->|
 
 
 use strict;
@@ -30,14 +97,12 @@ use lib "$FindBin::Bin/lib/";
 use Log::Any '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
 use Text::CSV qw( csv );
 use Time::Piece;
+use Pod::Usage;
 use Goodscrapes;
 
 
-# Program synopsis:
-say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [MAILTO] [MAILFROM]" and exit if $#ARGV < 0;
-
-
 # Program configuration:
+pod2usage( -verbose => 2 ) if $#ARGV < 0;
 our $GOODUSER  = require_good_userid   ( $ARGV[0] );
 our $GOODSHELF = require_good_shelfname( $ARGV[1] );
 our $MAILTO    = $ARGV[2];
@@ -52,7 +117,7 @@ our $MAX_REVURLS_PER_BOOK = 2;
 sub pretty_url { return sprintf '%-36s', substr( shift, 8 ); }
 
 # effect in dev/debugging only
-# set_good_cache( '4 hours' );
+# set_good_cache( 4, 'hours' );
 
 
 
@@ -73,7 +138,7 @@ if( $csv )
 		
 		next if $num_new_rat <= 0;
 	
-		my @revs = query_good_reviews( $b->{id}, $since );
+		my @revs = query_good_reviews( book => $b, since => $since );
 		
 		next if !@revs;  # Number of ratings increased but no new reviews, what's that?
 		

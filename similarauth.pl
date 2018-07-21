@@ -1,24 +1,90 @@
 #!/usr/bin/env perl
 
-###############################################################################
+#<--------------------------------- 79 chars --------------------------------->|
 
 =pod
 
 =head1 NAME
 
-similarauth.pl 
+similarauth - Finding all similar authors
+
+
+=head1 SYNOPSIS
+
+B<similarauth.pl> [I<OPTION>]... I<GOODUSERNUMBER>
+
+You find your GOODUSERNUMBER by looking at your shelf URLs.
+
+
+=head1 OPTIONS
+
+Mandatory arguments to long options are mandatory for short options too.
+
+=over 4
+
+=item B<-c, --cache>=I<NUMDAYS>
+
+number of days until the local file cache in C</tmp/FileCache/> 
+is busted, default is 31 days
+
+=item B<-o, --outfile>=I<FILE>
+
+name of the HTML file where we write results to, default is
+"similarauth-$USER-$SHELF.html"
+
+=item B<-s, --shelf>=I<NAME>
+
+name of the shelf with a selection of books to be considered,
+default is "%23ALL%23"
+
+=item B<-?, --help>
+
+show full man page
+
+=back
+
+
+=head1 EXAMPLES
+
+$ ./similarauth.pl 55554444
+
+$ ./similarauth.pl --shelf=read --outfile=./sub/myfile.html 55554444
+
+$ ./similarauth.pl -c 31 -s read -t 180 -m 5 -o myfile.html 55554444
+
+
+=head1 AUTHOR
+
+Written by Andre St. <https://github.com/andre-st>
+
+
+=head1 REPORTING BUGS
+
+Report bugs to <datakadabra@gmail.com> or use Github's issue tracker
+<https://github.com/andre-st/goodreads/issues>
+
+
+=head1 COPYRIGHT
+
+Copyright (C) Free Software Foundation, Inc.
+This is free software. You may redistribute copies of it under the terms of
+the GNU General Public License <https://www.gnu.org/licenses/gpl.html>.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+=head1 SEE ALSO
+
+More info in similarauth.md
+
 
 =head1 VERSION
-	
-2018-07-05 (Since 2018-07-05)
 
-=head1 ABOUT
-
-see similarauth.md
+2018-07-21 (Since 2018-07-05)
 
 =cut
 
-###############################################################################
+#<--------------------------------- 79 chars --------------------------------->|
+
 
 use strict;
 use warnings;
@@ -29,20 +95,27 @@ use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( strftime );
 use IO::File;
+use Getopt::Long;
+use Pod::Usage;
 use Goodscrapes;
 
 
-# Program synopsis
-say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME] [OUTFILE]" and exit if $#ARGV < 0;
-
-
 # Program configuration:
-our $GOODUSER = require_good_userid   ( $ARGV[0] );
-our $SHELF    = require_good_shelfname( $ARGV[1] );
-our $OUTPATH  = $ARGV[2] || "similarauth-${GOODUSER}.html";
-our $TSTART   = time();
+our $SHELF     = '%23ALL%23';
+our $CACHEDAYS = 31;
+our $OUTPATH;
+GetOptions( 'help|?'      => sub { pod2usage( -verbose => 2 );            },
+            'shelf|s=s'   => sub { $SHELF = require_good_shelfname $_[1]; },
+		  'cache|c=i'   => \$CACHEDAYS,
+            'outfile|o=s' => \$OUTPATH ) or pod2usage 1;
 
-set_good_cache( '21 days' );
+pod2usage 1 unless scalar @ARGV == 1;  # 1 bc of obsolete "./sa.pl USERNUMBER SHELF"
+
+our $GOODUSER = require_good_userid $ARGV[0];
+our $TSTART   = time();
+    $OUTPATH  = "likeminded-${GOODUSER}-${SHELF}.html" if !$OUTPATH;
+
+set_good_cache( $CACHEDAYS );
 STDOUT->autoflush( 1 );
 
 
@@ -75,11 +148,10 @@ my $audone  = 0;
 printf "Loading similar authors for %d authors:\n", $aucount;
 foreach my $auid (keys %known_authors)
 {
-	$audone++;
-	next if is_bad_profile( $auid );
-
-	printf "[%3d%%] %-25s #%-8s\t", $audone/$aucount*100, 
+	printf "[%3d%%] %-25s #%-8s\t", ++$audone/$aucount*100, 
 				$known_authors{ $auid }->{name}, $auid;
+	
+	say "EXCLUDED" and next if is_bad_profile( $auid );
 	
 	my $t0  = time();
 	my @sim = query_similar_authors( $auid );

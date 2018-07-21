@@ -26,7 +26,8 @@ From the _Goodreads Feedback_ forum,
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make similarauth
-$ ./similarauth.pl YOURGOODUSERNUMBER [OPTIONAL_SHELFNAME_WITH_SELECTED_BOOKS]
+$ ./similarauth.pl --help
+$ ./similarauth.pl YOURGOODUSERNUMBER
 
 Loading books from "ALL" may take a while... 108 books
 Loading similar authors for 96 authors:

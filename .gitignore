@@ -11,7 +11,7 @@
 *.cookie
 *.sh
 *.xcf
-test.pl
+test*
 TODO.txt
 cve*
 lib/Goodgrief*
