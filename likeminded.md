@@ -40,13 +40,13 @@ $ ./likeminded.pl YOURGOODUSERNUMBER
 
 Loading books from "ALL" may take a while... 108 books
 Loading books of 95 authors:
-[  1%] Schuberth, Richard         #2793763    6 books    0.03s
-[  2%] Lohoff, Ernst              #1339033    4 books    0.05s
-[  3%] Huang, Andrew "bunnie"     #2949412    6 books    0.04s
-[  4%] Pullum, Laura L.           #476506     2 books    0.05s
-[  5%] Patri, Giacomo             #379757     3 books    0.04s
+[  1%] Schuberth, Richard         #2793763    6 books    1.03s
+[  2%] Lohoff, Ernst              #1339033    4 books    1.05s
+[  3%] Huang, Andrew "bunnie"     #2949412    6 books    1.04s
+[  4%] Pullum, Laura L.           #476506     2 books    1.05s
+[  5%] Patri, Giacomo             #379757     3 books    1.04s
 ...
-[100%] Fertl, Herbert L.          #16159494   1 books    0.03s
+[100%] Fertl, Herbert L.          #16159494   1 books    1.03s
 Done.
 Loading reviews for 1625 author books:
 [  0%] First as Tragedy, Then as Farce           #6636487    2278 memb     134.20s
