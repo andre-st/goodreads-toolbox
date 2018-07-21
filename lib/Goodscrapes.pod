@@ -11,7 +11,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-07-06
+=item * Updated: 2018-07-21
 
 =item * Since: 2014-11-05
 
@@ -178,11 +178,10 @@ https://github.com/andre-st/
 
 =over
 
-=item * blacklist with users and authors who dirty and slow down any analysis
+=item * returns true if blacklisted users or author who dirties and slows down any analysis
 
-=item * "NOT A BOOK" authors (3.000+ books)
-
-=item * known non-orgs with 100.000+ books (probably bots or analytics accounts)
+=item * "NOT A BOOK" author (3.000+ books), "Anonymous" author (10.000 books),
+        non-orgs with 100.000+ books (probably bots or analytics accounts) etc
 
 =back
 
@@ -206,7 +205,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<void> set_good_cache( I<$maximum_age_in_words> )
+=head2 C<void> set_good_cache( I<$number, $unit = 'days'> )
 
 =over
 
@@ -218,21 +217,54 @@ https://github.com/andre-st/
 
 =item * e.g., during long running sessions (cheap recovery on crash, power blackout or pauses)
 
-=item * if process is to repeat with different parameters
+=item * e.g., when experimenting with parameters
 
-=item * pass something like C<"60 minutes">, C<"6 hours">, C<"6 days">
+=item * unit can be C<"minutes">, C<"hours">, C<"days">
 
 =back
 
 =head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
 
-=head2 C<(L<%book|"%book">,...)> query_good_author_books( I<$author_id> )
-
-=head2 C<(L<%review|"%review">,...)> query_good_reviews( I<$book_id, $since_time_piece = undef> )
+=head2 C<int> query_good_author_books( I<$books_array_ref, $author_id> )
 
 =over
 
-=item * access seems less throttled / faster than querying books
+=item * I<$books_array_ref>: C<(L<%book|"%book">,...)>
+
+=item * returns the number of books of the given author
+
+=back
+
+=head2 C<(L<%review|"%review">,...)> query_good_reviews(
+	I<{ book => C<L<%book|"%book">>, since => undef, stalltime => undef, on_progress => undef, use_dict = 1 }> )
+
+=over
+
+=item * loads ratings (no text), reviews (text), "to-read", "added" etc;
+        you can filter yourself afterwards
+
+=item * optional I<since> argument of type C<Time::Piece>
+
+=item * optional I<use_dict>: try to find additional reviews by using the 
+        text-search function provided by Goodreads.com;
+        useful for sentiment analysis or non-books-overarching analysis 
+        of members (likely too random otherwise)
+
+=item * optional I<stalltime> is the number of seconds to wait for a win 
+        when trying to find additional reviews, aborts if exceeded
+
+=item * if I<stalltime> is set to 0 (fastest) then the latest
+        reviews only are considered (max. 300 reviews)
+
+=item * set I<stalltime> to a very large value if you want the search take 
+        as long as it needs, which is okay for a project on a single book,
+        but would take too long for 1000 books
+
+=item * I<stalltime> is not exact
+
+=item * optional I<on_progress> callback function is called with a string 
+        argument, which contains the number of currently loaded reviews or 
+        other characters (use %5s in format strings)
 
 =back
 
@@ -247,7 +279,7 @@ https://github.com/andre-st/
 =back
 
 =head2 C<(L<%user|"%user">,...)> query_similar_authors( I<$author_id> )
-	
+
 =head2 C<string> amz_book_html( I<L<%book|"%book">> )
 
 =over
@@ -319,18 +351,26 @@ https://github.com/andre-st/
 
 =head2 C<string> _user_url( I<$user_id, $is_author = 0> )
 
-=head2 C<string> _reviews_url( I<$book_id, $can_sort_newest, $page_number = 1> )
+=head2 C<string> _revs_url( I<$book_id, $str_sort_newest_oldest = undef, 
+		$search_text = undef, $rating = undef, $page_number = 1> )
 
 =over
 
-=item * "&sort=newest" reduces the number of reviews for some reason (also observable 
-        on the Goodreads website), so only use if really needed (&sort=default)
+=item * "&sort=newest" and "&sort=oldest" reduce the number of reviews for 
+        some reason (also observable on the Goodreads website), 
+        so only use if really needed (&sort=default)
+
+=item * "&search_text=example", max 30 hits, invalidates sort order argument
+
+=item * "&rating=5"
 
 =item * the maximum of retrievable reviews is 300 (state 2018-06-22)
 
+=item * seems less throttled, not true for text-search
+
 =back
 
-=head2 C<string> _review_url( I<$review_id> )
+=head2 C<string> _rev_url( I<$review_id> )
 
 =head2 C<string> _author_books_url( I<$user_id, $page_number = 1> )
 
@@ -345,33 +385,65 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<(L<%book|"%book">,...)> _extract_books( I<$shelf_tableview_html_str> )
+=head2 C<bool> _extract_books( I<$result_array_ref, $shelf_tableview_html_str> )
 
-=head2 C<(L<%book|"%book">,...)> _extract_author_books( I<$html_str> )
+=over
 
-=head2 C<(L<%user|"%user">,...)> _extract_followees( I<$following_page_html_str> )
+=item * I<$result_array_ref>: C<(L<%book|"%book">,...)>
 
-=head2 C<(L<%user|"%user">,...)> _extract_friends( I<$friends_page_html_str> )
+=back
 
-=head2 C<(L<%review|"%review">,...)> _extract_reviews( I<$since_time_piece, $reviews_xhr_html_str> )
+=head2 C<bool> _extract_author_books( I<$result_array_ref, $html_str> )
+
+=over
+
+=item * I<$result_array_ref>: C<(L<%book|"%book">,...)> 
+
+=back
+
+=head2 C<bool> _extract_followees( I<$result_hash_ref, $following_page_html_str> )
+
+=over
+
+=item * I<$result_hash_ref>: user_id => C<(L<%user|"%user">,...)>
+
+=back
+
+=head2 C<bool> _extract_friends( I<$result_hash_ref, $friends_page_html_str> )
+
+=over
+
+=item * I<$result_hash_ref>: user_id => C<(L<%user|"%user">,...)>
+
+=back
+
+=head2 C<bool> _extract_revs( I<$result_hash_ref, $on_progress_fn, $since_time_piece, $reviews_xhr_html_str> )
+
+=over
+
+=item * I<$result_hash_ref>: review_id => C<(L<%review|"%review">,...)> 
+
+=back
 
 =head2 C<(L<%user|"%user">,...)> _extract_similar_authors( I<$author_id_to_skip, $similar_page_html_str> )
 
-=head2 C<bool> _check_page( I<$url, $html> )
+=head2 C<int> _check_page( I<$url, $html> )
 
 =over
+
+=item * returns 0 ok, 1 warn (ignore), 2 error (retry)
 
 =item * warns if sign-in page (https://www.goodreads.com/user/sign_in) or in-page message
 
 =item * warns if "page unavailable, Goodreads request took too long"
 
-=item * warns if "page not found" (TODO)
+=item * warns if "page not found" 
 
-=item * dies if page unavailable: "An unexpected error occurred. 
+=item * error if page unavailable: "An unexpected error occurred. 
         We will investigate this problem as soon as possible — please 
         check back soon!"
 
-=item * dies if over capacity (TODO UNTESTED):
+=item * error if over capacity (TODO UNTESTED):
         "<?>Goodreads is over capacity.</?> 
         <?>You can never have too many books, but Goodreads can sometimes
         have too many visitors. Don't worry! We are working to increase 
@@ -382,18 +454,18 @@ https://github.com/andre-st/
         https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg
         https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png  (with title)
 
-=item * dies if maintenance mode (TODO UNTESTED):
+=item * error if maintenance mode (TODO UNTESTED):
         "<?>Goodreads is down for maintenance.</?>
         <?>We expect to be back within minutes. Please try again soon!<?>
         <a ...>Get the latest on Twitter</a>"
         https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg
         https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png
 
-=item * dies if website temporarily unavailable (TODO UNTESTED):
-        Our website is currently unavailable while we make some improvements
+=item * error if website temporarily unavailable (TODO UNTESTED):
+        "Our website is currently unavailable while we make some improvements
         to our service. We'll be open for business again soon,
         please come back shortly to try again. <?>
-        Thank you for your patience. (No Alice error)
+        Thank you for your patience." (No Alice error)
         https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/hostedimages/1404319071i/10224522.png
 
 =back
