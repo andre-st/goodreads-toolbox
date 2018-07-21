@@ -49,25 +49,18 @@ Loading books of 95 authors:
 [100%] Fertl, Herbert L.          #16159494   1 books    0.03s
 Done.
 Loading reviews for 1625 author books:
-[  0%] First as Tragedy, Then as Farce           #6636487	 2278 memb	  4.20s
-[  0%] Welcome to the Desert of the Real: Five   #18914	 1637 memb	  4.86s
-[  0%] How to Read Lacan                         #18919	 1426 memb	  3.92s
-[  0%] Living in the End Times                   #7324538	 1476 memb	  3.70s
-[  0%] Looking Awry: An Introduction to Jacques  #18911	 1317 memb	  3.47s
-[  0%] The Parallax View                         #18910	 1039 memb	  3.35s
-[  0%] The Year of Dreaming Dangerously          #15901602	  949 memb	  3.08s
-[  0%] The Utes Must Go!: American Expansion an  #21843423	    3 memb	  0.03s
-[  0%] Saving The West                           #23786701	    1 memb	  0.01s
-[  0%] Descriptive Check List: Together With Sh  #6517166	    0 memb	  0.01s
-[  0%] Old Fences, New Neighbors                 #17461487	    0 memb	  0.03s
-[  0%] Little Brother (Little Brother, #1)       #25547383	 5885 memb	324.83s
-[  0%] The Hardware Hacker: Adventures in Makin  #30804383	  219 memb	  0.25s
-[  0%] Hacking the Xbox: An Introduction to Rev  #984394	  206 memb	  0.26s
-[  1%] The Essential Guide to Electronics in Sh  #33401673	   27 memb	  0.11s
-[  1%] Adventures in Hearing God's Voice         #39296237	    2 memb	  0.03s
-[  1%] The Sublime Object of Ideology            #18912	 2229 memb	 69.87s
+[  0%] First as Tragedy, Then as Farce           #6636487    2278 memb       4.20s
+[  0%] The Parallax View                         #18910      1039 memb       3.35s
+[  0%] The Year of Dreaming Dangerously          #15901602    949 memb       3.08s
+[  0%] Descriptive Check List: Together With Sh  #6517166       0 memb       0.01s
+[  0%] Old Fences, New Neighbors                 #17461487      0 memb       0.03s
+[  0%] Little Brother (Little Brother, #1)       #25547383   5885 memb     324.83s
+[  0%] The Hardware Hacker: Adventures in Makin  #30804383    219 memb       0.25s
+[  0%] Hacking the Xbox: An Introduction to Rev  #984394      206 memb       0.26s
+[  1%] The Essential Guide to Electronics in Sh  #33401673     27 memb       0.11s
+[  1%] The Sublime Object of Ideology            #18912      2229 memb      69.87s
 ...
-[100%] Maker Pro: Essays on Making a Living as   #24214717	   33 memb	  0.09s
+[100%] Maker Pro: Essays on Making a Living as   #24214717     33 memb       0.09s
 Done.
 Writing members (N=39129) with 5% similarity or better to "likeminded-18418712.html"...
 Total time: 54 minutes
