@@ -63,7 +63,7 @@ Loading reviews for 1625 author books:
 [100%] Maker Pro: Essays on Making a Living as   #24214717     33 memb       1.09s
 Done.
 Writing members (N=39129) with 5% similarity or better to "likeminded-18418712.html"...
-Total time: 54 minutes
+Total time: 74 minutes
 ```
 
 **Note:**
