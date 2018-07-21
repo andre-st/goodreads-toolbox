@@ -84,6 +84,8 @@ Goodreads.com is very time consuming.  The script internally uses a
   (start with 100 books)
 - the more popular your literature, the longer the program's runtime and the 
   more questionable its results (too generic) - or: more fun with good but rare books
+- slow but good enough since you run it 4x a year
+- make sure you have some GB of free diskspace for /tmp/
 - there's no way to load _all_ reviews of a book, but the program tries different 
   things to get as much reviews as possible (tweaks see --help parameter).
   This means there is a number of readers not considered in our statistics, 
@@ -93,7 +95,6 @@ Goodreads.com is very time consuming.  The script internally uses a
 - your Goodreads account must be viewable by 
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
   which is the default
-- slow but good enough since you run it 4x a year
 - "_...most number of shared books would be a list of children's books_"—`likeminded.pl` has a shelf parameter (sort of selection)
 
 **First version compared books, not authors:**
