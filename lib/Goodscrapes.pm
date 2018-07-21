@@ -539,7 +539,8 @@ sub query_good_author_books
 
 
 =head2 C<(L<%review|"%review">,...)> query_good_reviews(
-	I<{ book => C<L<%book|"%book">>, since => undef, stalltime => undef, on_progress => undef, use_dict = 1 }> )
+	I<{ book =E<gt> C<L<%book|"%book">>, since =E<gt>  undef, stalltime =E<gt> undef, 
+	on_progress =E<gt> undef, use_dict = 1 }>)
 
 =over
 
@@ -549,25 +550,22 @@ sub query_good_author_books
 =item * optional I<since> argument of type C<Time::Piece>
 
 =item * optional I<use_dict>: try to find additional reviews by using the 
-        text-search function provided by Goodreads.com;
-        useful for sentiment analysis or non-books-overarching analysis 
-        of members (likely too random otherwise)
+        text-search function provided by Goodreads.com
 
-=item * optional I<stalltime> is the number of seconds to wait for a win 
-        when trying to find additional reviews, aborts if exceeded
+=item * optional I<stalltime> is the number of seconds to wait for 
+        new reviews when trying to find additional reviews, 
+        aborts if exceeded
 
-=item * if I<stalltime> is set to 0 (fastest) then the latest
+=item * if I<stalltime> is set to 0 (fastest), then the latest
         reviews only are considered (max. 300 reviews)
 
 =item * set I<stalltime> to a very large value if you want the search take 
         as long as it needs, which is okay for a project on a single book,
         but would take too long for 1000 books
 
-=item * I<stalltime> is not exact
-
-=item * optional I<on_progress> callback function is called with a string 
-        argument, which contains the number of currently loaded reviews or 
-        other characters (use %5s in format strings)
+=item * optional I<on_progress> callback function is called with an
+        argument, which contains the number of currently loaded reviews
+        (use %5s in format strings)
 
 =back
 
@@ -846,7 +844,7 @@ sub _user_url
 
 =item * "&rating=5"
 
-=item * the maximum of retrievable reviews is 300 (state 2018-06-22)
+=item * the maximum of retrievable pages is 10 (300 reviews)
 
 =item * seems less throttled, not true for text-search
 
@@ -1064,7 +1062,7 @@ sub _extract_author_books
 
 =over
 
-=item * I<$result_hash_ref>: user_id => C<(L<%user|"%user">,...)>
+=item * I<$result_hash_ref>: C<(user_id =E<gt>  L<%user|"%user">,...)>
 
 =back
 
@@ -1110,7 +1108,7 @@ sub _extract_followees
 
 =over
 
-=item * I<$result_hash_ref>: user_id => C<(L<%user|"%user">,...)>
+=item * I<$result_hash_ref>: C<(user_id =E<gt> L<%user|"%user">,...)>
 
 =back
 
@@ -1156,7 +1154,7 @@ sub _extract_friends
 
 =over
 
-=item * I<$result_hash_ref>: review_id => C<(L<%review|"%review">,...)> 
+=item * I<$result_hash_ref>: C<(review_id =E<gt> L<%review|"%review">,...)> 
 
 =back
 
