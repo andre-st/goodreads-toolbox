@@ -90,7 +90,6 @@ our @EXPORT = qw(
 		query_good_user
 		query_good_author_books
 		query_similar_authors
-		eta_query_good_reviews
 		query_good_reviews
 		query_good_followees );
 
