@@ -174,7 +174,7 @@ my $ubocount  = scalar @userbooks;
 
 printf "%d books\n", $ubocount;
 
-die "[FATAL] Try checking the Goodreads.com privacy settings: 'public for everyone'" 
+die "[FATAL] Check your Goodreads privacy settings: 'anyone (including search engines)'" 
 	if $ubocount == 0;
 
 
