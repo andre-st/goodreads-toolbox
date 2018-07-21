@@ -609,7 +609,6 @@ sub query_good_reviews
 	
 	# Dict-search works well many ratings but poorly with few (waste of time).
 	# A high stall-time, however, indicates that someone really wants to know:
-	
 	goto DONE if $limit < 3000 && $stalltime < 10*60;
 	goto DONE if !$use_dict;
 	
