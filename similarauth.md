@@ -49,17 +49,19 @@ Total time: 8 minutes
 
 **Note:**
 
-You can break the process with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later without having to re-read all
-online sources again, as reading from Goodreads.com is very time consuming.
-The script internally uses a **file-cache** which is busted after 21 days
-and saves to /tmp/FileCache/.
+You can break the process with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later
+without having to re-read all online sources again, as reading from
+Goodreads.com is very time consuming.  The script internally uses a
+**file-cache** which is busted after 31 days (--cache parameter) and saves to
+/tmp/FileCache/.
 
 
 
 ## Observations and limitations
 
 - many authors (in my shelves) have no "similar authors" data on Goodreads
-- actual value of this isn't the 'seen' part but just having a long list with similar but yet unknown authors
+- actual value of this isn't the 'seen' part but just having a long list with
+  similar but yet unknown authors
 
 
 

@@ -68,10 +68,11 @@ Total time: 74 minutes
 
 **Note:**
 
-You can break the process with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later without having to re-read all
-online sources again, as reading from Goodreads.com is very time consuming.
-The script internally uses a **file-cache** which is busted after 21 days
-and saves to /tmp/FileCache/.
+You can break the process with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later
+without having to re-read all online sources again, as reading from
+Goodreads.com is very time consuming.  The script internally uses a
+**file-cache** which is busted after 31 days (--cache parameter) and saves to
+/tmp/FileCache/.
 
 
 
