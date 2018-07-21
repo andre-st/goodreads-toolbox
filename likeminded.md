@@ -49,18 +49,18 @@ Loading books of 95 authors:
 [100%] Fertl, Herbert L.          #16159494   1 books    0.03s
 Done.
 Loading reviews for 1625 author books:
-[  0%] First as Tragedy, Then as Farce           #6636487    2278 memb       4.20s
-[  0%] The Parallax View                         #18910      1039 memb       3.35s
-[  0%] The Year of Dreaming Dangerously          #15901602    949 memb       3.08s
-[  0%] Descriptive Check List: Together With Sh  #6517166       0 memb       0.01s
-[  0%] Old Fences, New Neighbors                 #17461487      0 memb       0.03s
+[  0%] First as Tragedy, Then as Farce           #6636487    2278 memb     134.20s
+[  0%] The Parallax View                         #18910      1039 memb      66.35s
+[  0%] The Year of Dreaming Dangerously          #15901602    949 memb      50.08s
+[  0%] Descriptive Check List: Together With Sh  #6517166       0 memb       1.41s
+[  0%] Old Fences, New Neighbors                 #17461487      0 memb       1.13s
 [  0%] Little Brother (Little Brother, #1)       #25547383   5885 memb     324.83s
-[  0%] The Hardware Hacker: Adventures in Makin  #30804383    219 memb       0.25s
-[  0%] Hacking the Xbox: An Introduction to Rev  #984394      206 memb       0.26s
-[  1%] The Essential Guide to Electronics in Sh  #33401673     27 memb       0.11s
+[  0%] The Hardware Hacker: Adventures in Makin  #30804383    219 memb      11.25s
+[  0%] Hacking the Xbox: An Introduction to Rev  #984394      206 memb      10.26s
+[  1%] The Essential Guide to Electronics in Sh  #33401673     27 memb       1.11s
 [  1%] The Sublime Object of Ideology            #18912      2229 memb      69.87s
 ...
-[100%] Maker Pro: Essays on Making a Living as   #24214717     33 memb       0.09s
+[100%] Maker Pro: Essays on Making a Living as   #24214717     33 memb       1.09s
 Done.
 Writing members (N=39129) with 5% similarity or better to "likeminded-18418712.html"...
 Total time: 54 minutes
