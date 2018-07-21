@@ -138,7 +138,7 @@ our $CACHEDAYS = 31;
 our $OUTPATH;
 GetOptions( 'similarity|m=i' => \$MINSIMIL,
             'stalltime|t=i'  => \$STALLTIME,
-		  'nodict|n'       => sub { $USEDICT = 0; },
+            'nodict|n'       => sub { $USEDICT = 0; },
             # Options consistently used across GR toolbox:
             'outfile|o=s'    => \$OUTPATH,
             'cache|c=i'      => \$CACHEDAYS,

@@ -118,7 +118,7 @@ GetOptions( 'minfavorers|f=i' => \$MINFAVORERS,
             # Options consistently used across GR toolbox:
             'outfile|o=s'     => \$OUTPATH,
             'cache|c=i'       => \$CACHEDAYS,
-            'help|?'          => sub { pod2usage( -verbose => 2 ); },
+            'help|?'          => sub { pod2usage( -verbose => 2 ); }
 		) or pod2usage 1;
 
 pod2usage 1 unless scalar @ARGV == 1;  # 1 bc of obsolete "./fr.pl USERNUMBER SHELF"

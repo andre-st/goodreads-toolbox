@@ -538,8 +538,8 @@ sub query_good_author_books
 
 
 
-=head2 C<(L<%review|"%review">,...)> query_good_reviews(
-	I<{ book =E<gt> C<L<%book|"%book">>, since =E<gt>  undef, stalltime =E<gt> undef, 
+=head2 C<(L<%review|"%review">,...)> query_good_reviews(I<{ 
+	book =E<gt> C<L<%book|"%book">>, since =E<gt>  undef, stalltime =E<gt> undef, 
 	on_progress =E<gt> undef, use_dict = 1 }>)
 
 =over

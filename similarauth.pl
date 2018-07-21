@@ -106,7 +106,7 @@ our $CACHEDAYS = 31;
 our $OUTPATH;
 GetOptions( 'help|?'      => sub { pod2usage( -verbose => 2 );            },
             'shelf|s=s'   => sub { $SHELF = require_good_shelfname $_[1]; },
-		  'cache|c=i'   => \$CACHEDAYS,
+            'cache|c=i'   => \$CACHEDAYS,
             'outfile|o=s' => \$OUTPATH ) or pod2usage 1;
 
 pod2usage 1 unless scalar @ARGV == 1;  # 1 bc of obsolete "./sa.pl USERNUMBER SHELF"
