@@ -586,8 +586,13 @@ sub query_good_reviews
 	$progfn->( 0 );  # Initializes progress display
 	
 	
-	# Goodreads reviews filter gets us dissimilar(!) subsets which are merged here (N<5400):
-	# Zero stall-time means 'fast result': Newest only, any rating (see recentrated.pl)
+	# - Goodreads reviews filter gets us dissimilar(!) subsets which are merged
+	#   here: Don't assume that these filters just load a _subset_ of what you
+	#   see when _no filters_ are applied. Given enough ratings and reviews, each
+	#   filter finds reviews not included in any other result.  Theoretical
+	#   limit here is 5400 reviews: 6*3 filter combinations * max. 300 displayed 
+	#   reviews (Goodreads limit).
+	# - Zero stall-time means "fast": Newest only, any rating (recentrated.pl)
 	my @rateargs = $stalltime == 0 ? ( undef    ) : ( undef, 1..5               );
 	my @sortargs = $stalltime == 0 ? ( $SORTNEW ) : ( undef, $SORTNEW, $SORTOLD );
 	for my $r (@rateargs)
