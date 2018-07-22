@@ -48,6 +48,15 @@ our $VERSION = '1.90';  # X.XX version format required by Perl
         without being noticed by the majority, but they cannot
         easily disable important webpages that we use too
 
+=item * this library grew with every new usecase and software;
+        it retries operations on errors on Goodreads.com,
+        which are not seldom (over capacity, exceptions etc);
+        it saw a lot of flawed data such as wrong review dates 
+        ("Jan 01, 1010"), which broke Time::Piece.
+
+=item * Goodreads "aren't eating their own dog food"
+        https://www.goodreads.com/topic/show/18536888-is-the-public-api-maintained-at-all#comment_number_1
+
 =back
 
 
@@ -273,6 +282,8 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =item * is_female  => C<bool> (not supported yet)
 
 =item * is_private => C<bool> (not supported yet)
+
+=item * is_staff   => C<bool> (not supported yet), is a Goodreads.com employee
 
 =item * url        => C<string> URL to the user's profile page
 
