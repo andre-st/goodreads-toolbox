@@ -22,7 +22,7 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =over 4
 
-=item B<-m, --similarity>=I<NUMBER>
+=item B<-m, --similar>=I<NUMBER>
 
 value between 0 and 100; members with 100% similarity have read *all* the
 authors you did, which is unlikely, so better use lower values, default is a
@@ -37,12 +37,18 @@ the freetext-based reviews-search provided by Goodreads. This reduces the
 overall search time but also reduces the amount of reviews considered in our
 statistics. The dictionary is otherwise only used for books with many ratings.
 
-=item B<-t, --stalltime>=I<NUMSECS>
+=item B<-t, --stall>=I<NUMSECS>
 
 maximum number of seconds to spent on waiting for a change when dict-searching
 additional reviews. If our algorithm performs poorly on a book we don't want to
 waste too much time and abort. Use a very high number for a slow comprehensive
-scan, but default is 60 seconds. 
+scan, but default stall-time is 60 seconds. 
+
+=item B<-r, --maxratings>=I<NUMBER>
+
+not yet supported: drop books with more than n ratings, e.g., 1000000. books
+read by almost everyone don't really help our statistics and waste a lot of
+computer time
 
 =item B<-c, --cache>=I<NUMDAYS>
 
@@ -72,7 +78,7 @@ show full man page
 
 $ ./likeminded.pl 55554444
 
-$ ./likeminded.pl --shelf=read --stalltime=60 --similarity=5 55554444
+$ ./likeminded.pl --shelf=read --stall=60 --similar=5 55554444
 
 $ ./likeminded.pl --nodict --outfile=./sub/myfile.html 55554444
 
@@ -137,14 +143,14 @@ our $USEDICT   = 1;
 our $SHELF     = '%23ALL%23';
 our $CACHEDAYS = 31;
 our $OUTPATH;
-GetOptions( 'similarity|m=i' => \$MINSIMIL,
-            'stalltime|t=i'  => \$STALLTIME,
-            'nodict|n'       => sub { $USEDICT = 0; },
+GetOptions( 'similar|m=i' => \$MINSIMIL,
+            'stall|t=i'   => \$STALLTIME,
+            'nodict|n'    => sub { $USEDICT = 0; },
             # Options consistently used across GR toolbox:
-            'outfile|o=s'    => \$OUTPATH,
-            'cache|c=i'      => \$CACHEDAYS,
-            'shelf|s=s'      => sub { $SHELF = require_good_shelfname $_[1]; },
-            'help|?'         => sub { pod2usage( -verbose => 2 ); }
+            'outfile|o=s' => \$OUTPATH,
+            'cache|c=i'   => \$CACHEDAYS,
+            'shelf|s=s'   => sub { $SHELF = require_good_shelfname $_[1]; },
+            'help|?'      => sub { pod2usage( -verbose => 2 ); }
 		) or pod2usage 1;
 
 pod2usage 1 unless scalar @ARGV == 1;
