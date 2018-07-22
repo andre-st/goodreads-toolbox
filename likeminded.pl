@@ -130,6 +130,7 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
+our $TSTART    = time();
 our $MINSIMIL  = 5;
 our $STALLTIME = 1*60;
 our $USEDICT   = 1;
@@ -149,7 +150,6 @@ GetOptions( 'similarity|m=i' => \$MINSIMIL,
 pod2usage 1 unless scalar @ARGV == 1;
 
 our $GOODUSER = require_good_userid $ARGV[0];
-our $TSTART   = time();
     $OUTPATH  = "likeminded-${GOODUSER}-${SHELF}.html" if !$OUTPATH;
 
 set_good_cache( $CACHEDAYS );

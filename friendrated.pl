@@ -108,6 +108,7 @@ use Goodscrapes;
 
 
 # Program configuration:
+our $TSTART      = time();
 our $MINFAVORERS = 3;
 our $MINRATING   = 4;
 our $FRIENDSHELF = 'read';
@@ -124,7 +125,6 @@ GetOptions( 'minfavorers|f=i' => \$MINFAVORERS,
 pod2usage 1 unless scalar @ARGV == 1;  # 1 bc of obsolete "./fr.pl USERNUMBER SHELF"
 
 our $GOODUSER = require_good_userid $ARGV[0];
-our $TSTART   = time();
     $OUTPATH  = "friendrated-${GOODUSER}.html" if !$OUTPATH;
 
 # Followed and friend list is private, some 'Read' shelves are private

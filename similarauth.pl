@@ -101,6 +101,7 @@ use Goodscrapes;
 
 
 # Program configuration:
+our $TSTART    = time();
 our $SHELF     = '%23ALL%23';
 our $CACHEDAYS = 31;
 our $OUTPATH;
@@ -112,7 +113,6 @@ GetOptions( 'help|?'      => sub { pod2usage( -verbose => 2 );            },
 pod2usage 1 unless scalar @ARGV == 1;  # 1 bc of obsolete "./sa.pl USERNUMBER SHELF"
 
 our $GOODUSER = require_good_userid $ARGV[0];
-our $TSTART   = time();
     $OUTPATH  = "likeminded-${GOODUSER}-${SHELF}.html" if !$OUTPATH;
 
 set_good_cache( $CACHEDAYS );
