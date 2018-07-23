@@ -1406,9 +1406,14 @@ DOWNLOAD:
 	$curl->setopt( $curl->CURLOPT_HEADER,         0          );
 	$curl->setopt( $curl->CURLOPT_WRITEDATA,      \$buf      );
 	
-	# Performance options, avoid slow SSL ops somehow (frq. handshakes etc):
+	# Performance options:
+	# - don't hang too long, better disconnect and retry
+	# - reduce number of SSL handshakes (reuse connection)
+	# - reduce SSL overhead
 	$curl->setopt( $curl->CURLOPT_TIMEOUT,        60         );
 	$curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 60         );
+	$curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0          );  # CURL default
+	$curl->setopt( $curl->CURLOPT_FRESH_CONNECT,  0          );  # CURL default
 	$curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1          );
 	$curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120        );
 	$curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60         );
@@ -1428,7 +1433,7 @@ DOWNLOAD:
 	if( $state > 1 )
 	{
 		say "[INFO ] Retrying in 3 minutes... Press CTRL-C to exit";
-		$curl = undef;
+		$curl = undef;  # disconnect
 		sleep 3*60;
 		goto DOWNLOAD;
 	}
