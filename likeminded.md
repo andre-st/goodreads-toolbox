@@ -83,7 +83,7 @@ Goodreads.com is very time consuming.  The script internally uses a
   the program's runtime; loading data could take a month with too many books
   (start with 100 books)
 - slow but good enough since you run it 4x a year
-- make sure you have some _GB_ of free diskspace for /tmp/
+- make sure you have some _Gigabytes_ of free diskspace for /tmp/
 - there's no way to load _all_ reviews of a book, but the program tries different 
   things to get as much reviews as possible (tweaks see --help parameter).
   This means there is a number of readers not considered in our statistics,
@@ -91,7 +91,7 @@ Goodreads.com is very time consuming.  The script internally uses a
   Although, we don't get _all_ members (for books with ten of thousand
   reviews), the final report still contains _enough_ members who read the 
   same n authors
-- the more popular your chic literature, the longer the program's runtime and the 
+- the more popular your literature, the longer the program's runtime and the 
   more questionable its results (too generic, many unseen reviewers) - or: 
   more fun with good but rare books
 - there are members with 94.857 ratings, likely bots
