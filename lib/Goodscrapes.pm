@@ -19,7 +19,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =over
 
-=item * Updated: 2018-07-21
+=item * Updated: 2018-07-23
 
 =item * Since: 2014-11-05
 
@@ -48,13 +48,13 @@ our $VERSION = '1.90';  # X.XX version format required by Perl
         without being noticed by the majority, but they cannot
         easily disable important webpages that we use too
 
-=item * this library grew with every new usecase and software;
+=item * this library grew with every new usecase and program;
         it retries operations on errors on Goodreads.com,
         which are not seldom (over capacity, exceptions etc);
         it saw a lot of flawed data such as wrong review dates 
         ("Jan 01, 1010"), which broke Time::Piece.
 
-=item * Goodreads "aren't eating their own dog food"
+=item * Goodreads "isn't eating its own dog food"
         https://www.goodreads.com/topic/show/18536888-is-the-public-api-maintained-at-all#comment_number_1
 
 =back
@@ -96,7 +96,6 @@ our @EXPORT = qw(
 		set_good_cache 
 		amz_book_html 
 		query_good_books 
-		query_good_user
 		query_good_author_books
 		query_similar_authors
 		query_good_reviews
