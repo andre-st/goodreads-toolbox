@@ -1234,9 +1234,7 @@ sub _extract_books
 	my $htm = shift;
 	my $ret = 0;
 	
-	# TODO verify if shelf is the given one or redirected by GR to #ALL# bc misspelled
-	
-	
+	# TODO verify if shelf is the given one or redirected by GR to #ALL# bc misspelled	
 	
 	while( $htm =~ /<tr id="review_\d+" class="bookalike review">(.*?)<\/tr>/gs ) # each book row
 	{	
@@ -1268,9 +1266,9 @@ sub _extract_books
 		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
 		$bk{ rh_author   } = \%au;
 		
+		$ret++ unless exists $rh->{$bk{id}};  # Don't count duplicates
 		$rh->{$bk{id}} = \%bk if $rh;
 		$bfn->( \%bk );
-		$ret++;
 	}
 	
 	$pfn->( $ret );
@@ -1325,9 +1323,9 @@ sub _extract_author_books
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ rh_author   } = \%au;
 		
+		$ret++ unless exists $rh->{$bk{id}};  # Don't count duplicates
 		$rh->{$bk{id}} = \%bk;
 		$bfn->( \%bk );
-		$ret++;
 	}
 	
 	$pfn->( $ret );
@@ -1372,8 +1370,8 @@ sub _extract_followees
 		$us{ _seen     } = 1;
 			
 		next if !$iau && $us{is_author};
+		$ret++ unless exists $rh->{$us{id}};  # Don't count duplicates
 		$rh->{$us{id}} = \%us;
-		$ret++;
 	}
 	
 	$pfn->( $ret );
@@ -1418,8 +1416,8 @@ sub _extract_friends
 		$us{ _seen     } = 1;
 		
 		next if !$iau && $us{ is_author };
+		$ret++ unless exists $rh->{$us{id}};  # Don't count duplicates
 		$rh->{$us{id}} = \%us;
-		$ret++;
 	}
 	
 	$pfn->( $ret );
@@ -1482,8 +1480,8 @@ sub _extract_revs
 		$rv{ book_id    } = $bid;
 		$rv{ rh_user    } = \%us;
 		
+		$ret++ unless exists $rh->{$rv{id}};  # Don't count duplicates
 		$rh->{$rv{id}} = \%rv;
-		$ret++;
 	}
 	
 	$pfn->( $ret );
@@ -1528,8 +1526,8 @@ sub _extract_similar_authors
 		$au{ is_private } = 0;
 		$au{ _seen      } = 1;
 
+		$ret++ unless exists $rh->{$au{id}};  # Don't count duplicates
 		$rh->{$au{id}} = \%au;
-		$ret++;
 	}
 	
 	$pfn->( $ret );
