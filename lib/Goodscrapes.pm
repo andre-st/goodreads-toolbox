@@ -518,7 +518,7 @@ sub gmeter
 
 
 
-=head2 C<void> gsetcookie(I<{ content => undef, filepath => '.cookie' }>)
+=head2 C<void> gsetcookie(I<{ content =E<gt> undef, filepath =E<gt> '.cookie' }>)
 
 =over
 
@@ -817,7 +817,8 @@ DONE:
 
 
 
-=head2 C<void> greadfolls(I<{ rh_into, from_user_id, on_progress =E<gt> sub{}, incl_authors => 1 }>)
+=head2 C<void> greadfolls(I<{ rh_into, from_user_id, on_progress =E<gt> sub{}, 
+			incl_authors =E<gt> 1 }>)
 
 =over
 
