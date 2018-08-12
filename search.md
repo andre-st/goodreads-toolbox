@@ -3,7 +3,7 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
 
-## Sorting Goodreads search results by popularity or year, filter exact matches
+## Sorting Goodreads search results by popularity or year
 
 From the _Goodreads Feedback_ forum,
 [Kevin](https://www.goodreads.com/topic/show/19464605-sort-search-results-by-rating)
@@ -21,8 +21,7 @@ or [obsessedwithbooks](https://www.goodreads.com/topic/show/1188302-sort-search-
 > menu to sort alphabetically, by rating, relevancy, etc.
 
 
-[SL](https://www.goodreads.com/topic/show/19387052-search-needs-improvement)
-or [Ian](https://www.goodreads.com/topic/show/2125978-book-search-function-why-does-a-book-that-has-neither-of-the-searched)
+In addition to [SL](https://www.goodreads.com/topic/show/19387052-search-needs-improvement)
 or [Carri](https://www.goodreads.com/topic/show/18123885-search-functionality)
 or [Epper](https://www.goodreads.com/topic/show/18223264-search-books-filter-results)
 or [Mimi](https://www.goodreads.com/topic/show/19272652-refined-search)
@@ -54,17 +53,19 @@ $ ./search.pl YOURKEYWORD
 
 Searching books:
 
- about..... linux
+ about..... YOURKEYWORD
  rated by.. 5 members or more
  order by.. stars, num_ratings, year
  progress.. 100%
 
-Writing search result (N=275) to "search-linux.html"... 
+Writing search result (N=275) to "search-YOURKEYWORD.html"... 
 Total time: 3 minutes
 ```
 
 
 ## Observations and limitations
+
+- [GIGO](https://en.wikipedia.org/wiki/Garbage_in,_garbage_out)
 
 
 ## Feedback
