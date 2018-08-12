@@ -617,6 +617,8 @@ sub gsetcache
 
 =item * I<on_book>: receives \L<%book|"%book"> argument
 
+=back
+
 =cut
 
 sub greadshelf

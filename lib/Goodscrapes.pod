@@ -297,6 +297,8 @@ TODO: line of code is useless when died
 
 =item * I<on_book>: receives \L<%book|"%book"> argument
 
+=back
+
 =head2 C<void> greadauthors( I<{ from_user_id, ra_from_shelves, rh_into, on_progress =E<gt> sub{} }> )
 
 =over
