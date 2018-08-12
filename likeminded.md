@@ -78,12 +78,12 @@ Goodreads.com is very time consuming.  The script internally uses a
 ## Observations and limitations
 
 **Latest version:**
-- reduce the program's runtime by using a special purpose shelf (--shelf parameter):
-  Start with 100 "best-of" books, which are already somehow representative of
-  its readers; alternatively specify multiple shelves in a single run.
-  Avoid using your "ALL" or "read" shelf because loading data could take a 
-  month with too many books.
-- slow but good enough since you run it 4x a year
+- loading data could take a month with too many books: Prefer a separate "best-of" shelf
+  (with 100 representative books) over the "All" or "Read" shelves.
+  You can specify multiple shelves in a single run (--shelf parameter).
+- the more popular your literature, the longer the program's runtime and the 
+  more questionable its results (too generic, many unseen reviewers) - or: 
+  add good but rare books to your "best-of" shelf
 - make sure you have some _Gigabytes_ of free diskspace for /tmp/
 - there's no way to load _all_ reviews of a book, but the program tries different 
   things to get as much reviews as possible.
@@ -91,15 +91,13 @@ Goodreads.com is very time consuming.  The script internally uses a
   and we cannot randomize in a way which would produce samples of similar size.
   Although, we don't get _all_ members (for books with ten of thousand
   reviews), the final report still contains _enough_ members who read the 
-  same n authors
-- the more popular your literature, the longer the program's runtime and the 
-  more questionable its results (too generic, many unseen reviewers) - or: 
-  more fun with good but rare books
+  same N authors
 - there are members with 94.857 ratings, likely bots
-- lists members with private accounts (reviews still readable)
+- lists members with private accounts
+- slow but good enough since you run it 4x a year
 - your Goodreads account must be viewable by 
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
-  which is the default
+  which is the default (alternatively try --cookie parameter)
 - "_...most number of shared books would be a list of children's books_"—`likeminded.pl` has a shelf parameter (sort of selection)
 
 **First version compared books, not authors:**
