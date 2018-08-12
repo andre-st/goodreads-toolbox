@@ -226,9 +226,11 @@ for my $b (values %books)
 	my $t0 = time();
 	my %revs;
 	
+	# Rigor level 0 is useless here, and 2+ (dict-search) has a bad 
+	# cost/benefit ratio given hundreds of books:
 	greadreviews( for_book    => $b, 
 	              rh_into     => \%revs,
-	              rigor       => 1,
+	              rigor       => 1,  
 	              on_progress => gmeter( 'memb' ));
 	
 	$authors_read_by{ $_->{rh_user}->{id} }{ $b->{rh_author}->{id} } = 1 

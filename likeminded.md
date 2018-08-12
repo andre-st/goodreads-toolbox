@@ -81,7 +81,7 @@ Goodreads.com is very time consuming.  The script internally uses a
 - reduce the program's runtime by using a special purpose shelf (--shelf parameter):
   Start with 100 "best-of" books, which are already somehow representative of
   its readers; alternatively specify multiple shelves in a single run.
-  Avoid using your #ALL# or "read" shelf because loading data could take a 
+  Avoid using your "ALL" or "read" shelf because loading data could take a 
   month with too many books.
 - slow but good enough since you run it 4x a year
 - make sure you have some _Gigabytes_ of free diskspace for /tmp/
