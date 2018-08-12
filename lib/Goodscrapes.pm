@@ -681,7 +681,7 @@ sub greadauthors
 	
 	greadshelf( from_user_id    => $args{ from_user_id    },
 	            ra_from_shelves => $args{ ra_from_shelves },
-			  on_book         => $pickauthorsfn );
+	            on_book         => $pickauthorsfn );
 	
 	%$rh = ( %$rh, %auts ) if $rh;  # Merge
 }
