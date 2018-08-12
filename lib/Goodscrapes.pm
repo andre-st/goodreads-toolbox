@@ -671,7 +671,7 @@ sub greadauthors
 	{
 		my $aid = $_[0]->{rh_author}->{id};
 		return if gisbaduser( $aid );
-		$pfn->( 1 ) if !exists $rh->{$aid};  # Don't count duplicates
+		$pfn->( 1 ) if !exists $rh->{$aid};  # Don't count duplicates (multiple shelves)
 		$rh->{$aid} = $_[0]->{rh_author};
 	};
 	
@@ -1266,7 +1266,7 @@ sub _extract_books
 		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
 		$bk{ rh_author   } = \%au;
 		
-		$ret++ unless exists $rh->{$bk{id}};  # Don't count duplicates
+		$ret++ unless exists $rh->{$bk{id}};  # Don't count duplicates (multiple shelves)
 		$rh->{$bk{id}} = \%bk if $rh;
 		$bfn->( \%bk );
 	}
@@ -1461,7 +1461,7 @@ sub _extract_revs
 		my $dat_tpiece = $dat ? Time::Piece->strptime( $dat, '%b %d, %Y' ) : $_EARLIEST; 
 		
 		next if $dat_tpiece < $since_tpiece;
-			
+		
 		my %us;
 		my %rv;
 		
@@ -1480,7 +1480,7 @@ sub _extract_revs
 		$rv{ book_id    } = $bid;
 		$rv{ rh_user    } = \%us;
 		
-		$ret++ unless exists $rh->{$rv{id}};  # Don't count duplicates
+		$ret++ unless exists $rh->{$rv{id}};  # Don't count duplicates (multiple searches for same book)
 		$rh->{$rv{id}} = \%rv;
 	}
 	
@@ -1512,6 +1512,8 @@ sub _extract_similar_authors
 		
 		next if $au{id} eq $uid_to_skip;
 		
+		$ret++;  # Incl. duplicates: 10 similar to author A, 9 to B; A and B can incl same similar authors
+				
 		if( exists $rh->{$au{id}} )
 		{
 			$rh->{$au{id}}->{_seen}++;  # similarauth.pl
@@ -1525,8 +1527,7 @@ sub _extract_similar_authors
 		$au{ is_author  } = 1;
 		$au{ is_private } = 0;
 		$au{ _seen      } = 1;
-
-		$ret++ unless exists $rh->{$au{id}};  # Don't count duplicates
+		
 		$rh->{$au{id}} = \%au;
 	}
 	
@@ -1562,7 +1563,9 @@ sub _extract_search_books
 	my $ret = 0;
 	my $max = $htm =~ /Page \d+ of about (\d+) results/  ? $1 : 0;
 	
-	$pfn->( 1, 1 ) and return 0 if scalar @$ra >= $max;  # Page 100+x == Page 100, or "NO RESULTS."
+	# We check against the stated number of results, alternative exit 
+	# conditions: Page 100 (Page 100+x == Page 100), or "NO RESULTS."
+	$pfn->( 1, 1 ) and return 0 if scalar @$ra >= $max;  
 	
 	while( $htm =~ /<tr itemscope itemtype="http:\/\/schema.org\/Book">(.*?)<\/tr>/gs )
 	{
@@ -1591,7 +1594,7 @@ sub _extract_search_books
 		$bk{ rh_author   } = \%au;
 		
 		push( @$ra, \%bk );
-		$ret++;
+		$ret++;  # There are no duplicates, no extra checks
 	}
 	
 	$pfn->( $ret, $max );
