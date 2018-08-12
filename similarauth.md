@@ -52,8 +52,7 @@ Total time: 8 minutes
 You can break the process with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later
 without having to re-read all online sources again, as reading from
 Goodreads.com is very time consuming.  The script internally uses a
-**file-cache** which is busted after 31 days (--cache parameter) and saves to
-/tmp/FileCache/.
+**file-cache** which is busted after 31 days and saves to /tmp/FileCache/.
 
 
 
@@ -75,5 +74,5 @@ Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](A
 - [friendrated.pl](friendrated.md) - Books common among the people you follow
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [likeminded.pl](likeminded.md)   - Finding people based on the books they've read 
-
+- [search.pl](search.pl)           - Sort book-search results by popularity or year
 

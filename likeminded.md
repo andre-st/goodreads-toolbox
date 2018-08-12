@@ -71,17 +71,17 @@ Total time: 274 minutes
 You can break the process with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later
 without having to re-read all online sources again, as reading from
 Goodreads.com is very time consuming.  The script internally uses a
-**file-cache** which is busted after 31 days (--cache parameter) and saves to
-/tmp/FileCache/.
+**file-cache** which is busted after 31 days and saves to /tmp/FileCache/.
 
 
 
 ## Observations and limitations
 
 **Latest version:**
-- you should use a special purpose shelf (--shelf parameter) to control/reduce 
-  the program's runtime; loading data could take a month with too many books
-  (start with 100 "best of" books)
+- reduce the program's runtime by using a special purpose shelf (--shelf parameter),
+  otherwise loading data could take a month with too many books:
+  Start with 100 "best of" books, which are already somehow representative of
+  its readers
 - slow but good enough since you run it 4x a year
 - make sure you have some _Gigabytes_ of free diskspace for /tmp/
 - there's no way to load _all_ reviews of a book, but the program tries different 
@@ -123,4 +123,4 @@ Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](A
 - [friendrated.pl](friendrated.md) - Books common among the people you follow
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [similarauth.pl](similarauth.md) - Find all similar authors
-
+- [search.pl](search.pl)           - Sort book-search results by popularity or year

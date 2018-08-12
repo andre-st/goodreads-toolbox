@@ -96,7 +96,8 @@ Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](A
 
 ## See also
 
-- [likeminded.pl](likeminded.md) - Find Goodreads members with similar book taste
+- [likeminded.pl](likeminded.md)   - Find Goodreads members with similar book taste
 - [friendrated.pl](friendrated.md) - Books common among the people you follow
 - [similarauth.pl](similarauth.md) - Find all similar authors
+- [search.pl](search.pl)           - Sort book-search results by popularity or year
 

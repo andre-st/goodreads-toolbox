@@ -28,7 +28,7 @@ $ sudo make friendrated
 $ ./friendrated.pl --help
 $ ./friendrated.pl YOURGOODUSERNUMBER
 
-Getting list of users known to #18418712... 164 users (0.18s)
+Getting list of members known to #18418712... 164 members (0.18s)
 [  0%] Aron Mellendar            #21254511    247 read      94 favs     0.41s
 [  1%] Moshe Fiono               #3932835     520 read     126 favs     0.80s
 [  2%] Peter Glowwa              #18936366    392 read     148 favs     0.58s
@@ -51,8 +51,7 @@ Total time: 18 minutes
 You can break the process with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later
 without having to re-read all online sources again, as reading from
 Goodreads.com is very time consuming.  The script internally uses a
-**file-cache** which is busted after 31 days (--cache parameter) and saves to
-/tmp/FileCache/.
+**file-cache** which is busted after 31 days and saves to /tmp/FileCache/.
 
 You will need to save your Goodreads cookie to the dotfile `.cookie` in the
 project directory.  I use Chrome's DevTools Network-view to [copy the cookie
@@ -76,6 +75,8 @@ Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](A
 
 ## See also
 
-- [likeminded.pl](likeminded.md) - Find Goodreads members with similar book taste
+- [likeminded.pl](likeminded.md)   - Find Goodreads members with similar book taste
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [similarauth.pl](similarauth.md) - Find all similar authors
+- [search.pl](search.pl)           - Sort book-search results by popularity or year
+

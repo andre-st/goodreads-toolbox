@@ -40,6 +40,15 @@ feature requested in the Goodreads forums.
 [Learn more](likeminded.md)
 
 
+## [search.pl](search.md)
+
+Prints a books search result, ordered by average rating and number of ratings 
+(most popular books), or pub year, optionally with exact title matches. 
+It's a naive implementation of the "Sort search results by rating"
+feature requested in the Goodreads forums.
+[Learn more](search.md)
+
+
 ## ~~[amz-tradein.pl](amz-tradein.md)~~
 
 This script fetched Amazon Trade-In prices for all books in a Goodreads.com
