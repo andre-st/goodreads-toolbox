@@ -1552,6 +1552,8 @@ sub _extract_similar_authors
 
 =item * I<ra_books>: C<(L<%book|"\%book">,...)> 
 
+=back
+
 =cut
 
 sub _extract_search_books

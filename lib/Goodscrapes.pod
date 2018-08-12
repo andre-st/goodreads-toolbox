@@ -578,6 +578,8 @@ TODO: line of code is useless when died
 
 =item * I<ra_books>: C<(L<%book|"\%book">,...)> 
 
+=back
+
 =head1 PRIVATE I/O PLUMBING SUBROUTINES
 
 
