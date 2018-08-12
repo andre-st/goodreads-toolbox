@@ -76,7 +76,7 @@ our $VERSION = '1.91';  # X.XX version format required by Perl
 =back
 
 
-head1 HOW TO USE
+=head1 HOW TO USE
 
 =over
 
@@ -613,6 +613,8 @@ sub gsetcache
 
 =item * reads a list of books present in the given shelves of the given user
 
+=item * I<ra_from_shelves>: array of strings with shelf names
+
 =item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)> or anything inserted by I<map>
 
 =item * I<on_book>: receives \L<%book|"%book"> argument
@@ -647,6 +649,8 @@ sub greadshelf
 =over
 
 =item * gets a list of authors whose books are present in the given shelves of the given user
+
+=item * I<ra_from_shelves>: array of strings with shelf names
 
 =item * If you need authors I<and> books data, then use C<greadshelf>
         which also populates the I<author> property of every book
