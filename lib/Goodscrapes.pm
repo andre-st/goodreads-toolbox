@@ -1584,7 +1584,11 @@ sub _extract_search_books
 	
 	# We check against the stated number of results, alternative exit 
 	# conditions: Page 100 (Page 100+x == Page 100), or "NO RESULTS."
-	$pfn->( 1, 1 ) and return 0 if scalar @$ra >= $max;  
+	if( scalar @$ra >= $max )
+	{
+		$pfn->( 1, 1 );
+		return 0;
+	}
 	
 	while( $htm =~ /<tr itemscope itemtype="http:\/\/schema.org\/Book">(.*?)<\/tr>/gs )
 	{
@@ -1608,7 +1612,6 @@ sub _extract_search_books
 		$bk{ year        } = $row =~ /published\s+(\d+)/              ? $1    : 0;  # 2018
 		$bk{ img_url     } = $row =~ /src="([^"]+)/                   ? $1    : $_NOBOOKIMGURL;
 		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/  ? decode_entities( $1 ) : '';
-		$bk{ user_rating } = () = $row =~ /staticStar p10/g;  # count
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ rh_author   } = \%au;
 		
