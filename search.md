@@ -3,7 +3,7 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
 
-## Sort Goodreads search results by popularity or year
+## Sort Goodreads search results by popularity or date published
 
 From the _Goodreads Feedback_ forum,
 [Kevin](https://www.goodreads.com/topic/show/19464605-sort-search-results-by-rating)

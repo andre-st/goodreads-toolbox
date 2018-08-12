@@ -43,7 +43,7 @@ feature requested in the Goodreads forums.
 ## [search.pl](search.md)
 
 Prints a books search result, ordered by average rating and number of ratings 
-(most popular books), or pub year, optionally with exact title matches. 
+(most popular books), or date published, optionally with exact title matches. 
 It's a naive implementation of the "Sort search results by rating"
 feature requested in the Goodreads forums.
 [Learn more](search.md)
