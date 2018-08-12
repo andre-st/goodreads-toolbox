@@ -137,7 +137,7 @@ our $USERID;
 GetOptions( 'help|?'      => sub{ pod2usage( -verbose => 2 ) },
             'shelf|s=s'   => \@SHELVES,
             'cache|c=i'   => \$CACHEDAYS,
-		  'cookie|k'    => \$USECOOKIE,
+            'cookie|k'    => \$USECOOKIE,
             'outfile|o=s' => \$OUTPATH ) 
              or pod2usage( 1 );
 

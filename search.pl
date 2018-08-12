@@ -133,7 +133,7 @@ our $ISEXACT;
 my  $ordercsv = '';
 
 GetOptions( 'ratings|r=i' => \$NUMRATINGS,
-		  'order|z=s'   => \$ordercsv,
+            'order|z=s'   => \$ordercsv,
             'help|?'      => sub{ pod2usage( -verbose => 2 ) },
             'cache|c=i'   => \$CACHEDAYS,
             'outfile|o=s' => \$OUTPATH ) 
