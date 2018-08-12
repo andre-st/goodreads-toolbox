@@ -7,12 +7,12 @@
 
 From the _Goodreads Feedback_ forum,
 [Ferouk](https://www.goodreads.com/topic/show/18084428-we-want-to-find-good-books-fast)
-or [Sonja](https://www.goodreads.com/topic/show/18177911-advanced-search-for-books)
-or [Pawel](https://www.goodreads.com/topic/show/423469-sorting-search-results)
 or [David-Emmanuel](https://www.goodreads.com/topic/show/18541118-better-search)
-or [Halordain](https://www.goodreads.com/topic/show/18496984-sorting-by-average-rating)
-or [obsessedwithbooks](https://www.goodreads.com/topic/show/1188302-sort-search-results)
-or [Kevin](https://www.goodreads.com/topic/show/19464605-sort-search-results-by-rating):
+or [Pawel (2010)](https://www.goodreads.com/topic/show/423469-sorting-search-results)
+or [obsessedwithbooks (2013)](https://www.goodreads.com/topic/show/1188302-sort-search-results)
+or [Sonja (2016)](https://www.goodreads.com/topic/show/18177911-advanced-search-for-books)
+or [Halordain (2017)](https://www.goodreads.com/topic/show/18496984-sorting-by-average-rating)
+or [Kevin (2018)](https://www.goodreads.com/topic/show/19464605-sort-search-results-by-rating):
 
 > I am trying to explore and discover the *best* books. I am not looking
 > for the most relevant book. Probably all the books that contain
@@ -22,15 +22,15 @@ or [Kevin](https://www.goodreads.com/topic/show/19464605-sort-search-results-by-
 > ratings.
 
 In addition to [SL](https://www.goodreads.com/topic/show/19387052-search-needs-improvement)
+or [Em__Jay](https://www.goodreads.com/topic/show/2279173-search-results?comment=117130606#comment_117130606)
 or [Carri](https://www.goodreads.com/topic/show/18123885-search-functionality)
-or [Epper](https://www.goodreads.com/topic/show/18223264-search-books-filter-results)
 or [Mimi](https://www.goodreads.com/topic/show/19272652-refined-search)
 or [G.H.](https://www.goodreads.com/topic/show/18034964-search-results)
 or [Lisa](https://www.goodreads.com/topic/show/19114134-search-fundction-when-looking-for-books)
-or [Shanna_redwind](https://www.goodreads.com/topic/show/18208444-search-very-frustrating)
-or [Em__Jay](https://www.goodreads.com/topic/show/2279173-search-results?comment=117130606#comment_117130606)
-or [Jenna](https://www.goodreads.com/topic/show/18901296-please-improve-search-function)
-or [Ian](https://www.goodreads.com/topic/show/18115612-search-prioritise-exact-matches):
+or [Epper (2016)](https://www.goodreads.com/topic/show/18223264-search-books-filter-results)
+or [Shanna_redwind (2016)](https://www.goodreads.com/topic/show/18208444-search-very-frustrating)
+or [Jenna (2017)](https://www.goodreads.com/topic/show/18901296-please-improve-search-function)
+or [Ian (2016)](https://www.goodreads.com/topic/show/18115612-search-prioritise-exact-matches):
 
 >I kind of wonder if I'm the only one who finds this annoying. If you search
 >for a book and type in the title of the book, exact matches to what you type
