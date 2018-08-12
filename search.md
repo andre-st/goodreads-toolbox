@@ -6,20 +6,20 @@
 ## Sort Goodreads search results by popularity or date published
 
 From the _Goodreads Feedback_ forum,
-[Kevin](https://www.goodreads.com/topic/show/19464605-sort-search-results-by-rating)
-or [Ferouk](https://www.goodreads.com/topic/show/18084428-we-want-to-find-good-books-fast)
+[Ferouk](https://www.goodreads.com/topic/show/18084428-we-want-to-find-good-books-fast)
 or [Sonja](https://www.goodreads.com/topic/show/18177911-advanced-search-for-books)
 or [Pawel](https://www.goodreads.com/topic/show/423469-sorting-search-results)
 or [David-Emmanuel](https://www.goodreads.com/topic/show/18541118-better-search)
 or [Halordain](https://www.goodreads.com/topic/show/18496984-sorting-by-average-rating)
-or [obsessedwithbooks](https://www.goodreads.com/topic/show/1188302-sort-search-results):
+or [obsessedwithbooks](https://www.goodreads.com/topic/show/1188302-sort-search-results)
+or [Kevin](https://www.goodreads.com/topic/show/19464605-sort-search-results-by-rating):
 
-> This seems to be a simple and straightforward feature to have so I its baffling
-> to me why GoodReads does not allow one to sort search results. Specifically, if
-> I am searching books by on specific author I want to sort the books to see
-> which books have the highest rating. Please consider adding a Sort By drop down
-> menu to sort alphabetically, by rating, relevancy, etc.
-
+> I am trying to explore and discover the *best* books. I am not looking
+> for the most relevant book. Probably all the books that contain
+> "Linux" in the title are relevant to what I'm looking for. I am not
+> interested in a particular book's algorithmically-determined
+> "relevance score" to my search query. I'm strictly interested in star
+> ratings.
 
 In addition to [SL](https://www.goodreads.com/topic/show/19387052-search-needs-improvement)
 or [Carri](https://www.goodreads.com/topic/show/18123885-search-functionality)
