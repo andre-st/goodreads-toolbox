@@ -615,7 +615,7 @@ sub gsetcache
 
 =item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)> or anything inserted by I<map>
 
-=item * I<on_book>: receives \L<%book|"%book" argument
+=item * I<on_book>: receives \L<%book|"%book"> argument
 
 =cut
 

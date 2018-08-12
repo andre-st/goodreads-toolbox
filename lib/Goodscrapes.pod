@@ -295,9 +295,9 @@ TODO: line of code is useless when died
 
 =item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)> or anything inserted by I<map>
 
-=item * I<on_book>: receives \L<%book|"%book" argument
+=item * I<on_book>: receives \L<%book|"%book"> argument
 
->=head2 C<void> greadauthors( I<{ from_user_id, ra_from_shelves, rh_into, on_progress =E<gt> sub{} }> )
+=head2 C<void> greadauthors( I<{ from_user_id, ra_from_shelves, rh_into, on_progress =E<gt> sub{} }> )
 
 =over
 
