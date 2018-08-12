@@ -518,7 +518,7 @@ sub gmeter
 
 
 
-=head2 C<void> gsetcookie( I<{ content => undef, filepath => '.cookie' }> )
+=head2 C<void> gsetcookie(I<{ content => undef, filepath => '.cookie' }>)
 
 =over
 
@@ -606,18 +606,20 @@ sub gsetcache
 
 
 
-=head2 C<void> greadshelf( I<{ from_user_id, ra_from_shelves, rh_into =E<gt> undef, 
-			on_book =E<gt> sub{}, on_progress =E<gt> sub{} }> )
+=head2 C<void> greadshelf(I<{ from_user_id, ra_from_shelves, rh_into =E<gt> undef, 
+			on_book =E<gt> sub{}, on_progress =E<gt> sub{} }>)
 
 =over
 
 =item * reads a list of books present in the given shelves of the given user
 
-=item * I<ra_from_shelves>: array of strings with shelf names
+=item * I<ra_from_shelves>: string-array with shelf names
 
-=item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)> or anything inserted by I<map>
+=item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)>
 
 =item * I<on_book>: receives \L<%book|"%book"> argument
+
+=item * I<on_progress>: see C<gmeter()>
 
 =back
 
@@ -647,13 +649,15 @@ sub greadshelf
 
 
 
-=head2 C<void> greadauthors( I<{ from_user_id, ra_from_shelves, rh_into, on_progress =E<gt> sub{} }> )
+=head2 C<void> greadauthors(I<{ from_user_id, ra_from_shelves, rh_into, on_progress =E<gt> sub{} }>)
 
 =over
 
 =item * gets a list of authors whose books are present in the given shelves of the given user
 
-=item * I<ra_from_shelves>: array of strings with shelf names
+=item * I<ra_from_shelves>: string-array with shelf names
+
+=item * I<on_progress>: see gmeter()
 
 =item * If you need authors I<and> books data, then use C<greadshelf>
         which also populates the I<author> property of every book
@@ -689,14 +693,18 @@ sub greadauthors
 
 
 
-=head2 C<void> greadauthorbk( I<{ rh_into, author_id, on_book =E<gt> sub{}, 
-			on_progress =E<gt> sub{} }> )
+=head2 C<void> greadauthorbk(I<{ rh_into, author_id, on_book =E<gt> sub{}, 
+			on_progress =E<gt> sub{} }>)
 
 =over
 
 =item * reads the Goodreads.com list of books written by the given author
 
 =item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)>
+
+=item * I<on_book>: receives \L<%book|"%book"> argument
+
+=item * I<on_progress>: see C<gmeter()>
 
 =back
 
@@ -727,11 +735,9 @@ sub greadauthorbk
 
 =item * I<rh_into>: C<(id =E<gt> L<%review|"%review">,...)>
 
-=item * optional I<since> argument of type C<Time::Piece>
+=item * I<since>: of type C<Time::Piece>
 
-=item * optional I<on_progress> callback function is called with an
-        argument, which contains the number of currently loaded reviews
-        (use %5s in format strings)
+=item * I<on_progress>: see C<gmeter()>
 
 =item * I<rigor> level 0: search newest reviews only (max 300 reviews)
 
@@ -811,13 +817,15 @@ DONE:
 
 
 
-=head2 C<void> greadfolls( I<{ rh_into, from_user_id, on_progress =E<gt> sub{}, incl_authors => 1 }> )
+=head2 C<void> greadfolls(I<{ rh_into, from_user_id, on_progress =E<gt> sub{}, incl_authors => 1 }>)
 
 =over
 
 =item * queries Goodreads.com for the friends and followees list of the given user
 
 =item * I<rh_into>: C<(id =E<gt> L<%user|"%user">,...)> 
+
+=item * I<on_progress>: see C<gmeter()>
 
 =item * Precondition: gsetcookie()
 
@@ -843,13 +851,15 @@ sub greadfolls
 
 
 
-=head2 C<void> greadsimilaraut( I<{ rh_into, author_id, on_progress =E<gt> sub{} }> )
+=head2 C<void> greadsimilaraut(I<{ rh_into, author_id, on_progress =E<gt> sub{} }>)
 
 =over
 
 =item * reads the Goodreads.com list of authors who are similar to the given author
 
 =item * I<rh_into>: C<(id =E<gt> L<%user|"%user">,...)>
+
+=item * I<on_progress>: see C<gmeter()>
 
 =item * increments I<'_seen'> counter of each author if already in I<%$rh_into>
 
@@ -871,10 +881,10 @@ sub greadsimilaraut
 
 
 
-=head2 C<void> gsearch( I<{ ra_into, phrase, is_exact =E<gt> 0, 
+=head2 C<void> gsearch(I<{ ra_into, phrase, is_exact =E<gt> 0, 
 			on_progress =E<gt> sub{}, num_ratings =E<gt> 0,
 			ra_order_by =E<gt> [ 'stars', 'num_ratings', 'year' ]
-			}> )
+			}>)
 
 =over
 
@@ -883,6 +893,8 @@ sub greadsimilaraut
 =item * I<ra_into>: C<(L<%book|"%book">,...)> 
 
 =item * I<order_by>: array with property names from C<(L<%book|"%book">,...)> 
+
+=item * I<on_progress>: see C<gmeter()>
 
 =item * supports percent progress functions: $pfn-E<gt>( $books_loaded, $books_total )
 
