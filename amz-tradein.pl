@@ -100,8 +100,11 @@ $ amz-tradein.pl 18418712 books-for-sale | sort --key 2n | tac > books-for-sale-
 use strict;
 use warnings;
 
+# Perl core:
 use FindBin;
 use lib "$FindBin::Bin/lib/";
+# Third party:
+# Ours:
 use Goodscrapes;
 
 
@@ -110,20 +113,23 @@ say STDERR "Usage: $0 GOODUSERNUMBER [SHELFNAME]\nSee source code for more info.
 
 
 # Program configuration:
-our $GOODUSER = require_good_userid   ( $ARGV[0] );
-our $SHELF    = require_good_shelfname( $ARGV[1] );
-
+our $USERID = gverifyuser ( $ARGV[0] );
+our $SHELF  = gverifyshelf( $ARGV[1] );
 
 
 sub extract_amz_price
 {
 	my $article_page_html = shift;
-	return( $article_page_html =~ /(EUR [0-9,]+)<\/span> Gutschein erhalten/ )[0]  ||  'EUR -,--';
+	return $article_page_html =~ /(EUR [0-9,]+)<\/span> Gutschein erhalten/  ? $1 : 'EUR -,--';
 }
 
 
-my @books = query_good_books( $GOODUSER, $SHELF );
-foreach my $b (@books)
+my %books;
+greadshelf( from_user_id    => $USERID, 
+            ra_from_shelves => [ $SHELF ],
+            rh_into         => \%books );
+
+for my $b (values %books)
 {
 	my $price = extract_amz_price( amz_book_html( $b ) );
 	say STDOUT $price . "\t" . $b->{title};

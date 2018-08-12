@@ -12,14 +12,14 @@ use utf8;
 
 =head1 NAME
 
-Goodscrapes - Simple Goodreads.com scraping helpers
+Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 
 =head1 VERSION
 
 =over
 
-=item * Updated: 2018-07-23
+=item * Updated: 2018-08-12
 
 =item * Since: 2014-11-05
 
@@ -27,7 +27,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =cut
 
-our $VERSION = '1.90';  # X.XX version format required by Perl
+our $VERSION = '1.91';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -38,7 +38,7 @@ our $VERSION = '1.90';  # X.XX version format required by Perl
 
 =item * less limited, e.g., reading shelves and reviews of other members
 
-=item * official API is slow too; API users are even second-class citizen
+=item * official is slow too; API users are even second-class citizen
 
 =item * theoretically this library is more likely to break, 
         but Goodreads progresses very very slowly: nothing
@@ -76,6 +76,34 @@ our $VERSION = '1.90';  # X.XX version format required by Perl
 =back
 
 
+head1 HOW TO USE
+
+=over
+
+=item * for real-world usage examples see Andre's Goodreads Toolbox
+
+=item * C<_> prefix means I<private> function or constant (don't use)
+
+=item * C<ra> prefix means array reference, C<rh> prefix means hash reference
+
+=item * C<on> prefix or C<fn> suffix means function variable
+
+=item * constants are uppercase, functions lowercase
+	   
+=item * Goodscrapes code in your program is usually recognizable by the
+        'g' or 'GOOD' prefix in the function or constant name
+
+=item * common internal abbreviations: 
+        pfn = progress function, bfn = book handler function, 
+        pag = page number, nam = name, au = author, bk = book, uid = user id,
+        bid = book id, aid = author id, rat = rating, tit = title, 
+        q   = query string, slf = shelf name, shv = shelves names, 
+        t0  = start time of an operation, ret = return code, 
+        tmp = temporary helper variable
+
+=back
+
+
 =head1 AUTHOR
 
 https://github.com/andre-st/
@@ -88,141 +116,172 @@ https://github.com/andre-st/
 
 use base 'Exporter';
 our @EXPORT = qw( 
-		require_good_userid
-		require_good_shelfname
-		is_bad_profile
-		set_good_cookie 
-		set_good_cookie_file 
-		set_good_cache 
-		amz_book_html 
-		query_good_books 
-		query_good_author_books
-		query_similar_authors
-		query_good_reviews
-		query_good_followees );
+	$GOOD_ERRMSG_NOBOOKS
+	$GOOD_ERRMSG_NOMEMBERS
+	gverifyuser
+	gverifyshelf
+	gisbaduser
+	gmeter
+	gsetcookie 
+	gsetcache
+	gsearch
+	greadshelf 
+	greadauthors
+	greadauthorbk
+	greadsimilaraut
+	greadreviews
+	greadfolls 
+	amz_book_html 
+	);
 
 
+# Perl core:
+use Time::Piece;
+# Third party:
+use URI::Escape;
 use HTML::Entities;
 use WWW::Curl::Easy;
 use Cache::Cache qw( $EXPIRES_NEVER $EXPIRES_NOW );
 use Cache::FileCache;
-use Time::Piece;  # Core module, no extra install
 
 
-our $USERAGENT    = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
-our $COOKIEPATH   = '.cookie';
-our $NOUSERIMGURL = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png';
-our $SORTNEW      = 'newest';
-our $SORTOLD      = 'oldest';
-our $EARLIEST     = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
-our @REVSRCHDICT  = qw(
-		ing ion tio ati ent ter the ate con men ess tra ine and nce res pro per cti ect for tic sth rat sta ste ica ive ver est tin str tor one ist all int com rea
-		ant ite age lin ble ran rin cal der nte anc ity ure oun eri ain ers ear nal iti her act ted era tur sti ons ort art lan lat man ell igh tri nes ial ous gra
-		ast nti enc ack ice ide par cha lit ric min ass ill cat red pla und ree ard eat pre dis out ove ont ght our din ian tal mat eme ang sio tiv tat che ina nta
-		hea ona sto ome abl ali ral ake nde lea ead ssi tan nge low eas rac ntr mon ind tte rit car ore den lar rou tro hin ili ten pri wor ria are end rec ner ren
-		nin har olo ary ele lle ish chi ave tre han ari unt ith kin sin ula ere ail ope lic wit ser ost les ins spe fic omp ies nat ase orm ern ace lac ood cre ene
-		sur ust gen ple col tai pin sit ces ini ens ock mar por ans ori ato ris hor rop cou eve rti nit use tle tar uct oli air ndi mer pos cle ber erm ese ron ani
-		sis tem log cor ise ord ler rai ath gre rma ime ire rom ile oll ert met bil off tch edi ara win lli oni ach led can las att old sho own llo pen cia omm arr
-		ade ose duc thr eco cen ros ory inc shi nic ana cul ale war ora son sel osi ult acc mor ame dia roc rad eed rie lec ita esi tru app fer rap row ven ger ark
-		ici ond eli ret cke ton rch oth mal spo ick ete ong tes owe lly lis tim nst pec fin cro bra erv cto nsi rel ote rot wer ura rol sse adi ien qua hol sea let
-		eal oss que fac val eti ole gin tho vel ane nis ign ual sha ork cur qui uni bla uri gro dit tom ker thi mou pol rge bre lla aci oma iss mic she ram uti tit
-		len yst sen rem fro cho tis lig iat oin ifi hit oot pan isi nch equ eta ape dge nts ket pat hro ffi rre sal hou nne mis eni ery rde ban roo err mpl whi cla
-		ami ean ode ffe pho pti ded rus des ier spi bac ogr ras sec cer mil bro eci sca bar ima tab amp net loc flo cap ala tec arc wat arg atu unc ctu tia ism exp
-		nci emi ivi vic pea bri ppe ush eet mit los dic usi lon lue bea orn clo hav rse cie scr ero cas omi mpe sid nda rth rro sig cra imp abi lia emo ann ett rog
-		ech oti nse emp med ute rep rio fil loo arm dat rig ook ngl eel lay tie fla ize pli itt oce ash mot dro dow inf eak aph ool bal ank rce oph sor sol fis elf
-		mag nto rid ono asi roa sed fir ttl ema rod ruc pha een erc hic urn hes pot cri ses ild ott uit ull mbe nar spa pac eck ict tel ept get hal reg ugh put ela
-		mos not dea sys bli del mea eng rag oto rim ncy hip ned lem sup oad mpa set cin sub onc lie rip riv sco woo cit ext ume hil avi bel ata tee alt gle uth non
-		ium abo lif eth phi ful try eep evi isc cel eac lor bor bus fre nan sch bas lou etr dra ors dec odu eld iza bat mme nia vin dri bit way aut iou ves ped dle
-		rri til top hel vis arb nsu ppl cut oil nve stu itu erg ref sou blo hee ink rke pon lum hon ece ump atc cep lim mod bou his pit sat umb ngu tea hoo rte mas
-		cop but phy ssu pic ife rna ubl bon ngs sic ike ola olu oat boo ngi poi ctr iso gat tak utt rvi ogi ily lde wee ray nom lam dar gar rni rdi eam fie mak mul
-		erf ogy add eig nds bin dep tag imi tac oci san pul pai rve urs tme hai irc uck oug rmi ics ama orc cco mac fra cus fun ars fec ecu lti gic sla def ked wel
-		ced ena sil vol tif lab hed ito nor oca mus aff vat day hig ndu goo cid mpo sia pet cli leg mai mmo elo upp edu soc hem hre ndo urr pal hot lev cce dre ipe
-		ney sma lot ino ota ski pas ule bir pur lve alu zat mes tti nec fly jec iel arl liv dev liz ird egi gan cos ein rib wal iva eye bur rob foo eer isa vio lut
-		adv rne orr fri eav nag loa edg cte epa blu hat pow wea oor vit uar sso als bul amm ano emb dan dem gua uro ega onf plo eno ldi fee nni yel urc lid rab sul
-		ied ges gla omb rry oup lop aft ida mun dio cis nth sum iff law sna rum run eff siv idi rta oom too die iol rcu rev lus esc cip nco mmi efe yme opp tua alo
-		nct uat rov ysi num ede syn tud uil hen sci icu coa rso inv ndr phe oke yin aga van obi ham rra itc asu rav any opi uff apa nee rsi ype pay fle squ chn nos
-		gal raw uen heo ely oly rst sem amo hop ich lad urt flu nel bee exc ues toc tha lip oge onn hos odi amb ior gas tto boa dom ovi ged cir aus gol spr ibl ung
-		omo efi now udi xpe aro has ppo eor agr gue nam sce cil mmu arn oid ssa gui aly onv fou pie pra rty ift rme isp org rew dus nfo vid ibi inn raf owl mel mov
-		eaf ois gri uto nsp isk rga gem atr oar ico key fit iga rof orp nme rds ipp osp alk hri pir whe awa ody div nio lai two nea urg esp fal gna rei sli nut vil
-		dam swi rmo sts nou dou kno lag dir api gul ila opo agi ige hom igi ipl erp coo ety gai ril pee yer fai mol ecr nol cum don epo pil gis icl dif hyp agn epi
-		iqu mem epe var req sle gon egr doc cab mma ava opt oro lte neu erb shr avo lau beh obl opl new tum ask glo lov ude aki fam ago ror spl mpt irs scu aso ndl
-		yea som cru giv eha wil tta clu fli tig lys riz ben cov inu bio nif chr ocu cam ibr oub pme ycl tou iri iet gne ncr cki imm nig rts uir its ckl gio hum lik
-		lee geo iro oon rif bot hyd fen det typ och cyc ado erl ppr see ais pub rer ppi eur ibu nim eph eso pap rgi uce kee was uch uid fol vir iod irt omy mid hur
-		dul tax aul bui ait oxi irr bed icr sty upe nai ved ods ilt cot arp vie bod ydr axi tol thy tow alc uss oco lio tas tub opa zin nak deb rly dde osc bol ube
-		gam rci iab dal kle swe anu lta sib hie ira alm ubs far bab ddi pop fig aye orl rey aug mpi hod bet plu abb cks ada rbo sph mpr het cem hap ibe gia rui nfl
-		aca chu nen uis rli smo ltu nso wri box abs rar rva stl une nke eek rsh mpu tly aid epr ilk mbi enn ngt acr lex niz pel exa idg nsa iag nfe uma eop fus tip
-		nfi elt alv smi rbi ken lls oul tut oof eva bst una cta unn nna zon lyc ply apo tun bia eca rpo gly ets loy afe ebr stm exi aco mbl ipa tap esh occ asp uns
-		urp ofi rld tog imu ege fes rki cup pig dog pid xtr fur ilo sag dee igu egu olt coc efo dur ccu eon gge iar lse uca bje cei sac uta fte rfa rub oop uli ees
-		ddl bbl itr rak uan nga oos dmi gli uag hir ony rba umm sus tam vem hru nem rtu aym llu dru fat asc gea teg wom gth ilm tus umi aba ntu rul adm aud oic cts
-		git bly ief wed pou ske hni ntl eto mia nas rms saf sun xte dor voi dly ipt rgy fea gni icy uin cod noc dig cau obs oba urv doo cio nki ynd hun jus zed usc
-		agg alf hts lob urf hys poo nvi fru hte rpe eem nsf cif fet exe tos ova pip bru diu hec hab sue els suc mbo rfo sam joi oft zar moo lun apt dne fav hno gur
-		lap udg ymp zer ady osa via tyl pto wan etl hag oac dve lth acu abe efu iew opy pte rbl wis fas ubb dol ley mbr noi neg bag sly gel how bic wne wre yca yle
-		bbe psy tne lib imb oal obe slo umo fan fib rik swa wav ays odo uls arf sno urb you eou lep nab ids kni vor mba iec ouc enu vou efl edl ops tot sof nap vac
-		ych idd ehi sne ury tid oct rle rsa pta rup adj etw rwa dua kil irl sym bad rug dwa vet ecl eec opm tex cui chl egg tei luc sex ypo usa wir hid igr nua wle
-		ats eol asa eap ebe gir wes irm nuc wei bes lom pis cry pse ngo opu rtr wag jac tep cyt aim sim hio neo reb coi oso mum dry sui cko mph nop sme eda ego twi
-		unk nac owi tir hei bow lug rpl oan oas rbe rks sop abr erd lef lub rau aps idu wid bun lav bso scl cci dva lph xpo aun evo cad lur epl ucl siz ulo roj atm
-		opr roi ifo oje nsh mur upt eum hoe usl eba etu job ixe alp sep env fix hob tiz acy dim aem leo orb owa uge niv hoc kit ocy rpr uga ias yth gag sar aur oki
-		pes esu tib tyr yli haw rtm pus nnu twe yna deg erw ngr seq hme ips nus sab oxy bse pum xed eft nsc ucc cav utu etc kne eut ewa apy pag fau ilv auc azi kes
-		uty agu sau uld onm oud reh xic dju syc upl nno xch iot big hib ald gno vas cqu ipm eho epu eag ruf sfe xam urd leu awk ebt leb liq eab acq bom gun mig mix
-		peo bec yed ify ewe uel had rph iam rtl ulp inh inj dli gor ugg asm eau ils yan eit gus niu ncl saw lmo rco nov hae iry hau rok dos map uts edo mec otr lil
-		jun sav sua uic veh hia lym orw nur ews wai bis aby obj pun spu eds ulf oes utr yto osu who awn eiv alg aze ido ots ows iev rrh ofe mut fel lco mir lpi cea
-		ddr mad mom hyl ios nie rto hly usp cka got ltr nsm cog riu aig dil poc uou ogn dut seu lty xpl iog rhe nju tli xid imo oms onk gov dvi hlo pia slu ams gme
-		aer eru ths asy iny iop bug jur rut owd ptu toi adl apl vot igg ipi nad reo dai sky thu hra rfe rfl uip umn phr pyr nip nod uer yro yte ggl lfi olv oda sif
-		xim xis hif isl nul toe vei kel udd dex nef goa yri ads ewo jud pad fid izi hoi owt abu eil ems chy onu niq sev arv oga tet yti aya dip ibb thm nca nog uci
-		unf max ebo fem hog iac sug iom lyi eis yra ldr nbi quo oya wha dov xce sai ajo ocr nqu raz upi voc ewi xer cof obb cow jor mok mog uor acl hti kag usn moc
-		udy elv nha rgo unb rox ufo bud ilu twa wth doi pio lyt oym igo loi rue bbi due fed yla ehe nuf tma itl yar erh mee rca rno yre ubi lme sie rud buc dop emu
-		taf maj hle nre gfi iph avy chm hus odd ubj bid jou pod rha ulu isu exh tul ivo coh nfa dyn ndw soi tox haf lne nty ggi unr ghe ffl tla utc mbu mob muc glu
-		ogu adr pep rnm shu dum lei nny beg boy cet edd ylo civ hut vey buy odp xin aza gob rys vag efr ols swo ums url jum rcl gum nob rda hyt dpe ipo nks uco yes
-		exu rcr stn eez sod suf coe ngf nei yal yon agl rho eev nex tod ayi uad epp utp ynt ufa efa lax oye unp tty deo dst ffo uai zen usk dwe toa eke gau nfr uet
-		luo ndy dys rru tsh vai azo kis lcu nav dag dap elm oak cca enz ius izo buf nsl nli rfi sad vul edn aty gou bum shm elp upr lwa nil adu edr nae dot ebi mst
-		nle ryo thl rgu haz oby osy eud gil olf ryi cky lsi nvo yco aqu obo foc eps upo ebu eze xil gmy him inl esa oho rla tnu ims pne tpu psi veg uba uno das dhe
-		eus hwa rlo did rns lel udo upa mud myo ogg lod nsw rix cyl urk ffa kid xpr iru nue rdo cuc dab hym utl gie uot lva rmu vip wax hep pyg rtn sap ttr fue ppa
-		pru ckn dwi ppy teo ygm tuf wde xpa aka dib ulb wra wif cac iki kan yll ghi ghl lud cak gap inp fox onl tob xec cee zzl cub kir mam nly oit rwo gec ubt laz
-		tay bsc cys nid eir lfa lua osm ncu uee bos ioc rpi ssm awe gho hbo ogo rfu rmy roe sot ssl lki oty 
-		); # N=2443, most frequent english n-grams first (or should randomize with List::shuffle?)
+# Non-module message strings to be used in programs:
+our $GOOD_ERRMSG_NOBOOKS   = "[FATAL] No books found. Check the privacy settings at Goodreads.com and ensure access by 'anyone (including search engines)'.";
+our $GOOD_ERRMSG_NOMEMBERS = '[FATAL] No members found. Check cookie and try empty /tmp/FileCache/';
 
 
-our @REVSRCHDICT_OPTIMIZED = qw(
-		3 4 5
+# Misc module constants:
+our $_USERAGENT    = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
+our $_COOKIEPATH   = '.cookie';
+our $_NOBOOKIMGURL = 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png';
+our $_NOUSERIMGURL = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png';
+our $_SORTNEW      = 'newest';
+our $_SORTOLD      = 'oldest';
+our $_EARLIEST     = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
+our $_STATOKAY     = 0;
+our $_STATWARN     = 1;  # Ignore or retry
+our $_STATERROR    = 2;  # Abort  or retry
+our @_BADPROFILES  = 
+[
+	'1000834',  #  3.000 books   NOT A BOOK author
+	'5158478',  # 10.000 books   Anonymous
+	'2938140',  #  2.218 books   Jacob Grimm (Grimm brothers)
+	'128382',   #  2.802 books   Leo Tolstoy
+	'173327'    #    365 books   Germany (Gov?)
+];
 
-		let wit ing put ten met ass ini bit lit men job get rat cut mix our
-		are owe win all con hit the use pre ran ist ate you art per era ton
-		her end ter lot old one and low fit was fan too ill dec add tho pay
-		row tra ver act mad sat awe nor ive can new car had ish for tan pro
-		she lea ice not age two cat got off far lay wee tea try day kid est
-		sin way red etc par sit ser com cos led sum fed see own son mum por
-		out via saw fun rid ear ink now eat his hes mid but eye han ugh ron
-		bar who ask dit yea fav how pop bad due bug don sci sad set ame hot
-		man dry ago air lie fly run did bat law bed tip leg cry has mom tie
-		bag yes boy top ese gem him bus map war fix amo odd wat its app tal
-		owl mil dog las pun arc nth che buy egg fat der dia ler mal pig key
-		tom mis pet sun beg big alt hid que dat any box eso sex del rip nos
-		sea sky ama leo hog und ban sus lee aug mon mas til den ans hut yer
-		aka itu bet pen dig net nov asi boa ele los eve lei dio una vas tak
-		gap ale ont fue min tag les bow non hal sem imo rob uni sue ein ook
-		dan aun boo fin tem qui ins arm nel ora ref tim ani hop pan sam chi
-		hat ada lil esa nut poi inc sub api pat aid umm bin lad def uno doo
-		oli oct nit mes vol lap bir din pra pie tha mit dis sis uit ect sur
-		cap ben mai int ali ilk pub max dos mia eva dal raw flu wer ile des
-		gue dar pot bon elf har ven dip log ide apa mud wel bom woo ray cup
-		toe ant aim gar ero	
-		
-		    ion tio ati ent                     ess     ine     nce res    
-		    cti         tic sth     sta ste ica             tin str tor    
-		                rea     ite     lin ble     rin cal     nte anc ity
-		ure oun eri ain ers     nal iti         ted     tur sti ons ort    
-		lan lat     ell igh tri nes ial ous gra
-		
-		); # N=???, most frequent english trigrams tested against Harry Potter
-		   # reviews: each led to 10-30 unique(!) hits, best first.
-		   # Appended most frequent english trigrams which are not
-		   # already present in the Harry Potter set.
-		   # Works better with a larger set of available reviews.
-		   # Randomization yield no improvements (rather opposite).
+
+# Reviews search dictionaries:
+our @_REVSRCHDICT = qw(
+	ing ion tio ati ent ter the ate con men ess tra ine and nce res pro per cti ect for tic sth rat sta ste ica ive ver est tin str tor one ist all int com rea
+	ant ite age lin ble ran rin cal der nte anc ity ure oun eri ain ers ear nal iti her act ted era tur sti ons ort art lan lat man ell igh tri nes ial ous gra
+	ast nti enc ack ice ide par cha lit ric min ass ill cat red pla und ree ard eat pre dis out ove ont ght our din ian tal mat eme ang sio tiv tat che ina nta
+	hea ona sto ome abl ali ral ake nde lea ead ssi tan nge low eas rac ntr mon ind tte rit car ore den lar rou tro hin ili ten pri wor ria are end rec ner ren
+	nin har olo ary ele lle ish chi ave tre han ari unt ith kin sin ula ere ail ope lic wit ser ost les ins spe fic omp ies nat ase orm ern ace lac ood cre ene
+	sur ust gen ple col tai pin sit ces ini ens ock mar por ans ori ato ris hor rop cou eve rti nit use tle tar uct oli air ndi mer pos cle ber erm ese ron ani
+	sis tem log cor ise ord ler rai ath gre rma ime ire rom ile oll ert met bil off tch edi ara win lli oni ach led can las att old sho own llo pen cia omm arr
+	ade ose duc thr eco cen ros ory inc shi nic ana cul ale war ora son sel osi ult acc mor ame dia roc rad eed rie lec ita esi tru app fer rap row ven ger ark
+	ici ond eli ret cke ton rch oth mal spo ick ete ong tes owe lly lis tim nst pec fin cro bra erv cto nsi rel ote rot wer ura rol sse adi ien qua hol sea let
+	eal oss que fac val eti ole gin tho vel ane nis ign ual sha ork cur qui uni bla uri gro dit tom ker thi mou pol rge bre lla aci oma iss mic she ram uti tit
+	len yst sen rem fro cho tis lig iat oin ifi hit oot pan isi nch equ eta ape dge nts ket pat hro ffi rre sal hou nne mis eni ery rde ban roo err mpl whi cla
+	ami ean ode ffe pho pti ded rus des ier spi bac ogr ras sec cer mil bro eci sca bar ima tab amp net loc flo cap ala tec arc wat arg atu unc ctu tia ism exp
+	nci emi ivi vic pea bri ppe ush eet mit los dic usi lon lue bea orn clo hav rse cie scr ero cas omi mpe sid nda rth rro sig cra imp abi lia emo ann ett rog
+	ech oti nse emp med ute rep rio fil loo arm dat rig ook ngl eel lay tie fla ize pli itt oce ash mot dro dow inf eak aph ool bal ank rce oph sor sol fis elf
+	mag nto rid ono asi roa sed fir ttl ema rod ruc pha een erc hic urn hes pot cri ses ild ott uit ull mbe nar spa pac eck ict tel ept get hal reg ugh put ela
+	mos not dea sys bli del mea eng rag oto rim ncy hip ned lem sup oad mpa set cin sub onc lie rip riv sco woo cit ext ume hil avi bel ata tee alt gle uth non
+	ium abo lif eth phi ful try eep evi isc cel eac lor bor bus fre nan sch bas lou etr dra ors dec odu eld iza bat mme nia vin dri bit way aut iou ves ped dle
+	rri til top hel vis arb nsu ppl cut oil nve stu itu erg ref sou blo hee ink rke pon lum hon ece ump atc cep lim mod bou his pit sat umb ngu tea hoo rte mas
+	cop but phy ssu pic ife rna ubl bon ngs sic ike ola olu oat boo ngi poi ctr iso gat tak utt rvi ogi ily lde wee ray nom lam dar gar rni rdi eam fie mak mul
+	erf ogy add eig nds bin dep tag imi tac oci san pul pai rve urs tme hai irc uck oug rmi ics ama orc cco mac fra cus fun ars fec ecu lti gic sla def ked wel
+	ced ena sil vol tif lab hed ito nor oca mus aff vat day hig ndu goo cid mpo sia pet cli leg mai mmo elo upp edu soc hem hre ndo urr pal hot lev cce dre ipe
+	ney sma lot ino ota ski pas ule bir pur lve alu zat mes tti nec fly jec iel arl liv dev liz ird egi gan cos ein rib wal iva eye bur rob foo eer isa vio lut
+	adv rne orr fri eav nag loa edg cte epa blu hat pow wea oor vit uar sso als bul amm ano emb dan dem gua uro ega onf plo eno ldi fee nni yel urc lid rab sul
+	ied ges gla omb rry oup lop aft ida mun dio cis nth sum iff law sna rum run eff siv idi rta oom too die iol rcu rev lus esc cip nco mmi efe yme opp tua alo
+	nct uat rov ysi num ede syn tud uil hen sci icu coa rso inv ndr phe oke yin aga van obi ham rra itc asu rav any opi uff apa nee rsi ype pay fle squ chn nos
+	gal raw uen heo ely oly rst sem amo hop ich lad urt flu nel bee exc ues toc tha lip oge onn hos odi amb ior gas tto boa dom ovi ged cir aus gol spr ibl ung
+	omo efi now udi xpe aro has ppo eor agr gue nam sce cil mmu arn oid ssa gui aly onv fou pie pra rty ift rme isp org rew dus nfo vid ibi inn raf owl mel mov
+	eaf ois gri uto nsp isk rga gem atr oar ico key fit iga rof orp nme rds ipp osp alk hri pir whe awa ody div nio lai two nea urg esp fal gna rei sli nut vil
+	dam swi rmo sts nou dou kno lag dir api gul ila opo agi ige hom igi ipl erp coo ety gai ril pee yer fai mol ecr nol cum don epo pil gis icl dif hyp agn epi
+	iqu mem epe var req sle gon egr doc cab mma ava opt oro lte neu erb shr avo lau beh obl opl new tum ask glo lov ude aki fam ago ror spl mpt irs scu aso ndl
+	yea som cru giv eha wil tta clu fli tig lys riz ben cov inu bio nif chr ocu cam ibr oub pme ycl tou iri iet gne ncr cki imm nig rts uir its ckl gio hum lik
+	lee geo iro oon rif bot hyd fen det typ och cyc ado erl ppr see ais pub rer ppi eur ibu nim eph eso pap rgi uce kee was uch uid fol vir iod irt omy mid hur
+	dul tax aul bui ait oxi irr bed icr sty upe nai ved ods ilt cot arp vie bod ydr axi tol thy tow alc uss oco lio tas tub opa zin nak deb rly dde osc bol ube
+	gam rci iab dal kle swe anu lta sib hie ira alm ubs far bab ddi pop fig aye orl rey aug mpi hod bet plu abb cks ada rbo sph mpr het cem hap ibe gia rui nfl
+	aca chu nen uis rli smo ltu nso wri box abs rar rva stl une nke eek rsh mpu tly aid epr ilk mbi enn ngt acr lex niz pel exa idg nsa iag nfe uma eop fus tip
+	nfi elt alv smi rbi ken lls oul tut oof eva bst una cta unn nna zon lyc ply apo tun bia eca rpo gly ets loy afe ebr stm exi aco mbl ipa tap esh occ asp uns
+	urp ofi rld tog imu ege fes rki cup pig dog pid xtr fur ilo sag dee igu egu olt coc efo dur ccu eon gge iar lse uca bje cei sac uta fte rfa rub oop uli ees
+	ddl bbl itr rak uan nga oos dmi gli uag hir ony rba umm sus tam vem hru nem rtu aym llu dru fat asc gea teg wom gth ilm tus umi aba ntu rul adm aud oic cts
+	git bly ief wed pou ske hni ntl eto mia nas rms saf sun xte dor voi dly ipt rgy fea gni icy uin cod noc dig cau obs oba urv doo cio nki ynd hun jus zed usc
+	agg alf hts lob urf hys poo nvi fru hte rpe eem nsf cif fet exe tos ova pip bru diu hec hab sue els suc mbo rfo sam joi oft zar moo lun apt dne fav hno gur
+	lap udg ymp zer ady osa via tyl pto wan etl hag oac dve lth acu abe efu iew opy pte rbl wis fas ubb dol ley mbr noi neg bag sly gel how bic wne wre yca yle
+	bbe psy tne lib imb oal obe slo umo fan fib rik swa wav ays odo uls arf sno urb you eou lep nab ids kni vor mba iec ouc enu vou efl edl ops tot sof nap vac
+	ych idd ehi sne ury tid oct rle rsa pta rup adj etw rwa dua kil irl sym bad rug dwa vet ecl eec opm tex cui chl egg tei luc sex ypo usa wir hid igr nua wle
+	ats eol asa eap ebe gir wes irm nuc wei bes lom pis cry pse ngo opu rtr wag jac tep cyt aim sim hio neo reb coi oso mum dry sui cko mph nop sme eda ego twi
+	unk nac owi tir hei bow lug rpl oan oas rbe rks sop abr erd lef lub rau aps idu wid bun lav bso scl cci dva lph xpo aun evo cad lur epl ucl siz ulo roj atm
+	opr roi ifo oje nsh mur upt eum hoe usl eba etu job ixe alp sep env fix hob tiz acy dim aem leo orb owa uge niv hoc kit ocy rpr uga ias yth gag sar aur oki
+	pes esu tib tyr yli haw rtm pus nnu twe yna deg erw ngr seq hme ips nus sab oxy bse pum xed eft nsc ucc cav utu etc kne eut ewa apy pag fau ilv auc azi kes
+	uty agu sau uld onm oud reh xic dju syc upl nno xch iot big hib ald gno vas cqu ipm eho epu eag ruf sfe xam urd leu awk ebt leb liq eab acq bom gun mig mix
+	peo bec yed ify ewe uel had rph iam rtl ulp inh inj dli gor ugg asm eau ils yan eit gus niu ncl saw lmo rco nov hae iry hau rok dos map uts edo mec otr lil
+	jun sav sua uic veh hia lym orw nur ews wai bis aby obj pun spu eds ulf oes utr yto osu who awn eiv alg aze ido ots ows iev rrh ofe mut fel lco mir lpi cea
+	ddr mad mom hyl ios nie rto hly usp cka got ltr nsm cog riu aig dil poc uou ogn dut seu lty xpl iog rhe nju tli xid imo oms onk gov dvi hlo pia slu ams gme
+	aer eru ths asy iny iop bug jur rut owd ptu toi adl apl vot igg ipi nad reo dai sky thu hra rfe rfl uip umn phr pyr nip nod uer yro yte ggl lfi olv oda sif
+	xim xis hif isl nul toe vei kel udd dex nef goa yri ads ewo jud pad fid izi hoi owt abu eil ems chy onu niq sev arv oga tet yti aya dip ibb thm nca nog uci
+	unf max ebo fem hog iac sug iom lyi eis yra ldr nbi quo oya wha dov xce sai ajo ocr nqu raz upi voc ewi xer cof obb cow jor mok mog uor acl hti kag usn moc
+	udy elv nha rgo unb rox ufo bud ilu twa wth doi pio lyt oym igo loi rue bbi due fed yla ehe nuf tma itl yar erh mee rca rno yre ubi lme sie rud buc dop emu
+	taf maj hle nre gfi iph avy chm hus odd ubj bid jou pod rha ulu isu exh tul ivo coh nfa dyn ndw soi tox haf lne nty ggi unr ghe ffl tla utc mbu mob muc glu
+	ogu adr pep rnm shu dum lei nny beg boy cet edd ylo civ hut vey buy odp xin aza gob rys vag efr ols swo ums url jum rcl gum nob rda hyt dpe ipo nks uco yes
+	exu rcr stn eez sod suf coe ngf nei yal yon agl rho eev nex tod ayi uad epp utp ynt ufa efa lax oye unp tty deo dst ffo uai zen usk dwe toa eke gau nfr uet
+	luo ndy dys rru tsh vai azo kis lcu nav dag dap elm oak cca enz ius izo buf nsl nli rfi sad vul edn aty gou bum shm elp upr lwa nil adu edr nae dot ebi mst
+	nle ryo thl rgu haz oby osy eud gil olf ryi cky lsi nvo yco aqu obo foc eps upo ebu eze xil gmy him inl esa oho rla tnu ims pne tpu psi veg uba uno das dhe
+	eus hwa rlo did rns lel udo upa mud myo ogg lod nsw rix cyl urk ffa kid xpr iru nue rdo cuc dab hym utl gie uot lva rmu vip wax hep pyg rtn sap ttr fue ppa
+	pru ckn dwi ppy teo ygm tuf wde xpa aka dib ulb wra wif cac iki kan yll ghi ghl lud cak gap inp fox onl tob xec cee zzl cub kir mam nly oit rwo gec ubt laz
+	tay bsc cys nid eir lfa lua osm ncu uee bos ioc rpi ssm awe gho hbo ogo rfu rmy roe sot ssl lki oty 
+	); # N=2443, most frequent english n-grams first
+
+
+our @_REVSRCHDICT_OPTIMIZED = qw(
+	3 4 5
+
+	let wit ing put ten met ass ini bit lit men job get rat cut mix our
+	are owe win all con hit the use pre ran ist ate you art per era ton
+	her end ter lot old one and low fit was fan too ill dec add tho pay
+	row tra ver act mad sat awe nor ive can new car had ish for tan pro
+	she lea ice not age two cat got off far lay wee tea try day kid est
+	sin way red etc par sit ser com cos led sum fed see own son mum por
+	out via saw fun rid ear ink now eat his hes mid but eye han ugh ron
+	bar who ask dit yea fav how pop bad due bug don sci sad set ame hot
+	man dry ago air lie fly run did bat law bed tip leg cry has mom tie
+	bag yes boy top ese gem him bus map war fix amo odd wat its app tal
+	owl mil dog las pun arc nth che buy egg fat der dia ler mal pig key
+	tom mis pet sun beg big alt hid que dat any box eso sex del rip nos
+	sea sky ama leo hog und ban sus lee aug mon mas til den ans hut yer
+	aka itu bet pen dig net nov asi boa ele los eve lei dio una vas tak
+	gap ale ont fue min tag les bow non hal sem imo rob uni sue ein ook
+	dan aun boo fin tem qui ins arm nel ora ref tim ani hop pan sam chi
+	hat ada lil esa nut poi inc sub api pat aid umm bin lad def uno doo
+	oli oct nit mes vol lap bir din pra pie tha mit dis sis uit ect sur
+	cap ben mai int ali ilk pub max dos mia eva dal raw flu wer ile des
+	gue dar pot bon elf har ven dip log ide apa mud wel bom woo ray cup
+	toe ant aim gar ero	
+	
+	    ion tio ati ent                     ess     ine     nce res    
+	    cti         tic sth     sta ste ica             tin str tor    
+				 rea     ite     lin ble     rin cal     nte anc ity
+	ure oun eri ain ers     nal iti         ted     tur sti ons ort    
+	lan lat     ell igh tri nes ial ous gra
+	
+	); # N=???, most frequent english trigrams tested against Harry Potter
+	   # reviews: each led to 10-30 unique(!) hits, best first.
+	   # Appended most frequent english trigrams which are not
+	   # already present in the Harry Potter set.
+	   # Works better with a larger set of available reviews.
+	   # Randomization yield no improvements (rather opposite).
+	   # Consider searching with trigram combinations ("let ing") 
+	   # in order to get more unique results.
 
 
 our $_cookie    = undef;
-our $_cache_age = $EXPIRES_NOW;  # see set_good_cache()
+our $_cache_age = $EXPIRES_NOW;  # see gsetcache()
 our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 
@@ -245,21 +304,27 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =over
 
-=item * id          => C<string>
+=item * id          =E<gt> C<string>
 
-=item * title       => C<string>
+=item * title       =E<gt> C<string>
 
-=item * isbn        => C<string>
+=item * isbn        =E<gt> C<string>
 
-=item * num_ratings => C<int>
+=item * num_ratings =E<gt> C<int>    103 for example
 
-=item * user_rating => C<int>
+=item * avg_rating  =E<gt> C<float>  4.36 for example
 
-=item * url         => C<string>
+=item * stars       =E<gt> C<int>    rounded avg_rating, e.g., 4
 
-=item * img_url     => C<string>
+=item * user_rating =E<gt> C<int>    number of stars 1,2,3,4 or 5
 
-=item * author      => C<L<%user|"%user">>
+=item * url         =E<gt> C<string>
+
+=item * img_url     =E<gt> C<string>
+
+=item * year        =E<gt> C<int>    (publishing date)
+
+=item * rh_author   =E<gt> C<L<%user|"%user">> reference
 
 =back
 
@@ -268,27 +333,29 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =over
 
-=item * id         => C<string>
+=item * id          =E<gt> C<string>
 
-=item * name       => C<string>
+=item * name        =E<gt> C<string>
 
-=item * age        => C<int> (not supported yet)
+=item * age         =E<gt> C<int>    (not supported yet)
 
-=item * is_friend  => C<bool>
+=item * is_friend   =E<gt> C<bool>
 
-=item * is_author  => C<bool>
+=item * is_author   =E<gt> C<bool>
 
-=item * is_female  => C<bool> (not supported yet)
+=item * is_female   =E<gt> C<bool>   (not supported yet)
 
-=item * is_private => C<bool> (not supported yet)
+=item * is_private  =E<gt> C<bool>   (not supported yet)
 
-=item * is_staff   => C<bool> (not supported yet), is a Goodreads.com employee
+=item * is_staff    =E<gt> C<bool>   (not supported yet), is a Goodreads.com employee
 
-=item * url        => C<string> URL to the user's profile page
+=item * url         =E<gt> C<string> URL to the user's profile page
 
-=item * works_url  => C<string> URL to the author's distinct works (is_author == 1)
+=item * works_url   =E<gt> C<string> URL to the author's distinct works (is_author == 1)
 
-=item * img_url    => C<string>
+=item * img_url     =E<gt> C<string>
+
+=item * _seen       =E<gt> C<int>    incremented if user already exists in a load-target structure
 
 =back
 
@@ -297,25 +364,25 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =over
 
-=item * id          => C<string>
+=item * id          =E<gt> C<string>
 
-=item * user        => C<L<%user|"%user">>
+=item * rh_user     =E<gt> C<L<%user|"%user">> reference
 
-=item * book_id     => C<string>
+=item * book_id     =E<gt> C<string>
 
-=item * rating      => C<int> 
+=item * rating      =E<gt> C<int> 
                        with 0 meaning no rating, "added" or "marked it as abandoned" 
                        or something similar
 
-=item * rating_str  => C<string> 
+=item * rating_str  =E<gt> C<string> 
                        represention of rating, e.g., 3/5 as S<"[***  ]"> or S<"[TTT  ]"> 
                        if there's additional text
 
-=item * text        => C<string>
+=item * text        =E<gt> C<string>
 
-=item * date        => C<Time::Piece>
+=item * date        =E<gt> C<Time::Piece>
 
-=item * review_url  => C<string>
+=item * url         =E<gt> C<string>  full text review
 
 =back
 
@@ -324,11 +391,11 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 
 
-=head1 PUBLIC SUBROUTINES
+=head1 PUBLIC ROUTINES
 
 
 
-=head2 C<string> require_good_userid( I<$user_id_to_verify> )
+=head2 C<string> gverifyuser( I<$user_id_to_verify> )
 
 =over
 
@@ -339,17 +406,18 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =cut
 
-sub require_good_userid
+sub gverifyuser
 {
 	my $uid = shift || '';
+	
 	return $1 if $uid =~ /(\d+)/ 
-		or die "[FATAL] Invalid Goodreads user ID \"$uid\"";
+		or die( "[FATAL] Invalid Goodreads user ID \"$uid\"" );
 }
 
 
 
 
-=head2 C<string> require_good_shelfname( I<$name_to_verify> )
+=head2 C<string> gverifyshelf( I<$name_to_verify> )
 
 =over
 
@@ -363,54 +431,98 @@ sub require_good_userid
 
 =cut
 
-sub require_good_shelfname
+sub gverifyshelf
 {
-	my $name = shift || '%23ALL%23';
-	die "[FATAL] Invalid Goodreads shelf name \"$name\". Look at your shelf URLs."
-		if $name =~ /[^%a-zA-Z0-9_\-]/;
+	my $nam = shift || ''; # '%23ALL%23';
 	
-	return $name;
+	die( "[FATAL] Invalid Goodreads shelf name \"$nam\". Look at your shelf URLs." )
+		if length $nam == 0 || $nam =~ /[^%a-zA-Z0-9_\-,]/;
+		
+	return $nam;
 }
 
 
 
 
-=head2 C<bool> is_bad_profile( I<$user_or_author_id> )
+=head2 C<$value> _require_arg( I<$name, $value> )
+
+TODO: line of code is useless when died
+
+=cut
+
+sub _require_arg
+{
+	my $nam = shift;
+	my $val = shift;
+	die( "[FATAL] Argument \"$nam\" expected." ) if !defined $val;
+	return $val;
+}
+
+
+
+
+=head2 C<bool> gisbaduser( I<$user_or_author_id> )
 
 =over
 
-=item * returns true if blacklisted users or author who dirties and slows down any analysis
-
-=item * "NOT A BOOK" author (3.000+ books), "Anonymous" author (10.000 books),
-        non-orgs with 100.000+ books (probably bots or analytics accounts) etc
+=item * returns true if the given user or author is blacklisted 
+        and slows down any analysis
 
 =back
 
 =cut
 
-sub is_bad_profile
+sub gisbaduser
 {
 	my $uid = shift;
-	# smartmatch or List::MoreUtils::any would be better but
-	# former is experimental and latter not core module :|
-	return grep { $_ eq $uid } [
-		            # Unquestionably useless:
-		'1000834',  #    3.000 books   NOT A BOOK author
-		'5158478',  #   10.000 books   Anonymous
-		            #  
-		            # Questionable worth vs time:
-		'2938140',  #    2.218 books   Jacob Grimm (Grimm brothers)
-		'128382',   #    2.802 books   Leo Tolstoy
-		'173327'    #      365 books   Germany (Gov?)
-	];
+	return grep{ $_ eq $uid } @_BADPROFILES;
 }
 
 
 
 
-=head2 C<void> set_good_cookie( I<$cookie_content_str> )
+=head2 C<sub> gmeter( I<$unit_str = ''> )
 
 =over
+
+=item * generates a CLI progress indicator function $f, with 
+        I<$f-E<gt>( 20 )> adding 20 to the previous value and 
+        printing the sum like "40 unit_str".
+        Given a second argument with the max value, 
+        it will print a percentage.
+        in a modern terminal, the text remains at the same 
+        position if called multiple times
+
+=back
+
+=cut
+
+sub gmeter
+{
+	my $unit = shift || '';
+	return sub{
+		state $is_first = 1;
+		state $v        = 0;
+		
+		my $f  = defined $_[1]  ?  "%3d%%"                      :  "%5s $unit";
+		   $v += defined $_[1]  ?  $_[1] ? $_[0]/$_[1]*100 : 0  :  ($_[0] || 0);  # 2nd ? avoids div by zero
+		   $v  = 100 if defined $_[1] && $v > 100;  # Allows to trigger "100%" by passing (1, 1)
+		my $s  = sprintf( $f, $v );
+		
+		print "\b" x (length $s) if !$is_first;  # Backspaces prev meter if any (same-width format str)
+		print $s;
+		$is_first = 0;
+	};
+}
+
+
+
+
+=head2 C<void> gsetcookie( I<{ content => undef, filepath => '.cookie' }> )
+
+=over
+
+=item * I<filepath> is ignored if I<content> is set
 
 =item * some Goodreads.com pages are only accessible by authenticated members
 
@@ -420,36 +532,29 @@ sub is_bad_profile
 
 =cut
 
-sub set_good_cookie
+sub gsetcookie
 {
-	$_cookie = shift;
-}
-
-
-
-
-=head2 C<void> set_good_cookie_file( I<$path_to_cookie_file = '.cookie'> )
-
-=cut
-
-sub set_good_cookie_file
-{
-	my $path = shift || $COOKIEPATH;
-	local $/=undef;
-	open my $fh, "<", $path or die
-			"[FATAL] Please save a Goodreads cookie to \"$path\". ".
-			"Copy the cookie, for example, from Chrome's DevTools Network-view: ".
-			"https://www.youtube.com/watch?v=o_CYdZBPDCg";
+	my (%args) = @_;
+	my $path = $args{ filepath } || $_COOKIEPATH;
+	$_cookie = $args{ content  } || undef;
 	
-	binmode $fh;
-	set_good_cookie( <$fh> );
-	close $fh;
+	return if defined( $_cookie );
+	
+	local $/=undef;
+	open( my $fh, "<", $path ) or die(
+			"\n[FATAL] Cookie missing. Save a Goodreads.com cookie to the file \"$path\". ".
+			"Check out https://www.youtube.com/watch?v=o_CYdZBPDCg for a tutorial ".
+			"on cookie-extraction using Chrome's DevTools Network-view." );
+	
+	binmode( $fh );
+	$_cookie = <$fh>;
+	close( $fh );
 }
 
 
 
 
-=head2 C<bool> test_good_cookie()
+=head2 C<bool> gtestcookie()
 
 =over
 
@@ -459,19 +564,19 @@ sub set_good_cookie_file
 
 =cut
 
-sub test_good_cookie()
+sub gtestcookie()
 {
 	# TODO: check against a page that needs sign-in
-	# TODO: call in set_good_cookie() or by the lib-user separately?
+	# TODO: call in gsetcookie() or by the lib-user separately?
 	
-	warn "[WARN] Not yet implemented: test_good_cookie()";
+	warn( "[WARN] Not yet implemented: gtestcookie()" );
 	return 1;
 }
 
 
 
 
-=head2 C<void> set_good_cache( I<$number, $unit = 'days'> )
+=head2 C<void> gsetcache( I<$number, $unit = 'days'> )
 
 =over
 
@@ -479,11 +584,11 @@ sub test_good_cookie()
 
 =item * scraped documents can be cached if you don't need them "fresh"
 
-=item * e.g., during development time
+=item * during development time
 
-=item * e.g., during long running sessions (cheap recovery on crash, power blackout or pauses)
+=item * during long running sessions (cheap recovery on crash, power blackout or pauses)
 
-=item * e.g., when experimenting with parameters
+=item * when experimenting with parameters
 
 =item * unit can be C<"minutes">, C<"hours">, C<"days">
 
@@ -491,167 +596,218 @@ sub test_good_cookie()
 
 =cut
 
-sub set_good_cache
+sub gsetcache
 {
-	my $number  = shift;
+	my $num     = shift || 0;
 	my $unit    = shift || 'days';
-	$_cache_age = "${number} ${unit}";
+	$_cache_age = "${num} ${unit}";
 }
 
 
 
 
-=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
-
-=cut
-
-sub query_good_books
-{
-	my $uid   = shift;
-	my $shelf = shift;
-	my $page  = 1; 
-	my @books;
-	
-	while( _extract_books( \@books, _html( _shelf_url( $uid, $shelf, $page++ ) ) ) ) {};
-	
-	return @books;
-}
-
-
-
-
-=head2 C<int> query_good_author_books( I<$books_array_ref, $author_id> )
+=head2 C<void> greadshelf( I<{ from_user_id, ra_from_shelves, rh_into =E<gt> undef, 
+			on_book =E<gt> sub{}, on_progress =E<gt> sub{} }> )
 
 =over
 
-=item * I<$books_array_ref>: C<(L<%book|"%book">,...)>
+=item * reads a list of books present in the given shelves of the given user
 
-=item * returns the number of books of the given author
+=item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)> or anything inserted by I<map>
+
+=item * I<on_book>: receives \L<%book|"%book" argument
+
+=cut
+
+sub greadshelf
+{
+	my (%args) = @_;
+	my $uid    = gverifyuser( $args{ from_user_id });
+	my $ra_shv =_require_arg( 'ra_from_shelves', $args{ ra_from_shelves });
+	my $rh     = $args{ rh_into     } || undef;
+	my $bfn    = $args{ on_book     } || sub{};
+	my $pfn    = $args{ on_progress } || sub{};
+	
+	gverifyshelf( $_ ) foreach (@$ra_shv);
+	
+	for my $s (@$ra_shv)
+	{
+		my $pag = 1;
+		while( _extract_books( $rh, $bfn, $pfn, _html( _shelf_url( $uid, $s, $pag++ ) ) ) ) {}
+	}
+}
+
+
+
+
+=head2 C<void> greadauthors( I<{ from_user_id, ra_from_shelves, rh_into, on_progress =E<gt> sub{} }> )
+
+=over
+
+=item * gets a list of authors whose books are present in the given shelves of the given user
+
+=item * If you need authors I<and> books data, then use C<greadshelf>
+        which also populates the I<author> property of every book
+
+=item * skips authors where C<gisbaduser()> is true
 
 =back
 
 =cut
 
-sub query_good_author_books
+sub greadauthors
 {
-	my $books_ref = shift;
-	my $uid       = shift;
-	my $numbefore = scalar @$books_ref;
-	my $page = 1;
+	my (%args) = @_;
+	my $rh     = $args{ rh_into     } ||   \{};
+	my $pfn    = $args{ on_progress } || sub{};
 	
-	while( _extract_author_books( $books_ref, _html( _author_books_url( $uid, $page++ ) ) ) ) {};
+	my $autfn = sub
+	{
+		my $aid = $_[0]->{rh_author}->{id};
+		return if gisbaduser( $aid );
+		$pfn->( 1 ) if !exists $rh->{$aid};  # Don't count duplicates
+		$rh->{$aid} = $_[0]->{rh_author};
+	};
 	
-	return scalar @$books_ref - $numbefore;
+	greadshelf( from_user_id    => $args{ from_user_id    },
+	            ra_from_shelves => $args{ ra_from_shelves },
+			  on_book         => $autfn );
 }
 
 
 
 
-=head2 C<(L<%review|"%review">,...)> query_good_reviews(I<{ 
-	book =E<gt> C<L<%book|"%book">>, since =E<gt>  undef, stalltime =E<gt> undef, 
-	on_progress =E<gt> undef, use_dict = 1 }>)
+=head2 C<void> greadauthorbk( I<{ rh_into, author_id, on_book =E<gt> sub{}, 
+			on_progress =E<gt> sub{} }> )
+
+=over
+
+=item * reads the Goodreads.com list of books written by the given author
+
+=item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)>
+
+=back
+
+=cut
+
+sub greadauthorbk
+{
+	my (%args) = @_;	
+	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
+	my $aid    = gverifyuser( $args{ author_id });
+	my $bfn    = $args{ on_book     } || sub{};
+	my $pfn    = $args{ on_progress } || sub{};
+	my $pag    = 1;
+	
+	while( _extract_author_books( $rh, $bfn, $pfn, _html( _author_books_url( $aid, $pag++ ) ) ) ) {};
+}
+
+
+
+
+=head2 C<void> greadreviews(I<{ for_book =E<gt> C<L<%book|"%book">>, since =E<gt> undef, 
+		rigor =E<gt> 2, on_review =E<gt> sub{}, on_progress =E<gt> sub{} }>)
 
 =over
 
 =item * loads ratings (no text), reviews (text), "to-read", "added" etc;
         you can filter yourself afterwards
 
+=item * I<rh_into>: C<(id =E<gt> L<%review|"%review">,...)>
+
 =item * optional I<since> argument of type C<Time::Piece>
-
-=item * optional I<use_dict>: try to find additional reviews by using the 
-        text-search function provided by Goodreads.com
-
-=item * optional I<stalltime> is the number of seconds to wait for 
-        new reviews when trying to find additional reviews, 
-        aborts if exceeded
-
-=item * if I<stalltime> is set to 0 (fastest), then the latest
-        reviews only are considered (max. 300 reviews)
-
-=item * set I<stalltime> to a very large value if you want the search take 
-        as long as it needs, which is okay for a project on a single book,
-        but would take too long for 1000 books
 
 =item * optional I<on_progress> callback function is called with an
         argument, which contains the number of currently loaded reviews
         (use %5s in format strings)
 
+=item * I<rigor> level 0: search newest reviews only (max 300 reviews)
+
+=item * I<rigor> level 1: search with a combination of filters (max 5400 reviews)
+
+=item * I<rigor> level 2: like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
+
+=item * I<rigor> level n: like 1 plus dict-search with stall-time of n minutes
+
 =back
 
 =cut
 
-sub query_good_reviews
+sub greadreviews
 {
-	my %result;
-	my (%args)    = @_;
-	my $book      = $args{book} or die "[FATAL] Argument `book` expected.";
-	my $bid       = $book->{id};
-	my $limit     = defined $book->{num_ratings} ? $book->{num_ratings} : 5000000;
-	my $stalltime = $args{stalltime}   || ( $args{since} ? 0 : 1*60 );
-	my $use_dict  = $args{use_dict}    || 1;
-	my $progfn    = $args{on_progress} || sub {};
-	my $since     = $args{since}       || $EARLIEST;
-	   $since     = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
+	my (%args) = @_;
+	my $book   =_require_arg( 'for_book', $args{ for_book });
+	my $rigor  = defined $args{ rigor } ? $args{ rigor } : 2;
+	my $rh     = $args{ rh_into     } || \{};
+	my $pfn    = $args{ on_progress } || sub{};
+	my $since  = $args{ since       } || $_EARLIEST;
+	   $since  = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
+	my $limit  = defined $book->{num_ratings} ? $book->{num_ratings} : 5000000;
+	my $bid    = $book->{id};
+	my %revs;  # unique and empty, otherwise we cannot easily compute limits
 	
-	$progfn->( 0 );  # Initializes progress display
-	
-	
-	# - Goodreads reviews filter gets us dissimilar(!) subsets which are merged
-	#   here: Don't assume that these filters just load a _subset_ of what you
-	#   see when _no filters_ are applied. Given enough ratings and reviews, each
-	#   filter finds reviews not included in any other result.  Theoretical
-	#   limit here is 5400 reviews: 6*3 filter combinations * max. 300 displayed 
-	#   reviews (Goodreads limit).
-	# - Zero stall-time means "fast": Newest only, any rating (recentrated.pl)
-	my @rateargs = $stalltime == 0 ? ( undef    ) : ( undef, 1..5               );
-	my @sortargs = $stalltime == 0 ? ( $SORTNEW ) : ( undef, $SORTNEW, $SORTOLD );
+	# Goodreads reviews filters get us dissimilar(!) subsets which are merged
+	# here: Don't assume that these filters just load a _subset_ of what you
+	# see if _no filters_ are applied. Given enough ratings and reviews, each
+	# filter finds reviews not included in any other revs.  Theoretical
+	# limit here is 5400 reviews: 6*3 filter combinations * max. 300 displayed 
+	# reviews (Goodreads limit).
+	# 
+	my @rateargs = $rigor == 0 ? ( undef     ) : ( undef, 1..5                 );
+	my @sortargs = $rigor == 0 ? ( $_SORTNEW ) : ( undef, $_SORTNEW, $_SORTOLD );
 	for my $r (@rateargs)
 	{
 		for my $s (@sortargs)
 		{
-			my $page = 1;
-			while( _extract_revs( \%result, $progfn, $since, _html( _revs_url( $bid, $s, $r, undef, $page++ ) ) ) ) {};
+			my $pag = 1;
+			while( _extract_revs( \%revs, $pfn, $since, _html( _revs_url( $bid, $s, $r, undef, $pag++ ) ) ) ) {};
 			
 			# "to-read", "added" have to be loaded before the rated/reviews
 			# (undef in both argument-lists first) - otherwise we finish
 			# too early since $limit equals the number of *ratings* only.
 			# Ugly code but correct in theory:
-			my $numrated = scalar( grep { defined $_->{rating} } values %result ); 
+			# 
+			my $numrated = scalar( grep{ defined $_->{rating} } values %revs ); 
 			goto DONE if $numrated >= $limit;
 		}
 	}
 	
+
+	# Dict-search works well with many ratings but poorly with few (waste of time).
+	goto DONE if $rigor <  2;
+	goto DONE if $rigor == 2 && $limit < 3000;
 	
-	# Dict-search works well many ratings but poorly with few (waste of time).
-	# A high stall-time, however, indicates that someone really wants to know:
-	goto DONE if $limit < 3000 && $stalltime < 10*60;
-	goto DONE if !$use_dict;
+ 	my $stalltime = $rigor * 60;  
+	my $t0        = time;  # Stuff above might already take 60s
 	
-	my $t0 = time;   # Stuff above might already take 60s
-	for my $word (@REVSRCHDICT_OPTIMIZED)
+	for my $word (@_REVSRCHDICT_OPTIMIZED)
 	{
-		goto DONE if time-$t0 > $stalltime || scalar keys %result >= $limit;
+		goto DONE if time-$t0 > $stalltime || scalar keys %revs >= $limit;
 		
-		my $numbefore = scalar keys %result;
+		my $numbefore = scalar keys %revs;
 		
-		_extract_revs( \%result, $progfn, $since, _html( _revs_url( $bid, undef, undef, $word ) ) );
+		_extract_revs( \%revs, $pfn, $since, _html( _revs_url( $bid, undef, undef, $word ) ) );
 		
-		$t0 = time if scalar keys %result > $numbefore;  # Resets stall-timer
+		$t0 = time if scalar keys %revs > $numbefore;  # Resets stall-timer
 	}
 	
 DONE:
 
-	return values %result;
+	%$rh = ( %$rh, %revs );  # Merge
 }
 
 
 
 
-=head2 C<(id =E<gt> L<%user|"%user">,...)> query_good_followees( I<$user_id> )
+=head2 C<void> greadfolls( I<{ rh_into, from_user_id, on_progress =E<gt> sub{}, incl_authors => 1 }> )
 
 =over
 
-=item * Precondition: set_good_cookie()
+=item * queries Goodreads.com for the friends and followees list of the given user
+
+=item * I<rh_into>: C<(id =E<gt> L<%user|"%user">,...)> 
+
+=item * Precondition: gsetcookie()
 
 =item * returns friends AND followees
 
@@ -659,32 +815,92 @@ DONE:
 
 =cut
 
-sub query_good_followees
+sub greadfolls
 {
-	my $uid = shift;
-	my %result;
-	my $page;
-
-	$page = 1;
-	while( _extract_followees( \%result, _html( _followees_url( $uid, $page++ ) ) ) ) {};
+	my (%args) = @_;
+	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
+	my $uid    = gverifyuser( $args{ from_user_id });
+	my $iau    = defined $args{ incl_authors } ? $args{ incl_authors } : 1;
+	my $pfn    = $args{ on_progress  } || sub{};
+	my $pag;
 	
-	$page = 1;
-	while( _extract_friends( \%result, _html( _friends_url( $uid, $page++ ) ) ) ) {};
-	
-	return %result;
+	$pag = 1; while( _extract_followees( $rh, $pfn, $iau, _html( _followees_url( $uid, $pag++ ) ) ) ) {};
+	$pag = 1; while( _extract_friends  ( $rh, $pfn, $iau, _html( _friends_url  ( $uid, $pag++ ) ) ) ) {};
 }
 
 
 
 
-=head2 C<(L<%user|"%user">,...)> query_similar_authors( I<$author_id> )
+=head2 C<void> greadsimilaraut( I<{ rh_into, author_id, on_progress =E<gt> sub{} }> )
+
+=over
+
+=item * reads the Goodreads.com list of authors who are similar to the given author
+
+=item * I<rh_into>: C<(id =E<gt> L<%user|"%user">,...)>
+
+=item * increments I<'_seen'> counter of each author if already in I<%$rh_into>
+
+=back
 
 =cut
 
-sub query_similar_authors
+sub greadsimilaraut
 {
-	my $uid = shift;
-	return _extract_similar_authors( $uid, _html( _similar_authors_url( $uid ) ) );
+	my (%args) = @_;
+	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
+	my $aid    = gverifyuser( $args{ author_id });
+	my $pfn    = $args{ on_progress } || sub{};
+	
+	# Just 1 page:
+	_extract_similar_authors( $rh, $aid, $pfn, _html( _similar_authors_url( $aid ) ) );
+}
+
+
+
+
+=head2 C<void> gsearch( I<{ ra_into, phrase, is_exact =E<gt> 0, 
+			on_progress =E<gt> sub{}, num_ratings =E<gt> 0,
+			ra_order_by =E<gt> [ 'stars', 'num_ratings', 'year' ]
+			}> )
+
+=over
+
+=item * searches the Goodreads.com database for books that match a given phrase
+
+=item * I<ra_into>: C<(L<%book|"%book">,...)> 
+
+=item * I<order_by>: array with property names from C<(L<%book|"%book">,...)> 
+
+=item * supports percent progress functions: $pfn-E<gt>( $books_loaded, $books_total )
+
+=back
+
+=cut
+
+sub gsearch
+{
+	my (%args) = @_;
+	my $ra     =    _require_arg( 'ra_into', $args{ ra_into });
+	my $q      = lc _require_arg( 'phrase',  $args{ phrase  });
+	my $pfn    = $args{ on_progress }  || sub{};
+	my $n      = $args{ num_ratings }  || 0;
+	my $e      = $args{ is_exact    }  || 0;
+	my $ra_ord = $args{ ra_order_by }  || [ 'stars', 'num_ratings', 'year' ];
+	my $pag    = 1;
+	my @tmp;
+	
+	while( _extract_search_books( \@tmp, $pfn, _html( _search_url( $q, $pag++ ) ) ) ) {};
+	
+	# Select and sort:
+	@tmp = grep{ $_->{num_ratings}           >= $n } @tmp;
+	@tmp = grep{ index( lc $_->{title}, $q ) != -1 } @tmp if $e;
+	@$ra = sort  # TODO check index vs number of elements
+	{
+		$b->{ $ra_ord->[0] } <=> $a->{ $ra_ord->[0] } ||
+		$b->{ $ra_ord->[1] } <=> $a->{ $ra_ord->[1] } ||
+		$b->{ $ra_ord->[2] } <=> $a->{ $ra_ord->[2] }
+	} @tmp;
 }
 
 
@@ -709,8 +925,9 @@ sub amz_book_html
 
 
 
+###############################################################################
 
-=head1 PRIVATE SUBROUTINES
+=head1 PRIVATE URL-GENERATION ROUTINES
 
 
 
@@ -718,7 +935,7 @@ sub amz_book_html
 
 =over
 
-=item * Requires at least {isbn=>string}
+=item * Requires at least {isbn=E<gt>string}
 
 =back
 
@@ -727,7 +944,7 @@ sub amz_book_html
 sub _amz_url
 {
 	my $book = shift;
-	return $book->{isbn} ? 'http://www.amazon.de/gp/product/' . $book->{isbn} : undef;
+	return $book->{isbn} ? "http://www.amazon.de/gp/product/$book->{isbn}" : undef;
 }
 
 
@@ -739,9 +956,14 @@ sub _amz_url
 
 =item * URL for a page with a list of books (not all books)
 
-=item * "&per_page=100" has no effect (GR actually loads 5x 20 books via JavaScript)
+=item * "&print=true" allows 200 items per page with a single request, 
+        which is a huge speed improvement over loading books from the "normal" 
+        view with max 20 books per request.
+        Showing 100 books in normal view is oddly realized by 5 AJAX requests
+        on the Goodreads.com website.
 
-=item * "&print=true" not included, any advantages?
+=item * "&per_page" in print-view can be any number if you work with your 
+        own shelf, otherwise max 200 if print view; ignored in non-print view
 
 =item * "&view=table" puts I<all> book data in code, although invisible (display=none)
 
@@ -749,6 +971,8 @@ sub _amz_url
         Some users read 9000+ books and scraping would take forever. 
         We sort lower-rated books to the end and just scrape the first pages:
         Even those with 9000+ books haven't top-rated more than 2700 books.
+
+=item * "&shelf" supports intersection "shelf1%2Cshelf2" (comma)
 
 =item * B<Warning:> changes to the URL structure will bust the file-cache
 
@@ -758,10 +982,22 @@ sub _amz_url
 
 sub _shelf_url  
 {
-	my $uid   = shift;
-	my $shelf = shift;
-	my $page  = shift || 1;
-	return "https://www.goodreads.com/review/list/${uid}?shelf=${shelf}&page=${page}&view=table&sort=rating&order=d";
+	my $uid = shift;
+	my $slf = shift;	
+	my $pag = shift || 1;
+	
+	$slf =~ s/#/%23/g;  # "#ALL#" shelf
+	$slf =~ s/,/%2C/g;  # Shelf intersection
+	
+	return "https://www.goodreads.com/review/list/${uid}?"
+	     . "&print=true"
+	     . "&shelf=${slf}"
+	     . "&page=${pag}"
+	     . "&sort=rating"
+	     . "&order=d"
+	     . "&view=table"
+	     . "&title="
+	     . "&per_page=200";
 }
 
 
@@ -781,9 +1017,9 @@ sub _shelf_url
 
 sub _followees_url
 {
-	my $uid  = shift;
-	my $page = shift || 1;
-	return "https://www.goodreads.com/user/${uid}/following?page=${page}";
+	my $uid = shift;
+	my $pag = shift || 1;
+	return "https://www.goodreads.com/user/${uid}/following?page=${pag}";
 }
 
 
@@ -809,9 +1045,12 @@ sub _followees_url
 
 sub _friends_url
 {
-	my $uid  = shift;
-	my $page = shift || 1;
-	return "https://www.goodreads.com/friend/user/${uid}?page=${page}&skip_mutual_friends=false&sort=date_added";
+	my $uid = shift;
+	my $pag = shift || 1;
+	return "https://www.goodreads.com/friend/user/${uid}?"
+	     . "&page=${pag}"
+	     . "&skip_mutual_friends=false"
+	     . "&sort=date_added";
 }
 
 
@@ -836,9 +1075,9 @@ sub _book_url
 
 sub _user_url
 {
-	my $uid    = shift;
-	my $is_aut = shift || 0;
-	return 'https://www.goodreads.com/'.( $is_aut ? 'author' : 'user' )."/show/${uid}";
+	my $uid   = shift;
+	my $is_au = shift || 0;
+	return 'https://www.goodreads.com/'.( $is_au ? 'author' : 'user' )."/show/${uid}";
 }
 
 
@@ -857,7 +1096,8 @@ sub _user_url
 
 =item * "&rating=5"
 
-=item * the maximum of retrievable pages is 10 (300 reviews)
+=item * the maximum of retrievable pages is 10 (300 reviews), see
+        https://www.goodreads.com/topic/show/18937232-why-can-t-we-see-past-page-10-of-book-s-reviews?comment=172163745#comment_172163745
 
 =item * seems less throttled, not true for text-search
 
@@ -870,13 +1110,13 @@ sub _revs_url
 	my $bid  = shift;
 	my $sort = shift || undef;
 	my $rat  = shift || undef;
-	my $text = shift || undef;
-	my $page = shift || 1;
+	my $txt  = shift || undef;
+	my $pag  = shift || 1;
 	return "https://www.goodreads.com/book/reviews/${bid}?"
-		.( $sort && !$text ? "sort=${sort}&"        : '' )
-		.( $text           ? "search_text=${text}&" : '' )
-		.( $rat            ? "rating=${rat}&"       : '' )
-		.( $text           ? "" : "page=${page}"         );
+		.( $sort && !$txt ? "sort=${sort}&"       : '' )
+		.( $txt           ? "search_text=${txt}&" : '' )
+		.( $rat           ? "rating=${rat}&"      : '' )
+		.( $txt           ? "" : "page=${pag}"         );
 }
 
 
@@ -901,9 +1141,9 @@ sub _rev_url
 
 sub _author_books_url
 {
-	my $uid  = shift;
-	my $page = shift || 1;
-	return "https://www.goodreads.com/author/list/${uid}?per_page=100&page=${page}";
+	my $uid = shift;
+	my $pag = shift || 1;
+	return "https://www.goodreads.com/author/list/${uid}?per_page=100&page=${pag}";
 }
 
 
@@ -915,9 +1155,9 @@ sub _author_books_url
 
 sub _author_followings_url
 {
-	my $uid  = shift;
-	my $page = shift || 1;
-	return "https://www.goodreads.com/author_followings?id=${uid}&page=${page}";
+	my $uid = shift;
+	my $pag = shift || 1;
+	return "https://www.goodreads.com/author_followings?id=${uid}&page=${pag}";
 }
 
 
@@ -936,18 +1176,45 @@ sub _author_followings_url
 
 sub _similar_authors_url
 {
-	my $uid  = shift;
+	my $uid = shift;
 	return "https://www.goodreads.com/author/similar/${uid}";
 }
 
 
 
 
-=head2 C<bool> _extract_books( I<$result_array_ref, $shelf_tableview_html_str> )
+=head2 C<string> _search_url( I<phrase_str, $page_number = 1> )
 
 =over
 
-=item * I<$result_array_ref>: C<(L<%book|"%book">,...)>
+=item * "&q=" URL-encoded, e.g., linux+%40+"häse (linux @ "häse)
+
+=back
+
+=cut
+
+sub _search_url
+{
+	my $q   = uri_escape( shift );
+	my $pag = shift;
+	return "https://www.goodreads.com/search?page=${pag}&tab=books&q=${q}";
+}
+
+
+
+
+#==============================================================================
+
+=head1 PRIVATE HTML-EXTRACTION ROUTINES
+
+
+
+
+=head2 C<bool> _extract_books( I<$rh_books, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
+
+=over
+
+=item * I<$rh_books>: C<(id =E<gt> L<%book|"\%book">,...)>
 
 =back
 
@@ -955,66 +1222,63 @@ sub _similar_authors_url
 
 sub _extract_books
 {
-	my $books_ref = shift;
-	my $html      = shift;
-	my $ret       = 0;
+	my $rh  = shift;
+	my $bfn = shift;
+	my $pfn = shift;
+	my $htm = shift;
+	my $ret = 0;
 	
-	while( $html =~ /<tr id="review_\d+" class="bookalike review">(.*?)<\/tr>/gs ) # each book row
+	# TODO verify if shelf is the given one or redirected by GR to #ALL# bc misspelled
+	
+	
+	
+	while( $htm =~ /<tr id="review_\d+" class="bookalike review">(.*?)<\/tr>/gs ) # each book row
 	{	
-		my $row  = $1;
-		my $id   = $1 if $row =~ /data-resource-id="([0-9]+)"/;
-		my $isbn = $1 if $row =~ /<label>isbn<\/label><div class="value">\s*([0-9X\-]*)/;
-		my $numr = $1 if $row =~ /<label>num ratings<\/label><div class="value">\s*([0-9]+)/;
-		my $img  = $1 if $row =~ /<img [^>]* src="([^"]+)"/;
-		my $auid = $1 if $row =~ /author\/show\/([0-9]+)/;
-		my $aunm = $1 if $row =~ /author\/show\/[^>]+>([^<]+)/;
-		   $aunm = decode_entities( $aunm );
+		my $row = $1;
+		my $tit = $row =~ />title<\/label><div class="value">\s*<a[^>]+>\s*(.*?)\s*<\/a>/s  ? $1 : '';
+		   $tit =~ s/\<[^\>]+\>//g;         # remove HTML tags "Title <span>(Volume 2)</span>"
+		   $tit =~ s/( {1,}|[\r\n])/ /g;    # reduce spaces
+		   $tit = decode_entities( $tit );  # &quot -> "
+		my %au;
+		my %bk;
 		
-		# Counts occurances; dont match "staticStars" (trailing s) or "staticStar p0"
-		my $urat = () = $row =~ /staticStar p10/g;
+		$au{ id          } = $row =~ /author\/show\/([0-9]+)/       ? $1                    : undef;
+		$au{ name        } = $row =~ /author\/show\/[^>]+>([^<]+)/  ? decode_entities( $1 ) : '';
+		$au{ url         } = _user_url( $au{id}, 1 );
+		$au{ works_url   } = _author_books_url( $au{id} );
+		$au{ is_author   } = 1;
+		$au{ is_private  } = 0;
+		$au{ _seen       } = 1;
 		
-		# Extracts title
-		# + Removes HTML in "Title <span style="...">(Volume 35)</span>"
-		# + Reduces "   " to " " and remove line breaks
-		# + Replaces &quot; etc with " etc
-		my $tit = $1 if $row =~ /<label>title<\/label><div class="value">\s*<a[^>]+>\s*(.*?)\s*<\/a>/s;
-		   $tit =~ s/\<[^\>]+\>//g;
-		   $tit =~ s/( {1,}|[\r\n])/ /g;  
-		   $tit = decode_entities( $tit );
+		$bk{ id          } = $row =~ /data-resource-id="([0-9]+)"/                                ? $1 : undef;
+		$bk{ isbn        } = $row =~ />isbn<\/label><div class="value">\s*([0-9X\-]*)/            ? $1 : '';
+		$bk{ num_ratings } = $row =~ />num ratings<\/label><div class="value">\s*([0-9]+)/        ? $1 : 0;
+		$bk{ img_url     } = $row =~ /<img [^>]* src="([^"]+)"/                                   ? $1 : $_NOBOOKIMGURL;
+		$bk{ year        } = $row =~ />date pub<\/label><div class="value">\s*[^<]*(\d{4})\s*</s  ? $1 : 0;  # "2017" and "Feb 01, 2017" (there's also "edition date pub")
+		$bk{ title       } = $tit;
+		$bk{ user_rating } = () = $row =~ /staticStar p10/g;        # Counts occurances
+		$bk{ url         } = _book_url( $bk{id} );
+		$bk{ avg_rating  } = 0; # TODO
+		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
+		$bk{ rh_author   } = \%au;
 		
-		push @$books_ref, { 
-				id          => $id, 
-				title       => $tit, 
-				isbn        => $isbn, 
-				author      => { 
-					id         => $auid,
-					name       => $aunm,
-					url        => _user_url( $auid, 1 ),
-					works_url  => _author_books_url( $auid ),
-					img_url    => undef,
-					is_autor   => 1,
-					is_private => 0,
-					is_female  => undef,
-					is_friend  => undef
-				},
-				num_ratings => $numr, 
-				user_rating => $urat, 
-				url         => _book_url( $id ),
-				img_url     => $img };
-		
+		$rh->{$bk{id}} = \%bk if $rh;
+		$bfn->( \%bk );
 		$ret++;
 	}
+	
+	$pfn->( $ret );
 	return $ret;
 }
 
 
 
 
-=head2 C<bool> _extract_author_books( I<$result_array_ref, $html_str> )
+=head2 C<bool> _extract_author_books( I<$rh_books, $on_book_fn, $on_progress_fn, $html_str> )
 
 =over
 
-=item * I<$result_array_ref>: C<(L<%book|"%book">,...)> 
+=item * I<$rh_books>: C<(id =E<gt> L<%book|"\%book">,...)>
 
 =back
 
@@ -1022,60 +1286,56 @@ sub _extract_books
 
 sub _extract_author_books
 {
-	my $books_ref = shift;
-	my $html      = shift or return 0;
-	my $auimg     = $1 if $html =~ /(https:\/\/images.gr-assets.com\/authors\/.*?\.jpg)/gs;
-	   $auimg     = $NOUSERIMGURL if !$auimg;
-	my $auid      = $1 if $html =~ /author\/show\/([0-9]+)/;
-	my $aunm      = $1 if $html =~ /<h1>Books by ([^<]+)/;
-	   $aunm      = decode_entities( $aunm );
-	my $ret       = 0;
-	   
-	while( $html =~ /<tr itemscope itemtype="http:\/\/schema.org\/Book">(.*?)<\/tr>/gs )
+	# Book without title on https://www.goodreads.com/author/list/1094257
+	
+	my $rh    = shift;
+	my $bfn   = shift;
+	my $pfn   = shift;
+	my $htm   = shift or return 0;
+	my $auimg = $htm =~ /(https:\/\/images.gr-assets.com\/authors\/.*?\.jpg)/gs  ? $1 : $_NOUSERIMGURL;
+	my $aid   = $htm =~ /author\/show\/([0-9]+)/                                 ? $1 : undef;
+	my $aunm  = $htm =~ /<h1>Books by ([^<]+)/                                   ? decode_entities( $1 ) : '';
+	my $ret   = 0;
+	
+	while( $htm =~ /<tr itemscope itemtype="http:\/\/schema.org\/Book">(.*?)<\/tr>/gs )
 	{
 		my $row = $1;
-		my $id  = $1 if $row =~ /book\/show\/([0-9]+)/;
+		my %au;
+		my %bk;
 		
-		my $tit = '';  # Book without title on https://www.goodreads.com/author/list/1094257
-		   $tit = $1 if $row =~ /<span itemprop='name'>([^<]+)/;
+		$au{ id          } = $aid;
+		$au{ name        } = $aunm;
+  		$au{ img_url     } = $auimg;
+		$au{ url         } = _user_url( $aid, 1 );
+		$au{ works_url   } = _author_books_url( $aid );
+		$au{ is_author   } = 1;
+		$au{ is_private  } = 0;
+		$au{ _seen       } = 1;
 		
-		my $img = $1 if $row =~ /src="[^"]+/;
-		my $num = $1 if $row =~ /([0-9.,]+) [rR]ating/;  # "1 rating", "2 ratings"
-		   $num =~ s/,//g if $num;  # 1,600 -> 1600
+		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/           ? $1    : undef;
+		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d+) rating/         ? $1.$2 : 0;  # 1,600 -> 1600
+		$bk{ img_url     } = $row =~ /src="[^"]+/                     ? $1    : $_NOBOOKIMGURL;
+		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/  ? decode_entities( $1 ) : '';
+		$bk{ url         } = _book_url( $bk{id} );
+		$bk{ rh_author   } = \%au;
 		
-		push @$books_ref, {
-				id          => $id,
-				title       => decode_entities( $tit ),
-				isbn        => undef,
-				author      => {
-					id         => $auid,
-					name       => $aunm,
-					url        => _user_url( $auid, 1 ),
-					works_url  => _author_books_url( $auid ),
-					img_url    => $auimg,
-					is_author  => 1,
-					is_private => 0,
-					is_female  => undef,
-					is_friend  => undef
-				},
-				num_ratings => $num || 0,
-				user_rating => undef,
-				url         => _book_url( $id ),
-				img_url     => $img };
-		
+		$rh->{$bk{id}} = \%bk;
+		$bfn->( \%bk );
 		$ret++;
 	}
+	
+	$pfn->( $ret );
 	return $ret;
 }
 
 
 
 
-=head2 C<bool> _extract_followees( I<$result_hash_ref, $following_page_html_str> )
+=head2 C<bool> _extract_followees( I<$rh_users, $on_progress_fn, $incl_authors, $following_page_html_str> )
 
 =over
 
-=item * I<$result_hash_ref>: C<(user_id =E<gt>  L<%user|"%user">,...)>
+=item * I<$rh_users>: C<(user_id =E<gt> L<%user|"\%user">,...)>
 
 =back
 
@@ -1083,45 +1343,45 @@ sub _extract_author_books
 
 sub _extract_followees
 {
-	my $users_ref = shift;
-	my $html      = shift;
-	my $ret       = 0;
+	my $rh  = shift;
+	my $pfn = shift;
+	my $iau = shift;
+	my $htm = shift;
+	my $ret = 0;
 	
-	while( $html =~ /<div class='followingItem elementList'>(.*?)<\/a>/gs )
+	while( $htm =~ /<div class='followingItem elementList'>(.*?)<\/a>/gs )
 	{
 		my $row = $1;
-		my $uid = $1 if $row =~   /\/user\/show\/([0-9]+)/;
-		my $aid = $1 if $row =~ /\/author\/show\/([0-9]+)/;
-		my $nam = $1 if $row =~ /img alt="([^"]+)/;
-		   $nam = decode_entities( $nam );
-		my $img = $1 if $row =~ /src="([^"]+)/;
-		my $id  = $uid ? $uid : $aid;
+		my $uid = $row =~   /\/user\/show\/([0-9]+)/   ? $1 : undef;
+		my $aid = $row =~ /\/author\/show\/([0-9]+)/   ? $1 : undef;	
+		my %us;
 		
-		$users_ref->{$id} = { 
-				id         => $id, 
-				name       => $nam, 
-				url        => _user_url( $id, $aid ),
-				works_url  => $aid ? _author_books_url( $aid ) : undef,
-				img_url    => $img,
-				age        => undef,
-				is_author  => $aid, 
-				is_private => undef,
-				is_female  => undef,
-				is_friend  => 0 };
-		
+		$us{ id        } = $uid ? $uid : $aid;
+		$us{ name      } = $row =~ /img alt="([^"]+)/  ? decode_entities( $1 )     : '';
+		$us{ img_url   } = $row =~ /src="([^"]+)/      ? $1                        : $_NOUSERIMGURL;
+		$us{ works_url } = $aid                        ? _author_books_url( $aid ) : '';
+		$us{ url       } = _user_url( $us{id}, $aid );
+		$us{ is_author } = defined $aid;
+		$us{ is_friend } = 0;
+		$us{ _seen     } = 1;
+			
+		next if !$iau && $us{is_author};
+		$rh->{$us{id}} = \%us;
 		$ret++;
 	}
+	
+	$pfn->( $ret );
 	return $ret;
 }
 
 
 
 
-=head2 C<bool> _extract_friends( I<$result_hash_ref, $friends_page_html_str> )
+=head2 C<bool> _extract_friends( I<$rh_users, $on_progress_fn, $incl_authors, $friends_page_html_str> )
 
 =over
 
-=item * I<$result_hash_ref>: C<(user_id =E<gt> L<%user|"%user">,...)>
+=item * I<$rh_users>: C<(user_id =E<gt> L<%user|"\%user">,...)> 
 
 =back
 
@@ -1129,45 +1389,45 @@ sub _extract_followees
 
 sub _extract_friends
 {
-	my $users_ref = shift;
-	my $html      = shift;
-	my $ret       = 0;
+	my $rh  = shift;
+	my $pfn = shift;
+	my $iau = shift;
+	my $htm = shift;
+	my $ret = 0;
 	
-	while( $html =~ /<tr>\s*<td width="1%">(.*?)<\/td>/gs )
+	while( $htm =~ /<tr>\s*<td width="1%">(.*?)<\/td>/gs )
 	{
 		my $row = $1;
-		my $uid = $1 if $row =~   /\/user\/show\/([0-9]+)/;
-		my $aid = $1 if $row =~ /\/author\/show\/([0-9]+)/;
-		my $nam = $1 if $row =~ /img alt="([^"]+)/;
-		   $nam = decode_entities( $nam );
-		my $img = $1 if $row =~ /src="([^"]+)/;
-		my $id  = $uid ? $uid : $aid;
+		my $uid = $row =~   /\/user\/show\/([0-9]+)/   ? $1 : undef;
+		my $aid = $row =~ /\/author\/show\/([0-9]+)/   ? $1 : undef;
+		my %us;
 		
-		$users_ref->{$id} = { 
-				id         => $id, 
-				name       => $nam, 
-				url        => _user_url( $id, $aid ),
-				works_url  => $aid ? _author_books_url( $aid ) : undef,
-				img_url    => $img, 
-				age        => undef,
-				is_author  => $aid, 
-				is_private => undef,
-				is_female  => undef,
-				is_friend  => 1 };
-			
+		$us{ id        } = $uid ? $uid : $aid;
+		$us{ name      } = $row =~ /img alt="([^"]+)/  ? decode_entities( $1 )     : '';
+		$us{ img_url   } = $row =~     /src="([^"]+)/  ? $1                        : $_NOUSERIMGURL;
+		$us{ works_url } = $aid                        ? _author_books_url( $aid ) : '';
+		$us{ url       } = _user_url( $us{id}, $aid );
+		$us{ is_author } = defined $aid;
+		$us{ is_friend } = 1;
+		$us{ _seen     } = 1;
+		
+		next if !$iau && $us{ is_author };
+		$rh->{$us{id}} = \%us;
 		$ret++;
 	}
+	
+	$pfn->( $ret );
 	return $ret;
 }
 
 
 
 
-=head2 C<bool> _extract_revs( I<$result_hash_ref, $on_progress_fn, $since_time_piece, $reviews_xhr_html_str> )
+=head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $since_time_piece, $reviews_xhr_html_str> )
 
 =over
 
-=item * I<$result_hash_ref>: C<(review_id =E<gt> L<%review|"%review">,...)> 
+=item * I<$rh_revs>: C<(review_id =E<gt> L<%review|"\%review">,...)>
 
 =back
 
@@ -1175,114 +1435,178 @@ sub _extract_friends
 
 sub _extract_revs
 {
-	my $revs_ref     = shift;
-	my $progfn       = shift;
+	my $rh           = shift;
+	my $pfn          = shift;
 	my $since_tpiece = shift;
-	my $html         = shift or return 0;  # < is \u003c, > is \u003e,  " is \" literally
-	my $bid          = $1 if $html =~ /%2Fbook%2Fshow%2F([0-9]+)/;
+	my $htm          = shift or return 0;  # < is \u003c, > is \u003e,  " is \" literally
+	my $bid          = $htm =~ /%2Fbook%2Fshow%2F([0-9]+)/  ? $1 : undef;
 	my $ret          = 0;
 	
-	while( $html =~ /div id=\\"review_\d+(.*?)div class=\\"clear/gs )
+	while( $htm =~ /div id=\\"review_\d+(.*?)div class=\\"clear/gs )
 	{		
 		my $row = $1;
-		my $rid = $1 if $row =~ /\/review\/show\/([0-9]+)/;
-		my $uid = $1 if $row =~   /\/user\/show\/([0-9]+)/;
 		
-		# img alt=\"David T\"   
-		# img alt=\"0\"
-		# img alt="\u0026quot;Greg Adkins\u0026quot;\"
-		my $nam = $1 if $row =~ /img alt=\\"(.*?)\\"/;   
-		   $nam = '"0"' if $nam eq '0';              # Avoid eval to false somewhere
-		   $nam = decode_entities( $nam );
-		   
-		my $rat = () =  $row =~ /staticStar p10/g;   # count occurances
-		my $txt = $1 if $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/;
-		   $txt = $txt ? decode_entities( $txt ) : '';  # I expected rather '' than undef, so...
+		# Avoid username "0" eval to false somewhere -> "0" instead of 0
+		#
+		# [x] Parse-error "Jan 01, 1010" https://www.goodreads.com/review/show/1369192313
+		# [x] img alt=\"David T\"   
+		# [x] img alt=\"0\"
+		# [ ] img alt="\u0026quot;Greg Adkins\u0026quot;\"  TODO
 		
-		# Parse-error "Jan 01, 1010" https://www.goodreads.com/review/show/1369192313
-		my $dat = $1 if $row =~ /([A-Z][a-z]+ \d+, (19[7-9][0-9]|2\d{3}))/;
-		my $dat_tpiece = $dat ? Time::Piece->strptime( $dat, '%b %d, %Y' ) : $EARLIEST; 
+		my $dat        = $row =~ /([A-Z][a-z]+ \d+, (19[7-9][0-9]|2\d{3}))/  ? $1 : undef;
+		my $dat_tpiece = $dat ? Time::Piece->strptime( $dat, '%b %d, %Y' ) : $_EARLIEST; 
 		
 		next if $dat_tpiece < $since_tpiece;
+			
+		my %us;
+		my %rv;
 		
-		$revs_ref->{$rid} = {
-				id   => $rid,
-				user => { 
-					id         => $uid, 
-					name       => $nam, 
-					url        => _user_url( $uid ),
-					works_url  => undef,
-					img_url    => undef,  # TODO
-					age        => undef,
-					is_author  => undef,
-					is_private => undef,
-					is_female  => undef,
-					is_friend  => undef
-				},
-				rating     => $rat,
-				rating_str => $rat ? ('[' . ($txt ? 'T' : '*') x $rat . ' ' x (5-$rat) . ']') : '[added]',
-				review_url => _rev_url( $rid ),
-				text       => $txt,
-				date       => $dat_tpiece,
-				book_id    => $bid };
+		$us{ id         } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
+		$us{ name       } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : decode_entities( $1 )) : '';
+  		$us{ img_url    } = $_NOUSERIMGURL;  # TODO
+		$us{ url        } = _user_url( $us{id} );
+		$us{ _seen      } = 1;
 		
+		$rv{ id         } = $row =~ /\/review\/show\/([0-9]+)/ ? $1 : undef;
+		$rv{ text       } = $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/  ? decode_entities( $1 ) : '';
+		$rv{ rating     } = () = $row =~ /staticStar p10/g;  # Count occurances
+		$rv{ rating_str } = $rv{rating} ? ('[' . ($rv{text} ? 'T' : '*') x $rv{rating} . ' ' x (5-$rv{rating}) . ']') : '[added]';
+		$rv{ url        } = _rev_url( $rv{id} );
+		$rv{ date       } = $dat_tpiece;
+		$rv{ book_id    } = $bid;
+		$rv{ rh_user    } = \%us;
+		
+		$rh->{$rv{id}} = \%rv;
 		$ret++;
 	}
 	
-	$progfn->( scalar keys %$revs_ref ) if $ret > 0;
-	
+	$pfn->( $ret );
 	return $ret;
 }
 
 
 
 
-=head2 C<(L<%user|"%user">,...)> _extract_similar_authors( I<$author_id_to_skip, $similar_page_html_str> )
+=head2 C<bool> _extract_similar_authors( I<$rh_into, $author_id_to_skip, 
+			$on_progress_fn, $similar_page_html_str> )
 
 =cut
 
 sub _extract_similar_authors
 {
+	my $rh          = shift;
 	my $uid_to_skip = shift;
-	my $html        = shift;
+	my $pfn         = shift;
+	my $htm         = shift;
+	my $ret         = 0;
 	
-	my @result;
-	while( $html =~ /<li class='listElement'>(.*?)<\/li>/gs )
+	while( $htm =~ /<li class='listElement'>(.*?)<\/li>/gs )
 	{	
-		my $row  = $1;
-		my $auid = $1 if $row =~ /author\/show\/([0-9]+)/;
+		my $row = $1;
+		my %au;
+		$au{id} = $row =~ /author\/show\/([0-9]+)/  ? $1 : undef;
 		
-		next if $auid eq $uid_to_skip;
+		next if $au{id} eq $uid_to_skip;
 		
-		my $auimg = $1 if $row =~ /(https:\/\/images\.gr-assets\.com\/authors\/[^"]+)/;
-		   $auimg = $NOUSERIMGURL if !$auimg;
-		
-		my $aunm = $1 if $row =~ /class="bookTitle" href="\/author\/show\/[^>]+>([^<]+)/;
-		   $aunm = decode_entities( $aunm );
-		   
-		push @result, {
-				id         => $auid,
-				name       => $aunm, 
-				url        => _user_url( $auid, 1 ),
-				works_url  => _author_books_url( $auid ),
-				img_url    => $auimg,
-				age        => undef,
-				is_author  => 1,
-				is_private => 0,
-				is_female  => undef,
-				is_friend  => undef };
+		if( exists $rh->{$au{id}} )
+		{
+			$rh->{$au{id}}->{_seen}++;  # similarauth.pl
+			next;
+		}
+
+		$au{ name       } = $row =~ /class="bookTitle" href="\/author\/show\/[^>]+>([^<]+)/  ? decode_entities( $1 ) : '';
+		$au{ img_url    } = $row =~ /(https:\/\/images\.gr-assets\.com\/authors\/[^"]+)/     ? $1 : $_NOUSERIMGURL;
+		$au{ url        } = _user_url( $au{id}, 1 );
+		$au{ works_url  } = _author_books_url( $au{id} );
+		$au{ is_author  } = 1;
+		$au{ is_private } = 0;
+		$au{ _seen      } = 1;
+
+		$rh->{$au{id}} = \%au;
+		$ret++;
 	}
-	return @result;
+	
+	$pfn->( $ret );
+	return $ret;
 }
 
 
 
 
-=head2 C<int> _check_page( I<$url, $html> )
+=head2 C<bool> _extract_search_books( I<$ra_books, $on_progress_fn, $search_result_html_str>  )
 
 =over
 
-=item * returns 0 ok, 1 warn (ignore), 2 error (retry)
+=item * result pages sometimes have different number of items: 
+        P1: 20, P2: 16, P3: 19
+
+=item * website says "about 75 results" but shows 70 (I checked that manually).
+        So we fake "100%" to the progress indicator function at the end,
+        otherwise it stops with "93%".
+
+=item * I<ra_books>: C<(L<%book|"\%book">,...)> 
+
+=cut
+
+sub _extract_search_books
+{
+	my $ra  = shift;
+	my $pfn = shift;
+	my $htm = shift;
+	my $ret = 0;
+	my $max = $htm =~ /Page \d+ of about (\d+) results/  ? $1 : 0;
+	
+	$pfn->( 1, 1 ) and return 0 if scalar @$ra >= $max;  # Page 100+x == Page 100, or "NO RESULTS."
+	
+	while( $htm =~ /<tr itemscope itemtype="http:\/\/schema.org\/Book">(.*?)<\/tr>/gs )
+	{
+		my $row = $1;
+		my %au;
+		my %bk;
+		
+		$au{ id          } = $row =~ /\/author\/show\/([0-9]+)/  ? $1 : undef;
+		$au{ name        } = $row =~ /<a class="authorName" [^>]+><span itemprop="name">([^>]+)/  ? decode_entities( $1 ) : '';
+		$au{ url         } = _user_url        ( $au{id}, 1 );
+		$au{ works_url   } = _author_books_url( $au{id}    );
+		$au{ img_url     } = $_NOUSERIMGURL;
+		$au{ is_author   } = 1;
+		$au{ is_private  } = 0;
+		$au{ _seen       } = 1;
+		
+		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/           ? $1    : undef;
+		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d+) rating/         ? $1.$2 : 0;  # 1,600 -> 1600
+		$bk{ avg_rating  } = $row =~ /([0-9.,]+) avg rating/          ? $1    : 0;  # 3.8
+		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
+		$bk{ year        } = $row =~ /published\s+(\d+)/              ? $1    : 0;  # 2018
+		$bk{ img_url     } = $row =~ /src="([^"]+)/                   ? $1    : $_NOBOOKIMGURL;
+		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/  ? decode_entities( $1 ) : '';
+		$bk{ user_rating } = () = $row =~ /staticStar p10/g;  # count
+		$bk{ url         } = _book_url( $bk{id} );
+		$bk{ rh_author   } = \%au;
+		
+		push( @$ra, \%bk );
+		$ret++;
+	}
+	
+	$pfn->( $ret, $max );
+	return $ret;
+}
+
+
+
+
+###############################################################################
+
+=head1 PRIVATE I/O PLUMBING SUBROUTINES
+
+
+
+
+=head2 C<int> _check_page( I<$url, $any_html_str> )
+
+=over
+
+=item * returns $_STATOKAY, $_STATWARN (ignore), $_STATERROR (retry)
 
 =item * warns if sign-in page (https://www.goodreads.com/user/sign_in) or in-page message
 
@@ -1325,40 +1649,39 @@ sub _extract_similar_authors
 
 sub _check_page
 {
-	my $url  = shift;
-	my $html = shift;
+	my $url = shift;
+	my $htm = shift;
 	
 	# Try to be precise, don't stop just because someone wrote a pattern 
 	# in his review or a book title. Characters such as < and > are 
 	# encoded in user texts:
 	
-	warn "\n[WARN] Sign-in for $url => Cookie invalid or not set: set_good_cookie_file()\n"
-		and return 1
-			if $html =~ /<head>\s*<title>\s*Sign in\s*<\/title>/s;
+	warn( "\n[WARN] Sign-in for $url => Cookie invalid or not set: gsetcookiefile()\n" )
+		and return $_STATWARN
+			if $htm =~ /<head>\s*<title>\s*Sign in\s*<\/title>/s;
 	
-	warn "\n[WARN] Not found: $url\n"
-		and return 1
-			if $html =~ /<head>\s*<title>\s*Page not found\s*<\/title>/s;
+	warn( "\n[WARN] Not found: $url\n" )
+		and return $_STATWARN
+			if $htm =~ /<head>\s*<title>\s*Page not found\s*<\/title>/s;
 	
-	
-	warn "\n[ERROR] Goodreads.com \"temporarily unavailable\".\n"
-		and return 2
-			if $html =~ /Our website is currently unavailable while we make some improvements/s; # TODO improve
+	warn( "\n[ERROR] Goodreads.com \"temporarily unavailable\".\n" )
+		and return $_STATERROR
+			if $htm =~ /Our website is currently unavailable while we make some improvements/s; # TODO improve
 			
-	warn "\n[ERROR] Goodreads.com encountered an \"unexpected error\".\n"
-		and return 2
-			if $html =~ /<head>\s*<title>\s*Goodreads - unexpected error\s*<\/title>/s;
+	warn( "\n[ERROR] Goodreads.com encountered an \"unexpected error\".\n" )
+		and return $_STATERROR
+			if $htm =~ /<head>\s*<title>\s*Goodreads - unexpected error\s*<\/title>/s;
 	
-	warn "\n[ERROR] Goodreads.com is over capacity.\n"
-		and return 2
-			if $html =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
+	warn( "\n[ERROR] Goodreads.com is over capacity.\n" )
+		and return $_STATERROR
+			if $htm =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
 	
-	warn "\n[ERROR] Goodreads.com is down for maintenance.\n"
-		and return 2
-			if $html =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;
+	warn( "\n[ERROR] Goodreads.com is down for maintenance.\n" )
+		and return $_STATERROR
+			if $htm =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;
 	
 	
-	return 0;
+	return $_STATOKAY;
 }
 
 
@@ -1379,57 +1702,54 @@ sub _check_page
 sub _html
 {
 	my $url = shift or return '';
-	my $result;
+	my $htm;
 	
-	$result = $_cache->get( $url ) 
+	$htm = $_cache->get( $url ) 
 		if $_cache_age ne $EXPIRES_NOW;
 	
-	return $result 
-		if defined $result;
+	return $htm 
+		if defined $htm;
 	
 DOWNLOAD:
 	state $curl;
 	my    $curl_ret;
 	my    $state;
-	my    $buf;
 	
 	$curl = WWW::Curl::Easy->new if !$curl;
 
-	$curl->setopt( $curl->CURLOPT_URL,            $url       );
-	$curl->setopt( $curl->CURLOPT_REFERER,        $url       );  # https://www.goodreads.com/...  [F5]
-	$curl->setopt( $curl->CURLOPT_USERAGENT,      $USERAGENT );
-	$curl->setopt( $curl->CURLOPT_COOKIE,         $_cookie   ) if $_cookie;
-	$curl->setopt( $curl->CURLOPT_HTTPGET,        1          );
-	$curl->setopt( $curl->CURLOPT_FOLLOWLOCATION, 1          );
-	
-	$curl->setopt( $curl->CURLOPT_HEADER,         0          );
-	$curl->setopt( $curl->CURLOPT_WRITEDATA,      \$buf      );
+	$curl->setopt( $curl->CURLOPT_URL,            $url        );
+	$curl->setopt( $curl->CURLOPT_REFERER,        $url        );  # https://www.goodreads.com/...  [F5]
+	$curl->setopt( $curl->CURLOPT_USERAGENT,      $_USERAGENT );
+	$curl->setopt( $curl->CURLOPT_COOKIE,         $_cookie    ) if $_cookie;
+	$curl->setopt( $curl->CURLOPT_HTTPGET,        1           );
+	$curl->setopt( $curl->CURLOPT_FOLLOWLOCATION, 1           );
+	$curl->setopt( $curl->CURLOPT_HEADER,         0           );
+	$curl->setopt( $curl->CURLOPT_WRITEDATA,      \$htm       );
 	
 	# Performance options:
 	# - don't hang too long, better disconnect and retry
 	# - reduce number of SSL handshakes (reuse connection)
 	# - reduce SSL overhead
-	$curl->setopt( $curl->CURLOPT_TIMEOUT,        60         );
-	$curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 60         );
-	$curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0          );  # CURL default
-	$curl->setopt( $curl->CURLOPT_FRESH_CONNECT,  0          );  # CURL default
-	$curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1          );
-	$curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120        );
-	$curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60         );
-	$curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0          );
+	$curl->setopt( $curl->CURLOPT_TIMEOUT,        60  );
+	$curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 60  );
+	$curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0   );  # CURL default
+	$curl->setopt( $curl->CURLOPT_FRESH_CONNECT,  0   );  # CURL default
+	$curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1   );
+	$curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120 );
+	$curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  );
+	$curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   );
 	
 	$curl_ret = $curl->perform;
-	$result    = $buf;
 	
-	warn sprintf( "\n[ERROR] %s %s\n", $curl->strerror( $curl_ret ), $curl->errbuf )
-		unless $curl_ret == 0;
+	warn( sprintf( "\n[ERROR] %s %s\n", $curl->strerror( $curl_ret ), $curl->errbuf ) )
+		unless $curl_ret == $_STATOKAY;
 	
-	$state = $curl_ret == 0 ? _check_page( $url, $result ) : 2;
+	$state = $curl_ret == $_STATOKAY ? _check_page( $url, $htm ) : $_STATERROR;
 	
-	$_cache->set( $url, $result, $_cache_age ) 
-		if $state == 0;
+	$_cache->set( $url, $htm, $_cache_age ) 
+		if $state == $_STATOKAY;
 	
-	if( $state > 1 )
+	if( $state == $_STATERROR )
 	{
 		say "[INFO ] Retrying in 3 minutes... Press CTRL-C to exit";
 		$curl = undef;  # disconnect
@@ -1437,7 +1757,7 @@ DOWNLOAD:
 		goto DOWNLOAD;
 	}
 	
-	return $result;
+	return $htm;
 }
 
 

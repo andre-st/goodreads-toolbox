@@ -21,14 +21,9 @@ base :
 ifndef LIBCURLDEV
 	$(error ${LIBCURLDEV_ERR})
 endif
-	perl -MCPAN -e 'install HTML::Entities, Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any'
+	perl -MCPAN -e 'install List::MoreUtils, HTML::Entities, URI::Escape, Cache::FileCache, WWW::Curl::Easy'
+	perl -MCPAN -e 'install Text::CSV, Log::Any'
 	chmod +x *.pl
-
-
-## make dev        :  Setups .git directory (symlinks ./git-hooks etc)
-.PHONY : dev
-dev :
-	ln -s ../../git-hooks/pre-commit ./.git/hooks/pre-commit
 
 
 ## make friendrated:  Installs Perl modules
@@ -46,12 +41,23 @@ likeminded : base
 similarauth : base
 
 
+## make search     :  Installs Perl modules
+.PHONY : search
+search : base
+
+
 ## make recentrated:  Installs Perl modules and creates database and log in /var
 .PHONY : recentrated
 recentrated : base recentrated.pl
 	mkdir -p "${RR_DB_DIR}"
 	touch "${RR_LOGFILE}"
 	chown --reference=recentrated.pl "${RR_DB_DIR}" "${RR_LOGFILE}"
+
+
+## make dev        :  Setups .git directory (symlinks ./git-hooks etc)
+.PHONY : dev
+dev :
+	ln -s ../../git-hooks/pre-commit ./.git/hooks/pre-commit
 
 
 ## make all        :  Installs all programs

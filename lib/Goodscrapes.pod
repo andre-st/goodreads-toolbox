@@ -4,14 +4,14 @@
 
 =head1 NAME
 
-Goodscrapes - Simple Goodreads.com scraping helpers
+Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 
 =head1 VERSION
 
 =over
 
-=item * Updated: 2018-07-23
+=item * Updated: 2018-08-12
 
 =item * Since: 2014-11-05
 
@@ -25,7 +25,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 
 =item * less limited, e.g., reading shelves and reviews of other members
 
-=item * official API is slow too; API users are even second-class citizen
+=item * official is slow too; API users are even second-class citizen
 
 =item * theoretically this library is more likely to break, 
         but Goodreads progresses very very slowly: nothing
@@ -63,6 +63,34 @@ Goodscrapes - Simple Goodreads.com scraping helpers
 =back
 
 
+head1 HOW TO USE
+
+=over
+
+=item * for real-world usage examples see Andre's Goodreads Toolbox
+
+=item * C<_> prefix means I<private> function or constant (don't use)
+
+=item * C<ra> prefix means array reference, C<rh> prefix means hash reference
+
+=item * C<on> prefix or C<fn> suffix means function variable
+
+=item * constants are uppercase, functions lowercase
+	   
+=item * Goodscrapes code in your program is usually recognizable by the
+        'g' or 'GOOD' prefix in the function or constant name
+
+=item * common internal abbreviations: 
+        pfn = progress function, bfn = book handler function, 
+        pag = page number, nam = name, au = author, bk = book, uid = user id,
+        bid = book id, aid = author id, rat = rating, tit = title, 
+        q   = query string, slf = shelf name, shv = shelves names, 
+        t0  = start time of an operation, ret = return code, 
+        tmp = temporary helper variable
+
+=back
+
+
 =head1 AUTHOR
 
 https://github.com/andre-st/
@@ -86,21 +114,27 @@ https://github.com/andre-st/
 
 =over
 
-=item * id          => C<string>
+=item * id          =E<gt> C<string>
 
-=item * title       => C<string>
+=item * title       =E<gt> C<string>
 
-=item * isbn        => C<string>
+=item * isbn        =E<gt> C<string>
 
-=item * num_ratings => C<int>
+=item * num_ratings =E<gt> C<int>    103 for example
 
-=item * user_rating => C<int>
+=item * avg_rating  =E<gt> C<float>  4.36 for example
 
-=item * url         => C<string>
+=item * stars       =E<gt> C<int>    rounded avg_rating, e.g., 4
 
-=item * img_url     => C<string>
+=item * user_rating =E<gt> C<int>    number of stars 1,2,3,4 or 5
 
-=item * author      => C<L<%user|"%user">>
+=item * url         =E<gt> C<string>
+
+=item * img_url     =E<gt> C<string>
+
+=item * year        =E<gt> C<int>    (publishing date)
+
+=item * rh_author   =E<gt> C<L<%user|"%user">> reference
 
 =back
 
@@ -109,27 +143,29 @@ https://github.com/andre-st/
 
 =over
 
-=item * id         => C<string>
+=item * id          =E<gt> C<string>
 
-=item * name       => C<string>
+=item * name        =E<gt> C<string>
 
-=item * age        => C<int> (not supported yet)
+=item * age         =E<gt> C<int>    (not supported yet)
 
-=item * is_friend  => C<bool>
+=item * is_friend   =E<gt> C<bool>
 
-=item * is_author  => C<bool>
+=item * is_author   =E<gt> C<bool>
 
-=item * is_female  => C<bool> (not supported yet)
+=item * is_female   =E<gt> C<bool>   (not supported yet)
 
-=item * is_private => C<bool> (not supported yet)
+=item * is_private  =E<gt> C<bool>   (not supported yet)
 
-=item * is_staff   => C<bool> (not supported yet), is a Goodreads.com employee
+=item * is_staff    =E<gt> C<bool>   (not supported yet), is a Goodreads.com employee
 
-=item * url        => C<string> URL to the user's profile page
+=item * url         =E<gt> C<string> URL to the user's profile page
 
-=item * works_url  => C<string> URL to the author's distinct works (is_author == 1)
+=item * works_url   =E<gt> C<string> URL to the author's distinct works (is_author == 1)
 
-=item * img_url    => C<string>
+=item * img_url     =E<gt> C<string>
+
+=item * _seen       =E<gt> C<int>    incremented if user already exists in a load-target structure
 
 =back
 
@@ -138,33 +174,33 @@ https://github.com/andre-st/
 
 =over
 
-=item * id          => C<string>
+=item * id          =E<gt> C<string>
 
-=item * user        => C<L<%user|"%user">>
+=item * rh_user     =E<gt> C<L<%user|"%user">> reference
 
-=item * book_id     => C<string>
+=item * book_id     =E<gt> C<string>
 
-=item * rating      => C<int> 
+=item * rating      =E<gt> C<int> 
                        with 0 meaning no rating, "added" or "marked it as abandoned" 
                        or something similar
 
-=item * rating_str  => C<string> 
+=item * rating_str  =E<gt> C<string> 
                        represention of rating, e.g., 3/5 as S<"[***  ]"> or S<"[TTT  ]"> 
                        if there's additional text
 
-=item * text        => C<string>
+=item * text        =E<gt> C<string>
 
-=item * date        => C<Time::Piece>
+=item * date        =E<gt> C<Time::Piece>
 
-=item * review_url  => C<string>
+=item * url         =E<gt> C<string>  full text review
 
 =back
 
-=head1 PUBLIC SUBROUTINES
+=head1 PUBLIC ROUTINES
 
 
 
-=head2 C<string> require_good_userid( I<$user_id_to_verify> )
+=head2 C<string> gverifyuser( I<$user_id_to_verify> )
 
 =over
 
@@ -173,7 +209,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> require_good_shelfname( I<$name_to_verify> )
+=head2 C<string> gverifyshelf( I<$name_to_verify> )
 
 =over
 
@@ -185,20 +221,38 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<bool> is_bad_profile( I<$user_or_author_id> )
+=head2 C<$value> _require_arg( I<$name, $value> )
+
+TODO: line of code is useless when died
+
+=head2 C<bool> gisbaduser( I<$user_or_author_id> )
 
 =over
 
-=item * returns true if blacklisted users or author who dirties and slows down any analysis
-
-=item * "NOT A BOOK" author (3.000+ books), "Anonymous" author (10.000 books),
-        non-orgs with 100.000+ books (probably bots or analytics accounts) etc
+=item * returns true if the given user or author is blacklisted 
+        and slows down any analysis
 
 =back
 
-=head2 C<void> set_good_cookie( I<$cookie_content_str> )
+=head2 C<sub> gmeter( I<$unit_str = ''> )
 
 =over
+
+=item * generates a CLI progress indicator function $f, with 
+        I<$f-E<gt>( 20 )> adding 20 to the previous value and 
+        printing the sum like "40 unit_str".
+        Given a second argument with the max value, 
+        it will print a percentage.
+        in a modern terminal, the text remains at the same 
+        position if called multiple times
+
+=back
+
+=head2 C<void> gsetcookie( I<{ content => undef, filepath => '.cookie' }> )
+
+=over
+
+=item * I<filepath> is ignored if I<content> is set
 
 =item * some Goodreads.com pages are only accessible by authenticated members
 
@@ -206,9 +260,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<void> set_good_cookie_file( I<$path_to_cookie_file = '.cookie'> )
-
-=head2 C<bool> test_good_cookie()
+=head2 C<bool> gtestcookie()
 
 =over
 
@@ -216,7 +268,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<void> set_good_cache( I<$number, $unit = 'days'> )
+=head2 C<void> gsetcache( I<$number, $unit = 'days'> )
 
 =over
 
@@ -224,70 +276,119 @@ https://github.com/andre-st/
 
 =item * scraped documents can be cached if you don't need them "fresh"
 
-=item * e.g., during development time
+=item * during development time
 
-=item * e.g., during long running sessions (cheap recovery on crash, power blackout or pauses)
+=item * during long running sessions (cheap recovery on crash, power blackout or pauses)
 
-=item * e.g., when experimenting with parameters
+=item * when experimenting with parameters
 
 =item * unit can be C<"minutes">, C<"hours">, C<"days">
 
 =back
 
-=head2 C<(L<%book|"%book">,...)> query_good_books( I<$user_id, $shelf_name> )
-
-=head2 C<int> query_good_author_books( I<$books_array_ref, $author_id> )
+=head2 C<void> greadshelf( I<{ from_user_id, ra_from_shelves, rh_into =E<gt> undef, 
+			on_book =E<gt> sub{}, on_progress =E<gt> sub{} }> )
 
 =over
 
-=item * I<$books_array_ref>: C<(L<%book|"%book">,...)>
+=item * reads a list of books present in the given shelves of the given user
 
-=item * returns the number of books of the given author
+=item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)> or anything inserted by I<map>
+
+=item * I<on_book>: receives \L<%book|"%book" argument
+
+>=head2 C<void> greadauthors( I<{ from_user_id, ra_from_shelves, rh_into, on_progress =E<gt> sub{} }> )
+
+=over
+
+=item * gets a list of authors whose books are present in the given shelves of the given user
+
+=item * If you need authors I<and> books data, then use C<greadshelf>
+        which also populates the I<author> property of every book
+
+=item * skips authors where C<gisbaduser()> is true
 
 =back
 
-=head2 C<(L<%review|"%review">,...)> query_good_reviews(I<{ 
-	book =E<gt> C<L<%book|"%book">>, since =E<gt>  undef, stalltime =E<gt> undef, 
-	on_progress =E<gt> undef, use_dict = 1 }>)
+=head2 C<void> greadauthorbk( I<{ rh_into, author_id, on_book =E<gt> sub{}, 
+			on_progress =E<gt> sub{} }> )
+
+=over
+
+=item * reads the Goodreads.com list of books written by the given author
+
+=item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)>
+
+=back
+
+=head2 C<void> greadreviews(I<{ for_book =E<gt> C<L<%book|"%book">>, since =E<gt> undef, 
+		rigor =E<gt> 2, on_review =E<gt> sub{}, on_progress =E<gt> sub{} }>)
 
 =over
 
 =item * loads ratings (no text), reviews (text), "to-read", "added" etc;
         you can filter yourself afterwards
 
+=item * I<rh_into>: C<(id =E<gt> L<%review|"%review">,...)>
+
 =item * optional I<since> argument of type C<Time::Piece>
-
-=item * optional I<use_dict>: try to find additional reviews by using the 
-        text-search function provided by Goodreads.com
-
-=item * optional I<stalltime> is the number of seconds to wait for 
-        new reviews when trying to find additional reviews, 
-        aborts if exceeded
-
-=item * if I<stalltime> is set to 0 (fastest), then the latest
-        reviews only are considered (max. 300 reviews)
-
-=item * set I<stalltime> to a very large value if you want the search take 
-        as long as it needs, which is okay for a project on a single book,
-        but would take too long for 1000 books
 
 =item * optional I<on_progress> callback function is called with an
         argument, which contains the number of currently loaded reviews
         (use %5s in format strings)
 
+=item * I<rigor> level 0: search newest reviews only (max 300 reviews)
+
+=item * I<rigor> level 1: search with a combination of filters (max 5400 reviews)
+
+=item * I<rigor> level 2: like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
+
+=item * I<rigor> level n: like 1 plus dict-search with stall-time of n minutes
+
 =back
 
-=head2 C<(id =E<gt> L<%user|"%user">,...)> query_good_followees( I<$user_id> )
+=head2 C<void> greadfolls( I<{ rh_into, from_user_id, on_progress =E<gt> sub{}, incl_authors => 1 }> )
 
 =over
 
-=item * Precondition: set_good_cookie()
+=item * queries Goodreads.com for the friends and followees list of the given user
+
+=item * I<rh_into>: C<(id =E<gt> L<%user|"%user">,...)> 
+
+=item * Precondition: gsetcookie()
 
 =item * returns friends AND followees
 
 =back
 
-=head2 C<(L<%user|"%user">,...)> query_similar_authors( I<$author_id> )
+=head2 C<void> greadsimilaraut( I<{ rh_into, author_id, on_progress =E<gt> sub{} }> )
+
+=over
+
+=item * reads the Goodreads.com list of authors who are similar to the given author
+
+=item * I<rh_into>: C<(id =E<gt> L<%user|"%user">,...)>
+
+=item * increments I<'_seen'> counter of each author if already in I<%$rh_into>
+
+=back
+
+=head2 C<void> gsearch( I<{ ra_into, phrase, is_exact =E<gt> 0, 
+			on_progress =E<gt> sub{}, num_ratings =E<gt> 0,
+			ra_order_by =E<gt> [ 'stars', 'num_ratings', 'year' ]
+			}> )
+
+=over
+
+=item * searches the Goodreads.com database for books that match a given phrase
+
+=item * I<ra_into>: C<(L<%book|"%book">,...)> 
+
+=item * I<order_by>: array with property names from C<(L<%book|"%book">,...)> 
+
+=item * supports percent progress functions: $pfn-E<gt>( $books_loaded, $books_total )
+
+=back
 
 =head2 C<string> amz_book_html( I<L<%book|"%book">> )
 
@@ -297,7 +398,7 @@ https://github.com/andre-st/
 
 =back
 
-=head1 PRIVATE SUBROUTINES
+=head1 PRIVATE URL-GENERATION ROUTINES
 
 
 
@@ -305,7 +406,7 @@ https://github.com/andre-st/
 
 =over
 
-=item * Requires at least {isbn=>string}
+=item * Requires at least {isbn=E<gt>string}
 
 =back
 
@@ -315,9 +416,14 @@ https://github.com/andre-st/
 
 =item * URL for a page with a list of books (not all books)
 
-=item * "&per_page=100" has no effect (GR actually loads 5x 20 books via JavaScript)
+=item * "&print=true" allows 200 items per page with a single request, 
+        which is a huge speed improvement over loading books from the "normal" 
+        view with max 20 books per request.
+        Showing 100 books in normal view is oddly realized by 5 AJAX requests
+        on the Goodreads.com website.
 
-=item * "&print=true" not included, any advantages?
+=item * "&per_page" in print-view can be any number if you work with your 
+        own shelf, otherwise max 200 if print view; ignored in non-print view
 
 =item * "&view=table" puts I<all> book data in code, although invisible (display=none)
 
@@ -325,6 +431,8 @@ https://github.com/andre-st/
         Some users read 9000+ books and scraping would take forever. 
         We sort lower-rated books to the end and just scrape the first pages:
         Even those with 9000+ books haven't top-rated more than 2700 books.
+
+=item * "&shelf" supports intersection "shelf1%2Cshelf2" (comma)
 
 =item * B<Warning:> changes to the URL structure will bust the file-cache
 
@@ -373,7 +481,8 @@ https://github.com/andre-st/
 
 =item * "&rating=5"
 
-=item * the maximum of retrievable pages is 10 (300 reviews)
+=item * the maximum of retrievable pages is 10 (300 reviews), see
+        https://www.goodreads.com/topic/show/18937232-why-can-t-we-see-past-page-10-of-book-s-reviews?comment=172163745#comment_172163745
 
 =item * seems less throttled, not true for text-search
 
@@ -394,53 +503,85 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<bool> _extract_books( I<$result_array_ref, $shelf_tableview_html_str> )
+=head2 C<string> _search_url( I<phrase_str, $page_number = 1> )
 
 =over
 
-=item * I<$result_array_ref>: C<(L<%book|"%book">,...)>
+=item * "&q=" URL-encoded, e.g., linux+%40+"häse (linux @ "häse)
 
 =back
 
-=head2 C<bool> _extract_author_books( I<$result_array_ref, $html_str> )
+=head1 PRIVATE HTML-EXTRACTION ROUTINES
+
+
+
+
+=head2 C<bool> _extract_books( I<$rh_books, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
 
 =over
 
-=item * I<$result_array_ref>: C<(L<%book|"%book">,...)> 
+=item * I<$rh_books>: C<(id =E<gt> L<%book|"\%book">,...)>
 
 =back
 
-=head2 C<bool> _extract_followees( I<$result_hash_ref, $following_page_html_str> )
+=head2 C<bool> _extract_author_books( I<$rh_books, $on_book_fn, $on_progress_fn, $html_str> )
 
 =over
 
-=item * I<$result_hash_ref>: C<(user_id =E<gt>  L<%user|"%user">,...)>
+=item * I<$rh_books>: C<(id =E<gt> L<%book|"\%book">,...)>
 
 =back
 
-=head2 C<bool> _extract_friends( I<$result_hash_ref, $friends_page_html_str> )
+=head2 C<bool> _extract_followees( I<$rh_users, $on_progress_fn, $incl_authors, $following_page_html_str> )
 
 =over
 
-=item * I<$result_hash_ref>: C<(user_id =E<gt> L<%user|"%user">,...)>
+=item * I<$rh_users>: C<(user_id =E<gt> L<%user|"\%user">,...)>
 
 =back
 
-=head2 C<bool> _extract_revs( I<$result_hash_ref, $on_progress_fn, $since_time_piece, $reviews_xhr_html_str> )
+=head2 C<bool> _extract_friends( I<$rh_users, $on_progress_fn, $incl_authors, $friends_page_html_str> )
 
 =over
 
-=item * I<$result_hash_ref>: C<(review_id =E<gt> L<%review|"%review">,...)> 
+=item * I<$rh_users>: C<(user_id =E<gt> L<%user|"\%user">,...)> 
 
 =back
 
-=head2 C<(L<%user|"%user">,...)> _extract_similar_authors( I<$author_id_to_skip, $similar_page_html_str> )
-
-=head2 C<int> _check_page( I<$url, $html> )
+=head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $since_time_piece, $reviews_xhr_html_str> )
 
 =over
 
-=item * returns 0 ok, 1 warn (ignore), 2 error (retry)
+=item * I<$rh_revs>: C<(review_id =E<gt> L<%review|"\%review">,...)>
+
+=back
+
+=head2 C<bool> _extract_similar_authors( I<$rh_into, $author_id_to_skip, 
+			$on_progress_fn, $similar_page_html_str> )
+
+=head2 C<bool> _extract_search_books( I<$ra_books, $on_progress_fn, $search_result_html_str>  )
+
+=over
+
+=item * result pages sometimes have different number of items: 
+        P1: 20, P2: 16, P3: 19
+
+=item * website says "about 75 results" but shows 70 (I checked that manually).
+        So we fake "100%" to the progress indicator function at the end,
+        otherwise it stops with "93%".
+
+=item * I<ra_books>: C<(L<%book|"\%book">,...)> 
+
+=head1 PRIVATE I/O PLUMBING SUBROUTINES
+
+
+
+
+=head2 C<int> _check_page( I<$url, $any_html_str> )
+
+=over
+
+=item * returns $_STATOKAY, $_STATWARN (ignore), $_STATERROR (retry)
 
 =item * warns if sign-in page (https://www.goodreads.com/user/sign_in) or in-page message
 

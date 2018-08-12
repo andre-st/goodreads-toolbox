@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-#<--------------------------------- 79 chars --------------------------------->|
+#<--------------------------------- MAN PAGE --------------------------------->|
 
 =pod
 
@@ -23,7 +23,8 @@ You find your GOODUSERNUMBER by looking at your shelf URLs.
 =item I<SHELFNAME>
 
 name of the shelf with a selecton of books to be checked, 
-default is "%23ALL%23"
+default is "#ALL#". Intersect shelves with a comma: 
+"shelf1,shelf2,shelf3"
 
 =item I<MAILTO>
 
@@ -55,11 +56,6 @@ Log written to C</var/log/good.log>
 Database stored in C</var/db/good/>
 
 
-=head1 AUTHOR
-
-Written by Andre St. <https://github.com/andre-st>
-
-
 =head1 REPORTING BUGS
 
 Report bugs to <datakadabra@gmail.com> or use Github's issue tracker
@@ -81,7 +77,7 @@ More info in recentrated.md
 
 =head1 VERSION
 
-2018-07-18 (Since 2018-01-09)
+2018-08-12 (Since 2018-01-09)
 
 =cut
 
@@ -92,67 +88,84 @@ use strict;
 use warnings;
 use 5.18.0;
 
+# Perl core:
 use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Log::Any '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
 use Text::CSV qw( csv );
 use Time::Piece;
 use Pod::Usage;
+# Third part:
+# Ours:
 use Goodscrapes;
 
 
+
+# ----------------------------------------------------------------------------
 # Program configuration:
+# 
 pod2usage( -verbose => 2 ) if $#ARGV < 0;
-our $GOODUSER  = require_good_userid   ( $ARGV[0] );
-our $GOODSHELF = require_good_shelfname( $ARGV[1] );
-our $MAILTO    = $ARGV[2];
-our $MAILFROM  = $ARGV[3];
-our $CSVPATH   = "/var/db/good/${GOODUSER}-${GOODSHELF}.csv";
+our $USERID   = gverifyuser ( $ARGV[0] );
+our $SHELF    = gverifyshelf( $ARGV[1] );
+our $MAILTO   = $ARGV[2];
+our $MAILFROM = $ARGV[3];
+our $CSVPATH  = "/var/db/good/${USERID}-${SHELF}.csv";
 
 # The more URLs, the longer and untempting the mail.
 # If number exceeded, we link to the book page with *all* reviews.
 our $MAX_REVURLS_PER_BOOK = 2;
 
 # GR-URLs in mail padded to average length, with "https://" stripped
-sub pretty_url { return sprintf '%-36s', substr( shift, 8 ); }
+sub prettyurl{ return sprintf '%-36s', substr( shift, 8 ); }
 
 # effect in dev/debugging only
-# set_good_cache( 4, 'hours' );
+# gsetcache( 4, 'hours' );
 
 
 
+# ----------------------------------------------------------------------------
 my $csv      = ( -e $CSVPATH  ?  csv( in => $CSVPATH, key => 'id' )  :  undef );  # ref
-my @books    = query_good_books( $GOODUSER, $GOODSHELF );
 my $num_hits = 0;
+my %books;
+
+greadshelf( from_user_id    => $USERID,
+            ra_from_shelves => [ $SHELF ],
+            rh_into         => \%books );
 
 if( $csv )
 {
-	my $mtime = (stat $CSVPATH)[9];
-	my $since = Time::Piece->strptime( $mtime, '%s' );
+	my $mtime            = (stat $CSVPATH)[9];
+	my $last_csv_updtime = Time::Piece->strptime( $mtime, '%s' );
 	
-	foreach my $b (@books)
+	for my $b (values %books)
 	{
-		next if !exists $csv->{$b->{id}};
+		next unless exists $csv->{$b->{id}};
 		
 		my $num_new_rat = $b->{num_ratings} - $csv->{$b->{id}}->{num_ratings};
 		
 		next if $num_new_rat <= 0;
-	
-		my @revs = query_good_reviews( book => $b, since => $since );
 		
-		next if !@revs;  # Number of ratings increased but no new reviews, what's that?
+		my %revs;
+		greadreviews( for_book => $b, 
+		              since    => $last_csv_updtime,
+		              rh_into  => \%revs,
+		              rigor    => 0 );
+		
+		next unless %revs;
+		
+		my $revcount = scalar keys %revs;
 		
 		$num_hits++;
 		
 		# E-Mail header and first body line:
 		if( $MAILTO && $num_hits == 1 )
 		{
-			print "To: ${MAILTO}\n";
-			print "From: ${MAILFROM}\n"                       if $MAILFROM;
-			print "List-Unsubscribe: <mailto:${MAILFROM}>\n"  if $MAILFROM;
-			print "Content-Type: text/plain; charset=utf-8\n";
-			print "Subject: New ratings on Goodreads.com\n\n";  # 2x \n hdr end
-			print "Recently rated books in your \"${GOODSHELF}\" shelf:\n";
+			print( "To: ${MAILTO}\n"                           );
+			print( "From: ${MAILFROM}\n"                       ) if $MAILFROM;
+			print( "List-Unsubscribe: <mailto:${MAILFROM}>\n"  ) if $MAILFROM;
+			print( "Content-Type: text/plain; charset=utf-8\n" );
+			print( "Subject: New ratings on Goodreads.com\n\n" );  # 2x \n hdr end
+			print( "Recently rated books in your \"${SHELF}\" shelf:\n" );
 		}
 		
 		
@@ -170,38 +183,37 @@ if( $csv )
 		#   www.goodreads.com/review/show/1234567  [TTT  ]
 		#   www.goodreads.com/user/show/2345       [*****]
 		#
-		printf "\n  \"%s\"\n", $b->{title};
+		printf( "\n  \"%s\"\n", $b->{title} );
 		
-		if( scalar @revs > $MAX_REVURLS_PER_BOOK )
+		if( $revcount > $MAX_REVURLS_PER_BOOK )
 		{
-			printf "   %s  [%d new]\n", pretty_url( $b->{url} ), scalar @revs;
+			printf( "   %s  [%d new]\n", prettyurl( $b->{url} ), $revcount );
 		}
 		else
 		{
-			printf( "   %s  %s\n", 
-					pretty_url( $_->{text} ? $_->{review_url} : $_->{user}->{url} ), 
-					$_->{rating_str} ) 
-				foreach (@revs);
+			printf( "   %s  %s\n", prettyurl( $_->{text} ? $_->{url} : $_->{rh_user}->{url} ), $_->{rating_str} )
+				foreach (values %revs);
 		}
 	}
 	
 	# E-mail signature block if run for other users:
 	if( $MAILFROM && $num_hits > 0 )
 	{
-		print "\n\n-- \n"  # RFC 3676 sig delimiter (w/ space char)
+		print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
 		    . " [***  ] 3/5 stars rating without text      \n"
 		    . " [TTT  ] 3/5 stars rating with add. text    \n"
 		    . " [9 new] ratings better viewed on book page \n"
 		    . "                                            \n"
 		    . " Just reply 'unsubscribe' to unsubscribe.   \n" 
-		    . " Add new books to your shelf at any time.   \n"
+		    . " Automatically checks newly added books.    \n"
 		    . " Via https://andre-st.github.io/goodreads/  \n";
 	}
 	
 	# Cronjob audits:
 	$_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s"', 
-			$num_hits, scalar @books, $GOODUSER, $GOODSHELF );
+			$num_hits, scalar keys %books, $USERID, $SHELF );
 }
 
-csv( in => \@books, out => $CSVPATH, headers => [qw( id num_ratings )] );
+my @lines = values %books;
+csv( in => \@lines, out => $CSVPATH, headers => [qw( id num_ratings )] );
 

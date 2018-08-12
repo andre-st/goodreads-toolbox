@@ -1,19 +1,20 @@
 #!/usr/bin/env perl
 
-#<--------------------------------- 79 chars --------------------------------->|
+#<--------------------------------- MAN PAGE --------------------------------->|
 
 =pod
 
 =head1 NAME
 
-friendrated - books common among the people I follow
+friendrated - books common among the members I follow
 
 
 =head1 SYNOPSIS
 
-B<friendrated.pl> [I<OPTION>]... I<GOODUSERNUMBER>
+B<friendrated.pl> [B<-f> F<number>] [B<-r> F<number>] [B<-c> F<numdays>] 
+[B<-o> F<filename>] F<goodusernumber>
 
-You find your GOODUSERNUMBER by looking at your shelf URLs.
+You find your F<goodusernumber> by looking at your shelf URLs.
 
 
 =head1 OPTIONS
@@ -22,47 +23,55 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =over 4
 
-=item B<-f, --minfavorers>=I<NUMBER>
+=item B<-f, --favorers>=F<number>
 
 only add books to the result which were rated by at least n friends 
 or followees, default is 3
 
-=item B<-r, --minrating>=I<NUMBER>
+
+=item B<-r, --rated>=F<number>
 
 number between 1 and 5: only consider books rated at least n stars,
 default is 4
 
-=item B<-c, --cache>=I<NUMDAYS>
 
-number of days until the local file cache in C</tmp/FileCache/> 
-is busted, default is 31 days
+=item B<-c, --cache>=F<numdays>
 
-=item B<-o, --outfile>=I<FILE>
+number of days to store and reuse downloaded data in F</tmp/FileCache/>,
+default is 31 days. This helps with cheap recovery on a crash, power blackout 
+or pause, and when experimenting with parameters. Loading data from Goodreads
+is a very time consuming process.
+
+
+=item B<-o, --outfile>=F<filename>
 
 name of the HTML file where we write results to, default is
-"friendrated-$USER.html"
+"./likeminded-F<goodusernumber>-F<shelfname>.html"
+
 
 =item B<-?, --help>
 
-show full man page 
+show full man page
 
 =back
+
+
+=head1 FILES
+
+F</tmp/FileCache/>
+
+F<./.cookie>
 
 
 =head1 EXAMPLES
 
 $ ./friendrated.pl 55554444
 
-$ ./friendrated.pl --minrating=4 --minfavorers=5 55554444
+$ ./friendrated.pl --rated=4 --favorers=5  55554444
 
-$ ./friendrated.pl --outfile=./sub/myfile.html 55554444
+$ ./friendrated.pl --outfile=./sub/myfile.html  55554444
 
-$ ./friendrated.pl -c 31 -r 4 -f 3 -o myfile.html 55554444
-
-
-=head1 AUTHOR
-
-Written by Andre St. <https://github.com/andre-st>
+$ ./friendrated.pl -c 31 -r 4 -f 3 -o myfile.html  55554444
 
 
 =head1 REPORTING BUGS
@@ -86,7 +95,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2018-07-21 (Since 2018-05-10)
+2018-08-12 (Since 2018-05-10)
 
 =cut
 
@@ -97,6 +106,7 @@ use strict;
 use warnings;
 use 5.18.0;
 
+# Perl core:
 use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
@@ -104,85 +114,93 @@ use POSIX       qw( strftime );
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
+# Third party:
+# Ours:
 use Goodscrapes;
 
 
+
+# ----------------------------------------------------------------------------
 # Program configuration:
+# 
 our $TSTART      = time();
 our $MINFAVORERS = 3;
-our $MINRATING   = 4;
+our $MINRATED    = 4;
 our $FRIENDSHELF = 'read';
 our $CACHEDAYS   = 31;
 our $OUTPATH;
-GetOptions( 'minfavorers|f=i' => \$MINFAVORERS,
-            'minrating|r=i'   => \$MINRATING,
-            # Options consistently used across GR toolbox:
-            'outfile|o=s'     => \$OUTPATH,
-            'cache|c=i'       => \$CACHEDAYS,
-            'help|?'          => sub { pod2usage( -verbose => 2 ); }
-		) or pod2usage 1;
+our $USERID;
 
-pod2usage 1 unless scalar @ARGV == 1;  # 1 bc of obsolete "./fr.pl USERNUMBER SHELF"
+GetOptions( 'favorers|f=i' => \$MINFAVORERS,
+            'rated|r=i'    => \$MINRATED,
+            'help|?'       => sub{ pod2usage( -verbose => 2 ) },
+            'outfile|o=s'  => \$OUTPATH,
+            'cache|c=i'    => \$CACHEDAYS )
+             or pod2usage( 1 );
 
-our $GOODUSER = require_good_userid $ARGV[0];
-    $OUTPATH  = "friendrated-${GOODUSER}.html" if !$OUTPATH;
+$USERID  = $ARGV[0] or pod2usage( 1 );
+$OUTPATH = "friendrated-${USERID}.html" if !$OUTPATH;
 
-# Followed and friend list is private, some 'Read' shelves are private
-set_good_cookie_file();  
-set_good_cache( $CACHEDAYS );
+gsetcookie();  # Followed list, friend list and some shelves are private
+gsetcache( $CACHEDAYS );
 STDOUT->autoflush( 1 );
 
 
 
 #-----------------------------------------------------------------------------
-# Collect user data:
-#
-print "Getting list of users known to #${GOODUSER}... ";
-
-my $t0         = time();
-my %people     = query_good_followees( $GOODUSER );
-my @people_ids = keys %people;
-my $pplcount   = scalar @people_ids;
-my $ppldone    = 0;
-
-printf "%d users (%.2fs)\n", $pplcount, time()-$t0;
-
-die "Invalid user number or cookie? Try empty /tmp/FileCache/" if $pplcount == 0;
+my %members;
+my %books;      # bookid => %book
+my %faved_for;  # {bookid}{favorerid}, favorers hash-type because of uniqueness;
 
 
 
 #-----------------------------------------------------------------------------
-# Collect book data:
-# 
-my %books;      # {bookid} => %book
-my %faved_for;  # {bookid}{favorerid}
-                # favorers hash-type because of uniqueness;
+# Collect friends and followees data. Include normal users only (no authors):
+#
+print( "Getting list of members known to #${USERID}..." );
 
-foreach my $pid (@people_ids)
+my $t0 = time();
+greadfolls( from_user_id => $USERID,
+            rh_into      => \%members, 
+            incl_authors => 0,
+            on_progress  => gmeter( 'members' ));
+
+printf( " (%.2fs)\n", time()-$t0 );
+
+
+
+#-----------------------------------------------------------------------------
+# Load each members 'read'-bookshelf into the global books list %books, and
+# vote on a book (%faved_for) if the member rated the book better than x:
+# 
+my $memdone  = 0;
+my $memcount = scalar keys %members;
+
+die( $GOOD_ERRMSG_NOMEMBERS ) unless $memcount;
+
+for my $mid (keys %members)
 {
-	$ppldone++;
-	my $p = $people{$pid};
+	printf( "[%3d%%] %-25s #%-10s\t", ++$memdone/$memcount*100, $members{$mid}->{name}, $mid );
 	
-	next if $p->{is_author};  # Just normal members
+	my $t0       = time();
+	my $favcount = 0;
 	
-	printf "[%3d%%] %-25s #%-10s\t", $ppldone/$pplcount*100, $p->{name}, $pid;
+	my $trackfavsfn = sub{
+		return if $_[0]->{user_rating} < $MINRATED;
+		$favcount++;
+		$faved_for{ $_[0]->{id} }{ $mid } = 1;
+	};
 	
-	my $t0   = time();
-	my @bok  = query_good_books( $pid, $FRIENDSHELF );
-	my $nfav = 0;
-		
-	foreach my $b (@bok)
-	{
-		next if $b->{user_rating} < $MINRATING;
-		$nfav++;
-		$faved_for{ $b->{id} }{ $pid } = 1;
-		$books{ $b->{id} } = $b;
-	}
+	greadshelf( from_user_id    => $mid,
+	            ra_from_shelves => [ $FRIENDSHELF ],
+	            rh_into         => \%books,
+	            on_book         => $trackfavsfn,
+	            on_progress     => gmeter( $FRIENDSHELF ));
 	
-	printf "%4d %s\t%4d favs\t%6.2fs\n", scalar( @bok ), $FRIENDSHELF, $nfav, time()-$t0;
+	printf( "\t%4d favs\t%6.2fs\n", $favcount, time()-$t0 );
 }
 
-say "\nPerfect! Got favourites of ${ppldone} users.";
+say "\nPerfect! Got favourites of ${memdone} users.";
 
 
 
@@ -204,9 +222,9 @@ print $fh qq{
 		<table border="1" width="100%" cellpadding="6">
 		<caption>
 		  Books rated 
-		  $MINRATING or better, by
+		  $MINRATED or better, by
 		  $MINFAVORERS+ friends or followees of member
-		  $GOODUSER, on $now
+		  $USERID, on $now
 		</caption>
 		<tr>
 		<th>#</th> 
@@ -218,8 +236,8 @@ print $fh qq{
 		};
 
 my $num_finds = 0;
-foreach my $bid (sort { scalar keys $faved_for{$b} <=> 
-                        scalar keys $faved_for{$a} } keys %faved_for)
+for my $bid (sort { scalar keys $faved_for{$b} <=> 
+                    scalar keys $faved_for{$a} } keys %faved_for)
 {
 	my @favorer_ids  = keys $faved_for{$bid};
 	my $num_favorers = scalar @favorer_ids;
@@ -238,9 +256,9 @@ foreach my $bid (sort { scalar keys $faved_for{$b} <=>
 			};
 	
 	print $fh qq{
-			<a  href="$people{$_}->{url}" target="_blank">
-			<img src="$people{$_}->{img_url}" 
-			   title="$people{$_}->{name}">
+			<a  href="$members{$_}->{url}" target="_blank">
+			<img src="$members{$_}->{img_url}" 
+			   title="$members{$_}->{name}">
 			</a>
 			} foreach (@favorer_ids);
 	
