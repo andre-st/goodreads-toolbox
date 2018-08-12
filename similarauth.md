@@ -74,5 +74,5 @@ Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](A
 - [friendrated.pl](friendrated.md) - Books common among the people you follow
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [likeminded.pl](likeminded.md)   - Finding people based on the books they've read 
-- [search.pl](search.pl)           - Sort book-search results by popularity or year
+- [search.pl](search.md)           - Sort books-search result by popularity or date published
 
