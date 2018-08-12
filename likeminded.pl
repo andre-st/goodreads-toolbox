@@ -34,8 +34,7 @@ similarity. Cut away the huge bulge, and check the rest manually
 
 =item B<-x, --rigor>=F<numlevel>
 
-  0 = search latest reviews only (max 300 reviews) -- fastest
-  1 = 0 + filter-search (max 5400 reviews)
+  1 = filters-based reviews search (max 5400 reviews)
   n = 1 + dict-search with stall-time of n minutes -- slow experimental;
 
 Dict-search might perform poorly on some books. So if there are no results
