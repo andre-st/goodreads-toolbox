@@ -631,14 +631,17 @@ sub greadshelf
 	my $rh     = $args{ rh_into     } || undef;
 	my $bfn    = $args{ on_book     } || sub{};
 	my $pfn    = $args{ on_progress } || sub{};
+	my %books; # Using pre-populated $rh would confuse progess counters
 	
 	gverifyshelf( $_ ) foreach (@$ra_shv);
 	
 	for my $s (@$ra_shv)
 	{
 		my $pag = 1;
-		while( _extract_books( $rh, $bfn, $pfn, _html( _shelf_url( $uid, $s, $pag++ ) ) ) ) {}
+		while( _extract_books( \%books, $bfn, $pfn, _html( _shelf_url( $uid, $s, $pag++ ) ) ) ) {}
 	}
+	
+	%$rh = ( %$rh, %books ) if $rh;  # Merge
 }
 
 
@@ -666,18 +669,21 @@ sub greadauthors
 	my (%args) = @_;
 	my $rh     = $args{ rh_into     } ||   \{};
 	my $pfn    = $args{ on_progress } || sub{};
+	my %auts;  # Using pre-populated $rh would confuse progress counters
 	
-	my $autfn = sub
+	my $pickauthorsfn = sub
 	{
 		my $aid = $_[0]->{rh_author}->{id};
 		return if gisbaduser( $aid );
-		$pfn->( 1 ) if !exists $rh->{$aid};  # Don't count duplicates (multiple shelves)
-		$rh->{$aid} = $_[0]->{rh_author};
+		$pfn->( 1 ) if !exists $auts{$aid};  # Don't count duplicates (multiple shelves)
+		$auts{$aid} = $_[0]->{rh_author};
 	};
 	
 	greadshelf( from_user_id    => $args{ from_user_id    },
 	            ra_from_shelves => $args{ ra_from_shelves },
-			  on_book         => $autfn );
+			  on_book         => $pickauthorsfn );
+	
+	%$rh = ( %$rh, %auts ) if $rh;  # Merge
 }
 
 
@@ -1323,7 +1329,7 @@ sub _extract_author_books
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ rh_author   } = \%au;
 		
-		$ret++ unless exists $rh->{$bk{id}};  # Don't count duplicates
+		$ret++; # Count duplicates too: 10 books of author A, 9 of B; called for single author
 		$rh->{$bk{id}} = \%bk;
 		$bfn->( \%bk );
 	}
@@ -1370,7 +1376,7 @@ sub _extract_followees
 		$us{ _seen     } = 1;
 			
 		next if !$iau && $us{is_author};
-		$ret++ unless exists $rh->{$us{id}};  # Don't count duplicates
+		$ret++;
 		$rh->{$us{id}} = \%us;
 	}
 	
@@ -1416,7 +1422,7 @@ sub _extract_friends
 		$us{ _seen     } = 1;
 		
 		next if !$iau && $us{ is_author };
-		$ret++ unless exists $rh->{$us{id}};  # Don't count duplicates
+		$ret++;
 		$rh->{$us{id}} = \%us;
 	}
 	
