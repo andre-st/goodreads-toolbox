@@ -39,7 +39,7 @@ similarity. Cut away the huge bulge, and check the rest manually
   n = 1 + dict-search with stall-time of n minutes -- slow experimental;
 
 Dict-search might perform poorly on some books. So if there are no results
-within a given time (stall-time) we abort this search. Default is 2
+within a given time (stall-time) we abort this search. Default is 1
 
 
 =item B<-r, --maxratings>=F<number>
@@ -158,7 +158,7 @@ use Goodscrapes;
 # 
 our $TSTART    = time();
 our $MINSIMIL  = 5;
-our $rigor = 2;
+our $RIGOR     = 1;
 our $CACHEDAYS = 31;
 our $USECOOKIE = 0;
 our @SHELVES;
@@ -166,7 +166,7 @@ our $OUTPATH;
 our $USERID;
 
 GetOptions( 'similar|m=i' => \$MINSIMIL,
-            'rigor|x=i'   => \$rigor,
+            'rigor|x=i'   => \$RIGOR,
             'help|?'      => sub{ pod2usage( -verbose => 2 ) },
             'outfile|o=s' => \$OUTPATH,
             'cache|c=i'   => \$CACHEDAYS,
@@ -249,7 +249,7 @@ for my $b (values %books)
 	
 	greadreviews( for_book    => $b, 
 	              rh_into     => \%revs,
-	              rigor       => $rigor,
+	              rigor       => $RIGOR,
 	              on_progress => gmeter( 'memb' ));
 	
 	$authors_read_by{ $_->{rh_user}->{id} }{ $b->{rh_author}->{id} } = 1 
