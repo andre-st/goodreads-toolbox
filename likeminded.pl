@@ -32,24 +32,6 @@ There's a huge bulge of members with low similarity and just a few with higher
 similarity. Cut away the huge bulge, and check the rest manually
 
 
-=item B<-x, --rigor>=F<numlevel>
-
-  1 = filters-based reviews search (max 5400 reviews)
-  n = 1 + dict-search with stall-time of n minutes -- slow experimental;
-
-Dict-search might perform poorly on some books. So if there are no results
-within a given time (stall-time) we abort this search. Default is 1
-
-
-=item B<-r, --maxratings>=F<number>
-
-NOT YET SUPPORTED: drop books with more than n ratings. Books read by almost
-everyone don't really help our statistics and waste a lot of computer time.
-Too, if there are ten of thousand reviews we might not get members who are
-present in any other book reviewers list - the sample is too arbitrary.
-Default is 1000000.
-
-
 =item B<-c, --cache>=F<numdays>
 
 number of days to store and reuse downloaded data in F</tmp/FileCache/>,
@@ -97,9 +79,9 @@ F<./.cookie>
 
 $ ./likeminded.pl 55554444
 
-$ ./likeminded.pl --shelf=science --shelf=music --rigor=5  55554444
+$ ./likeminded.pl --shelf=science --shelf=music  55554444
 
-$ ./likeminded.pl --shelf=animals,fiction --rigor=5  55554444
+$ ./likeminded.pl --shelf=animals,fiction  55554444
 
 $ ./likeminded.pl --outfile=./sub/myfile.html  55554444
 
@@ -157,7 +139,6 @@ use Goodscrapes;
 # 
 our $TSTART    = time();
 our $MINSIMIL  = 5;
-our $RIGOR     = 1;
 our $CACHEDAYS = 31;
 our $USECOOKIE = 0;
 our @SHELVES;
@@ -165,7 +146,6 @@ our $OUTPATH;
 our $USERID;
 
 GetOptions( 'similar|m=i' => \$MINSIMIL,
-            'rigor|x=i'   => \$RIGOR,
             'help|?'      => sub{ pod2usage( -verbose => 2 ) },
             'outfile|o=s' => \$OUTPATH,
             'cache|c=i'   => \$CACHEDAYS,
@@ -248,7 +228,7 @@ for my $b (values %books)
 	
 	greadreviews( for_book    => $b, 
 	              rh_into     => \%revs,
-	              rigor       => $RIGOR,
+	              rigor       => 1,
 	              on_progress => gmeter( 'memb' ));
 	
 	$authors_read_by{ $_->{rh_user}->{id} }{ $b->{rh_author}->{id} } = 1 

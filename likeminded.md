@@ -78,14 +78,15 @@ Goodreads.com is very time consuming.  The script internally uses a
 ## Observations and limitations
 
 **Latest version:**
-- reduce the program's runtime by using a special purpose shelf (--shelf parameter),
-  otherwise loading data could take a month with too many books:
-  Start with 100 "best of" books, which are already somehow representative of
-  its readers
+- reduce the program's runtime by using a special purpose shelf (--shelf parameter):
+  Start with 100 "best-of" books, which are already somehow representative of
+  its readers; alternatively specify multiple shelves in a single run.
+  Avoid using your #ALL# or "read" shelf because loading data could take a 
+  month with too many books.
 - slow but good enough since you run it 4x a year
 - make sure you have some _Gigabytes_ of free diskspace for /tmp/
 - there's no way to load _all_ reviews of a book, but the program tries different 
-  things to get as much reviews as possible (tweaks see --help parameter).
+  things to get as much reviews as possible.
   This means there is a number of readers not considered in our statistics,
   and we cannot randomize in a way which would produce samples of similar size.
   Although, we don't get _all_ members (for books with ten of thousand
