@@ -44,6 +44,7 @@ feature requested in the Goodreads forums.
 
 Prints a books search result, ordered by average rating and number of ratings 
 (most popular books), or date published, optionally with exact title matches. 
+The Goodreads website doesn't offer it for some reason.
 It's a naive implementation of the "Sort search results by rating"
 feature requested in the Goodreads forums.
 [Learn more](search.md)
