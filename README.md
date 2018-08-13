@@ -49,6 +49,14 @@ feature requested in the Goodreads forums.
 [Learn more](search.md)
 
 
+## [savereviews.pl](savereviews.md)
+
+Downloads as many text-reviews for a book as possible. It's an implementation
+of the "Extract all reviews for a specific book" feature requested in the 
+Goodreads forums.
+[Learn more](search.md)
+
+
 ## ~~[amz-tradein.pl](amz-tradein.md)~~
 
 This script fetched Amazon Trade-In prices for all books in a Goodreads.com
