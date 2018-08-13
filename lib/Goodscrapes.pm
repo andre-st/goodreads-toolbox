@@ -175,70 +175,119 @@ our @_BADPROFILES  =
 # Reviews search dictionaries:
 our @_REVSRCHDICT = qw(
 	3 4 5
-	ing ion tio ati ent ter the ate con men ess tra ine and nce res pro per cti ect for tic sth rat sta ste ica ive ver est tin str tor one ist all int com rea
-	ant ite age lin ble ran rin cal der nte anc ity ure oun eri ain ers ear nal iti her act ted era tur sti ons ort art lan lat man ell igh tri nes ial ous gra
-	ast nti enc ack ice ide par cha lit ric min ass ill cat red pla und ree ard eat pre dis out ove ont ght our din ian tal mat eme ang sio tiv tat che ina nta
-	hea ona sto ome abl ali ral ake nde lea ead ssi tan nge low eas rac ntr mon ind tte rit car ore den lar rou tro hin ili ten pri wor ria are end rec ner ren
-	nin har olo ary ele lle ish chi ave tre han ari unt ith kin sin ula ere ail ope lic wit ser ost les ins spe fic omp ies nat ase orm ern ace lac ood cre ene
-	sur ust gen ple col tai pin sit ces ini ens ock mar por ans ori ato ris hor rop cou eve rti nit use tle tar uct oli air ndi mer pos cle ber erm ese ron ani
-	sis tem log cor ise ord ler rai ath gre rma ime ire rom ile oll ert met bil off tch edi ara win lli oni ach led can las att old sho own llo pen cia omm arr
-	ade ose duc thr eco cen ros ory inc shi nic ana cul ale war ora son sel osi ult acc mor ame dia roc rad eed rie lec ita esi tru app fer rap row ven ger ark
-	ici ond eli ret cke ton rch oth mal spo ick ete ong tes owe lly lis tim nst pec fin cro bra erv cto nsi rel ote rot wer ura rol sse adi ien qua hol sea let
-	eal oss que fac val eti ole gin tho vel ane nis ign ual sha ork cur qui uni bla uri gro dit tom ker thi mou pol rge bre lla aci oma iss mic she ram uti tit
-	len yst sen rem fro cho tis lig iat oin ifi hit oot pan isi nch equ eta ape dge nts ket pat hro ffi rre sal hou nne mis eni ery rde ban roo err mpl whi cla
-	ami ean ode ffe pho pti ded rus des ier spi bac ogr ras sec cer mil bro eci sca bar ima tab amp net loc flo cap ala tec arc wat arg atu unc ctu tia ism exp
-	nci emi ivi vic pea bri ppe ush eet mit los dic usi lon lue bea orn clo hav rse cie scr ero cas omi mpe sid nda rth rro sig cra imp abi lia emo ann ett rog
-	ech oti nse emp med ute rep rio fil loo arm dat rig ook ngl eel lay tie fla ize pli itt oce ash mot dro dow inf eak aph ool bal ank rce oph sor sol fis elf
-	mag nto rid ono asi roa sed fir ttl ema rod ruc pha een erc hic urn hes pot cri ses ild ott uit ull mbe nar spa pac eck ict tel ept get hal reg ugh put ela
-	mos not dea sys bli del mea eng rag oto rim ncy hip ned lem sup oad mpa set cin sub onc lie rip riv sco woo cit ext ume hil avi bel ata tee alt gle uth non
-	ium abo lif eth phi ful try eep evi isc cel eac lor bor bus fre nan sch bas lou etr dra ors dec odu eld iza bat mme nia vin dri bit way aut iou ves ped dle
-	rri til top hel vis arb nsu ppl cut oil nve stu itu erg ref sou blo hee ink rke pon lum hon ece ump atc cep lim mod bou his pit sat umb ngu tea hoo rte mas
-	cop but phy ssu pic ife rna ubl bon ngs sic ike ola olu oat boo ngi poi ctr iso gat tak utt rvi ogi ily lde wee ray nom lam dar gar rni rdi eam fie mak mul
-	erf ogy add eig nds bin dep tag imi tac oci san pul pai rve urs tme hai irc uck oug rmi ics ama orc cco mac fra cus fun ars fec ecu lti gic sla def ked wel
-	ced ena sil vol tif lab hed ito nor oca mus aff vat day hig ndu goo cid mpo sia pet cli leg mai mmo elo upp edu soc hem hre ndo urr pal hot lev cce dre ipe
-	ney sma lot ino ota ski pas ule bir pur lve alu zat mes tti nec fly jec iel arl liv dev liz ird egi gan cos ein rib wal iva eye bur rob foo eer isa vio lut
-	adv rne orr fri eav nag loa edg cte epa blu hat pow wea oor vit uar sso als bul amm ano emb dan dem gua uro ega onf plo eno ldi fee nni yel urc lid rab sul
-	ied ges gla omb rry oup lop aft ida mun dio cis nth sum iff law sna rum run eff siv idi rta oom too die iol rcu rev lus esc cip nco mmi efe yme opp tua alo
-	nct uat rov ysi num ede syn tud uil hen sci icu coa rso inv ndr phe oke yin aga van obi ham rra itc asu rav any opi uff apa nee rsi ype pay fle squ chn nos
-	gal raw uen heo ely oly rst sem amo hop ich lad urt flu nel bee exc ues toc tha lip oge onn hos odi amb ior gas tto boa dom ovi ged cir aus gol spr ibl ung
-	omo efi now udi xpe aro has ppo eor agr gue nam sce cil mmu arn oid ssa gui aly onv fou pie pra rty ift rme isp org rew dus nfo vid ibi inn raf owl mel mov
-	eaf ois gri uto nsp isk rga gem atr oar ico key fit iga rof orp nme rds ipp osp alk hri pir whe awa ody div nio lai two nea urg esp fal gna rei sli nut vil
-	dam swi rmo sts nou dou kno lag dir api gul ila opo agi ige hom igi ipl erp coo ety gai ril pee yer fai mol ecr nol cum don epo pil gis icl dif hyp agn epi
-	iqu mem epe var req sle gon egr doc cab mma ava opt oro lte neu erb shr avo lau beh obl opl new tum ask glo lov ude aki fam ago ror spl mpt irs scu aso ndl
-	yea som cru giv eha wil tta clu fli tig lys riz ben cov inu bio nif chr ocu cam ibr oub pme ycl tou iri iet gne ncr cki imm nig rts uir its ckl gio hum lik
-	lee geo iro oon rif bot hyd fen det typ och cyc ado erl ppr see ais pub rer ppi eur ibu nim eph eso pap rgi uce kee was uch uid fol vir iod irt omy mid hur
-	dul tax aul bui ait oxi irr bed icr sty upe nai ved ods ilt cot arp vie bod ydr axi tol thy tow alc uss oco lio tas tub opa zin nak deb rly dde osc bol ube
-	gam rci iab dal kle swe anu lta sib hie ira alm ubs far bab ddi pop fig aye orl rey aug mpi hod bet plu abb cks ada rbo sph mpr het cem hap ibe gia rui nfl
-	aca chu nen uis rli smo ltu nso wri box abs rar rva stl une nke eek rsh mpu tly aid epr ilk mbi enn ngt acr lex niz pel exa idg nsa iag nfe uma eop fus tip
-	nfi elt alv smi rbi ken lls oul tut oof eva bst una cta unn nna zon lyc ply apo tun bia eca rpo gly ets loy afe ebr stm exi aco mbl ipa tap esh occ asp uns
-	urp ofi rld tog imu ege fes rki cup pig dog pid xtr fur ilo sag dee igu egu olt coc efo dur ccu eon gge iar lse uca bje cei sac uta fte rfa rub oop uli ees
-	ddl bbl itr rak uan nga oos dmi gli uag hir ony rba umm sus tam vem hru nem rtu aym llu dru fat asc gea teg wom gth ilm tus umi aba ntu rul adm aud oic cts
-	git bly ief wed pou ske hni ntl eto mia nas rms saf sun xte dor voi dly ipt rgy fea gni icy uin cod noc dig cau obs oba urv doo cio nki ynd hun jus zed usc
-	agg alf hts lob urf hys poo nvi fru hte rpe eem nsf cif fet exe tos ova pip bru diu hec hab sue els suc mbo rfo sam joi oft zar moo lun apt dne fav hno gur
-	lap udg ymp zer ady osa via tyl pto wan etl hag oac dve lth acu abe efu iew opy pte rbl wis fas ubb dol ley mbr noi neg bag sly gel how bic wne wre yca yle
-	bbe psy tne lib imb oal obe slo umo fan fib rik swa wav ays odo uls arf sno urb you eou lep nab ids kni vor mba iec ouc enu vou efl edl ops tot sof nap vac
-	ych idd ehi sne ury tid oct rle rsa pta rup adj etw rwa dua kil irl sym bad rug dwa vet ecl eec opm tex cui chl egg tei luc sex ypo usa wir hid igr nua wle
-	ats eol asa eap ebe gir wes irm nuc wei bes lom pis cry pse ngo opu rtr wag jac tep cyt aim sim hio neo reb coi oso mum dry sui cko mph nop sme eda ego twi
-	unk nac owi tir hei bow lug rpl oan oas rbe rks sop abr erd lef lub rau aps idu wid bun lav bso scl cci dva lph xpo aun evo cad lur epl ucl siz ulo roj atm
-	opr roi ifo oje nsh mur upt eum hoe usl eba etu job ixe alp sep env fix hob tiz acy dim aem leo orb owa uge niv hoc kit ocy rpr uga ias yth gag sar aur oki
-	pes esu tib tyr yli haw rtm pus nnu twe yna deg erw ngr seq hme ips nus sab oxy bse pum xed eft nsc ucc cav utu etc kne eut ewa apy pag fau ilv auc azi kes
-	uty agu sau uld onm oud reh xic dju syc upl nno xch iot big hib ald gno vas cqu ipm eho epu eag ruf sfe xam urd leu awk ebt leb liq eab acq bom gun mig mix
-	peo bec yed ify ewe uel had rph iam rtl ulp inh inj dli gor ugg asm eau ils yan eit gus niu ncl saw lmo rco nov hae iry hau rok dos map uts edo mec otr lil
-	jun sav sua uic veh hia lym orw nur ews wai bis aby obj pun spu eds ulf oes utr yto osu who awn eiv alg aze ido ots ows iev rrh ofe mut fel lco mir lpi cea
-	ddr mad mom hyl ios nie rto hly usp cka got ltr nsm cog riu aig dil poc uou ogn dut seu lty xpl iog rhe nju tli xid imo oms onk gov dvi hlo pia slu ams gme
-	aer eru ths asy iny iop bug jur rut owd ptu toi adl apl vot igg ipi nad reo dai sky thu hra rfe rfl uip umn phr pyr nip nod uer yro yte ggl lfi olv oda sif
-	xim xis hif isl nul toe vei kel udd dex nef goa yri ads ewo jud pad fid izi hoi owt abu eil ems chy onu niq sev arv oga tet yti aya dip ibb thm nca nog uci
-	unf max ebo fem hog iac sug iom lyi eis yra ldr nbi quo oya wha dov xce sai ajo ocr nqu raz upi voc ewi xer cof obb cow jor mok mog uor acl hti kag usn moc
-	udy elv nha rgo unb rox ufo bud ilu twa wth doi pio lyt oym igo loi rue bbi due fed yla ehe nuf tma itl yar erh mee rca rno yre ubi lme sie rud buc dop emu
-	taf maj hle nre gfi iph avy chm hus odd ubj bid jou pod rha ulu isu exh tul ivo coh nfa dyn ndw soi tox haf lne nty ggi unr ghe ffl tla utc mbu mob muc glu
-	ogu adr pep rnm shu dum lei nny beg boy cet edd ylo civ hut vey buy odp xin aza gob rys vag efr ols swo ums url jum rcl gum nob rda hyt dpe ipo nks uco yes
-	exu rcr stn eez sod suf coe ngf nei yal yon agl rho eev nex tod ayi uad epp utp ynt ufa efa lax oye unp tty deo dst ffo uai zen usk dwe toa eke gau nfr uet
-	luo ndy dys rru tsh vai azo kis lcu nav dag dap elm oak cca enz ius izo buf nsl nli rfi sad vul edn aty gou bum shm elp upr lwa nil adu edr nae dot ebi mst
-	nle ryo thl rgu haz oby osy eud gil olf ryi cky lsi nvo yco aqu obo foc eps upo ebu eze xil gmy him inl esa oho rla tnu ims pne tpu psi veg uba uno das dhe
-	eus hwa rlo did rns lel udo upa mud myo ogg lod nsw rix cyl urk ffa kid xpr iru nue rdo cuc dab hym utl gie uot lva rmu vip wax hep pyg rtn sap ttr fue ppa
-	pru ckn dwi ppy teo ygm tuf wde xpa aka dib ulb wra wif cac iki kan yll ghi ghl lud cak gap inp fox onl tob xec cee zzl cub kir mam nly oit rwo gec ubt laz
-	tay bsc cys nid eir lfa lua osm ncu uee bos ioc rpi ssm awe gho hbo ogo rfu rmy roe sot ssl lki oty 
-	); # N=2443, most frequent english n-grams first
+	ing ion tio ati ent ter the ate con men ess tra ine and nce res pro per cti ect for tic sth rat sta ste ica ive ver est
+	tin str tor one ist all int com rea ant ite age lin ble ran rin cal der nte anc ity ure oun eri ain ers ear nal iti her
+	act ted era tur sti ons ort art lan lat man ell igh tri nes ial ous gra ast nti enc ack ice ide par cha lit ric min ass
+	ill cat red pla und ree ard eat pre dis out ove ont ght our din ian tal mat eme ang sio tiv tat che ina nta hea ona sto
+	ome abl ali ral ake nde lea ead ssi tan nge low eas rac ntr mon ind tte rit car ore den lar rou tro hin ili ten pri wor
+	ria are end rec ner ren nin har olo ary ele lle ish chi ave tre han ari unt ith kin sin ula ere ail ope lic wit ser ost
+	les ins spe fic omp ies nat ase orm ern ace lac ood cre ene sur ust gen ple col tai pin sit ces ini ens ock mar por ans
+	ori ato ris hor rop cou eve rti nit use tle tar uct oli air ndi mer pos cle ber erm ese ron ani sis tem log cor ise ord
+	ler rai ath gre rma ime ire rom ile oll ert met bil off tch edi ara win lli oni ach led can las att old sho own llo pen
+	cia omm arr ade ose duc thr eco cen ros ory inc shi nic ana cul ale war ora son sel osi ult acc mor ame dia roc rad eed
+	rie lec ita esi tru app fer rap row ven ger ark ici ond eli ret cke ton rch oth mal spo ick ete ong tes owe lly lis tim
+	nst pec fin cro bra erv cto nsi rel ote rot wer ura rol sse adi ien qua hol sea let eal oss que fac val eti ole gin tho
+	vel ane nis ign ual sha ork cur qui uni bla uri gro dit tom ker thi mou pol rge bre lla aci oma iss mic she ram uti tit
+	len yst sen rem fro cho tis lig iat oin ifi hit oot pan isi nch equ eta ape dge nts ket pat hro ffi rre sal hou nne mis
+	eni ery rde ban roo err mpl whi cla ami ean ode ffe pho pti ded rus des ier spi bac ogr ras sec cer mil bro eci sca bar
+	ima tab amp net loc flo cap ala tec arc wat arg atu unc ctu tia ism exp nci emi ivi vic pea bri ppe ush eet mit los dic
+	usi lon lue bea orn clo hav rse cie scr ero cas omi mpe sid nda rth rro sig cra imp abi lia emo ann ett rog ech oti nse
+	emp med ute rep rio fil loo arm dat rig ook ngl eel lay tie fla ize pli itt oce ash mot dro dow inf eak aph ool bal ank
+	rce oph sor sol fis elf mag nto rid ono asi roa sed fir ttl ema rod ruc pha een erc hic urn hes pot cri ses ild ott uit
+	ull mbe nar spa pac eck ict tel ept get hal reg ugh put ela mos not dea sys bli del mea eng rag oto rim ncy hip ned lem
+	sup oad mpa set cin sub onc lie rip riv sco woo cit ext ume hil avi bel ata tee alt gle uth non ium abo lif eth phi ful
+	try eep evi isc cel eac lor bor bus fre nan sch bas lou etr dra ors dec odu eld iza bat mme nia vin dri bit way aut iou
+	ves ped dle rri til top hel vis arb nsu ppl cut oil nve stu itu erg ref sou blo hee ink rke pon lum hon ece ump atc cep
+	lim mod bou his pit sat umb ngu tea hoo rte mas cop but phy ssu pic ife rna ubl bon ngs sic ike ola olu oat boo ngi poi
+	ctr iso gat tak utt rvi ogi ily lde wee ray nom lam dar gar rni rdi eam fie mak mul erf ogy add eig nds bin dep tag imi
+	tac oci san pul pai rve urs tme hai irc uck oug rmi ics ama orc cco mac fra cus fun ars fec ecu lti gic sla def ked wel
+	ced ena sil vol tif lab hed ito nor oca mus aff vat day hig ndu goo cid mpo sia pet cli leg mai mmo elo upp edu soc hem
+	hre ndo urr pal hot lev cce dre ipe ney sma lot ino ota ski pas ule bir pur lve alu zat mes tti nec fly jec iel arl liv
+	dev liz ird egi gan cos ein rib wal iva eye bur rob foo eer isa vio lut adv rne orr fri eav nag loa edg cte epa blu hat
+	pow wea oor vit uar sso als bul amm ano emb dan dem gua uro ega onf plo eno ldi fee nni yel urc lid rab sul ied ges gla
+	omb rry oup lop aft ida mun dio cis nth sum iff law sna rum run eff siv idi rta oom too die iol rcu rev lus esc cip nco
+	mmi efe yme opp tua alo nct uat rov ysi num ede syn tud uil hen sci icu coa rso inv ndr phe oke yin aga van obi ham rra
+	itc asu rav any opi uff apa nee rsi ype pay fle squ chn nos gal raw uen heo ely oly rst sem amo hop ich lad urt flu nel
+	bee exc ues toc tha lip oge onn hos odi amb ior gas tto boa dom ovi ged cir aus gol spr ibl ung omo efi now udi xpe aro
+	has ppo eor agr gue nam sce cil mmu arn oid ssa gui aly onv fou pie pra rty ift rme isp org rew dus nfo vid ibi inn raf
+	owl mel mov eaf ois gri uto nsp isk rga gem atr oar ico key fit iga rof orp nme rds ipp osp alk hri pir whe awa ody div
+	nio lai two nea urg esp fal gna rei sli nut vil dam swi rmo sts nou dou kno lag dir api gul ila opo agi ige hom igi ipl
+	erp coo ety gai ril pee yer fai mol ecr nol cum don epo pil gis icl dif hyp agn epi iqu mem epe var req sle gon egr doc
+	cab mma ava opt oro lte neu erb shr avo lau beh obl opl new tum ask glo lov ude aki fam ago ror spl mpt irs scu aso ndl
+	yea som cru giv eha wil tta clu fli tig lys riz ben cov inu bio nif chr ocu cam ibr oub pme ycl tou iri iet gne ncr cki
+	imm nig rts uir its ckl gio hum lik lee geo iro oon rif bot hyd fen det typ och cyc ado erl ppr see ais pub rer ppi eur
+	ibu nim eph eso pap rgi uce kee was uch uid fol vir iod irt omy mid hur dul tax aul bui ait oxi irr bed icr sty upe nai
+	ved ods ilt cot arp vie bod ydr axi tol thy tow alc uss oco lio tas tub opa zin nak deb rly dde osc bol ube gam rci iab
+	dal kle swe anu lta sib hie ira alm ubs far bab ddi pop fig aye orl rey aug mpi hod bet plu abb cks ada rbo sph mpr het
+	cem hap ibe gia rui nfl aca chu nen uis rli smo ltu nso wri box abs rar rva stl une nke eek rsh mpu tly aid epr ilk mbi
+	enn ngt acr lex niz pel exa idg nsa iag nfe uma eop fus tip nfi elt alv smi rbi ken lls oul tut oof eva bst una cta unn
+	nna zon lyc ply apo tun bia eca rpo gly ets loy afe ebr stm exi aco mbl ipa tap esh occ asp uns urp ofi rld tog imu ege
+	fes rki cup pig dog pid xtr fur ilo sag dee igu egu olt coc efo dur ccu eon gge iar lse uca bje cei sac uta fte rfa rub
+	oop uli ees ddl bbl itr rak uan nga oos dmi gli uag hir ony rba umm sus tam vem hru nem rtu aym llu dru fat asc gea teg
+	wom gth ilm tus umi aba ntu rul adm aud oic cts git bly ief wed pou ske hni ntl eto mia nas rms saf sun xte dor voi dly
+	ipt rgy fea gni icy uin cod noc dig cau obs oba urv doo cio nki ynd hun jus zed usc agg alf hts lob urf hys poo nvi fru
+	hte rpe eem nsf cif fet exe tos ova pip bru diu hec hab sue els suc mbo rfo sam joi oft zar moo lun apt dne fav hno gur
+	lap udg ymp zer ady osa via tyl pto wan etl hag oac dve lth acu abe efu iew opy pte rbl wis fas ubb dol ley mbr noi neg
+	bag sly gel how bic wne wre yca yle bbe psy tne lib imb oal obe slo umo fan fib rik swa wav ays odo uls arf sno urb you
+	eou lep nab ids kni vor mba iec ouc enu vou efl edl ops tot sof nap vac ych idd ehi sne ury tid oct rle rsa pta rup adj
+	etw rwa dua kil irl sym bad rug dwa vet ecl eec opm tex cui chl egg tei luc sex ypo usa wir hid igr nua wle ats eol asa
+	eap ebe gir wes irm nuc wei bes lom pis cry pse ngo opu rtr wag jac tep cyt aim sim hio neo reb coi oso mum dry sui cko
+	mph nop sme eda ego twi unk nac owi tir hei bow lug rpl oan oas rbe rks sop abr erd lef lub rau aps idu wid bun lav bso
+	scl cci dva lph xpo aun evo cad lur epl ucl siz ulo roj atm opr roi ifo oje nsh mur upt eum hoe usl eba etu job ixe alp
+	sep env fix hob tiz acy dim aem leo orb owa uge niv hoc kit ocy rpr uga ias yth gag sar aur oki pes esu tib tyr yli haw
+	rtm pus nnu twe yna deg erw ngr seq hme ips nus sab oxy bse pum xed eft nsc ucc cav utu etc kne eut ewa apy pag fau ilv
+	auc azi kes uty agu sau uld onm oud reh xic dju syc upl nno xch iot big hib ald gno vas cqu ipm eho epu eag ruf sfe xam
+	urd leu awk ebt leb liq eab acq bom gun mig mix peo bec yed ify ewe uel had rph iam rtl ulp inh inj dli gor ugg asm eau
+	ils yan eit gus niu ncl saw lmo rco nov hae iry hau rok dos map uts edo mec otr lil jun sav sua uic veh hia lym orw nur
+	ews wai bis aby obj pun spu eds ulf oes utr yto osu who awn eiv alg aze ido ots ows iev rrh ofe mut fel lco mir lpi cea
+	ddr mad mom hyl ios nie rto hly usp cka got ltr nsm cog riu aig dil poc uou ogn dut seu lty xpl iog rhe nju tli xid imo
+	oms onk gov dvi hlo pia slu ams gme aer eru ths asy iny iop bug jur rut owd ptu toi adl apl vot igg ipi nad reo dai sky
+	thu hra rfe rfl uip umn phr pyr nip nod uer yro yte ggl lfi olv oda sif xim xis hif isl nul toe vei kel udd dex nef goa
+	yri ads ewo jud pad fid izi hoi owt abu eil ems chy onu niq sev arv oga tet yti aya dip ibb thm nca nog uci unf max ebo
+	fem hog iac sug iom lyi eis yra ldr nbi quo oya wha dov xce sai ajo ocr nqu raz upi voc ewi xer cof obb cow jor mok mog
+	uor acl hti kag usn moc udy elv nha rgo unb rox ufo bud ilu twa wth doi pio lyt oym igo loi rue bbi due fed yla ehe nuf
+	tma itl yar erh mee rca rno yre ubi lme sie rud buc dop emu taf maj hle nre gfi iph avy chm hus odd ubj bid jou pod rha
+	ulu isu exh tul ivo coh nfa dyn ndw soi tox haf lne nty ggi unr ghe ffl tla utc mbu mob muc glu ogu adr pep rnm shu dum
+	lei nny beg boy cet edd ylo civ hut vey buy odp xin aza gob rys vag efr ols swo ums url jum rcl gum nob rda hyt dpe ipo
+	nks uco yes exu rcr stn eez sod suf coe ngf nei yal yon agl rho eev nex tod ayi uad epp utp ynt ufa efa lax oye unp tty
+	deo dst ffo uai zen usk dwe toa eke gau nfr uet luo ndy dys rru tsh vai azo kis lcu nav dag dap elm oak cca enz ius izo
+	buf nsl nli rfi sad vul edn aty gou bum shm elp upr lwa nil adu edr nae dot ebi mst nle ryo thl rgu haz oby osy eud gil
+	olf ryi cky lsi nvo yco aqu obo foc eps upo ebu eze xil gmy him inl esa oho rla tnu ims pne tpu psi veg uba uno das dhe
+	eus hwa rlo did rns lel udo upa mud myo ogg lod nsw rix cyl urk ffa kid xpr iru nue rdo cuc dab hym utl gie uot lva rmu
+	vip wax hep pyg rtn sap ttr fue ppa pru ckn dwi ppy teo ygm tuf wde xpa aka dib ulb wra wif cac iki kan yll ghi ghl lud
+	cak gap inp fox onl tob xec cee zzl cub kir mam nly oit rwo gec ubt laz tay bsc cys nid eir lfa lua osm ncu uee bos ioc
+	rpi ssm awe gho hbo ogo rfu rmy roe sot ssl lki oty awi hth lak nau nkl oet six tba poe say unl ypt erk kat hak kie oen
+	agm boi eef lvi rnb ups ckb hac noo rqu wic adh enr tmo sei syl enh lga nwa cob npu sfo zle ilw cue meg atf enb kli lge
+	lyp mop nze gos ssy nje oks ckw god moi xua gnm fiv lka ogl tfi uve hma aes bbo lui nva pik yma ffs nfu dun miz tfu ubm
+	vab vib eot mni viv yie ymb gaz gma oqu apr bog idl igm kal vig abd emm fti nuo aic miu isf lci wro fut tga wou nhi pok
+	umu eom ghb ngb gga goi cim dac hne lux rct rsu sef lca mys ued axe oir sni aws oys roy uda bei ftw ifu sas sew esk idn
+	lbu ryn egy fev koo nhe dsc kly lul nla oru rtg sir ulk wet aux otc soa gib gog uzz dth rgr cic enl foi ntm tfo ync fug
+	ubr aeo arw bsi lts lds soo yph ayo lma teb yge zoo alb rpt thd ulm xtu lbe dsh emy exo fab hex hov pth shy tau xes xia
+	bay eyo ahe awf oam awl ryp sbe ggr jar onz pab tsi yno lba liu oel kar lae yfi ixt obu otb sku uds vap itz nka ugu xat
+	gru odg bef edy irp ccl eic ffu ifl odl xha puf ugs nui jaw kic ixi seg wol bdo hyr thw web yne bak itn nep ohe ocl rvo
+	ulc bai izz nbo xit ddy iap idt inq urm rwi bey esm mps rsp dba elu euk enf ska bik emn onj dca xti apu cht lgi llf olk
+	pup rdl uln eys ibo joy nbe ozo seh rae ryt smu aum dod dox irg nyl nym siu eos rbu vec mmy rhi ubu jet nbu nho unm wam
+	xyg iba lfu tup unw yng bie heq omf bby ndb wbe yot awb eny gif hdr sks zel maz mie uum uxi bba hoa kul lbo mne ndm tbi
+	uas obt shl tuc ovo rej rhy amy lmi nev sip tew lst mew rls ryl wim yee ymo mab myc oed seb diz rpa ulg egm fia jew nzy
+	egl hiv hmi xio huc lch axo gbi itm osh xhi ypr foa fts oov uiv bub fyi inb ecy gab kla noe oef owh ypi axa dwo kwa owf
+	oze pht htl ksh bov dgi eip eoc hug lew lke lro nun oxe pom zym lso ohn rah uvi hli hub ngh adc bam fon kwe ssn ygo phu
+	xan mfo pau yda amu eje gee gut jer nro xci wig lyf owb ugl ccr cuu dei vea xon ayl dew jug lky orq rwe tav aha euc uph
+	aho elb eog rps bta dla euv kab lfl lto obr tse cig dma paw tue aor fow inm unh adg cag jam wsp yor azz mug roh sov tad
+	yse chw isy tok ffr tov xyl geb gwo isd kha tst wns ciu elc tef xem ceo ckt few ipu mna sfu teu fos gyp htn npr oer psu
+	sba uke yce dau ecc gim nba otl bry gid iad ipr nma reu yss aec ieg kho shw sow wak xcl egn hiz ilr otu zil ggy hok idy
+	kip ubo uft zza eup kup lwo amn lyn mso fum lpa tze uko bts dho dso dye peu tiq uie wen bib cun ika orf sve dfi jel jui
+	nsk oap cef eid eim npo oem pov tiu fei olp rex yab deh ulv ymm dup edb nsv taw gop nwo onw syr toy lol nud xca xcu cae
+	eyb hef ilb mse owr shn tdo xen yit cyp dme ngn onr rtz uru vau bob bys hew kra lks mle ohi ybo hyg kto lps ybr aln ctl
+	kim lln mye pst kon ogs peg pud rao ucu xac ybe ymn ags nub rdr rua rye wfi esn ewt hay lyb lye mim pty atl ezi kou pef
+	rtf tca thn tja won hyb nri oxa uak ubc xle ckg gyr kma odr wfl wni hla isr ndf ofo pog snu dyl edw gyn ngd ofa sax usu
+	wny aru cku gst kdo pew roz tsc duo hwo kgr kst pav wli ywo anz fif fog may oha pso sfa utd zeb anl chs eki tof zab anx
+	ifr kbi ndp yba ygi zol anh neb rur wry ymi ckh gad gha ifa iit ldo llb njo olc pae ttu xif zor egs kro lgo sms ssh sud
+	wab cai gdo gym ilf nlo orh ozz ryd sey xie yps mbs nik noz ntb wip caf dbo lsa npa olm omn pug tui irb loe phl rka ysp
+	afi ckf eyi llm lsh sak sbo sut axl hik hwe lfo rax rgl tco ueb aed ehy kov lpe lyg rdw yog bap oka rpu shb sob ssf xur
+	zan gta hfu kru nxi stp tni yac cib eiz rcy bev mio ntw ohy buz ckp dgm fuc ilg lce ldl pbe rsl ybi asb kfa myr nkr nof
+	ueu cch ggs jok tym ypa afl esq eya kor wly yru adw htj isg xib ckr lal neq yop gns nky nzo ugi vow afo dmo eks eod lry
+	lya pam puc vre adf bmi cua dlo kta nkt odc ruv wfu wiv yni ysm
+	); # N=3349, most frequent english n-grams first
 
 
 our @_REVSRCHDICT_OPTIMIZED = qw(
@@ -272,7 +321,7 @@ our @_REVSRCHDICT_OPTIMIZED = qw(
 	ure oun eri ain ers     nal iti         ted     tur sti ons ort    
 	lan lat     ell igh tri nes ial ous gra
 	
-	); # N=???, most frequent english trigrams tested against Harry Potter
+	); # N=390, most frequent english trigrams tested against Harry Potter
 	   # reviews: each led to 10-30 unique(!) hits, best first.
 	   # Appended most frequent english trigrams which are not
 	   # already present in the Harry Potter set.
@@ -1539,7 +1588,11 @@ sub _extract_revs
 		my %us;
 		my %rv;
 		
-		my $txt = $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/  ? decode_entities( $1 ) : '';
+		# There's a short and a long text variant both saved in $row
+		my $txts = $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/  ? decode_entities( $1 ) : '';
+		my $txt  = $row =~ /id=\\"freeText[0-9]+\\" style=\\"display:none\\"\\u003e(.*?)\\u003c\/span/  ? decode_entities( $1 ) : '';
+		   $txt  = $txts if length( $txts ) > length( $txt );
+		
 		$txt =~ s/\\u003c/</g;
 		$txt =~ s/\\u003e/>/g;
 		$txt =~ s/\\u0026/&/g;
