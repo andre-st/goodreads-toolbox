@@ -32,6 +32,14 @@ There's a huge bulge of members with low similarity and just a few with higher
 similarity. Cut away the huge bulge, and check the rest manually
 
 
+=item B<-x, --rigor>=F<numlevel>
+
+ level 1   = filters-based search of book-raters (max 5400 ratings) - default
+ level 2   = like 1 plus dict-search if >3000 ratings with stall-time of 2min
+ level n   = like 1 plus dict-search with stall-time of n minutes
+ level n>9 = use a larger dictionary (slowest level)
+
+
 =item B<-c, --cache>=F<numdays>
 
 number of days to store and reuse downloaded data in F</tmp/FileCache/>,
@@ -139,6 +147,7 @@ use Goodscrapes;
 # 
 our $TSTART    = time();
 our $MINSIMIL  = 5;
+our $RIGOR     = 1;
 our $CACHEDAYS = 31;
 our $USECOOKIE = 0;
 our @SHELVES;
@@ -146,6 +155,7 @@ our $OUTPATH;
 our $USERID;
 
 GetOptions( 'similar|m=i' => \$MINSIMIL,
+            'rigor|x=i'   => \$RIGOR,
             'help|?'      => sub{ pod2usage( -verbose => 2 ) },
             'outfile|o=s' => \$OUTPATH,
             'cache|c=i'   => \$CACHEDAYS,
@@ -230,7 +240,7 @@ for my $b (values %books)
 	# cost/benefit ratio given hundreds of books:
 	greadreviews( for_book    => $b, 
 	              rh_into     => \%revs,
-	              rigor       => 1,  
+	              rigor       => $RIGOR,  
 	              on_progress => gmeter( 'memb' ));
 	
 	$authors_read_by{ $_->{rh_user}->{id} }{ $b->{rh_author}->{id} } = 1 
