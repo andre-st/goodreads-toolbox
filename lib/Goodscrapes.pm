@@ -1593,10 +1593,9 @@ sub _extract_revs
 		my $txt  = $row =~ /id=\\"freeText[0-9]+\\" style=\\"display:none\\"\\u003e(.*?)\\u003c\/span/  ? decode_entities( $1 ) : '';
 		   $txt  = $txts if length( $txts ) > length( $txt );
 		
-		$txt =~ s/\\u003c/</g;
-		$txt =~ s/\\u003e/>/g;
-		$txt =~ s/\\u0026/&/g;
-		$txt =~ s/\\"/"/g;
+   		$txt =~ s/\\"/"/g;
+		$txt =~ s/\\u(....)/ pack 'U*', hex($1) /eg;  # Convert Unicode codepoints such as \u003c
+		$txt =~ s/<br \/>/\n/g;
 		
 		$us{ id         } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
 		$us{ name       } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : decode_entities( $1 )) : '';
