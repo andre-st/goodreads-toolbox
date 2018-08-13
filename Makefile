@@ -46,9 +46,9 @@ similarauth : base
 search : base
 
 
-## make savereviews:  Installs Perl modules
-.PHONY : savereviews
-savereviews : base
+## make savreviews :  Installs Perl modules
+.PHONY : savreviews
+savreviews : base
 
 
 ## make recentrated:  Installs Perl modules and creates database and log in /var

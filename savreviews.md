@@ -1,4 +1,4 @@
-# savereviews.md
+# savreviews.md
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
@@ -42,12 +42,12 @@ minim veniam, quis nostrud exercitation ullamco laboris nisi
 ```
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make savereviews
-$ ./savereviews.pl --help
-$ ./savereviews.pl GOODREADSBOOKID
+$ sudo make savreviews
+$ ./savreviews.pl --help
+$ ./savreviews.pl GOODREADSBOOKID
 
 Loading reviews for "To the Lighthouse"... 5514 of 5514 reviews
-Writing reviews to "savereviews-GOODREADSBOOKID.txt"... 
+Writing reviews to "savreviews-GOODREADSBOOKID.txt"... 
 Total time: 124 minutes
 
 ```

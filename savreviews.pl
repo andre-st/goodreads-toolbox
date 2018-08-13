@@ -6,12 +6,12 @@
 
 =head1 NAME
 
-savereviews - Download reviews for a book
+savreviews - Download reviews for a book
 
 
 =head1 SYNOPSIS
 
-B<savereviews.pl> [B<-x> F<numlevel>] [B<-c> F<numdays>] [B<-o> F<filename>] 
+B<savreviews.pl> [B<-x> F<numlevel>] [B<-c> F<numdays>] [B<-o> F<filename>] 
 F<goodbookid>...
 
 
@@ -40,7 +40,7 @@ Loading data from Goodreads is a time consuming process.
 =item B<-o, --outfile>=F<filename>
 
 name of the HTML file where we write results to, default is
-"./savereviews-F<goodbookid>.html"
+"./savreviews-F<goodbookid>.html"
 
 
 =item B<-?, --help>
@@ -57,9 +57,9 @@ F</tmp/FileCache/>
 
 =head1 EXAMPLES
 
-$ ./savereviews.pl 333222
+$ ./savreviews.pl 333222
 
-$ ./savereviews.pl --outfile=myfile.txt 333222
+$ ./savreviews.pl --outfile=myfile.txt 333222
 
 
 =head1 REPORTING BUGS
@@ -124,7 +124,7 @@ GetOptions( 'rigor|x=i'   => \$RIGOR,
              or pod2usage( 1 );
 
 $BOOKID  = $ARGV[0] or pod2usage( 1 );
-$OUTPATH = "savereviews-${BOOKID}.txt" if !$OUTPATH;
+$OUTPATH = "savreviews-${BOOKID}.txt" if !$OUTPATH;
 
 gsetcache( $CACHEDAYS );
 STDOUT->autoflush( 1 );

@@ -49,7 +49,7 @@ feature requested in the Goodreads forums.
 [Learn more](search.md)
 
 
-## [savereviews.pl](savereviews.md)
+## [savreviews.pl](savreviews.md)
 
 Downloads as many text-reviews for a book as possible. It's an implementation
 of the "Extract all reviews for a specific book" feature requested in the 
