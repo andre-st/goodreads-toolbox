@@ -58,7 +58,7 @@ Total time: 124 minutes
 
 - there's no way to load _all_ reviews of a book, but the program tries different 
   things to get as many reviews as possible -- this can take very long
-- review text might include HTML
+- review text might include HTML code, URLs
 - review text can be in any language, e.g., german or russian
 - review text might include non-latin characters, e.g., cyrillic
 
