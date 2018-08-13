@@ -49,7 +49,7 @@ $ ./savreviews.pl GOODREADSBOOKID
 
 Loading reviews for "To the Lighthouse"... 3216 of 5514 reviews
 Writing reviews to "savreviews-GOODREADSBOOKID.txt"... 
-Total time: 124 minutes
+Total time: 87 minutes
 
 ```
 
