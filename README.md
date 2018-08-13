@@ -55,7 +55,7 @@ feature requested in the Goodreads forums.
 Saves text-reviews for a book to a text-file. It's an implementation
 of the "Extract all reviews for a specific book" feature requested in the 
 Goodreads forums.
-[Learn more](search.md)
+[Learn more](savreviews.md)
 
 
 ## ~~[amz-tradein.pl](amz-tradein.md)~~
