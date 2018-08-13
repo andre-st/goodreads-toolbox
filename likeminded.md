@@ -86,7 +86,7 @@ Goodreads.com is very time consuming.  The script internally uses a
   add good but rare books to your "best-of" shelf
 - make sure you have some _Gigabytes_ of free diskspace for /tmp/
 - there's no way to load _all_ reviews of a book, but the program tries different 
-  things to get as much reviews as possible.
+  things to get as many reviews as possible.
   This means there is a number of readers not considered in our statistics,
   and we cannot randomize in a way which would produce samples of similar size.
   Although, we don't get _all_ members (for books with ten of thousand
