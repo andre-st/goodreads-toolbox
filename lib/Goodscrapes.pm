@@ -36,7 +36,9 @@ our $VERSION = '1.91';  # X.XX version format required by Perl
 
 =item * focuses on analysing, not updating info on GR
 
-=item * less limited, e.g., reading shelves and reviews of other members
+=item * less limited, e.g., reading shelves and reviews of other members:
+        the official API just gets you excerpts(!) of max. 300(!) reviews,
+        Goodscrapes can scrape thousands of fulltext reviews.
 
 =item * official is slow too; API users are even second-class citizen
 
