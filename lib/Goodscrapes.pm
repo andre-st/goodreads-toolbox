@@ -125,6 +125,7 @@ our @EXPORT = qw(
 	gsetcookie 
 	gsetcache
 	gsearch
+	greadbook
 	greadshelf 
 	greadauthors
 	greadauthorbk
@@ -173,6 +174,7 @@ our @_BADPROFILES  =
 
 # Reviews search dictionaries:
 our @_REVSRCHDICT = qw(
+	3 4 5
 	ing ion tio ati ent ter the ate con men ess tra ine and nce res pro per cti ect for tic sth rat sta ste ica ive ver est tin str tor one ist all int com rea
 	ant ite age lin ble ran rin cal der nte anc ity ure oun eri ain ers ear nal iti her act ted era tur sti ons ort art lan lat man ell igh tri nes ial ous gra
 	ast nti enc ack ice ide par cha lit ric min ass ill cat red pla und ree ard eat pre dis out ove ont ght our din ian tal mat eme ang sio tiv tat che ina nta
@@ -309,6 +311,10 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =item * title       =E<gt> C<string>
 
 =item * isbn        =E<gt> C<string>
+
+=item * num_pages   =E<gt> C<int>
+
+=item * num_reviews =E<gt> C<int>
 
 =item * num_ratings =E<gt> C<int>    103 for example
 
@@ -606,6 +612,19 @@ sub gsetcache
 
 
 
+=head2 C<L<%book|"%book">> greadbook( $book_id )
+
+=cut
+
+sub greadbook
+{
+	my $bid = shift;
+	return _extract_book( _html( _book_url( $bid ) ) );
+}
+
+
+
+
 =head2 C<void> greadshelf(I<{ from_user_id, ra_from_shelves, rh_into =E<gt> undef, 
 			on_book =E<gt> sub{}, on_progress =E<gt> sub{} }>)
 
@@ -725,27 +744,29 @@ sub greadauthorbk
 
 
 
-=head2 C<void> greadreviews(I<{ for_book =E<gt> C<L<%book|"%book">>, since =E<gt> undef, 
-		rigor =E<gt> 2, on_review =E<gt> sub{}, on_progress =E<gt> sub{} }>)
+=head2 C<void> greadreviews(I<{ ... }>)
 
 =over
 
 =item * loads ratings (no text), reviews (text), "to-read", "added" etc;
-        you can filter yourself afterwards
+        you can filter later or via I<on_filter> parameter
 
-=item * I<rh_into>: C<(id =E<gt> L<%review|"%review">,...)>
+=item * I<for_book>: C<L<%book|"%book">>
 
-=item * I<since>: of type C<Time::Piece>
+=item * I<rh_into>: reference to C<(id =E<gt> L<%review|"%review">,...)>
 
-=item * I<on_progress>: see C<gmeter()>
+=item * I<since>: of type C<Time::Piece> [optional]
 
-=item * I<rigor> level 0: search newest reviews only (max 300 reviews)
+=item * I<on_filter>: return false to drop review (1st argument)
 
-=item * I<rigor> level 1: search with a combination of filters (max 5400 reviews)
+=item * I<on_progress>: see C<gmeter()> [optional]
 
-=item * I<rigor> level 2: like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
-
-=item * I<rigor> level n: like 1 plus dict-search with stall-time of n minutes
+=item * I<rigor>: [optional, default 2]
+  level 0   = search newest reviews only (max 300 ratings)
+  level 1   = search with a combination of filters (max 5400 ratings)
+  level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
+  level n   = like 1 plus dict-search with stall-time of n minutes
+  level n>9 = use a larger dictionary (slowest level)
 
 =back
 
@@ -756,7 +777,8 @@ sub greadreviews
 	my (%args) = @_;
 	my $book   =_require_arg( 'for_book', $args{ for_book });
 	my $rigor  = defined $args{ rigor } ? $args{ rigor } : 2;
-	my $rh     = $args{ rh_into     } || \{};
+	my $rh     = $args{ rh_into     } || undef;
+	my $ffn    = $args{ on_filter   } || sub{ return 1 };
 	my $pfn    = $args{ on_progress } || sub{};
 	my $since  = $args{ since       } || $_EARLIEST;
 	   $since  = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
@@ -778,7 +800,7 @@ sub greadreviews
 		for my $s (@sortargs)
 		{
 			my $pag = 1;
-			while( _extract_revs( \%revs, $pfn, $since, _html( _revs_url( $bid, $s, $r, undef, $pag++ ) ) ) ) {};
+			while( _extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, $s, $r, undef, $pag++ ) ) ) ) {};
 			
 			# "to-read", "added" have to be loaded before the rated/reviews
 			# (undef in both argument-lists first) - otherwise we finish
@@ -791,27 +813,29 @@ sub greadreviews
 	}
 	
 
-	# Dict-search works well with many ratings but poorly with few (waste of time).
+	# Dict-search works well with many ratings but sometimes poorly with few (waste of time).
+	# Woolf's "To the Lighthouse" has 5514 text reviews: 948 found without dict-search, 3057 with
 	goto DONE if $rigor <  2;
 	goto DONE if $rigor == 2 && $limit < 3000;
 	
  	my $stalltime = $rigor * 60;  
 	my $t0        = time;  # Stuff above might already take 60s
+	my $ra_dict   = $rigor < 10 ? \@_REVSRCHDICT_OPTIMIZED : \@_REVSRCHDICT;
 	
-	for my $word (@_REVSRCHDICT_OPTIMIZED)
+	for my $word (@$ra_dict)
 	{
 		goto DONE if time-$t0 > $stalltime || scalar keys %revs >= $limit;
 		
 		my $numbefore = scalar keys %revs;
 		
-		_extract_revs( \%revs, $pfn, $since, _html( _revs_url( $bid, undef, undef, $word ) ) );
+		_extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, undef, undef, $word ) ) );
 		
 		$t0 = time if scalar keys %revs > $numbefore;  # Resets stall-timer
 	}
 	
 DONE:
-
-	%$rh = ( %$rh, %revs );  # Merge
+	
+	%$rh = ( %$rh, %revs ) if $rh;  # Merge
 }
 
 
@@ -1234,6 +1258,35 @@ sub _search_url
 
 
 
+=head2 C<L<%book|"%book">> _extract_book( $book_page_html_str )
+
+=cut
+
+sub _extract_book
+{
+	my $htm = shift;
+	my %bk;
+	
+	return undef if !$htm;
+	
+	$bk{ id          } = $htm =~ /id="book_id" value="([^"]+)"/                         ? $1 : undef;
+	$bk{ isbn        } = $htm =~ /<meta content='([^']+)' property='books:isbn'/        ? $1 : ''; # ISBN13
+	$bk{ img_url     } = $htm =~ /<meta content='([^']+)' property='og:image'/          ? $1 : '';
+	$bk{ title       } = $htm =~ /<meta content='([^']+)' property='og:title'/          ? decode_entities( $1 ) : '';
+	$bk{ num_pages   } = $htm =~ /<meta content='([^']+)' property='books:page_count'/  ? $1 : $_NOBOOKIMGURL;
+	$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d+) review/           ? $1.$2 : 0;  # 1,600 -> 1600
+	$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d+) rating/           ? $1.$2 : 0;  # 1,600 -> 1600
+	$bk{ avg_rating  } = $htm =~ /itemprop="ratingValue">([0-9.]+)/ ? $1    : 0;  # # 3.77
+	$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
+	$bk{ url         } = _book_url( $bk{id} );
+	$bk{ rh_author   } = undef;  # TODO
+	$bk{ year        } = undef;  # TODO
+	
+	return %bk;
+}
+
+
+
 
 =head2 C<bool> _extract_books( I<$rh_books, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
 
@@ -1275,6 +1328,7 @@ sub _extract_books
 		
 		$bk{ id          } = $row =~ /data-resource-id="([0-9]+)"/                                ? $1 : undef;
 		$bk{ isbn        } = $row =~ />isbn<\/label><div class="value">\s*([0-9X\-]*)/            ? $1 : '';
+		$bk{ num_reviews } = undef;  # Not available here!
 		$bk{ num_ratings } = $row =~ />num ratings<\/label><div class="value">\s*([0-9]+)/        ? $1 : 0;
 		$bk{ img_url     } = $row =~ /<img [^>]* src="([^"]+)"/                                   ? $1 : $_NOBOOKIMGURL;
 		$bk{ year        } = $row =~ />date pub<\/label><div class="value">\s*[^<]*(\d{4})\s*</s  ? $1 : 0;  # "2017" and "Feb 01, 2017" (there's also "edition date pub")
@@ -1460,6 +1514,7 @@ sub _extract_revs
 {
 	my $rh           = shift;
 	my $pfn          = shift;
+	my $ffn          = shift;
 	my $since_tpiece = shift;
 	my $htm          = shift or return 0;  # < is \u003c, > is \u003e,  " is \" literally
 	my $bid          = $htm =~ /%2Fbook%2Fshow%2F([0-9]+)/  ? $1 : undef;
@@ -1484,6 +1539,12 @@ sub _extract_revs
 		my %us;
 		my %rv;
 		
+		my $txt = $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/  ? decode_entities( $1 ) : '';
+		$txt =~ s/\\u003c/</g;
+		$txt =~ s/\\u003e/>/g;
+		$txt =~ s/\\u0026/&/g;
+		$txt =~ s/\\"/"/g;
+		
 		$us{ id         } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
 		$us{ name       } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : decode_entities( $1 )) : '';
   		$us{ img_url    } = $_NOUSERIMGURL;  # TODO
@@ -1491,7 +1552,7 @@ sub _extract_revs
 		$us{ _seen      } = 1;
 		
 		$rv{ id         } = $row =~ /\/review\/show\/([0-9]+)/ ? $1 : undef;
-		$rv{ text       } = $row =~ /id=\\"freeTextContainer[^"]+"\\u003e(.*?)\\u003c\/span/  ? decode_entities( $1 ) : '';
+		$rv{ text       } = $txt;
 		$rv{ rating     } = () = $row =~ /staticStar p10/g;  # Count occurances
 		$rv{ rating_str } = $rv{rating} ? ('[' . ($rv{text} ? 'T' : '*') x $rv{rating} . ' ' x (5-$rv{rating}) . ']') : '[added]';
 		$rv{ url        } = _rev_url( $rv{id} );
@@ -1499,8 +1560,11 @@ sub _extract_revs
 		$rv{ book_id    } = $bid;
 		$rv{ rh_user    } = \%us;
 		
-		$ret++ unless exists $rh->{$rv{id}};  # Don't count duplicates (multiple searches for same book)
-		$rh->{$rv{id}} = \%rv;
+		if( $ffn->( \%rv ) )  # Filter
+		{
+			$ret++ unless exists $rh->{$rv{id}};  # Don't count duplicates (multiple searches for same book)
+			$rh->{$rv{id}} = \%rv;
+		}
 	}
 	
 	$pfn->( $ret );

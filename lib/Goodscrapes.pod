@@ -120,6 +120,10 @@ https://github.com/andre-st/
 
 =item * isbn        =E<gt> C<string>
 
+=item * num_pages   =E<gt> C<int>
+
+=item * num_reviews =E<gt> C<int>
+
 =item * num_ratings =E<gt> C<int>    103 for example
 
 =item * avg_rating  =E<gt> C<float>  4.36 for example
@@ -286,6 +290,8 @@ TODO: line of code is useless when died
 
 =back
 
+=head2 C<L<%book|"%book">> greadbook( $book_id )
+
 =head2 C<void> greadshelf(I<{ from_user_id, ra_from_shelves, rh_into =E<gt> undef, 
 			on_book =E<gt> sub{}, on_progress =E<gt> sub{} }>)
 
@@ -335,27 +341,29 @@ TODO: line of code is useless when died
 
 =back
 
-=head2 C<void> greadreviews(I<{ for_book =E<gt> C<L<%book|"%book">>, since =E<gt> undef, 
-		rigor =E<gt> 2, on_review =E<gt> sub{}, on_progress =E<gt> sub{} }>)
+=head2 C<void> greadreviews(I<{ ... }>)
 
 =over
 
 =item * loads ratings (no text), reviews (text), "to-read", "added" etc;
-        you can filter yourself afterwards
+        you can filter later or via I<on_filter> parameter
 
-=item * I<rh_into>: C<(id =E<gt> L<%review|"%review">,...)>
+=item * I<for_book>: C<L<%book|"%book">>
 
-=item * I<since>: of type C<Time::Piece>
+=item * I<rh_into>: reference to C<(id =E<gt> L<%review|"%review">,...)>
 
-=item * I<on_progress>: see C<gmeter()>
+=item * I<since>: of type C<Time::Piece> [optional]
 
-=item * I<rigor> level 0: search newest reviews only (max 300 reviews)
+=item * I<on_filter>: return false to drop review (1st argument)
 
-=item * I<rigor> level 1: search with a combination of filters (max 5400 reviews)
+=item * I<on_progress>: see C<gmeter()> [optional]
 
-=item * I<rigor> level 2: like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
-
-=item * I<rigor> level n: like 1 plus dict-search with stall-time of n minutes
+=item * I<rigor>: [optional, default 2]
+  level 0   = search newest reviews only (max 300 ratings)
+  level 1   = search with a combination of filters (max 5400 ratings)
+  level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
+  level n   = like 1 plus dict-search with stall-time of n minutes
+  level n>9 = use a larger dictionary (slowest level)
 
 =back
 
@@ -534,6 +542,7 @@ TODO: line of code is useless when died
 
 
 
+=head2 C<L<%book|"%book">> _extract_book( $book_page_html_str )
 
 =head2 C<bool> _extract_books( I<$rh_books, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
 
