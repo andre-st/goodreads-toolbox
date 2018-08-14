@@ -11,7 +11,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 =over
 
-=item * Updated: 2018-08-12
+=item * Updated: 2018-08-14
 
 =item * Since: 2014-11-05
 
@@ -365,6 +365,8 @@ TODO: line of code is useless when died
   level 1   = search with a combination of filters (max 5400 ratings)
   level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
   level n   = like 1 plus dict-search with stall-time of n minutes
+
+=item * I<dict_path>: Path to a dictionary text-file (one word per line)
 
 =back
 

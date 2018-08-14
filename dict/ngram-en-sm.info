@@ -1,0 +1,8 @@
+N=390, most frequent english trigrams tested against Harry Potter
+reviews: each led to 10-30 unique(!) hits, best first.
+Appended most frequent english trigrams which are not
+already present in the Harry Potter set.
+Works better with a larger set of available reviews.
+Randomization yield no improvements (rather opposite).
+Consider searching with trigram combinations ("let ing") 
+in order to get more unique results.

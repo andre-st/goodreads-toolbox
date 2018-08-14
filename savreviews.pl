@@ -29,6 +29,11 @@ Mandatory arguments to long options are mandatory for short options too.
  level n   = like 1 plus dict-search with stall-time of n minutes - default is 10
 
 
+=item B<-d, --dict>=F<filename>
+
+default is F<./dict/words-en-xl.lst>
+
+
 =item B<-c, --cache>=F<numdays>
 
 number of days to store and reuse downloaded data in F</tmp/FileCache/>,
@@ -112,11 +117,13 @@ use Goodscrapes;
 our $TSTART    = time();
 our $CACHEDAYS = 7;
 our $RIGOR     = 10;
+our $DICTPATH  = './dict/words-en-xl.lst';
 our $OUTPATH;
 our $BOOKID;
 our $REVSEPERATOR = "\n\n".( '-' x 79 )."\n\n";
 
 GetOptions( 'rigor|x=i'   => \$RIGOR,
+            'dict|d=s'    => \$DICTPATH,
             'help|?'      => sub{ pod2usage( -verbose => 2 ) },
             'cache|c=i'   => \$CACHEDAYS,
             'outfile|o=s' => \$OUTPATH ) 
@@ -144,6 +151,7 @@ my $fh = IO::File->new( $OUTPATH, '>:utf8' ) or die "[FATAL] Cannot write to $OU
 greadreviews( for_book    => \%book,
               rigor       => $RIGOR,
               rh_into     => \%reviews,
+              dict_path   => $DICTPATH,
               on_filter   => sub{ $_[0]->{text} },  # Reviews only
               on_progress => gmeter( "of $book{num_reviews} reviews" ));
 

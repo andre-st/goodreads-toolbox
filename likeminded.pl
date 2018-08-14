@@ -39,6 +39,11 @@ similarity. Cut away the huge bulge, and check the rest manually
  level n = like 1 plus dict-search with stall-time of n minutes
 
 
+=item B<-d, --dict>=F<filename>
+
+default is F<./dict/words-en-xl.lst>
+
+
 =item B<-c, --cache>=F<numdays>
 
 number of days to store and reuse downloaded data in F</tmp/FileCache/>,
@@ -147,6 +152,7 @@ use Goodscrapes;
 our $TSTART    = time();
 our $MINSIMIL  = 5;
 our $RIGOR     = 1;
+our $DICTPATH  = './dict/words-en-xl.lst';
 our $CACHEDAYS = 31;
 our $USECOOKIE = 0;
 our @SHELVES;
@@ -155,6 +161,7 @@ our $USERID;
 
 GetOptions( 'similar|m=i' => \$MINSIMIL,
             'rigor|x=i'   => \$RIGOR,
+            'dict|d=s'    => \$DICTPATH,
             'help|?'      => sub{ pod2usage( -verbose => 2 ) },
             'outfile|o=s' => \$OUTPATH,
             'cache|c=i'   => \$CACHEDAYS,
@@ -240,6 +247,7 @@ for my $b (values %books)
 	greadreviews( for_book    => $b, 
 	              rh_into     => \%revs,
 	              rigor       => $RIGOR,  
+	              dict_path   => $DICTPATH,
 	              on_progress => gmeter( 'memb' ));
 	
 	$authors_read_by{ $_->{rh_user}->{id} }{ $b->{rh_author}->{id} } = 1 
