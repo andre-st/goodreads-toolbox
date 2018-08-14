@@ -2,7 +2,21 @@
 
 ## Why?
 
-TODO
+As far as the reviews are concerned, the official Goodreads API is of no use:
+You get a maximum of 300 short excerpts. Goodreads does not even use this API on
+its own website, it is a side project and is neglected accordingly. 
+
+They use other mechanisms to display reviews on their website, mechanisms that
+are tapped by my own programs ("AJAX endpoints" in this case). These mechanisms
+have their own limitations: you can not see all reviews, but search for reviews
+and filter by the number of stars, age etc.
+
+Some Toolbox programs run a dictionary (with ngrams, most common words etc)
+against this search and collect reviews.
+
+Woolf's "To the Lighthouse" has 5514 text reviews: 948 found without
+dict-search (only filters-based search).
+With dict-search: 3057 (ngrams) or 4962 (words).
 
 
 ## ngram-en-xl.lst
