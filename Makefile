@@ -63,7 +63,7 @@ recentrated : base recentrated.pl
 ## make dev        :  Setups .git directory (symlinks ./git-hooks etc)
 .PHONY : dev
 dev :
-	ln -s ../../git-hooks/pre-commit ./.git/hooks/pre-commit
+	ln -sf ../../git-hooks/pre-commit ./.git/hooks/pre-commit
 
 
 ## make all        :  Installs all programs
