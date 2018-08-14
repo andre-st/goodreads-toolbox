@@ -421,7 +421,7 @@ sub gmeter
 
 =item * some Goodreads.com pages are only accessible by authenticated members
 
-=item * I<content> =E<gt> long string with cookie data that can be send to Goodreads,
+=item * I<content> =E<gt> C<string> with cookie data that can be send to Goodreads,
         alternatively see I<filepath> [optional]
 
 =item * I<filepath> =E<gt> path to a text-file with cookie-data; 
@@ -527,9 +527,9 @@ sub greadbook
 
 =item * reads a list of books present in the given shelves of the given user
 
-=item * I<from_user_id>    =E<gt> string
+=item * I<from_user_id>    =E<gt> C<string>
 
-=item * I<ra_from_shelves> =E<gt> string-array reference with shelf names
+=item * I<ra_from_shelves> =E<gt> C<string>-array reference with shelf names
 
 =item * I<rh_into>         =E<gt> hash reference C<(id =E<gt> L<%book|"%book">,...)> [optional]
 
@@ -619,7 +619,7 @@ sub greadauthors
 
 =item * reads the Goodreads.com list of books written by the given author
 
-=item * I<author_id>   =E<gt> string
+=item * I<author_id>   =E<gt> C<string>
 
 =item * I<rh_into>     =E<gt> hash reference C<(id =E<gt> L<%book|"%book">,...)>
 
@@ -663,14 +663,14 @@ sub greadauthorbk
 
 =item * I<on_progress> =E<gt> see C<gmeter()> [optional]
 
-=item * I<rigor>       =E<gt> level number [optional, default 2]
+=item * I<rigor>       =E<gt> C<int> [optional, default 2]
 
   level 0   = search newest reviews only (max 300 ratings)
   level 1   = search with a combination of filters (max 5400 ratings)
   level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
   level n   = like 1 plus dict-search with stall-time of n minutes
 
-=item * I<dict_path>: Path to a dictionary text-file (one word per line)
+=item * I<dict_path>   =E<gt> Path to a dictionary text-file (one word per line)
 
 =back
 
@@ -759,7 +759,7 @@ DONE:
 
 =item * I<rh_into>      =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)>
 
-=item * I<from_user_id> =E<gt> string
+=item * I<from_user_id> =E<gt> C<string>
 
 =item * I<on_progress>  =E<gt> see C<gmeter()> [optional]
 
@@ -827,14 +827,14 @@ sub greadsimilaraut
 
 =item * I<ra_into>     =E<gt> array reference C<(L<%book|"%book">,...)> 
 
-=item * I<phrase>      =E<gt> query string
+=item * I<phrase>      =E<gt> C<string> with space separated keywords
 
-=item * I<is_exactg>   =E<gt> boolean [optional, default 0]
+=item * I<is_exactg>   =E<gt> C<bool> [optional, default 0]
 
 =item * I<ra_order_by> =E<gt> array reference: property names from C<(L<%book|"%book">,...)> 
                        [optional, default: 'stars', 'num_ratings', 'year']
 
-=item * I<num_ratings> =E<gt> only list books with at least N ratings [optional, default 0]
+=item * I<num_ratings> =E<gt> C<int> only list books with at least N ratings [optional, default 0]
 
 =item * I<on_progress> =E<gt> see C<gmeter()>  [optional]
 
