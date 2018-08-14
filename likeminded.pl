@@ -34,10 +34,9 @@ similarity. Cut away the huge bulge, and check the rest manually
 
 =item B<-x, --rigor>=F<numlevel>
 
- level 1   = filters-based search of book-raters (max 5400 ratings) - default
- level 2   = like 1 plus dict-search if >3000 ratings with stall-time of 2min
- level n   = like 1 plus dict-search with stall-time of n minutes
- level n>9 = use a larger dictionary (slowest level)
+ level 1 = filters-based search of book-raters (max 5400 ratings) - default
+ level 2 = like 1 plus dict-search if >3000 ratings with stall-time of 2min
+ level n = like 1 plus dict-search with stall-time of n minutes
 
 
 =item B<-c, --cache>=F<numdays>

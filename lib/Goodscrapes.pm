@@ -175,7 +175,7 @@ our @_BADPROFILES  =
 
 
 # Reviews search dictionaries:
-our @_REVSRCHDICT = qw(
+our @_REVSRCHDICT_NGRAMS = qw(
 	3 4 5
 	ing ion tio ati ent ter the ate con men ess tra ine and nce res pro per cti ect for tic sth rat sta ste ica ive ver est
 	tin str tor one ist all int com rea ant ite age lin ble ran rin cal der nte anc ity ure oun eri ain ers ear nal iti her
@@ -292,30 +292,21 @@ our @_REVSRCHDICT = qw(
 	); # N=3349, most frequent english n-grams first
 
 
-our @_REVSRCHDICT_OPTIMIZED = qw(
+our @_REVSRCHDICT_NGRAMS_LESS = qw(
 	3 4 5
 
-	let wit ing put ten met ass ini bit lit men job get rat cut mix our
-	are owe win all con hit the use pre ran ist ate you art per era ton
-	her end ter lot old one and low fit was fan too ill dec add tho pay
-	row tra ver act mad sat awe nor ive can new car had ish for tan pro
-	she lea ice not age two cat got off far lay wee tea try day kid est
-	sin way red etc par sit ser com cos led sum fed see own son mum por
-	out via saw fun rid ear ink now eat his hes mid but eye han ugh ron
-	bar who ask dit yea fav how pop bad due bug don sci sad set ame hot
-	man dry ago air lie fly run did bat law bed tip leg cry has mom tie
-	bag yes boy top ese gem him bus map war fix amo odd wat its app tal
-	owl mil dog las pun arc nth che buy egg fat der dia ler mal pig key
-	tom mis pet sun beg big alt hid que dat any box eso sex del rip nos
-	sea sky ama leo hog und ban sus lee aug mon mas til den ans hut yer
-	aka itu bet pen dig net nov asi boa ele los eve lei dio una vas tak
-	gap ale ont fue min tag les bow non hal sem imo rob uni sue ein ook
-	dan aun boo fin tem qui ins arm nel ora ref tim ani hop pan sam chi
-	hat ada lil esa nut poi inc sub api pat aid umm bin lad def uno doo
-	oli oct nit mes vol lap bir din pra pie tha mit dis sis uit ect sur
-	cap ben mai int ali ilk pub max dos mia eva dal raw flu wer ile des
-	gue dar pot bon elf har ven dip log ide apa mud wel bom woo ray cup
-	toe ant aim gar ero	
+	let wit ing put ten met ass ini bit lit men job get rat cut mix our are owe win all con hit the use pre ran ist ate you
+	art per era ton her end ter lot old one and low fit was fan too ill dec add tho pay row tra ver act mad sat awe nor ive
+	can new car had ish for tan pro she lea ice not age two cat got off far lay wee tea try day kid est sin way red etc par
+	sit ser com cos led sum fed see own son mum por out via saw fun rid ear ink now eat his hes mid but eye han ugh ron bar
+	who ask dit yea fav how pop bad due bug don sci sad set ame hot man dry ago air lie fly run did bat law bed tip leg cry
+	has mom tie bag yes boy top ese gem him bus map war fix amo odd wat its app tal owl mil dog las pun arc nth che buy egg
+	fat der dia ler mal pig key tom mis pet sun beg big alt hid que dat any box eso sex del rip nos sea sky ama leo hog und
+	ban sus lee aug mon mas til den ans hut yer aka itu bet pen dig net nov asi boa ele los eve lei dio una vas tak gap ale
+	ont fue min tag les bow non hal sem imo rob uni sue ein ook dan aun boo fin tem qui ins arm nel ora ref tim ani hop pan
+	sam chi hat ada lil esa nut poi inc sub api pat aid umm bin lad def uno doo oli oct nit mes vol lap bir din pra pie tha
+	mit dis sis uit ect sur cap ben mai int ali ilk pub max dos mia eva dal raw flu wer ile des gue dar pot bon elf har ven
+	dip log ide apa mud wel bom woo ray cup toe ant aim gar ero	
 	
 	    ion tio ati ent                     ess     ine     nce res    
 	    cti         tic sth     sta ste ica             tin str tor    
@@ -331,6 +322,83 @@ our @_REVSRCHDICT_OPTIMIZED = qw(
 	   # Randomization yield no improvements (rather opposite).
 	   # Consider searching with trigram combinations ("let ing") 
 	   # in order to get more unique results.
+	
+	
+our @_REVSRCHDICT_WORDS = qw(
+	a ability able about above accept according account across act action activity actually add address
+	administration admit adult affect after again against age agency agent ago agree agreement ahead air all allow
+	almost alone along already also although always American among amount analysis and animal another answer any
+	anyone anything appear apply approach area argue arm around arrive art article artist as ask assume at attack
+	attention attorney audience author authority available avoid away baby back bad bag ball bank bar base be beat
+	beautiful because become bed before begin behavior behind believe benefit best better between beyond big bill
+	billion bit black blood blue board body book born both box boy break bring brother budget build building
+	business but buy by call camera campaign can cancer candidate capital car card care career carry case catch
+	cause cell center central century certain certainly chair challenge chance change character charge check child
+	choice choose church citizen city civil claim class clear clearly close coach cold collection college color
+	come commercial common community company compare computer concern condition conference Congress consider
+	consumer contain continue control cost could country couple course court cover create crime cultural culture
+	cup current customer cut dark data daughter day dead deal death debate decade decide decision deep defense
+	degree Democrat democratic describe design despite detail determine develop development die difference
+	different difficult dinner direction director discover discuss discussion disease do doctor dog door down draw
+	dream drive drop drug during each early east easy eat economic economy edge education effect effort eight
+	either election else employee end energy enjoy enough enter entire environment environmental especially
+	establish even evening event ever every everybody everyone everything evidence exactly example executive exist
+	expect experience expert explain eye face fact factor fail fall family far fast father fear federal feel
+	feeling few field fight figure fill film final finally financial find fine finger finish fire firm first fish
+	five floor fly focus follow food foot for force foreign forget form former forward four free friend from front
+	full fund future game garden gas general generation get girl give glass go goal good government great green
+	ground group grow growth guess gun guy hair half hand hang happen happy hard have he head health hear heart
+	heat heavy help her here herself high him himself his history hit hold home hope hospital hot hotel hour house
+	how however huge human hundred husband I idea identify if image imagine impact important improve in include
+	including increase indeed indicate individual industry information inside instead institution interest
+	interesting international interview into investment involve issue it item its itself job join just keep key
+	kid kill kind kitchen know knowledge land language large last late later laugh law lawyer lay lead leader
+	learn least leave left leg legal less let letter level lie life light like likely line list listen little live
+	local long look lose loss lot love low machine magazine main maintain major majority make man manage
+	management manager many market marriage material matter may maybe me mean measure media medical meet meeting
+	member memory mention message method middle might military million mind minute miss mission model modern
+	moment money month more morning most mother mouth move movement movie Mr Mrs much music must my myself name
+	nation national natural nature near nearly necessary need network never new news newspaper next nice night no
+	none nor north not note nothing notice now n't number occur of off offer office officer official often oh oil
+	ok old on once one only onto open operation opportunity option or order organization other others our out
+	outside over own owner page pain painting paper parent part participant particular particularly partner party
+	pass past patient pattern pay peace people per perform performance perhaps period person personal phone
+	physical pick picture piece place plan plant play player PM point police policy political politics poor
+	popular population position positive possible power practice prepare present president pressure pretty prevent
+	price private probably problem process produce product production professional professor program project
+	property protect prove provide public pull purpose push put quality question quickly quite race radio raise
+	range rate rather reach read ready real reality realize really reason receive recent recently recognize record
+	red reduce reflect region relate relationship religious remain remember remove report represent Republican
+	require research resource respond response responsibility rest result return reveal rich right rise risk road
+	rock role room rule run safe same save say scene school science scientist score sea season seat second section
+	security see seek seem sell send senior sense series serious serve service set seven several sex sexual shake
+	share she shoot short shot should shoulder show side sign significant similar simple simply since sing single
+	sister sit site situation six size skill skin small smile so social society soldier some somebody someone
+	something sometimes son song soon sort sound source south southern space speak special specific speech spend
+	sport spring staff stage stand standard star start state statement station stay step still stock stop store
+	story strategy street strong structure student study stuff style subject success successful such suddenly
+	suffer suggest summer support sure surface system table take talk task tax teach teacher team technology
+	television tell ten tend term test than thank that the their them themselves then theory there these they
+	thing think third this those though thought thousand threat three through throughout throw thus time to today
+	together tonight too top total tough toward town trade traditional training travel treat treatment tree trial
+	trip trouble true truth try turn TV two type under understand unit until up upon us use usually value various
+	very victim view violence visit voice vote wait walk wall want war watch water way we weapon wear week weight
+	well west western what whatever when where whether which while white who whole whom whose why wide wife will
+	win wind window wish with within without woman wonder word work worker world worry would write writer wrong
+	yard yeah year yes yet you young your yourself
+	); # N=1000, most frequent english words first; pretty good results
+	
+
+our @_REVSRCHDICT_WORDS_LESS = qw(
+	time person year way day thing man world life hand part child eye woman place work week case point government
+	company number group problem fact be have do say get make go know take see come think look want give use find
+	tell ask work seem feel try leave call good new first last long great little own other old right big high
+	different small large next early young important few public bad same able to of in for on with at by from up
+	about into over after the and a that I it not he as you this but his they her she or an will my one all would
+	there their
+	);
+	
+
 
 
 our $_cookie    = undef;
@@ -817,7 +885,6 @@ sub greadauthorbk
   level 1   = search with a combination of filters (max 5400 ratings)
   level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
   level n   = like 1 plus dict-search with stall-time of n minutes
-  level n>9 = use a larger dictionary (slowest level)
 
 =back
 
@@ -871,7 +938,7 @@ sub greadreviews
 	
  	my $stalltime = $rigor * 60;  
 	my $t0        = time;  # Stuff above might already take 60s
-	my $ra_dict   = $rigor < 10 ? \@_REVSRCHDICT_OPTIMIZED : \@_REVSRCHDICT;
+	my $ra_dict   = \@_REVSRCHDICT_WORDS;
 	
 	for my $word (@$ra_dict)
 	{
@@ -1211,7 +1278,9 @@ sub _revs_url
 	my $sort = shift || undef;
 	my $rat  = shift || undef;
 	my $txt  = shift || undef;
+	   $txt  =~ s/\s+/+/g if $txt;
 	my $pag  = shift || 1;
+	
 	return "https://www.goodreads.com/book/reviews/${bid}?"
 		.( $sort && !$txt ? "sort=${sort}&"       : '' )
 		.( $txt           ? "search_text=${txt}&" : '' )

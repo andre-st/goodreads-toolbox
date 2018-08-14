@@ -26,8 +26,7 @@ Mandatory arguments to long options are mandatory for short options too.
  level 0   = search newest reviews only (max 300 ratings)
  level 1   = search with a combination of filters (max 5400 ratings)
  level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
- level n   = like 1 plus dict-search with stall-time of n minutes
- level n>9 = use a larger dictionary (slowest level) - default is 10
+ level n   = like 1 plus dict-search with stall-time of n minutes - default is 10
 
 
 =item B<-c, --cache>=F<numdays>
