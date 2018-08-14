@@ -75,8 +75,8 @@ to people who don't know Linux etc. You probably won't need this directory.
 
 ## dict/
 
-Some programs use dictionaries. You can point these programs to a 
-specific dictionary file in this folder.
+Some programs use dictionaries. You can point these programs to an
+alternative dictionary-file in this folder.
 [Learn more](dict/README.md)
 
 
