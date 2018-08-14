@@ -371,14 +371,14 @@ TODO: line of code is useless when died
 
 =item * I<on_progress> =E<gt> see C<gmeter()> [optional]
 
+=item * I<dict_path>   =E<gt> path to a dictionary text-file for dict-search (one word per line)
+
 =item * I<rigor>       =E<gt> C<int> [optional, default 2]
 
   level 0   = search newest reviews only (max 300 ratings)
   level 1   = search with a combination of filters (max 5400 ratings)
   level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
   level n   = like 1 plus dict-search with stall-time of n minutes
-
-=item * I<dict_path>   =E<gt> Path to a dictionary text-file (one word per line)
 
 =back
 
