@@ -24,7 +24,7 @@ endif
 	perl -MCPAN -e 'install List::MoreUtils, HTML::Entities, URI::Escape, Cache::FileCache, WWW::Curl::Easy'
 	perl -MCPAN -e 'install Text::CSV, Log::Any'
 	chmod +x *.pl
-	ln -s words-en-xl.lst ./dict/default.lst
+	ln -sf words-en-xl.lst ./dict/default.lst
 
 
 ## make friendrated:  Installs Perl modules
