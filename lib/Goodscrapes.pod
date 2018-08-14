@@ -268,6 +268,7 @@ TODO: line of code is useless when died
 
 =item * copy-paste cookie from Chrome's DevTools network-view:
         L<https://www.youtube.com/watch?v=o_CYdZBPDCg>
+
 =back
 
 =head2 C<bool> gtestcookie()
