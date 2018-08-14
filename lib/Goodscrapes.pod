@@ -244,26 +244,30 @@ TODO: line of code is useless when died
 
 =over
 
-=item * generates a CLI progress indicator function $f, with 
-        I<$f-E<gt>( 20 )> adding 20 to the previous value and 
+=item * generates and returns a CLI progress indicator function $f, 
+        with I<$f-E<gt>( 20 )> adding 20 to the last values and 
         printing the sum like "40 unit_str".
-        Given a second argument with the max value, 
-        it will print a percentage.
-        in a modern terminal, the text remains at the same 
-        position if called multiple times
+        Given a second argument (the max value), 
+        it will print a percentage without any unit: "10%".
+        Given a modern terminal, the text remains at the same 
+        position if the progress function is called multiple times.
 
 =back
 
-=head2 C<void> gsetcookie(I<{ content =E<gt> undef, filepath =E<gt> '.cookie' }>)
+=head2 C<void> gsetcookie(I<{ ... }>)
 
 =over
 
-=item * I<filepath> is ignored if I<content> is set
-
 =item * some Goodreads.com pages are only accessible by authenticated members
 
-=item * copy-paste cookie from Chrome's DevTools network-view
+=item * I<content> =E<gt> long string with cookie data that can be send to Goodreads,
+        alternatively see I<filepath> [optional]
 
+=item * I<filepath> =E<gt> path to a text-file with cookie-data; 
+        parameter is ignored if I<content> is set [optional, default '.cookie']
+
+=item * copy-paste cookie from Chrome's DevTools network-view:
+        L<https://www.youtube.com/watch?v=o_CYdZBPDCg>
 =back
 
 =head2 C<bool> gtestcookie()
@@ -294,32 +298,37 @@ TODO: line of code is useless when died
 
 =head2 C<L<%book|"%book">> greadbook( $book_id )
 
-=head2 C<void> greadshelf(I<{ from_user_id, ra_from_shelves, rh_into =E<gt> undef, 
-			on_book =E<gt> sub{}, on_progress =E<gt> sub{} }>)
+=head2 C<void> greadshelf(I<{ ... }>)
 
 =over
 
 =item * reads a list of books present in the given shelves of the given user
 
-=item * I<ra_from_shelves>: string-array with shelf names
+=item * I<from_user_id>    =E<gt> string
 
-=item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)>
+=item * I<ra_from_shelves> =E<gt> string-array reference with shelf names
 
-=item * I<on_book>: receives \L<%book|"%book"> argument
+=item * I<rh_into>         =E<gt> hash reference C<(id =E<gt> L<%book|"%book">,...)> [optional]
 
-=item * I<on_progress>: see C<gmeter()>
+=item * I<on_book>         =E<gt> C<sub( L<%book|"%book"> )> [optional]
+
+=item * I<on_progress>     =E<gt> see C<gmeter()> [optional]
 
 =back
 
-=head2 C<void> greadauthors(I<{ from_user_id, ra_from_shelves, rh_into, on_progress =E<gt> sub{} }>)
+=head2 C<void> greadauthors(I<{ ... }>)
 
 =over
 
 =item * gets a list of authors whose books are present in the given shelves of the given user
 
-=item * I<ra_from_shelves>: string-array with shelf names
+=item * I<from_user_id>    =E<gt> string
 
-=item * I<on_progress>: see gmeter()
+=item * I<ra_from_shelves> =E<gt> string-array reference with shelf names
+
+=item * I<rh_into>         =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)> [optional]
+
+=item * I<on_progress>     =E<gt> see C<gmeter()> [optional]
 
 =item * If you need authors I<and> books data, then use C<greadshelf>
         which also populates the I<author> property of every book
@@ -328,18 +337,19 @@ TODO: line of code is useless when died
 
 =back
 
-=head2 C<void> greadauthorbk(I<{ rh_into, author_id, on_book =E<gt> sub{}, 
-			on_progress =E<gt> sub{} }>)
+=head2 C<void> greadauthorbk(I<{ ... }>)
 
 =over
 
 =item * reads the Goodreads.com list of books written by the given author
 
-=item * I<rh_into>: C<(id =E<gt> L<%book|"%book">,...)>
+=item * I<author_id>   =E<gt> string
 
-=item * I<on_book>: receives \L<%book|"%book"> argument
+=item * I<rh_into>     =E<gt> hash reference C<(id =E<gt> L<%book|"%book">,...)>
 
-=item * I<on_progress>: see C<gmeter()>
+=item * I<on_book>     =E<gt> C<sub( L<%book|"%book"> )> [optional]
+
+=item * I<on_progress> =E<gt> see C<gmeter()> [optional]
 
 =back
 
@@ -350,17 +360,18 @@ TODO: line of code is useless when died
 =item * loads ratings (no text), reviews (text), "to-read", "added" etc;
         you can filter later or via I<on_filter> parameter
 
-=item * I<for_book>: C<L<%book|"%book">>
+=item * I<for_book>    =E<gt> hash reference C<L<%book|"%book">>, see C<greadbook()>
 
-=item * I<rh_into>: reference to C<(id =E<gt> L<%review|"%review">,...)>
+=item * I<rh_into>     =E<gt> hash reference C<(id =E<gt> L<%review|"%review">,...)>
 
-=item * I<since>: of type C<Time::Piece> [optional]
+=item * I<since>       =E<gt> of type C<Time::Piece> [optional]
 
-=item * I<on_filter>: return false to drop review (1st argument)
+=item * I<on_filter>   =E<gt> C<sub( L<%review|"%review"> )>, return 0 to drop [optional]
 
-=item * I<on_progress>: see C<gmeter()> [optional]
+=item * I<on_progress> =E<gt> see C<gmeter()> [optional]
 
 =item * I<rigor>: [optional, default 2]
+
   level 0   = search newest reviews only (max 300 ratings)
   level 1   = search with a combination of filters (max 5400 ratings)
   level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
@@ -370,53 +381,58 @@ TODO: line of code is useless when died
 
 =back
 
-=head2 C<void> greadfolls(I<{ rh_into, from_user_id, on_progress =E<gt> sub{}, 
-			incl_authors =E<gt> 1 }>)
+=head2 C<void> greadfolls(I<{ ... }>)
 
 =over
 
 =item * queries Goodreads.com for the friends and followees list of the given user
 
-=item * I<rh_into>: C<(id =E<gt> L<%user|"%user">,...)> 
+=item * I<rh_into>      =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)>
 
-=item * I<on_progress>: see C<gmeter()>
+=item * I<from_user_id> =E<gt> string
+
+=item * I<on_progress>  =E<gt> see C<gmeter()> [optional]
+
+=item * I<incl_authors> =E<gt> C<bool> [optional, default 1]
 
 =item * Precondition: gsetcookie()
 
-=item * returns friends AND followees
-
 =back
 
-=head2 C<void> greadsimilaraut(I<{ rh_into, author_id, on_progress =E<gt> sub{} }>)
+=head2 C<void> greadsimilaraut(I<{ ... }>)
 
 =over
 
 =item * reads the Goodreads.com list of authors who are similar to the given author
 
-=item * I<rh_into>: C<(id =E<gt> L<%user|"%user">,...)>
+=item * I<rh_into>     =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)>
 
-=item * I<on_progress>: see C<gmeter()>
+=item * I<author_id>   =E<gt> string
+
+=item * I<on_progress> =E<gt> see C<gmeter()> [optional]
 
 =item * increments I<'_seen'> counter of each author if already in I<%$rh_into>
 
 =back
 
-=head2 C<void> gsearch(I<{ ra_into, phrase, is_exact =E<gt> 0, 
-			on_progress =E<gt> sub{}, num_ratings =E<gt> 0,
-			ra_order_by =E<gt> [ 'stars', 'num_ratings', 'year' ]
-			}>)
+=head2 C<void> gsearch(I<{ ... }>)
 
 =over
 
 =item * searches the Goodreads.com database for books that match a given phrase
 
-=item * I<ra_into>: C<(L<%book|"%book">,...)> 
+=item * I<ra_into>     =E<gt> array reference C<(L<%book|"%book">,...)> 
 
-=item * I<order_by>: array with property names from C<(L<%book|"%book">,...)> 
+=item * I<phrase>      =E<gt> query string
 
-=item * I<on_progress>: see C<gmeter()>
+=item * I<is_exactg>   =E<gt> boolean [optional, default 0]
 
-=item * supports percent progress functions: $pfn-E<gt>( $books_loaded, $books_total )
+=item * I<ra_order_by> =E<gt> array reference: property names from C<(L<%book|"%book">,...)> 
+                       [optional, default: 'stars', 'num_ratings', 'year']
+
+=item * I<num_ratings> =E<gt> only list books with at least N ratings [optional, default 0]
+
+=item * I<on_progress> =E<gt> see C<gmeter()>  [optional]
 
 =back
 

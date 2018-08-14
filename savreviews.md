@@ -39,9 +39,10 @@ eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
 minim veniam, quis nostrud exercitation ullamco laboris nisi
 ```
 
-Note: Text-files contain review-texts only. 
-They do not contain any other information, e.g., user names, 
-datetime of a review, stars-rating etc.
+**Note:**
+
+The generated files contain review-texts only. They do not contain any other
+information, e.g., user names, datetime of a review, stars-rating etc.
 
 
 
