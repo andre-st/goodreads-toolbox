@@ -16,8 +16,9 @@ or [Giulia (2018)](https://www.goodreads.com/topic/show/19477061-how-can-i-extra
 
 
 ## This
-savreviews-8882222.txt:
-```text
+```
+$ cat savreviews-8882222.txt
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
 minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -38,6 +39,11 @@ eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
 minim veniam, quis nostrud exercitation ullamco laboris nisi
 ```
 
+Note: Text-files contain review-texts only. 
+They do not contain any other information, e.g., user names, 
+datetime of a review, stars-rating etc.
+
+
 
 ## How to generate this on a GNU/Linux operating system
 
@@ -48,7 +54,7 @@ $ sudo make savreviews
 $ ./savreviews.pl --help
 $ ./savreviews.pl GOODREADSBOOKID
 
-Loading reviews for "To the Lighthouse"... 3216 of 5514 reviews
+Loading reviews for "To the Lighthouse"... 4962 of 5514 reviews
 Writing reviews to "savreviews-GOODREADSBOOKID.txt"... 
 Total time: 87 minutes
 

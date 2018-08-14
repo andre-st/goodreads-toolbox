@@ -73,6 +73,14 @@ Static webpages that I use to offer [this software as a service](https://andre-s
 to people who don't know Linux etc. You probably won't need this directory.
 
 
+## dict/
+
+Some programs use dictionaries. You can point these programs to a 
+specific dictionary file in this folder.
+[Learn more](dict/README.md)
+
+
+
 ## further reading 
 
 - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
