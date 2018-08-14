@@ -663,7 +663,7 @@ sub greadauthorbk
 
 =item * I<on_progress> =E<gt> see C<gmeter()> [optional]
 
-=item * I<rigor>: [optional, default 2]
+=item * I<rigor>       =E<gt> level number [optional, default 2]
 
   level 0   = search newest reviews only (max 300 ratings)
   level 1   = search with a combination of filters (max 5400 ratings)
