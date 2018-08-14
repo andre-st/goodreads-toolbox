@@ -31,7 +31,7 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =item B<-d, --dict>=F<filename>
 
-default is F<./dict/words-en-xl.lst>
+default is F<./dict/default.lst>
 
 
 =item B<-c, --cache>=F<numdays>
@@ -117,7 +117,7 @@ use Goodscrapes;
 our $TSTART    = time();
 our $CACHEDAYS = 7;
 our $RIGOR     = 10;
-our $DICTPATH  = './dict/words-en-xl.lst';
+our $DICTPATH  = './dict/default.lst';
 our $OUTPATH;
 our $BOOKID;
 our $REVSEPERATOR = "\n\n".( '-' x 79 )."\n\n";

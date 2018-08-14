@@ -41,7 +41,7 @@ similarity. Cut away the huge bulge, and check the rest manually
 
 =item B<-d, --dict>=F<filename>
 
-default is F<./dict/words-en-xl.lst>
+default is F<./dict/default.lst>
 
 
 =item B<-c, --cache>=F<numdays>
@@ -152,7 +152,7 @@ use Goodscrapes;
 our $TSTART    = time();
 our $MINSIMIL  = 5;
 our $RIGOR     = 1;
-our $DICTPATH  = './dict/words-en-xl.lst';
+our $DICTPATH  = './dict/default.lst';
 our $CACHEDAYS = 31;
 our $USECOOKIE = 0;
 our @SHELVES;
