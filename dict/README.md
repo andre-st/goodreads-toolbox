@@ -28,8 +28,8 @@ Woolf's "Mrs Dalloway" had 7,376 text reviews:
 
 File naming conventions:
 
-- ${TYPE}-${LANGUAGE2LETTERCODE}-${SIZE}.lst with size 'lg' meaning large
-  dictionaries and 'sm' small ones (somehow optimized), `lst` just means list
+- `${TYPE}-${LANGUAGE2LETTERCODE}-${SIZE}.lst` with size `lg` meaning large
+  dictionaries and `sm` small ones (somehow optimized), `lst` just means list
   in order to indicate an ASCII file with one word per line
 
     
