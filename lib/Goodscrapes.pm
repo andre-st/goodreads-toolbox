@@ -514,7 +514,7 @@ sub gsetcache
 
 sub greadbook
 {
-	my $bid = shift;
+	my $bid = _require_arg( 'book_id', shift );
 	return _extract_book( _html( _book_url( $bid ) ) );
 }
 
@@ -663,7 +663,7 @@ sub greadauthorbk
 
 =item * I<on_progress> =E<gt> see C<gmeter()> [optional]
 
-=item * I<dict_path>   =E<gt> path to a dictionary text-file for dict-search (one word per line)
+=item * I<dict_path>   =E<gt> path to a dictionary text-file (1 word per line) [optional]
 
 =item * I<rigor>       =E<gt> C<int> [optional, default 2]
 
