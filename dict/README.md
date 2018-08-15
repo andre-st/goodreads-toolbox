@@ -7,9 +7,9 @@ You get a maximum of 300 short excerpts. Goodreads does not even use this API on
 its own website, it is a side project and is neglected accordingly. 
 
 They use other mechanisms to display reviews on their website, mechanisms that
-are tapped by my own programs ("AJAX endpoints" in this case). These mechanisms
-have their own limitations: you can not see all reviews, but search for reviews
-and filter by the number of stars, age etc.
+are used by the Toolbox programs too ("AJAX endpoints" in this case). 
+These mechanisms have their own limitations: you can not see all reviews, 
+but search for reviews and filter by the number of stars, age etc.
 
 Some Toolbox programs run a dictionary (with ngrams, most common words etc)
 against this search in order to collect reviews.
