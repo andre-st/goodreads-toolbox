@@ -14,9 +14,17 @@ and filter by the number of stars, age etc.
 Some Toolbox programs run a dictionary (with ngrams, most common words etc)
 against this search and collect reviews.
 
-Woolf's "To the Lighthouse" has 5514 text reviews: 948 found without
-dict-search (only filters-based search).
-With dict-search: 3057 (ngrams) or 4962 (words).
+Woolf's "To the Lighthouse" had 5514 text reviews: 
+
+- 948  or 17% found without dict-search (only filters-based search)
+- 3057 or 55% found with `ngram-en-xl.lst`
+- 4962 or 90% found with `(words-en-xl.lst`
+- 5127 or 93% found with `ngram+words-en-xl.lst`
+
+Woolf's "Mrs Dalloway" had 7,376 text reviews: 
+
+- 6413 or 87% found with `words-en-xl.lst`
+- 6715 or 91% found with `ngram+words-en.xl.lst`
 
 
 ## ngram-en-xl.lst
@@ -47,4 +55,6 @@ Performed better than the Ngrams based dictionaries
 N=114
 
 
+## ngram+words-en-xl.lst
 
+N=4349
