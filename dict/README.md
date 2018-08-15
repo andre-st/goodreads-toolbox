@@ -69,7 +69,7 @@ Performed better than the Ngrams based dictionaries
 N=114
 
 
-## ngram+words-en-lg.lst
+## ngram,words-en-lg.lst
 
 N=4349, little more results than just words-en-lg.lst
 but way more search time (1000 vs 4349)
