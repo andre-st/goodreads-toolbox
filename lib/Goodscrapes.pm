@@ -829,7 +829,7 @@ sub greadsimilaraut
 
 =item * I<phrase>      =E<gt> C<string> with space separated keywords
 
-=item * I<is_exactg>   =E<gt> C<bool> [optional, default 0]
+=item * I<is_exact>    =E<gt> C<bool> [optional, default 0]
 
 =item * I<ra_order_by> =E<gt> array reference: property names from C<(L<%book|"%book">,...)> 
                        [optional, default: 'stars', 'num_ratings', 'year']
@@ -933,7 +933,7 @@ sub _amz_url
 
 =item * "&sort=rating" is important for `friendrated.pl` with its book limit:
         Some users read 9000+ books and scraping would take forever. 
-        We sort lower-rated books to the end and just scrape the first pages:
+        We sort lower-rated books to the end and I<could> just scrape the first pages:
         Even those with 9000+ books haven't top-rated more than 2700 books.
 
 =item * "&shelf" supports intersection "shelf1%2Cshelf2" (comma)
