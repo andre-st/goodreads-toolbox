@@ -18,7 +18,7 @@ Woolf's "To the Lighthouse" had 5514 text reviews:
 
 - 948  or 17% found without dict-search (only filters-based search)
 - 3057 or 55% found with `ngram-en-xl.lst`
-- 4962 or 90% found with `(words-en-xl.lst`
+- 4962 or 90% found with `words-en-xl.lst`
 - 5127 or 93% found with `ngram+words-en-xl.lst`
 
 Woolf's "Mrs Dalloway" had 7,376 text reviews: 
