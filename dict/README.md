@@ -32,7 +32,12 @@ File naming conventions:
   dictionaries and `sm` small ones (somehow optimized), `lst` just means list
   in order to indicate an ASCII file with one word per line
 
-    
+  
+Smaller dictionaries are usually a subset of the larger ones, so you should 
+start with the smaller ones to test. Since all Toolbox programs cache their 
+results for some days, switching to the larger dictionaries in addition 
+will not waste time with downloading already present results.
+
 
 ## ngram-en-lg.lst
 
@@ -48,7 +53,8 @@ already present in the Harry Potter set.
 Works better with a larger set of available reviews.
 Randomization yield no improvements (rather opposite).
 Consider searching with trigram combinations ("let ing") 
-in order to get more unique results.
+in order to get more unique results.;
+often as good as the whole `ngram-en-lg.lst`
 
 
 ## words-en-lg.lst
@@ -64,4 +70,6 @@ N=114
 
 ## ngram+words-en-lg.lst
 
-N=4349
+N=4349, little more results than just words-en-lg.lst
+but way more search time (1000 vs 4349)
+
