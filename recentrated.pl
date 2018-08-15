@@ -205,7 +205,8 @@ if( $csv )
 		    . " [9 new] ratings better viewed on book page \n"
 		    . "                                            \n"
 		    . " Just reply 'unsubscribe' to unsubscribe.   \n" 
-		    . " Automatically checks newly added books.    \n"
+		    . " Don't want mails daily? Reply 'weekly'.    \n"
+		    . " Change to better shelf? Reply shelfname.   \n"
 		    . " Via https://andre-st.github.io/goodreads/  \n";
 	}
 	
