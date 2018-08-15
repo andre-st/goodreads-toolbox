@@ -69,7 +69,8 @@ Total time: 87 minutes
 - review text might include HTML code, URLs
 - review text can be in any language, e.g., german or russian
 - review text might include non-latin characters, e.g., cyrillic
-
+- no duplicate reviewers, but could theoretically contain duplicate reviews posted by different members
+  (needs data cleansing)
 
 
 ## Feedback

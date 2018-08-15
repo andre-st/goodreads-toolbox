@@ -12,7 +12,7 @@ These mechanisms have their own limitations: you can not see all reviews,
 but search for reviews and filter by the number of stars, age etc.
 
 Some Toolbox programs run a dictionary (with ngrams, most common words etc)
-against this search in order to collect reviews.
+against this search in order to collect unique reviews.
 
 Woolf's "To the Lighthouse" had 5514 text reviews: 
 
@@ -26,6 +26,10 @@ Woolf's "Mrs Dalloway" had 7376 text reviews:
 - 6413 or 87% found with `words-en-lg.lst`
 - 6715 or 91% found with `ngram,words-en-xl.lst`
 
+(no duplicate reviewers; but could theoretically contain duplicate reviews posted by different members,
+which would be counted by Goodreads too)
+
+    
 File naming conventions:
 
 - `${TYPE}-${LANGUAGE2LETTERCODE}-${SIZE}.lst` with size `lg` meaning large
