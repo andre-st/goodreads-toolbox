@@ -19,18 +19,19 @@ Woolf's "To the Lighthouse" had 5514 text reviews:
 - 948  or 17% found without dict-search (only filters-based search)
 - 3057 or 55% found with `ngram-en-lg.lst`
 - 4962 or 90% found with `words-en-lg.lst`
-- 5127 or 93% found with `ngram+words-en-lg.lst`
+- 5127 or 93% found with `ngram,words-en-lg.lst`
 
 Woolf's "Mrs Dalloway" had 7376 text reviews: 
 
 - 6413 or 87% found with `words-en-lg.lst`
-- 6715 or 91% found with `ngram+words-en-xl.lst`
+- 6715 or 91% found with `ngram,words-en-xl.lst`
 
 File naming conventions:
 
 - `${TYPE}-${LANGUAGE2LETTERCODE}-${SIZE}.lst` with size `lg` meaning large
   dictionaries and `sm` small ones (somehow optimized), `lst` just means list
-  in order to indicate an ASCII file with one word per line
+  in order to indicate an ASCII file with one word per line;
+  combine with comma, e.g., `ngram,words-...` or `...-en,de-...`
 
   
 Smaller dictionaries are usually a subset of the larger ones, so you should 
