@@ -50,15 +50,12 @@ N=3349, most frequent english n-grams first
 
 ## File: ngram-en-sm.lst
 
-N=390, most frequent english trigrams tested against Harry Potter
-reviews: each led to 10-30 unique(!) hits, best first.
-Appended most frequent english trigrams which are not
-already present in the Harry Potter set.
-Works better with a larger set of available reviews.
-Randomization yield no improvements (rather opposite).
-Consider searching with trigram combinations ("let ing") 
-in order to get more unique results.;
-often as good as the whole `ngram-en-lg.lst`
+N=390, most frequent english trigrams from `ngram-en-lg.lst` tested against
+Harry Potter reviews: I only saved trigrams which led to 10-30 unique(!) hits,
+best first.  Appended most frequent english trigrams which are not already
+present in the Harry Potter set.  Works better with a larger set of available
+reviews.  Randomization yield no improvements (rather opposite). 
+Seems often as good as the whole `ngram-en-lg.lst`.
 
 
 ## File: words-en-lg.lst
