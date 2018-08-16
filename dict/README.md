@@ -14,20 +14,20 @@ but search for reviews and filter by the number of stars, age etc.
 Some Toolbox programs run a dictionary (with ngrams, most common words etc)
 against this search in order to collect reviews.
 
-**Woolf's "To the Lighthouse" had 5514 text reviews:**
 
-- 948  or 17% found without dict-search (only filters-based search)
-- 3057 or 55% found with `ngram-en-lg.lst`
-- 4962 or 90% found with `words-en-lg.lst`
-- 5127 or 93% found with `ngram,words-en-lg.lst`
+| Dictionary             | Woolf "To the Lighthouse" | Woolf "Mrs Dalloway" |
+|                        | 5514 text reviews         | 7376 text reviews    |
+|:-----------------------|---------------------------|----------------------|
+| none (filters only)    | 948 or 17%                | -
+| ngram-en-lg.lst        | 3057 or 55%               | -
+| ngram-en-sm.lst        | -                         | -
+| words-en-lg.lst        | 4962 or 90%               | 6413 or 87%
+| words-en-sm.lst        | -                         | -
+| ngram,words-en-lg.lst  | 5127 or 93%               | 6715 or 91%
 
-**Woolf's "Mrs Dalloway" had 7376 text reviews:**
 
-- 6413 or 87% found with `words-en-lg.lst`
-- 6715 or 91% found with `ngram,words-en-xl.lst`
-
-(no duplicate reviewers; but could theoretically contain duplicate reviews posted by different members,
-which would be counted by Goodreads too)
+(no duplicate reviewers; but could theoretically contain duplicate reviews
+posted by different members, which would be counted by Goodreads too)
 
     
 ## File naming conventions
