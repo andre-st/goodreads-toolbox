@@ -15,9 +15,9 @@ Some Toolbox programs run a dictionary (with ngrams, most common words etc)
 against this search in order to collect reviews.
 
 
-| Dictionary             | Woolf<br>"To the Lighthouse"<br>5514 text reviews | Woolf<br>"Mrs Dalloway"<br>7376 text reviews |
+| Dictionary/Finds       | "To the Lighthouse"<br>5514 text reviews | "Mrs Dalloway"<br>7376 text reviews |
 |:-----------------------|--------------------------:|---------------------:|
-| none (filters only)    | 948 or 17%                | -
+| _none (filters only)_  | 948 or 17%                | -
 | ngram-en-lg.lst        | 3057 or 55%               | -
 | ngram-en-sm.lst        | -                         | -
 | words-en-lg.lst        | 4962 or 90%               | 6413 or 87%
