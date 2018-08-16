@@ -43,8 +43,8 @@ Loading data from Goodreads is a time consuming process.
 
 =item B<-o, --outfile>=F<filename>
 
-name of the HTML file where we write results to, default is
-"./savreviews-F<goodbookid>.html"
+name of the text file where we write results to, default is
+"./savreviews-F<goodbookid>.txt"
 
 
 =item B<-?, --help>
