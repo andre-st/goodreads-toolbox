@@ -15,6 +15,8 @@ Some Toolbox programs run a dictionary against this search in order to collect
 reviews.
 
 
+## Results
+
 | Dictionary             | Lines | "To the Lighthouse"<br>5514 text reviews | "Mrs Dalloway"<br>7376 text reviews |
 |:-----------------------|------:|--------------------------:|---------------------:|
 | _none (filters only)_  |     - | 948 or 17%                | _untested_
