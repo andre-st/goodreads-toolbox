@@ -11,8 +11,8 @@ are used by the Toolbox programs too ("AJAX endpoints" in this case).
 These mechanisms have their own limitations: you can not see all reviews, 
 but search for reviews and filter by the number of stars, age etc.
 
-Some Toolbox programs run a dictionary (with ngrams, most common words etc)
-against this search in order to collect reviews.
+Some Toolbox programs run a dictionary against this search in order to collect 
+reviews.
 
 
 | Dictionary             | Lines | "To the Lighthouse"<br>5514 text reviews | "Mrs Dalloway"<br>7376 text reviews |
@@ -49,7 +49,7 @@ most frequent english n-grams first
 
 ## File: ngram-en-sm.lst
 
-N=390, most frequent english trigrams from `ngram-en-lg.lst` tested against
+most frequent english trigrams from `ngram-en-lg.lst` tested against
 Harry Potter reviews: I only saved trigrams which led to 10-30 unique(!) hits,
 best first.  Appended most frequent english trigrams which are not already
 present in the Harry Potter set.  Works better with a larger set of available
