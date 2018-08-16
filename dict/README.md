@@ -15,14 +15,14 @@ Some Toolbox programs run a dictionary (with ngrams, most common words etc)
 against this search in order to collect reviews.
 
 
-| Dictionary / Finds     | "To the Lighthouse"<br>5514 text reviews | "Mrs Dalloway"<br>7376 text reviews |
-|:-----------------------|--------------------------:|---------------------:|
-| _none (filters only)_  | 948 or 17%                | _untested_
-| ngram-en-lg.lst        | 3057 or 55%               | _untested_
-| ngram-en-sm.lst        | _untested_                | _untested_
-| words-en-lg.lst        | 4962 or 90%               | 6413 or 87%
-| words-en-sm.lst        | _untested_                | _untested_
-| ngram,words-en-lg.lst  | 5127 or 93%               | 6715 or 91%
+| Dictionary / Finds     | Size | "To the Lighthouse"<br>5514 text reviews | "Mrs Dalloway"<br>7376 text reviews |
+|:-----------------------|-----:|--------------------------:|---------------------:|
+| _none (filters only)_  |      | 948 or 17%                | _untested_
+| ngram-en-lg.lst        | 3349 | 3057 or 55%               | _untested_
+| ngram-en-sm.lst        |  390 | _untested_                | _untested_
+| words-en-lg.lst        | 1000 | 4962 or 90%               | 6413 or 87%
+| words-en-sm.lst        |  114 | _untested_                | _untested_
+| ngram,words-en-lg.lst  | 4349 | 5127 or 93%               | 6715 or 91%
 
 
 (no duplicate reviewers; but could theoretically contain duplicate reviews
@@ -44,7 +44,7 @@ will not waste time with downloading already present results.
 
 ## File: ngram-en-lg.lst
 
-N=3349, most frequent english n-grams first
+most frequent english n-grams first
 
 
 ## File: ngram-en-sm.lst
@@ -59,17 +59,15 @@ Seems often as good as the whole `ngram-en-lg.lst`.
 
 ## File: words-en-lg.lst
 
-N=1000, most frequent english words first.
+most frequent english words first.
 Performed better than the Ngrams based dictionaries
 
 
 ## File: words-en-sm.lst
 
-N=114
-
 
 ## File: ngram,words-en-lg.lst
 
-N=4349, little more results than just words-en-lg.lst
+little more results than just words-en-lg.lst
 but way more search time (1000 vs 4349)
 
