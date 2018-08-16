@@ -148,7 +148,7 @@ printf( "for \"%s\"...", $book{title} );
 
 my $fh = IO::File->new( $OUTPATH, '>:utf8' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 
-greadreviews( for_book    => \%book,
+greadreviews( rh_for_book => \%book,
               rigor       => $RIGOR,
               rh_into     => \%reviews,
               dict_path   => $DICTPATH,

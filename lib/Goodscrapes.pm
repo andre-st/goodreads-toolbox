@@ -653,7 +653,7 @@ sub greadauthorbk
 =item * loads ratings (no text), reviews (text), "to-read", "added" etc;
         you can filter later or via I<on_filter> parameter
 
-=item * I<for_book>    =E<gt> hash reference C<L<%book|"%book">>, see C<greadbook()>
+=item * I<rh_for_book> =E<gt> hash reference C<L<%book|"%book">>, see C<greadbook()>
 
 =item * I<rh_into>     =E<gt> hash reference C<(id =E<gt> L<%review|"%review">,...)>
 
@@ -679,7 +679,7 @@ sub greadauthorbk
 sub greadreviews
 {
 	my (%args)   = @_;
-	my $book     =_require_arg( 'for_book', $args{ for_book });
+	my $rh_book  =_require_arg( 'rh_for_book', $args{ rh_for_book });
 	my $rigor    = defined $args{ rigor } ? $args{ rigor } : 2;
 	my $dictpath = $args{ dict_path   } || undef;
 	my $rh       = $args{ rh_into     } || undef;
@@ -687,8 +687,8 @@ sub greadreviews
 	my $pfn      = $args{ on_progress } || sub{};
 	my $since    = $args{ since       } || $_EARLIEST;
 	   $since    = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
-	my $limit    = defined $book->{num_ratings} ? $book->{num_ratings} : 5000000;
-	my $bid      = $book->{id};
+	my $limit    = defined $rh_book->{num_ratings} ? $rh_book->{num_ratings} : 5000000;
+	my $bid      = $rh_book->{id};
 	my %revs;    # unique and empty, otherwise we cannot easily compute limits
 	
 	# Goodreads reviews filters get us dissimilar(!) subsets which are merged

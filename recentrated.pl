@@ -146,10 +146,10 @@ if( $csv )
 		next if $num_new_rat <= 0;
 		
 		my %revs;
-		greadreviews( for_book => $b, 
-		              since    => $last_csv_updtime,
-		              rh_into  => \%revs,
-		              rigor    => 0 );
+		greadreviews( rh_for_book => $b, 
+		              since       => $last_csv_updtime,
+		              rh_into     => \%revs,
+		              rigor       => 0 );
 		
 		next unless %revs;
 		

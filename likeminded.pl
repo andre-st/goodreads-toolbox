@@ -244,7 +244,7 @@ for my $b (values %books)
 	
 	# Rigor level 0 is useless here, and 2+ (dict-search) has a bad 
 	# cost/benefit ratio given hundreds of books:
-	greadreviews( for_book    => $b, 
+	greadreviews( rh_for_book => $b, 
 	              rh_into     => \%revs,
 	              rigor       => $RIGOR,  
 	              dict_path   => $DICTPATH,

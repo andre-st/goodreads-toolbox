@@ -361,7 +361,7 @@ TODO: line of code is useless when died
 =item * loads ratings (no text), reviews (text), "to-read", "added" etc;
         you can filter later or via I<on_filter> parameter
 
-=item * I<for_book>    =E<gt> hash reference C<L<%book|"%book">>, see C<greadbook()>
+=item * I<rh_for_book> =E<gt> hash reference C<L<%book|"%book">>, see C<greadbook()>
 
 =item * I<rh_into>     =E<gt> hash reference C<(id =E<gt> L<%review|"%review">,...)>
 
