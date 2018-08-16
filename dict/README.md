@@ -31,12 +31,12 @@ reviews.
 posted by different members, which would be counted by Goodreads too)
 
     
-## File naming conventions
+## Naming Conventions
 
-- `${TYPE},...-${LANGUAGE2LETTERCODE},...-${SIZE}.lst` with size `lg` meaning large
-  dictionaries, `sm` meaning small dictionaries and `lst` meaning "list".
-  Lists are ASCII files with one word per line.
-  Comma denotes multiple types or languages, e.g., `ngram,words` or `en,de`
+File names: `${TYPE},...-${LANGUAGE2LETTERCODE},...-${SIZE}.lst` with size `lg` meaning large
+dictionaries, `sm` meaning small dictionaries and `lst` meaning "list".
+Lists are ASCII files with one word per line.
+Comma denotes multiple types or languages, e.g., `ngram,words` or `en,de`
   
 Smaller dictionaries are usually a subset of the larger ones, so you should 
 start with the smaller ones to test. Since all Toolbox programs cache their 
