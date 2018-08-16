@@ -204,9 +204,9 @@ if( $csv )
 		    . " [TTT  ] 3/5 stars rating with add. text    \n"
 		    . " [9 new] ratings better viewed on book page \n"
 		    . "                                            \n"
-		    . " Just reply 'unsubscribe' to unsubscribe.   \n" 
 		    . " Don't want mails daily? Reply 'weekly'.    \n"
 		    . " Change to better shelf? Reply shelfname.   \n"
+    		    . " Just reply 'unsubscribe' to unsubscribe.   \n" 
 		    . " Via https://andre-st.github.io/goodreads/  \n";
 	}
 	
