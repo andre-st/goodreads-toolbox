@@ -65,7 +65,7 @@ Total time: 87 minutes
 ## Observations and limitations
 
 - there's no way to load _all_ reviews of a book, but the program 
-  [tries different things](dict/README.md) to get as many reviews as 
+  tries different things to get as many reviews as 
   possible -- this can take very long
 - review text might include HTML code, URLs
 - review text can be in any language, e.g., german or russian
