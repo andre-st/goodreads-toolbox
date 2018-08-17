@@ -15,7 +15,7 @@ or [Giulia (2018)](https://www.goodreads.com/topic/show/19477061-how-can-i-extra
 > as "difficult".
 
 
-## This
+## Output format
 ```
 $ cat savreviews-8882222.txt
 
@@ -64,13 +64,14 @@ Total time: 87 minutes
 
 ## Observations and limitations
 
-- there's no way to load _all_ reviews of a book, but the program tries different 
-  things to get as many reviews as possible -- this can take very long
+- there's no way to load _all_ reviews of a book, but the program 
+  [tries different things](dict/README.md) to get as many reviews as 
+  possible -- this can take very long
 - review text might include HTML code, URLs
 - review text can be in any language, e.g., german or russian
 - review text might include non-latin characters, e.g., cyrillic
-- no duplicate reviewers, but could theoretically contain duplicate reviews posted by different members
-  (needs data cleansing)
+- no duplicate reviewers, but could theoretically contain duplicate 
+  reviews posted by different members (needs data cleansing)
 
 
 ## Feedback
