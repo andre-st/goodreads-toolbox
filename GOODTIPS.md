@@ -59,7 +59,7 @@
   [This service](https://andre-st.github.io/goodreads/) notifies you of new ratings for specific books.
   Be picky, create a special-purpose shelf with good but rare books, don't submit your whole _"read"_ shelf.
 
-- **Forcing view settings**, e.g., unify the quasi-random view settings when browsing (other people's)
+- **Forcing view settings**, e.g., [unify](https://en.wikipedia.org/wiki/Principle_of_least_astonishment) the quasi-random view settings when browsing (other people's)
   shelves, by rewriting Goodreads URLs via Einar Egilsson's 
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
   Chrome browser extension: 
