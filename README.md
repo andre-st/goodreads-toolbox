@@ -88,5 +88,5 @@ alternative dictionary-file in this folder.
 - [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt)
 - [GR workplace reviews](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), anonymously about being acquired by Amazon, bureaucracy etc.
 - [Crunchbase on GR](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
-- [Number of members](https://www.statista.com/statistics/252986/number-of-registered-members-on-goodreadscom/), source probably Goodreads
+- [#members on GR](https://www.statista.com/statistics/252986/number-of-registered-members-on-goodreadscom/), source probably Goodreads
 - [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
