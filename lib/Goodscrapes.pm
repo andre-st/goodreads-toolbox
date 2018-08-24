@@ -757,13 +757,17 @@ DONE:
 
 =item * queries Goodreads.com for the friends and followees list of the given user
 
-=item * I<rh_into>      =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)>
+=item * I<rh_into>        =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)>
 
-=item * I<from_user_id> =E<gt> C<string>
+=item * I<from_user_id>   =E<gt> C<string>
 
-=item * I<on_progress>  =E<gt> see C<gmeter()> [optional]
+=item * I<on_progress>    =E<gt> see C<gmeter()> [optional]
 
-=item * I<incl_authors> =E<gt> C<bool> [optional, default 1]
+=item * I<incl_authors>   =E<gt> C<bool> [optional, default 1]
+
+=item * I<incl_friends>   =E<gt> C<bool> [optional, default 1]
+
+=item * I<incl_followees> =E<gt> C<bool> [optional, default 1]
 
 =item * Precondition: gsetcookie()
 
@@ -776,12 +780,23 @@ sub greadfolls
 	my (%args) = @_;
 	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
 	my $uid    = gverifyuser( $args{ from_user_id });
-	my $iau    = defined $args{ incl_authors } ? $args{ incl_authors } : 1;
+	my $isaut  = defined $args{ incl_authors   } ? $args{ incl_authors   } : 1;
+	my $isfrn  = defined $args{ incl_friends   } ? $args{ incl_friends   } : 1;
+	my $isfol  = defined $args{ incl_followees } ? $args{ incl_followees } : 1;
 	my $pfn    = $args{ on_progress  } || sub{};
 	my $pag;
 	
-	$pag = 1; while( _extract_followees( $rh, $pfn, $iau, _html( _followees_url( $uid, $pag++ ) ) ) ) {};
-	$pag = 1; while( _extract_friends  ( $rh, $pfn, $iau, _html( _friends_url  ( $uid, $pag++ ) ) ) ) {};
+	if( $isfol )
+	{
+		$pag = 1; 
+		while( _extract_followees( $rh, $pfn, $isaut, _html( _followees_url( $uid, $pag++ ) ) ) ) {};
+	}
+	
+	if( $isfrn )
+	{
+		$pag = 1; 
+		while( _extract_friends( $rh, $pfn, $isaut, _html( _friends_url( $uid, $pag++ ) ) ) ) {};
+	}
 }
 
 
@@ -1191,9 +1206,9 @@ sub _extract_book
 	$bk{ img_url     } = $htm =~ /<meta content='([^']+)' property='og:image'/          ? $1 : '';
 	$bk{ title       } = $htm =~ /<meta content='([^']+)' property='og:title'/          ? decode_entities( $1 ) : '';
 	$bk{ num_pages   } = $htm =~ /<meta content='([^']+)' property='books:page_count'/  ? $1 : $_NOBOOKIMGURL;
-	$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d+) review/           ? $1.$2 : 0;  # 1,600 -> 1600
-	$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d+) rating/           ? $1.$2 : 0;  # 1,600 -> 1600
-	$bk{ avg_rating  } = $htm =~ /itemprop="ratingValue">([0-9.]+)/ ? $1    : 0;  # # 3.77
+	$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d+)[,.]?(\d+) review/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+	$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d+)[,.]?(\d+) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+	$bk{ avg_rating  } = $htm =~ /itemprop="ratingValue">([0-9.]+)/  ? $1       : 0;  # # 3.77
 	$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
 	$bk{ url         } = _book_url( $bk{id} );
 	$bk{ rh_author   } = undef;  # TODO
@@ -1246,7 +1261,7 @@ sub _extract_books
 		$bk{ id          } = $row =~ /data-resource-id="([0-9]+)"/                                ? $1 : undef;
 		$bk{ isbn        } = $row =~ />isbn<\/label><div class="value">\s*([0-9X\-]*)/            ? $1 : '';
 		$bk{ num_reviews } = undef;  # Not available here!
-		$bk{ num_ratings } = $row =~ />num ratings<\/label><div class="value">\s*([0-9]+)/        ? $1 : 0;
+		$bk{ num_ratings } = $row =~ />num ratings<\/label><div class="value">\s*([0-9]+)/        ? $1 : 0;  # TODO is there comma?
 		$bk{ img_url     } = $row =~ /<img [^>]* src="([^"]+)"/                                   ? $1 : $_NOBOOKIMGURL;
 		$bk{ year        } = $row =~ />date pub<\/label><div class="value">\s*[^<]*(\d{4})\s*</s  ? $1 : 0;  # "2017" and "Feb 01, 2017" (there's also "edition date pub")
 		$bk{ title       } = $tit;
@@ -1306,10 +1321,10 @@ sub _extract_author_books
 		$au{ is_private  } = 0;
 		$au{ _seen       } = 1;
 		
-		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/           ? $1    : undef;
-		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d+) rating/         ? $1.$2 : 0;  # 1,600 -> 1600
-		$bk{ img_url     } = $row =~ /src="[^"]+/                     ? $1    : $_NOBOOKIMGURL;
-		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/  ? decode_entities( $1 ) : '';
+		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
+		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d+)[,.]?(\d+) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ img_url     } = $row =~ /src="[^"]+/                        ? $1       : $_NOBOOKIMGURL;
+		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/     ? decode_entities( $1 ) : '';
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ rh_author   } = \%au;
 		
@@ -1589,13 +1604,13 @@ sub _extract_search_books
 		$au{ is_private  } = 0;
 		$au{ _seen       } = 1;
 		
-		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/           ? $1    : undef;
-		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d+) rating/         ? $1.$2 : 0;  # 1,600 -> 1600
-		$bk{ avg_rating  } = $row =~ /([0-9.,]+) avg rating/          ? $1    : 0;  # 3.8
+		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
+		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d+)[,.]?(\d+) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ avg_rating  } = $row =~ /([0-9.,]+) avg rating/             ? $1       : 0;  # 3.8
 		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
-		$bk{ year        } = $row =~ /published\s+(\d+)/              ? $1    : 0;  # 2018
-		$bk{ img_url     } = $row =~ /src="([^"]+)/                   ? $1    : $_NOBOOKIMGURL;
-		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/  ? decode_entities( $1 ) : '';
+		$bk{ year        } = $row =~ /published\s+(\d+)/                 ? $1       : 0;  # 2018
+		$bk{ img_url     } = $row =~ /src="([^"]+)/                      ? $1       : $_NOBOOKIMGURL;
+		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/     ? decode_entities( $1 ) : '';
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ rh_author   } = \%au;
 		

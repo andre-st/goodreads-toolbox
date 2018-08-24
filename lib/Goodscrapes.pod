@@ -388,13 +388,17 @@ TODO: line of code is useless when died
 
 =item * queries Goodreads.com for the friends and followees list of the given user
 
-=item * I<rh_into>      =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)>
+=item * I<rh_into>        =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)>
 
-=item * I<from_user_id> =E<gt> C<string>
+=item * I<from_user_id>   =E<gt> C<string>
 
-=item * I<on_progress>  =E<gt> see C<gmeter()> [optional]
+=item * I<on_progress>    =E<gt> see C<gmeter()> [optional]
 
-=item * I<incl_authors> =E<gt> C<bool> [optional, default 1]
+=item * I<incl_authors>   =E<gt> C<bool> [optional, default 1]
+
+=item * I<incl_friends>   =E<gt> C<bool> [optional, default 1]
+
+=item * I<incl_followees> =E<gt> C<bool> [optional, default 1]
 
 =item * Precondition: gsetcookie()
 
