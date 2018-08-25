@@ -107,6 +107,7 @@
 - common bestseller lists do not work for me
 - Parakweet's BookVibe closed in 2016, they sent you a list of books that your friends are talking about on Twitter
 - ...
+- get your keywords right: you have to know the right technical terms before learning about them; try "science books" over "nonfiction", both not necessarily sciency but nonfiction has no standard
 - bookmark interesting titles now and inspect them later, books must arouse interest also after one month; I use multiple Amazon wishlists (also shows current 2nd hand prices, my comments and priorization), I have a separate "(lost interest)" wishlist as an alternative to deletion
 
 
