@@ -2,9 +2,9 @@
 
 ## Purpose
 
-As far as the reviews are concerned, the official Goodreads API is of no use:
-You get a maximum of 300 short excerpts. Goodreads does not even use this API on
-its own website, it is a side project and is neglected accordingly. 
+As far as the reviews are concerned, the official Goodreads API is of no use: You get a maximum of 300 
+[short excerpts](https://www.goodreads.com/topic/show/19512142-how-to-get-whole-body-of-book-review). 
+Goodreads does not even use this API on its own website, it is a side project and is neglected accordingly. 
 
 They use other mechanisms to display reviews on their website, mechanisms that
 are used by the Toolbox programs too ([AJAX](https://en.wikipedia.org/wiki/Ajax_(programming)) endpoints in this case). 
