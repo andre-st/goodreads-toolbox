@@ -10,7 +10,6 @@ They use other mechanisms to display reviews on their website, mechanisms that
 are used by the Toolbox programs too ([AJAX](https://en.wikipedia.org/wiki/Ajax_(programming)) endpoints in this case). 
 These mechanisms have their own limitations: you can not see all reviews, 
 but search a book's reviews by a keyword and filter by the number of stars, age etc.
-
 Toolbox programs such as [savreviews.pl](../savreviews.md) or [likeminded.pl](../likeminded.md) 
 run a dictionary against this search in order to collect reviews.
 
