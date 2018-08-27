@@ -2,12 +2,10 @@
 
 ## Purpose
 
-As far as the reviews are concerned, the official Goodreads API is of no use: You get a maximum of 300 
+As far as the reviews are concerned, the official Goodreads API typically gets you a maximum of 300 
 short excerpts ([here](https://www.goodreads.com/topic/show/19512142-how-to-get-whole-body-of-book-review), 
 [here](https://www.goodreads.com/topic/show/12070102-review-is-truncated?comment=130838734#comment_130838734)
-or [here](https://www.goodreads.com/topic/show/19455087-unable-to-get-book-reviews-by-book-id?comment=182375978#comment_182375978)). 
-Goodreads does not even use this API on its own website, it is a side project and is neglected accordingly. 
-
+or [here](https://www.goodreads.com/topic/show/19455087-unable-to-get-book-reviews-by-book-id?comment=182375978#comment_182375978)). Goodreads does not use this API on its own website, it is a side project. 
 They use other mechanisms to display reviews on their website, mechanisms that
 are used by the Toolbox programs too ([AJAX](https://en.wikipedia.org/wiki/Ajax_(programming)) endpoints in this case). 
 These mechanisms have their own limitations: you can not see all reviews, 
