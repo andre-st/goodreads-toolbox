@@ -19,14 +19,14 @@ run a dictionary against this search in order to collect reviews.
 
 ## Results
 
-| Dictionary              | Lines | Time | "To the Lighthouse"<br>5514 text reviews | "Mrs Dalloway"<br>7376 text reviews |
-|:------------------------|------:|------|-------------:|--------------:|
-| _none (filters only)_   |     - |      |  948 or 17%  |   _untested_
-| gram-en-l.lst           |  3349 |      | 3057 or 55%  |   _untested_
-| gram-en-s.lst           |   390 |      |   _untested_ |   _untested_
-| word-en-l.lst           |  1000 |      | 4962 or 90%  | 6413 or 87%
-| word-en-s.lst           |   114 |      |   _untested_ |   _untested_
-| gram-en-l,word-en-l.lst |  4349 |      | 5127 or 93%  | 6715 or 91%
+| Dictionary              | Lines | Minutes | "To the Lighthouse"<br>5514 text reviews | "Mrs Dalloway"<br>7376 text reviews |
+|:------------------------|------:|--------:|-------------:|--------------:|
+| _none (filters only)_   |     - |         |  948 or 17%  |   _untested_
+| gram-en-l.lst           |  3349 |     111 | 3057 or 55%  |   _untested_
+| gram-en-s.lst           |   390 |         |   _untested_ |   _untested_
+| word-en-l.lst           |  1000 |      33 | 4962 or 90%  | 6413 or 87%
+| word-en-s.lst           |   114 |         |   _untested_ |   _untested_
+| gram-en-l,word-en-l.lst |  4349 |     144 | 5127 or 93%  | 6715 or 91%
 
 
 No duplicate reviewers, but could theoretically contain duplicate reviews
