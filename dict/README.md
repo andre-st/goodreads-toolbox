@@ -26,8 +26,8 @@ run a dictionary against this search in order to collect reviews.
 | gram-en-s.lst           |   390 |         |   _untested_ |   _untested_
 | word-en-l.lst           |  1000 |      33 | 4962 or 90%  | 6413 or 87%
 | word-en-s.lst           |   114 |         |   _untested_ |   _untested_
+| gram-en-s,word-en-l.lst |  1390 |         |   _untested_ |   _untested_
 | gram-en-l,word-en-l.lst |  4349 |     144 | 5127 or 93%  | 6715 or 91%
-
 
 No duplicate reviewers, but could theoretically contain duplicate reviews
 posted by different members, which would be counted by Goodreads too.
