@@ -16,7 +16,7 @@ From the _Goodreads Feedback_ forum,
 
 ## This
 
-![Screenshot](similarauth.png?raw=true "Screenshot")
+![Screenshot](img/similarauth.png?raw=true "Screenshot")
 
 
 

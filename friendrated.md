@@ -16,7 +16,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 
 ## This
 
-![Screenshot](friendrated.png?raw=true "Screenshot")
+![Screenshot](img/friendrated.png?raw=true "Screenshot")
 
 
 ## How to generate this on a GNU/Linux operating system

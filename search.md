@@ -39,7 +39,7 @@ or [Ian (2016)](https://www.goodreads.com/topic/show/18115612-search-prioritise-
 
 ## This
 
-![Screenshot](search.png?raw=true "Screenshot")
+![Screenshot](img/search.png?raw=true "Screenshot")
 
 
 ## How to generate this on a GNU/Linux operating system

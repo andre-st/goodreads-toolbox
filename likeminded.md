@@ -25,7 +25,7 @@ or [Mehran (2018)](https://www.goodreads.com/topic/show/19397936-finding-people-
 
 ## This
 
-![Screenshot](likeminded.png?raw=true "Screenshot")
+![Screenshot](img/likeminded.png?raw=true "Screenshot")
 
 
 
