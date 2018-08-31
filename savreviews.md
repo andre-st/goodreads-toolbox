@@ -67,11 +67,12 @@ Total time: 87 minutes
 - there's no way to load _all_ reviews of a book, but the program 
   tries different things to get as many reviews as 
   possible -- this can take very long
+- needs data cleansing on your side
 - review text might include HTML code, URLs
 - review text can be in any language, e.g., german or russian
 - review text might include non-latin characters, e.g., cyrillic
 - no duplicate reviewers, but could theoretically contain duplicate 
-  reviews posted by different members (needs data cleansing)
+  reviews posted by different members (statistically negligible?)
 
 
 ## Feedback
