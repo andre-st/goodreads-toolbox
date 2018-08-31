@@ -74,3 +74,8 @@ Performed better than the Ngrams based dictionaries
 little more results than just word-en-l.lst
 but way more search time (1000 vs 4349)
 
+## File: default.lst
+
+A symlink to any of the other dictionary files. Toolbox programs default to this dictionary-symlink, so you can change it for all programs at once.
+
+
