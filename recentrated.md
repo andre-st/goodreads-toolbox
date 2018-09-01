@@ -82,7 +82,8 @@ Recently rated books in your "watch-ratings" shelf:
 
 - don't use the "All" or "Read" shelves; be picky, use a separate single purpose shelf
 - don't run this on more than one of your shelves; it's possible but better use a single purpose shelf
-- don't use this program with well known fiction books that get a lot of reviews; no insights, readers too random
+- don't use this program with well known fiction books that get a lot of reviews; 
+  some books receive 300 ratings every day = no insights, readers too random
 - create and [populate](http://i0.wp.com/theeverscholar.com/wp-content/uploads/2015/03/goodreads3.jpg) 
 	a Goodreads shelf, e.g., "watch-ratings": You can add and remove books at any time. 
 	New books will be checked automatically. 
