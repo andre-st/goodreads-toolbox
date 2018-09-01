@@ -34,7 +34,7 @@ or [Mehran (2018)](https://www.goodreads.com/topic/show/19397936-finding-people-
 ```
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make likeminded
+$ sudo make
 $ ./likeminded.pl --help
 $ ./likeminded.pl YOURGOODUSERNUMBER
 

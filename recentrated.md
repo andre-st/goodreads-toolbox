@@ -53,7 +53,7 @@ Recently rated books in your "watch-ratings" shelf:
 	``` sh
 	$ git clone https://github.com/andre-st/goodreads.git
 	$ cd goodreads
-	$ sudo make recentrated
+	$ sudo make
 	```
 2. have a sendmail MTA set up (most simple thing is [ssmtp](https://wiki.debian.org/sSMTP)
    or [nullmailer](http://untroubled.org/nullmailer/)

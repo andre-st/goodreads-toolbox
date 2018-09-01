@@ -51,7 +51,7 @@ information, e.g., user names, datetime of a review, stars-rating etc.
 ```
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make savreviews
+$ sudo make
 $ ./savreviews.pl --help
 $ ./savreviews.pl GOODREADSBOOKID
 

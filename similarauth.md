@@ -25,7 +25,7 @@ From the _Goodreads Feedback_ forum,
 ```
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make similarauth
+$ sudo make
 $ ./similarauth.pl --help
 $ ./similarauth.pl YOURGOODUSERNUMBER
 

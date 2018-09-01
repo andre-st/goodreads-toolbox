@@ -10,73 +10,31 @@ LIBCURLDEV_ERR = "Requires: libcurl-dev (on Debian or Ubuntu try `apt-get instal
 LIBCURLDEV    := $(shell command -v curl-config 2> /dev/null)
 
 
-# Prints all comments with two leading # characters in this Makefile
-.PHONY : help
-help : Makefile
-	@sed -n 's/^## //p' $<
-
-
-.PHONY : base
-base :
+## make all      :  Installs all programs
+all :
 ifndef LIBCURLDEV
 	$(error ${LIBCURLDEV_ERR})
 endif
 	perl -MCPAN -e 'install List::MoreUtils, HTML::Entities, URI::Escape, Cache::FileCache, WWW::Curl::Easy'
 	perl -MCPAN -e 'install Text::CSV, Log::Any'
 	chmod +x *.pl
-	ln -sf words-en-xl.lst ./dict/default.lst
-
-
-## make friendrated:  Installs Perl modules
-.PHONY : friendrated
-friendrated : base
-
-
-## make likeminded :  Installs Perl modules
-.PHONY : likeminded
-likeminded : base
-
-
-## make similarauth:  Installs Perl modules
-.PHONY : similarauth
-similarauth : base
-
-
-## make search     :  Installs Perl modules
-.PHONY : search
-search : base
-
-
-## make savreviews :  Installs Perl modules
-.PHONY : savreviews
-savreviews : base
-
-
-## make recentrated:  Installs Perl modules and creates database and log in /var
-.PHONY : recentrated
-recentrated : base recentrated.pl
+	ln -sf words-en-xl.lst            ./dict/default.lst
+	ln -sf ../../git-hooks/pre-commit ./.git/hooks/pre-commit
 	mkdir -p "${RR_DB_DIR}"
 	touch "${RR_LOGFILE}"
 	chown --reference=recentrated.pl "${RR_DB_DIR}" "${RR_LOGFILE}"
 
 
-## make dev        :  Setups .git directory (symlinks ./git-hooks etc)
-.PHONY : dev
-dev :
-	ln -sf ../../git-hooks/pre-commit ./.git/hooks/pre-commit
-
-
-## make all        :  Installs all programs
-all : dev recentrated friendrated likeminded similarauth
-
-
-## make uninstall  :  Deletes work- and log-files in /var
+## make uninstall:  Deletes work- and log-files in /var
 .PHONY : uninstall
 uninstall :
 	rm -rf "${RR_DB_DIR}"
 	rm -rf "${RR_LOGFILE}"
 
 
-
+# Prints all comments with two leading # characters in this Makefile
+.PHONY : help
+help : Makefile
+	@sed -n 's/^## //p' $<
 
 

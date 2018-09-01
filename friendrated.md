@@ -24,7 +24,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 ```
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make friendrated
+$ sudo make
 $ ./friendrated.pl --help
 $ ./friendrated.pl YOURGOODUSERNUMBER
 
