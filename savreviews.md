@@ -43,6 +43,8 @@ minim veniam, quis nostrud exercitation ullamco laboris nisi
 
 The generated files contain review-texts only. They do not contain any other
 information, e.g., user names, datetime of a review, stars-rating etc.
+If there is interest in these details or other output formats, just contact 
+me or add an [issue](issues).
 
 
 
