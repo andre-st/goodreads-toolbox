@@ -70,7 +70,8 @@ name of the shelf with a selection of books, default is "#ALL#".
 If the name contains special characters use an URL-encoded name.
 You can use this parameter multiple times if there is more than 1 shelf to
 include (boolean OR operation), see the examples section of this man page.
-Use B<--shelf>=shelf1,shelf2,shelf3 to intersect shelves.
+Use B<--shelf>=shelf1,shelf2,shelf3 to intersect shelves (Intersection
+requires B<--cookie>).
 
 
 =item B<-?, --help>
