@@ -23,8 +23,7 @@ You find your GOODUSERNUMBER by looking at your shelf URLs.
 =item I<SHELFNAME>
 
 name of the shelf with a selecton of books to be checked, 
-default is "#ALL#". Intersect shelves with a comma: 
-"shelf1,shelf2,shelf3"
+default is "#ALL#".
 
 =item I<MAILTO>
 
