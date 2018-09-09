@@ -11,6 +11,12 @@ This project adheres to [Semantic Versioning](http://semver.org)
 - one `make` target only for all Toolbox programs (simplifies maintenance and usage)
 
 
+## [1.9.1] - 2018-08-24
+### Fixed
+
+- wrong value in `num_ratings` or `num_reviews` if N>=1,000,000
+
+
 ## [1.9.0] - 2018-08-14
 ### Added
 
