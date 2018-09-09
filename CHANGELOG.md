@@ -27,7 +27,6 @@ This project adheres to [Semantic Versioning](http://semver.org)
 
 ### Fixed
 
-- savreviews: review text cleansing improved (Unicode codepoints, HTML breaks etc)
 - search: exit condition bug
 
 
