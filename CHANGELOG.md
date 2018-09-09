@@ -5,38 +5,29 @@ This project adheres to [Semantic Versioning](http://semver.org)
 
 
 
-## [1.9.1] - 2018-09-01
+## [1.8.1] - 2018-09-01
 ### Changed
 
 - one `make` target only for all Toolbox programs (simplifies maintenance and usage)
 
 
-## [1.9.1] - 2018-08-24
+## [1.8.1] - 2018-08-24
 ### Fixed
 
 - wrong value in `num_ratings` or `num_reviews` if N>=1,000,000
 
 
-## [1.9.0] - 2018-08-14
+## [1.8.0] - 2018-08-14
 ### Added
 
-- likeminded: `--dict` parameter for custom dictionaries
-- savreviews: `--dict` parameter for custom dictionaries
+- new program: savreviews.pl
+- multiple `--shelf` parameter: `--shelf=music --shelf=science` ([#10](https://github.com/andre-st/goodreads/issues/10))
+- `--dict` parameter for custom dictionaries
 - added words-based dictionaries to `./dict/` folder (perform better than Ngram dicts)
 
 ### Fixed
 
 - savreviews: review text cleansing improved (Unicode codepoints, HTML breaks etc)
-
-
-## [1.8.0] - 2018-08-13
-### Added
-
-- new program: savreviews.pl
-- multiple `--shelf` parameter: `--shelf=music --shelf=science` ([#10](https://github.com/andre-st/goodreads/issues/10))
-
-### Fixed
-
 - search: exit condition bug
 
 
