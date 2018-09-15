@@ -229,8 +229,6 @@ https://github.com/andre-st/
 
 =head2 C<$value> _require_arg( I<$name, $value> )
 
-TODO: line of code is useless when died
-
 =head2 C<bool> gisbaduser( I<$user_or_author_id> )
 
 =over

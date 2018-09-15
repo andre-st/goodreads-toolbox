@@ -308,7 +308,7 @@ sub gverifyuser
 	my $uid = shift || '';
 	
 	return $1 if $uid =~ /(\d+)/ 
-		or die( "[FATAL] Invalid Goodreads user ID \"$uid\"" );
+		or croak( "[FATAL] Invalid Goodreads user ID \"$uid\"" );
 }
 
 
@@ -332,7 +332,7 @@ sub gverifyshelf
 {
 	my $nam = shift || ''; # '%23ALL%23';
 	
-	die( "[FATAL] Invalid Goodreads shelf name \"$nam\". Look at your shelf URLs." )
+	croak( "[FATAL] Invalid Goodreads shelf name \"$nam\". Look at your shelf URLs." )
 		if length $nam == 0 || $nam =~ /[^%a-zA-Z0-9_\-,]/;
 		
 	return $nam;
@@ -343,15 +343,13 @@ sub gverifyshelf
 
 =head2 C<$value> _require_arg( I<$name, $value> )
 
-TODO: line of code is useless when died
-
 =cut
 
 sub _require_arg
 {
 	my $nam = shift;
 	my $val = shift;
-	die( "[FATAL] Argument \"$nam\" expected." ) if !defined $val;
+	croak( "[FATAL] Argument \"$nam\" expected." ) if !defined $val;
 	return $val;
 }
 
@@ -443,7 +441,7 @@ sub gsetcookie
 	return if defined( $_cookie );
 	
 	local $/=undef;
-	open( my $fh, "<", $path ) or die(
+	open( my $fh, "<", $path ) or croak(
 			"\n[FATAL] Cookie missing. Save a Goodreads.com cookie to the file \"$path\". ".
 			"Check out https://www.youtube.com/watch?v=o_CYdZBPDCg for a tutorial ".
 			"on cookie-extraction using Chrome's DevTools Network-view." );
@@ -728,7 +726,7 @@ sub greadreviews
  	my $stalltime = $rigor * 60;  
 	my $t0        = time;  # Stuff above might already take 60s
 	
-	open( my $fh, '<', $dictpath ) or die( "[FATAL] Cannot open dictionary file: $dictpath" );
+	open( my $fh, '<', $dictpath ) or croak( "[FATAL] Cannot open dictionary file: $dictpath" );
 	chomp( my @dict = <$fh> );
 	close $fh;
 	

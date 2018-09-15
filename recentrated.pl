@@ -200,7 +200,7 @@ if( $csv )
 	{
 		print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
 		    . " [***  ] 3/5 stars rating without text      \n"
-		    . " [TTT  ] 3/5 stars rating with add. text    \n"
+		    . " [TTT  ] 3/5 stars rating with some text    \n"
 		    . " [9 new] ratings better viewed on book page \n"
 		    . "                                            \n"
 		    . " Reply 'weekly'      to avoid daily mails   \n"
