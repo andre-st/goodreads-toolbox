@@ -1605,11 +1605,11 @@ sub _extract_search_books
 		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
 		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d+)[,.]?(\d+) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
 		$bk{ avg_rating  } = $row =~ /([0-9.,]+) avg rating/             ? $1       : 0;  # 3.8
-		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
 		$bk{ year        } = $row =~ /published\s+(\d+)/                 ? $1       : 0;  # 2018
 		$bk{ img_url     } = $row =~ /src="([^"]+)/                      ? $1       : $_NOBOOKIMGURL;
 		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/     ? decode_entities( $1 ) : '';
 		$bk{ url         } = _book_url( $bk{id} );
+		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
 		$bk{ rh_author   } = \%au;
 		
 		push( @$ra, \%bk );
