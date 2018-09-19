@@ -71,7 +71,7 @@ Total time: 87 minutes
   tries different things to get as many fulltext reviews as 
   possible -- this can take very long
 - needs data cleansing on your side
-- review text might include HTML code, URLs
+- review text might include (broken) HTML code, URLs
 - review text can be in any language, e.g., german or russian
 - review text might include non-latin characters, e.g., cyrillic
 - no duplicate reviewers, but could theoretically contain duplicate 
