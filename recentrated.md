@@ -102,8 +102,9 @@ Changes are collected in periodic mails; individual mails would be annoying.
 
 ## Observations and limitations
 
-- text-reviews in the mail render it unreadable, a click on a review-link is bearable - I would have checked the reviewer on the GR website anyway
+- text-reviews in the mail are bloat, a click on a review-link is bearable - I would have checked the reviewer on the GR website anyway
 - text-reviews in the mail may open an attack vector
+- usernames in the mail are bloat - 99% are unknown/random letters to me and I would see it on the GR website anyway
 - ...
 
 
