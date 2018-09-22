@@ -18,7 +18,7 @@ or [Elizabeth:](https://www.goodreads.com/topic/show/18060629-follow-book)
 > to read them. 
 
 
-**Via notification e-mails:**
+**Receive notification e-mails:**
 ```
 From: yourmail@example.com
 To: yourmail@example.com
