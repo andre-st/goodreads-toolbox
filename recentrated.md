@@ -44,6 +44,9 @@ Recently rated books in your "watch-ratings" shelf:
  [9 new] ratings better viewed on book page
  ...   
 ```
+Most mail-clients recognize the signature and the links and make the latter clickable.
+Changes are collected in periodic mails; individual mails would be annoying.
+
 
 ## How to "follow books" 
 
@@ -51,6 +54,19 @@ Recently rated books in your "watch-ratings" shelf:
 
 1. visit [https://andre-st.github.io/goodreads/](https://andre-st.github.io/goodreads/) 
 2. enter your e-mail and shelf address
+
+
+### Dos and don'ts:
+
+- don't use the "All" or "Read" shelves; be picky, use a separate single purpose shelf
+- don't run this on more than one of your shelves; it's possible but better use a single purpose shelf
+- don't use this program with well known fiction books that get a lot of reviews; 
+  some books receive 300 ratings every day = no insights, readers too random
+- create and [populate](http://i0.wp.com/theeverscholar.com/wp-content/uploads/2015/03/goodreads3.jpg) 
+	a Goodreads shelf, e.g., "watch-ratings": You can add and remove books at any time. 
+	New books will be checked automatically. 
+	Such a shelf prevents unnecessary mails and eases manual checks if this system is discontinued someday
+
 
 ### Self-hosted:
 
@@ -83,16 +99,12 @@ Recently rated books in your "watch-ratings" shelf:
 	See also [cron.daily/goodratings.example](cron.daily/goodratings.example)
 
 
-### Dos and don'ts:
 
-- don't use the "All" or "Read" shelves; be picky, use a separate single purpose shelf
-- don't run this on more than one of your shelves; it's possible but better use a single purpose shelf
-- don't use this program with well known fiction books that get a lot of reviews; 
-  some books receive 300 ratings every day = no insights, readers too random
-- create and [populate](http://i0.wp.com/theeverscholar.com/wp-content/uploads/2015/03/goodreads3.jpg) 
-	a Goodreads shelf, e.g., "watch-ratings": You can add and remove books at any time. 
-	New books will be checked automatically. 
-	Such a shelf prevents unnecessary mails and eases manual checks if this system is discontinued someday
+## Observations and limitations
+
+- text-reviews in the mail render it unreadable, a click on a review-link is bearable - I would have checked the reviewer on the GR website anyway
+- text-reviews in the mail may open an attack vector
+- ...
 
 
 ## Feedback
