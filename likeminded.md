@@ -107,7 +107,7 @@ Goodreads.com is very time consuming.  The script internally uses a
   with 5 members actually worth investigating, 
   and only 1 member already on my hand-curated list of 137 followees
 - a minimum of 6 common books (2%) listed 43 members, more or less interesting
-- we learn: book combinations tend to become unique quickly
+- we learn: book combinations tend to become unique quickly - combinations of same books are more rare than combinations of same authors, while latter still satisfies the 'same taste' condition (assumption with books is that likeminded people have the same exposure to the same books, but that's questionable - comparing the authors widens this)
 - the new authors-version takes longer but yields better results, e.g.,
   more matches with my hand-curated followees list
 
