@@ -40,7 +40,7 @@ feature requested in the Goodreads forums.
 [Learn more](likeminded.md)
 
 
-## [search.pl](search.md)
+## :mag: [search.pl](search.md)
 
 Prints a books search result, ordered by average rating and number of ratings 
 (most popular books), or date published, optionally with exact title matches. 
