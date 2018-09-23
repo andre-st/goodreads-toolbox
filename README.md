@@ -1,4 +1,4 @@
-# André's Goodreads Toolbox
+# :books: André's Goodreads Toolbox
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
