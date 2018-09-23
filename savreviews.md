@@ -22,15 +22,16 @@ $ cat savreviews-8882222.txt
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
 minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-aliquip ex ea commodo consequat. Duis aute irure dolor in
-reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-culpa qui officia deserunt mollit anim id est laborum.
+aliquip ex ea <em>commodo consequat</em>. 
+
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
+dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non 
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 -------------------------------------------------------------------------------
 
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-nisi ut aliquip ex ea commodo consequat. 
+Ut enim ad minim veniam, quis nostrud <b>exercitation</b> ullamco laboris nisi 
+ut aliquip ex ea commodo consequat: <a href="https://example.com">example.com</a>
 
 -------------------------------------------------------------------------------
 
@@ -70,7 +71,7 @@ Total time: 87 minutes
   tries different things to get as many fulltext reviews as 
   possible -- this can take very long
 - needs data cleansing on your side
-- review text might include HTML code, URLs
+- review text might include (broken) HTML code, URLs
 - review text can be in any language, e.g., german or russian
 - review text might include non-latin characters, e.g., cyrillic
 - no duplicate reviewers, but could theoretically contain duplicate 

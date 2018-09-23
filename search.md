@@ -6,11 +6,11 @@
 ## Sort Goodreads search results by popularity or date published
 
 From the _Goodreads Feedback_ forum,
-[Ferouk](https://www.goodreads.com/topic/show/18084428-we-want-to-find-good-books-fast)
-or [David-Emmanuel](https://www.goodreads.com/topic/show/18541118-better-search)
-or [Pawel (2010)](https://www.goodreads.com/topic/show/423469-sorting-search-results)
+[Pawel (2010)](https://www.goodreads.com/topic/show/423469-sorting-search-results)
 or [obsessedwithbooks (2013)](https://www.goodreads.com/topic/show/1188302-sort-search-results)
 or [Sonja (2016)](https://www.goodreads.com/topic/show/18177911-advanced-search-for-books)
+or [Ferouk (2016)](https://www.goodreads.com/topic/show/18084428-we-want-to-find-good-books-fast)
+or [David-Emmanuel (2017)](https://www.goodreads.com/topic/show/18541118-better-search)
 or [Halordain (2017)](https://www.goodreads.com/topic/show/18496984-sorting-by-average-rating)
 or [Kevin (2018)](https://www.goodreads.com/topic/show/19464605-sort-search-results-by-rating):
 
@@ -22,14 +22,14 @@ or [Kevin (2018)](https://www.goodreads.com/topic/show/19464605-sort-search-resu
 > ratings.
 
 In addition to [SL](https://www.goodreads.com/topic/show/19387052-search-needs-improvement)
-or [Em__Jay](https://www.goodreads.com/topic/show/2279173-search-results?comment=117130606#comment_117130606)
-or [Carri](https://www.goodreads.com/topic/show/18123885-search-functionality)
-or [Mimi](https://www.goodreads.com/topic/show/19272652-refined-search)
-or [G.H.](https://www.goodreads.com/topic/show/18034964-search-results)
-or [Lisa](https://www.goodreads.com/topic/show/19114134-search-fundction-when-looking-for-books)
+or [Em__Jay (2015)](https://www.goodreads.com/topic/show/2279173-search-results)
+or [Carri (2016)](https://www.goodreads.com/topic/show/18123885-search-functionality)
+or [G.H. (2016)](https://www.goodreads.com/topic/show/18034964-search-results)
 or [Epper (2016)](https://www.goodreads.com/topic/show/18223264-search-books-filter-results)
 or [Shanna_redwind (2016)](https://www.goodreads.com/topic/show/18208444-search-very-frustrating)
+or [Lisa (2017)](https://www.goodreads.com/topic/show/19114134-search-fundction-when-looking-for-books)
 or [Jenna (2017)](https://www.goodreads.com/topic/show/18901296-please-improve-search-function)
+or [Mimi (2018)](https://www.goodreads.com/topic/show/19272652-refined-search)
 or [Ian (2016)](https://www.goodreads.com/topic/show/18115612-search-prioritise-exact-matches):
 
 >I kind of wonder if I'm the only one who finds this annoying. If you search
