@@ -46,7 +46,7 @@ is a very time consuming process.
 =item B<-o, --outfile>=F<filename>
 
 name of the HTML file where we write results to, default is
-"./likeminded-F<goodusernumber>-F<shelfname>.html"
+"./friendrated-F<goodusernumber>.html"
 
 
 =item B<-?, --help>
@@ -95,7 +95,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2018-08-12 (Since 2018-05-10)
+2018-09-26 (Since 2018-05-10)
 
 =cut
 
