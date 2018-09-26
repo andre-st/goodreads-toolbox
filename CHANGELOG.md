@@ -3,10 +3,14 @@
 All notable changes to this project will be documented in this file.
 
 
-## [1.10.0] - 2018-09-26
+## [1.10.0] - 2018-09-27
 ### Added
 
 - new program: friendgroup.pl ([#6](https://github.com/andre-st/goodreads/issues/6))
+
+### Changed
+
+- cookie validity is tested against Goodreads at the start of a program (using cookies)
 
 
 ## [1.9.1] - 2018-09-01
