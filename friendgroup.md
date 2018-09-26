@@ -5,6 +5,18 @@
 
 ## Groups common among the people I follow
 
+From the Goodreads Forums, [2018](https://www.goodreads.com/topic/show/19548229-finding-a-particular-type-of-group):
+
+Carlissa:
+> ... The best way to find a group is by word of mouth from friends or by
+> posting like you did and ask for recommendations.
+
+Faith:
+> Look at the lists of groups to which your friends or people you follow belong. 
+
+
+## This
+ 
 ![Screenshot](img/friendgroup.png?raw=true "Screenshot")
 
 
@@ -51,7 +63,7 @@ content](https://www.youtube.com/watch?v=o_CYdZBPDCg).
 
 ## Observations
 
-- ...
+- TBD
 
 
 ## Feedback
