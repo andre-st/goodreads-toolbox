@@ -4,6 +4,7 @@ use warnings;
 use 5.18.0;
 use utf8;
 
+
 ###############################################################################
 
 =pod
@@ -19,7 +20,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 =over
 
-=item * Updated: 2018-09-26
+=item * Updated: 2018-09-27
 
 =item * Since: 2014-11-05
 
@@ -27,7 +28,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 =cut
 
-our $VERSION = '1.95';  # X.XX version format required by Perl
+our $VERSION = '1.96';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -125,7 +126,7 @@ our @EXPORT = qw(
 	gverifyshelf
 	gisbaduser
 	gmeter
-	gsetcookie 
+	gsetcookie
 	gsetcache
 	
 	gsearch
@@ -145,6 +146,7 @@ our @EXPORT = qw(
 
 # Perl core:
 use Time::Piece;
+use Carp qw( croak );
 # Third party:
 use URI::Escape;
 use HTML::Entities;
@@ -158,6 +160,55 @@ our $GOOD_ERRMSG_NOBOOKS   = "[FATAL] No books found. Check the privacy settings
 our $GOOD_ERRMSG_NOMEMBERS = '[FATAL] No members found. Check cookie and try empty /tmp/FileCache/';
 
 
+# Module error codes:
+#   Severity levels:  0 < WARN < ERROR < FATAL
+#   Adding a severity level influences coping strategy
+our $_ENO_WARN        = 300;  # continue
+our $_ENO_GR404       = $_ENO_WARN  + 1;
+our $_ENO_GRSIGNIN    = $_ENO_WARN  + 2;
+our $_ENO_ERROR       = 400;  # retry
+our $_ENO_GRUNAVAIL   = $_ENO_ERROR + 1;
+our $_ENO_GRUNEXPECT  = $_ENO_ERROR + 2;
+our $_ENO_GRCAPACITY  = $_ENO_ERROR + 3;
+our $_ENO_GRMAINTNC   = $_ENO_ERROR + 4;
+our $_ENO_CURL        = $_ENO_ERROR + 5;
+our $_ENO_FATAL       = 500;  # abort
+our $_ENO_NOCOOKIE    = $_ENO_FATAL + 1;
+our $_ENO_BADCOOKIE   = $_ENO_FATAL + 2;
+our $_ENO_NODICT      = $_ENO_FATAL + 3;
+our $_ENO_BADSHELF    = $_ENO_FATAL + 4;
+our $_ENO_BADUSER     = $_ENO_FATAL + 5;
+our $_ENO_BADARG      = $_ENO_FATAL + 6;
+
+
+# Misc module message strings:
+our $_MSG_RETRYING    = "\n[INFO ] Retrying in 3 minutes... Press CTRL-C to exit";
+our $_MSG_COOKIEHELP  = "Save a Goodreads.com cookie to the file \"%s\". "  # path
+                      . "Check out https://www.youtube.com/watch?v=o_CYdZBPDCg for a tutorial "
+                      . "on cookie-extraction using Chrome's DevTools Network-view.";
+our %_ERRMSG = 
+(
+	# _ENO_GRxxx are messages from the Goodreads.com website:
+	$_ENO_WARN       => "\n[WARN ] unspecified: %s",  # url
+	$_ENO_GR404      => "\n[WARN ] Not found: %s",    # url
+	$_ENO_GRSIGNIN   => "\n[WARN ] Sign-in for %s => Cookie invalid or not set: see gsetcookie()", # url
+	$_ENO_ERROR      => "\n[ERROR] unspecified: %s",  # url
+	$_ENO_GRUNAVAIL  => "\n[ERROR] Goodreads.com \"temporarily unavailable\".",
+	$_ENO_GRUNEXPECT => "\n[ERROR] Goodreads.com encountered an \"unexpected error\".",
+	$_ENO_GRCAPACITY => "\n[ERROR] Goodreads.com is over capacity.",
+	$_ENO_GRMAINTNC  => "\n[ERROR] Goodreads.com is down for maintenance.",
+	$_ENO_CURL       => "\n[ERROR] %s: %s %s",        # url, err, errbuf
+	$_ENO_FATAL      => "\n[FATAL] unspecified: %s",  # url
+	$_ENO_NOCOOKIE   => "\n[FATAL] Missing cookie. $_MSG_COOKIEHELP",                # path
+	$_ENO_BADCOOKIE  => "\n[FATAL] Goodreads.com rejects cookie. $_MSG_COOKIEHELP",  # path
+	$_ENO_NODICT     => "\n[FATAL] Cannot open dictionary file: %s",                 # path
+	$_ENO_BADSHELF   => "\n[FATAL] Invalid Goodreads shelf name \"%s\". Look at your shelf URLs.",  # name
+	$_ENO_BADUSER    => "\n[FATAL] Invalid Goodreads user ID \"%s\".",  # id
+	$_ENO_BADARG     => "\n[FATAL] Argument \"%s\" expected.",          # name
+);
+sub _errmsg{ my $eno = shift; return sprintf( $_ERRMSG{$eno}, shift, shift, shift ); }
+
+
 # Misc module constants:
 our $_USERAGENT     = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
 our $_COOKIEPATH    = '.cookie';
@@ -167,9 +218,6 @@ our $_NOGROUPIMGURL = 'https://s.gr-assets.com/assets/nophoto/group/50x66-14672b
 our $_SORTNEW       = 'newest';
 our $_SORTOLD       = 'oldest';
 our $_EARLIEST      = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
-our $_STATOKAY      = 0;
-our $_STATWARN      = 1;  # Ignore or retry
-our $_STATERROR     = 2;  # Abort  or retry
 our @_BADPROFILES   =     # TODO external config file
 [
 	'1000834',  #  3.000 books   NOT A BOOK author
@@ -335,7 +383,7 @@ sub gverifyuser
 	my $uid = shift || '';
 	
 	return $1 if $uid =~ /(\d+)/ 
-		or croak( "[FATAL] Invalid Goodreads user ID \"$uid\"" );
+		or croak( _errmsg( $_ENO_BADUSER, $uid ) );
 }
 
 
@@ -359,8 +407,8 @@ sub gverifyshelf
 {
 	my $nam = shift || ''; # '%23ALL%23';
 	
-	croak( "[FATAL] Invalid Goodreads shelf name \"$nam\". Look at your shelf URLs." )
-		if length $nam == 0 || $nam =~ /[^%a-zA-Z0-9_\-,]/;
+	croak( _errmsg( $_ENO_BADSHELF, $nam ) )
+ 		if length $nam == 0 || $nam =~ /[^%a-zA-Z0-9_\-,]/;
 		
 	return $nam;
 }
@@ -376,7 +424,10 @@ sub _require_arg
 {
 	my $nam = shift;
 	my $val = shift;
-	croak( "[FATAL] Argument \"$nam\" expected." ) if !defined $val;
+	
+	croak( _errmsg( $_ENO_BADARG, $nam ) ) 
+		if !defined $val;
+	
 	return $val;
 }
 
@@ -421,7 +472,7 @@ sub gisbaduser
 
 sub gmeter
 {
-	my $unit = shift || '';
+	my $unit = shift // '';
 	return sub{
 		state $is_first = 1;
 		state $v        = 0;
@@ -460,44 +511,24 @@ sub gmeter
 =cut
 
 sub gsetcookie
-{
-	my (%args) = @_;
-	my $path = $args{ filepath } || $_COOKIEPATH;
-	$_cookie = $args{ content  } || undef;
+{	
+	my (%args)  = @_;
+	my $path    = $args{ filepath }  // $_COOKIEPATH;
+	$_cookie    = $args{ content  }  // undef;
 	
-	return if defined( $_cookie );
+	goto TEST if defined( $_cookie );
 	
 	local $/=undef;
-	open( my $fh, "<", $path ) or croak(
-			"\n[FATAL] Cookie missing. Save a Goodreads.com cookie to the file \"$path\". ".
-			"Check out https://www.youtube.com/watch?v=o_CYdZBPDCg for a tutorial ".
-			"on cookie-extraction using Chrome's DevTools Network-view." );
-	
+	open( my $fh, "<", $path ) or croak( _errmsg( $_ENO_NOCOOKIE, $path ) );
+ 
 	binmode( $fh );
 	$_cookie = <$fh>;
 	close( $fh );
-}
-
-
-
-
-=head2 C<bool> gtestcookie()
-
-=over
-
-=item * not supported at the moment
-
-=back
-
-=cut
-
-sub gtestcookie()
-{
-	# TODO: check against a page that needs sign-in
-	# TODO: call in gsetcookie() or by the lib-user separately?
 	
-	warn( "[WARN] Not yet implemented: gtestcookie()" );
-	return 1;
+TEST:
+	my $htm   = _html( 'https://www.goodreads.com/friend', $_ENO_ERROR, 0 );
+	my $errno = _check_page( $htm );
+	croak( _errmsg( $_ENO_BADCOOKIE, $path ) ) if $errno == $_ENO_GRSIGNIN;
 }
 
 
@@ -525,8 +556,8 @@ sub gtestcookie()
 
 sub gsetcache
 {
-	my $num     = shift || 0;
-	my $unit    = shift || 'days';
+	my $num     = shift // 0;
+	my $unit    = shift // 'days';
 	$_cache_age = "${num} ${unit}";
 }
 
@@ -583,8 +614,8 @@ sub greadusergp
 	my (%args) = @_;
 	my $uid    = gverifyuser( $args{ from_user_id });
 	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
-	my $gfn    = $args{ on_group    } || sub{};
-	my $pfn    = $args{ on_progress } || sub{};
+	my $gfn    = $args{ on_group    }  // sub{};
+	my $pfn    = $args{ on_progress }  // sub{};
 	
 	# Just one page:
 	return _extract_user_groups( $rh, $gfn, $pfn, _html( _user_groups_url( $uid ) ) );
@@ -618,9 +649,9 @@ sub greadshelf
 	my (%args) = @_;
 	my $uid    = gverifyuser( $args{ from_user_id });
 	my $ra_shv =_require_arg( 'ra_from_shelves', $args{ ra_from_shelves });
-	my $rh     = $args{ rh_into     } || undef;
-	my $bfn    = $args{ on_book     } || sub{};
-	my $pfn    = $args{ on_progress } || sub{};
+	my $rh     = $args{ rh_into     }  // undef;
+	my $bfn    = $args{ on_book     }  // sub{};
+	my $pfn    = $args{ on_progress }  // sub{};
 	my %books; # Using pre-populated $rh would confuse progess counters
 	
 	gverifyshelf( $_ ) foreach (@$ra_shv);
@@ -663,8 +694,8 @@ sub greadshelf
 sub greadauthors
 {
 	my (%args) = @_;
-	my $rh     = $args{ rh_into     } || undef;
-	my $pfn    = $args{ on_progress } || sub{};
+	my $rh     = $args{ rh_into     }  // undef;
+	my $pfn    = $args{ on_progress }  // sub{};
 	my %auts;  # Using pre-populated $rh would confuse progress counters
 	
 	my $pickauthorsfn = sub
@@ -708,8 +739,8 @@ sub greadauthorbk
 	my (%args) = @_;	
 	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
 	my $aid    = gverifyuser( $args{ author_id });
-	my $bfn    = $args{ on_book     } || sub{};
-	my $pfn    = $args{ on_progress } || sub{};
+	my $bfn    = $args{ on_book     }  // sub{};
+	my $pfn    = $args{ on_progress }  // sub{};
 	my $pag    = 1;
 	
 	while( _extract_author_books( $rh, $bfn, $pfn, _html( _author_books_url( $aid, $pag++ ) ) ) ) {};
@@ -752,14 +783,14 @@ sub greadreviews
 {
 	my (%args)   = @_;
 	my $rh_book  =_require_arg( 'rh_for_book', $args{ rh_for_book });
-	my $rigor    = defined $args{ rigor } ? $args{ rigor } : 2;
-	my $dictpath = $args{ dict_path   } || undef;
-	my $rh       = $args{ rh_into     } || undef;
-	my $ffn      = $args{ on_filter   } || sub{ return 1 };
-	my $pfn      = $args{ on_progress } || sub{};
-	my $since    = $args{ since       } || $_EARLIEST;
+	my $rigor    = $args{ rigor       }  // 2;
+	my $dictpath = $args{ dict_path   }  // undef;
+	my $rh       = $args{ rh_into     }  // undef;
+	my $ffn      = $args{ on_filter   }  // sub{ return 1 };
+	my $pfn      = $args{ on_progress }  // sub{};
+	my $since    = $args{ since       }  // $_EARLIEST;
 	   $since    = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
-	my $limit    = defined $rh_book->{num_ratings} ? $rh_book->{num_ratings} : 5000000;
+	my $limit    = $rh_book->{num_ratings} // 5000000;
 	my $bid      = $rh_book->{id};
 	my %revs;    # unique and empty, otherwise we cannot easily compute limits
 	
@@ -800,7 +831,7 @@ sub greadreviews
  	my $stalltime = $rigor * 60;  
 	my $t0        = time;  # Stuff above might already take 60s
 	
-	open( my $fh, '<', $dictpath ) or croak( "[FATAL] Cannot open dictionary file: $dictpath" );
+	open( my $fh, '<', $dictpath ) or croak( _errmsg( $_ENO_NODICT, $dictpath ) );
 	chomp( my @dict = <$fh> );
 	close $fh;
 	
@@ -852,10 +883,10 @@ sub greadfolls
 	my (%args) = @_;
 	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
 	my $uid    = gverifyuser( $args{ from_user_id });
-	my $isaut  = defined $args{ incl_authors   } ? $args{ incl_authors   } : 1;
-	my $isfrn  = defined $args{ incl_friends   } ? $args{ incl_friends   } : 1;
-	my $isfol  = defined $args{ incl_followees } ? $args{ incl_followees } : 1;
-	my $pfn    = $args{ on_progress  } || sub{};
+	my $isaut  = $args{ incl_authors   }  // 1;
+	my $isfrn  = $args{ incl_friends   }  // 1;
+	my $isfol  = $args{ incl_followees }  // 1;
+	my $pfn    = $args{ on_progress    }  // sub{};
 	my $pag;
 	
 	if( $isfol )
@@ -897,7 +928,7 @@ sub greadsimilaraut
 	my (%args) = @_;
 	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
 	my $aid    = gverifyuser( $args{ author_id });
-	my $pfn    = $args{ on_progress } || sub{};
+	my $pfn    = $args{ on_progress } // sub{};
 	
 	# Just 1 page:
 	_extract_similar_authors( $rh, $aid, $pfn, _html( _similar_authors_url( $aid ) ) );
@@ -934,10 +965,10 @@ sub gsearch
 	my (%args) = @_;
 	my $ra     =    _require_arg( 'ra_into', $args{ ra_into });
 	my $q      = lc _require_arg( 'phrase',  $args{ phrase  });
-	my $pfn    = $args{ on_progress }  || sub{};
-	my $n      = $args{ num_ratings }  || 0;
-	my $e      = $args{ is_exact    }  || 0;
-	my $ra_ord = $args{ ra_order_by }  || [ 'stars', 'num_ratings', 'year' ];
+	my $pfn    = $args{ on_progress }  // sub{};
+	my $n      = $args{ num_ratings }  // 0;
+	my $e      = $args{ is_exact    }  // 0;
+	my $ra_ord = $args{ ra_order_by }  // [ 'stars', 'num_ratings', 'year' ];
 	my $pag    = 1;
 	my @tmp;
 	
@@ -1035,7 +1066,7 @@ sub _shelf_url
 {
 	my $uid = shift;
 	my $slf = shift;	
-	my $pag = shift || 1;
+	my $pag = shift // 1;
 	
 	$slf =~ s/#/%23/g;  # "#ALL#" shelf
 	$slf =~ s/,/%2C/g;  # Shelf intersection
@@ -1069,7 +1100,7 @@ sub _shelf_url
 sub _followees_url
 {
 	my $uid = shift;
-	my $pag = shift || 1;
+	my $pag = shift // 1;
 	return "https://www.goodreads.com/user/${uid}/following?page=${pag}";
 }
 
@@ -1097,7 +1128,7 @@ sub _followees_url
 sub _friends_url
 {
 	my $uid = shift;
-	my $pag = shift || 1;
+	my $pag = shift // 1;
 	return "https://www.goodreads.com/friend/user/${uid}?"
 	     . "&page=${pag}"
 	     . "&skip_mutual_friends=false"
@@ -1127,7 +1158,7 @@ sub _book_url
 sub _user_url
 {
 	my $uid   = shift;
-	my $is_au = shift || 0;
+	my $is_au = shift // 0;
 	return 'https://www.goodreads.com/'.( $is_au ? 'author' : 'user' )."/show/${uid}";
 }
 
@@ -1159,11 +1190,11 @@ sub _user_url
 sub _revs_url
 {
 	my $bid  = shift;
-	my $sort = shift || undef;
-	my $rat  = shift || undef;
-	my $txt  = shift || undef;
+	my $sort = shift // undef;
+	my $rat  = shift // undef;
+	my $txt  = shift // undef;
 	   $txt  =~ s/\s+/+/g if $txt;
-	my $pag  = shift || 1;
+	my $pag  = shift // 1;
 	
 	return "https://www.goodreads.com/book/reviews/${bid}?"
 		.( $sort && !$txt ? "sort=${sort}&"       : '' )
@@ -1195,7 +1226,7 @@ sub _rev_url
 sub _author_books_url
 {
 	my $uid = shift;
-	my $pag = shift || 1;
+	my $pag = shift // 1;
 	return "https://www.goodreads.com/author/list/${uid}?per_page=100&page=${pag}";
 }
 
@@ -1209,7 +1240,7 @@ sub _author_books_url
 sub _author_followings_url
 {
 	my $uid = shift;
-	my $pag = shift || 1;
+	my $pag = shift // 1;
 	return "https://www.goodreads.com/author_followings?id=${uid}&page=${pag}";
 }
 
@@ -1330,8 +1361,8 @@ sub _extract_user
 	return undef if !$htm;
 	
 	$u{ id         } = $htm =~ /<meta property="og:url" content="https:\/\/www\.goodreads\.com\/user\/show\/(\d+)/ ? $1 : undef;
-	$u{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? $1 : undef;
-	$u{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : undef;
+	$u{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? $1 : "";
+	$u{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : 0;
 	$u{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/            ? 1  : 0;
 	$u{ is_friend  } = undef;
 	$u{ is_author  } = undef;
@@ -1796,17 +1827,17 @@ sub _extract_user_groups
 
 
 
-=head2 C<int> _check_page( I<$url, $any_html_str> )
+=head2 C<int> _check_page( $any_html_str> )
 
 =over
 
-=item * returns $_STATOKAY, $_STATWARN (ignore), $_STATERROR (retry)
+=item * returns I<$_ENO_XXX> constants
 
-=item * warns if sign-in page (https://www.goodreads.com/user/sign_in) or in-page message
+=item * warn if sign-in page (https://www.goodreads.com/user/sign_in) or in-page message
 
-=item * warns if "page unavailable, Goodreads request took too long"
+=item * warn if "page unavailable, Goodreads request took too long"
 
-=item * warns if "page not found" 
+=item * warn if "page not found" 
 
 =item * error if page unavailable: "An unexpected error occurred. 
         We will investigate this problem as soon as possible — please 
@@ -1843,51 +1874,46 @@ sub _extract_user_groups
 
 sub _check_page
 {
-	my $url = shift;
 	my $htm = shift;
 	
 	# Try to be precise, don't stop just because someone wrote a pattern 
 	# in his review or a book title. Characters such as < and > are 
 	# encoded in user texts:
 	
-	warn( "\n[WARN] Sign-in for $url => Cookie invalid or not set: gsetcookiefile()\n" )
-		and return $_STATWARN
-			if $htm =~ /<head>\s*<title>\s*Sign in\s*<\/title>/s;
+	return $_ENO_GRSIGNIN
+		if $htm =~ /<head>\s*<title>\s*Sign in\s*<\/title>/s 
+		|| $htm =~ /<head>\s*<title>\s*Sign Up\s*<\/title>/s;
+		
+	return $_ENO_GR404
+		if $htm =~ /<head>\s*<title>\s*Page not found\s*<\/title>/s;
 	
-	warn( "\n[WARN] Not found: $url\n" )
-		and return $_STATWARN
-			if $htm =~ /<head>\s*<title>\s*Page not found\s*<\/title>/s;
-	
-	warn( "\n[ERROR] Goodreads.com \"temporarily unavailable\".\n" )
-		and return $_STATERROR
-			if $htm =~ /Our website is currently unavailable while we make some improvements/s; # TODO improve
+	return $_ENO_GRUNAVAIL
+		if $htm =~ /Our website is currently unavailable while we make some improvements/s; # TODO improve
 			
-	warn( "\n[ERROR] Goodreads.com encountered an \"unexpected error\".\n" )
-		and return $_STATERROR
-			if $htm =~ /<head>\s*<title>\s*Goodreads - unexpected error\s*<\/title>/s;
+	return $_ENO_GRUNEXPECT
+		if $htm =~ /<head>\s*<title>\s*Goodreads - unexpected error\s*<\/title>/s;
 	
-	warn( "\n[ERROR] Goodreads.com is over capacity.\n" )
-		and return $_STATERROR
-			if $htm =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
+	return $_ENO_GRCAPACITY
+		if $htm =~ /<head>\s*<title>\s*Goodreads is over capacity\s*<\/title>/s;
 	
-	warn( "\n[ERROR] Goodreads.com is down for maintenance.\n" )
-		and return $_STATERROR
-			if $htm =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;
+	return $_ENO_GRMAINTNC
+		if $htm =~ /<head>\s*<title>\s*Goodreads is down for maintenance\s*<\/title>/s;
 	
-	
-	return $_STATOKAY;
+	return 0;
 }
 
 
 
 
-=head2 C<string> _html( I<$url> )
+=head2 C<string> _html( I<$url, $warn_level = $_ENO_WARN, $can_cache = 1> )
 
 =over
 
 =item * HTML body of a web document
 
-=item * might stop process on severe problems
+=item * caches documents (if I<$can_cache> is true)
+
+=item * retries on errors
 
 =back
 
@@ -1895,19 +1921,21 @@ sub _check_page
 
 sub _html
 {
-	my $url = shift or return '';
+	my $url       = shift or return '';
+	my $warnlevel = shift // $_ENO_WARN;
+	my $cancache  = shift // 1;
 	my $htm;
 	
 	$htm = $_cache->get( $url ) 
-		if $_cache_age ne $EXPIRES_NOW;
+		if $cancache && $_cache_age ne $EXPIRES_NOW;
 	
 	return $htm 
 		if defined $htm;
 	
 DOWNLOAD:
 	state $curl;
-	my    $curl_ret;
-	my    $state;
+	my    $curlret;
+	my    $errno;
 	
 	$curl = WWW::Curl::Easy->new if !$curl;
 
@@ -1933,23 +1961,23 @@ DOWNLOAD:
 	$curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  );
 	$curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   );
 	
-	$curl_ret = $curl->perform;
+	$curlret = $curl->perform;
+	$errno   = $curlret == 0 ? _check_page( $htm ) : $_ENO_CURL;
 	
-	warn( sprintf( "\n[ERROR] %s %s\n", $curl->strerror( $curl_ret ), $curl->errbuf ) )
-		unless $curl_ret == $_STATOKAY;
+	warn( _errmsg( $errno, $url, $curl->strerror( $curlret ), $curl->errbuf ) )
+		if $errno >= $warnlevel;
 	
-	$state = $curl_ret == $_STATOKAY ? _check_page( $url, $htm ) : $_STATERROR;
-	
-	$_cache->set( $url, $htm, $_cache_age ) 
-		if $state == $_STATOKAY;
-	
-	if( $state == $_STATERROR )
+	if( $errno >= $_ENO_ERROR )
 	{
-		say "[INFO ] Retrying in 3 minutes... Press CTRL-C to exit";
+		say $_MSG_RETRYING;
 		$curl = undef;  # disconnect
 		sleep 3*60;
 		goto DOWNLOAD;
 	}
+	
+DONE:
+	$_cache->set( $url, $htm, $_cache_age )
+		if $cancache && $errno == 0;
 	
 	return $htm;
 }

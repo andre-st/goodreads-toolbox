@@ -11,7 +11,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 =over
 
-=item * Updated: 2018-09-26
+=item * Updated: 2018-09-27
 
 =item * Since: 2014-11-05
 
@@ -288,14 +288,6 @@ https://github.com/andre-st/
 
 =item * copy-paste cookie from Chrome's DevTools network-view:
         L<https://www.youtube.com/watch?v=o_CYdZBPDCg>
-
-=back
-
-=head2 C<bool> gtestcookie()
-
-=over
-
-=item * not supported at the moment
 
 =back
 
@@ -677,17 +669,17 @@ https://github.com/andre-st/
 
 
 
-=head2 C<int> _check_page( I<$url, $any_html_str> )
+=head2 C<int> _check_page( $any_html_str> )
 
 =over
 
-=item * returns $_STATOKAY, $_STATWARN (ignore), $_STATERROR (retry)
+=item * returns I<$_ENO_XXX> constants
 
-=item * warns if sign-in page (https://www.goodreads.com/user/sign_in) or in-page message
+=item * warn if sign-in page (https://www.goodreads.com/user/sign_in) or in-page message
 
-=item * warns if "page unavailable, Goodreads request took too long"
+=item * warn if "page unavailable, Goodreads request took too long"
 
-=item * warns if "page not found" 
+=item * warn if "page not found" 
 
 =item * error if page unavailable: "An unexpected error occurred. 
         We will investigate this problem as soon as possible — please 
@@ -720,13 +712,15 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> _html( I<$url> )
+=head2 C<string> _html( I<$url, $warn_level = $_ENO_WARN, $can_cache = 1> )
 
 =over
 
 =item * HTML body of a web document
 
-=item * might stop process on severe problems
+=item * caches documents (if I<$can_cache> is true)
+
+=item * retries on errors
 
 =back
 
