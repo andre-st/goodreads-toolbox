@@ -3,6 +3,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.10.0] - 2018-09-26
+### Added
+
+- new program: friendgroup.pl
+
 
 ## [1.9.1] - 2018-09-01
 ### Changed

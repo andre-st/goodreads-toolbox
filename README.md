@@ -24,6 +24,13 @@ among the people I follow" feature requested in the Goodreads forums.
 [Learn more](friendrated.md)
 
 
+## [friendgroup.pl](friendgroup.md)
+
+Prints discussion groups common among the persons you follow (including friends).
+Searching groups on Goodreads is a PITA, and sometimes you don't know what you can have 
+and wouldn't search for it. [Learn more](friendgroup.md)
+
+
 ## [likeminded.pl](likeminded.md)
 
 Prints Goodreads members who are interested in the same books as you.

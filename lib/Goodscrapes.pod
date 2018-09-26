@@ -11,7 +11,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 =over
 
-=item * Updated: 2018-08-14
+=item * Updated: 2018-09-26
 
 =item * Since: 2014-11-05
 
@@ -88,7 +88,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
         bid = book id, aid = author id, rat = rating, tit = title, 
         q   = query string, slf = shelf name, shv = shelves names, 
         t0  = start time of an operation, ret = return code, 
-        tmp = temporary helper variable
+        tmp = temporary helper variable, gp = group, gid = group id
 
 =back
 
@@ -110,6 +110,7 @@ https://github.com/andre-st/
 =item * don't expect all attributes set (C<undef>), this depends on context
 
 =back
+
 
 
 =head2 %book
@@ -145,6 +146,7 @@ https://github.com/andre-st/
 =back
 
 
+
 =head2 %user
 
 =over
@@ -176,6 +178,7 @@ https://github.com/andre-st/
 =back
 
 
+
 =head2 %review
 
 =over
@@ -201,6 +204,25 @@ https://github.com/andre-st/
 =item * url         =E<gt> C<string>  full text review
 
 =back
+
+
+
+=head2 %group
+
+=over
+
+=item * id          =E<gt> C<string>
+
+=item * name        =E<gt> C<string>
+
+=item * url         =E<gt> C<string>
+
+=item * img_url     =E<gt> C<string>
+
+=item * num_members =E<gt> int
+
+=back
+
 
 =head1 PUBLIC ROUTINES
 
@@ -296,6 +318,24 @@ https://github.com/andre-st/
 =back
 
 =head2 C<L<%book|"%book">> greadbook( $book_id )
+
+=head2 C<L<%user|"%user">> greaduser( $user_id )
+
+=head2 C<void> greadusergp(I<{ ... }>)
+
+=over
+
+=item * reads all group memberships of the given user into I<rh_into>
+
+=item * I<from_user_id> =E<gt> C<string>
+
+=item * I<rh_into>      =E<gt> hash reference C<(id =E<gt> L<%group|"%group">,...)>
+
+=item * I<on_group>     =E<gt> C<sub( L<%group|"%group"> )> [optional]
+
+=item * I<on_progress>  =E<gt> see C<gmeter()> [optional]
+
+=back
 
 =head2 C<void> greadshelf(I<{ ... }>)
 
@@ -560,11 +600,17 @@ https://github.com/andre-st/
 
 =back
 
+=head2 C<string> _user_groups_url( I<$user_id> )
+
+=head2 C<string> _group_url( I<$group_id> )
+
 =head1 PRIVATE HTML-EXTRACTION ROUTINES
 
 
 
 =head2 C<L<%book|"%book">> _extract_book( $book_page_html_str )
+
+=head2 C<L<%user|"%user">> _extract_user( $user_page_html_str )
 
 =head2 C<bool> _extract_books( I<$rh_books, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
 
@@ -598,7 +644,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $since_time_piece, $reviews_xhr_html_str> )
+=head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str> )
 
 =over
 
@@ -623,6 +669,8 @@ https://github.com/andre-st/
 =item * I<ra_books>: C<(L<%book|"\%book">,...)> 
 
 =back
+
+=head2 _extract_user_groups( I<$rh_into, $on_group_fn, on_progress_fn, $groups_html_str> )
 
 =head1 PRIVATE I/O PLUMBING SUBROUTINES
 

@@ -19,7 +19,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 =over
 
-=item * Updated: 2018-08-14
+=item * Updated: 2018-09-26
 
 =item * Since: 2014-11-05
 
@@ -27,7 +27,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 =cut
 
-our $VERSION = '1.93';  # X.XX version format required by Perl
+our $VERSION = '1.95';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -101,7 +101,7 @@ our $VERSION = '1.93';  # X.XX version format required by Perl
         bid = book id, aid = author id, rat = rating, tit = title, 
         q   = query string, slf = shelf name, shv = shelves names, 
         t0  = start time of an operation, ret = return code, 
-        tmp = temporary helper variable
+        tmp = temporary helper variable, gp = group, gid = group id
 
 =back
 
@@ -120,20 +120,25 @@ use base 'Exporter';
 our @EXPORT = qw( 
 	$GOOD_ERRMSG_NOBOOKS
 	$GOOD_ERRMSG_NOMEMBERS
+	
 	gverifyuser
 	gverifyshelf
 	gisbaduser
 	gmeter
 	gsetcookie 
 	gsetcache
+	
 	gsearch
 	greadbook
-	greadshelf 
+	greaduser
+	greadusergp
+	greadshelf
 	greadauthors
 	greadauthorbk
 	greadsimilaraut
 	greadreviews
 	greadfolls 
+	
 	amz_book_html 
 	);
 
@@ -154,17 +159,18 @@ our $GOOD_ERRMSG_NOMEMBERS = '[FATAL] No members found. Check cookie and try emp
 
 
 # Misc module constants:
-our $_USERAGENT    = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
-our $_COOKIEPATH   = '.cookie';
-our $_NOBOOKIMGURL = 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png';
-our $_NOUSERIMGURL = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png';
-our $_SORTNEW      = 'newest';
-our $_SORTOLD      = 'oldest';
-our $_EARLIEST     = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
-our $_STATOKAY     = 0;
-our $_STATWARN     = 1;  # Ignore or retry
-our $_STATERROR    = 2;  # Abort  or retry
-our @_BADPROFILES  =     # TODO external config file
+our $_USERAGENT     = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
+our $_COOKIEPATH    = '.cookie';
+our $_NOBOOKIMGURL  = 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png';
+our $_NOUSERIMGURL  = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png';
+our $_NOGROUPIMGURL = 'https://s.gr-assets.com/assets/nophoto/group/50x66-14672b6c5b97a4836a13efdb6a1958d2.jpg';
+our $_SORTNEW       = 'newest';
+our $_SORTOLD       = 'oldest';
+our $_EARLIEST      = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
+our $_STATOKAY      = 0;
+our $_STATWARN      = 1;  # Ignore or retry
+our $_STATERROR     = 2;  # Abort  or retry
+our @_BADPROFILES   =     # TODO external config file
 [
 	'1000834',  #  3.000 books   NOT A BOOK author
 	'5158478',  # 10.000 books   Anonymous
@@ -191,6 +197,7 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =item * don't expect all attributes set (C<undef>), this depends on context
 
 =back
+
 
 
 =head2 %book
@@ -226,6 +233,7 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =back
 
 
+
 =head2 %user
 
 =over
@@ -257,6 +265,7 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =back
 
 
+
 =head2 %review
 
 =over
@@ -283,8 +292,26 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =back
 
-=cut
 
+
+=head2 %group
+
+=over
+
+=item * id          =E<gt> C<string>
+
+=item * name        =E<gt> C<string>
+
+=item * url         =E<gt> C<string>
+
+=item * img_url     =E<gt> C<string>
+
+=item * num_members =E<gt> int
+
+=back
+
+
+=cut
 
 
 
@@ -514,6 +541,53 @@ sub greadbook
 {
 	my $bid = _require_arg( 'book_id', shift );
 	return _extract_book( _html( _book_url( $bid ) ) );
+}
+
+
+
+
+=head2 C<L<%user|"%user">> greaduser( $user_id )
+
+=cut
+
+sub greaduser
+{
+	# TODO author profiles != user profiles
+	my $uid = gverifyuser( shift );
+	return _extract_user( _html( _user_url( $uid, 0 ) ) );
+}
+
+
+
+
+=head2 C<void> greadusergp(I<{ ... }>)
+
+=over
+
+=item * reads all group memberships of the given user into I<rh_into>
+
+=item * I<from_user_id> =E<gt> C<string>
+
+=item * I<rh_into>      =E<gt> hash reference C<(id =E<gt> L<%group|"%group">,...)>
+
+=item * I<on_group>     =E<gt> C<sub( L<%group|"%group"> )> [optional]
+
+=item * I<on_progress>  =E<gt> see C<gmeter()> [optional]
+
+=back
+
+=cut
+
+sub greadusergp
+{
+	my (%args) = @_;
+	my $uid    = gverifyuser( $args{ from_user_id });
+	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
+	my $gfn    = $args{ on_group    } || sub{};
+	my $pfn    = $args{ on_progress } || sub{};
+	
+	# Just one page:
+	return _extract_user_groups( $rh, $gfn, $pfn, _html( _user_groups_url( $uid ) ) );
 }
 
 
@@ -1182,6 +1256,32 @@ sub _search_url
 
 
 
+=head2 C<string> _user_groups_url( I<$user_id> )
+
+=cut
+
+sub _user_groups_url
+{
+	my $uid = shift;
+	return "https://www.goodreads.com/group/list/${uid}?sort=title";
+}
+
+
+
+
+=head2 C<string> _group_url( I<$group_id> )
+
+=cut
+
+sub _group_url
+{
+	my $gid = shift;
+	return "https://www.goodreads.com/group/show/${gid}";
+}
+
+
+
+
 #==============================================================================
 
 =head1 PRIVATE HTML-EXTRACTION ROUTINES
@@ -1213,6 +1313,37 @@ sub _extract_book
 	$bk{ year        } = undef;  # TODO
 	
 	return %bk;
+}
+
+
+
+
+=head2 C<L<%user|"%user">> _extract_user( $user_page_html_str )
+
+=cut
+
+sub _extract_user
+{
+	my $htm = shift;
+	my %u;
+	
+	return undef if !$htm;
+	
+	$u{ id         } = $htm =~ /<meta property="og:url" content="https:\/\/www\.goodreads\.com\/user\/show\/(\d+)/ ? $1 : undef;
+	$u{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? $1 : undef;
+	$u{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : undef;
+	$u{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/            ? 1  : 0;
+	$u{ is_friend  } = undef;
+	$u{ is_author  } = undef;
+	$u{ is_private } = undef;  # TODO
+	$u{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/ ? 1 : 0;
+	$u{ url        } = _user_url( $u{id}, $u{is_author} );
+	$u{ works_url  } = undef;
+	$u{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/ ? $1 : $_NOUSERIMGURL;
+	$u{ _seen      } = 0;
+	$u{ groups     } = undef;
+	
+	return %u;
 }
 
 
@@ -1430,7 +1561,7 @@ sub _extract_friends
 
 
 
-=head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $since_time_piece, $reviews_xhr_html_str> )
+=head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str> )
 
 =over
 
@@ -1617,6 +1748,41 @@ sub _extract_search_books
 	}
 	
 	$pfn->( $ret, $max );
+	return $ret;
+}
+
+
+
+
+=head2 _extract_user_groups( I<$rh_into, $on_group_fn, on_progress_fn, $groups_html_str> )
+
+=cut
+
+sub _extract_user_groups
+{
+	my $rh  = shift;
+	my $gfn = shift;
+	my $pfn = shift;
+	my $htm = shift;
+	my $ret = 0;
+	
+	while( $htm =~ /<div class="elementList">(.*?)<div class="clear">/gs )
+	{
+		my $row = $1;
+		my %gp;
+		
+		$gp{ id          } = $row =~ /\/group\/show\/(\d+)/               ? $1 : undef;
+		$gp{ name        } = $row =~ /<a class="groupName" [^>]+>([^<]+)/ ? decode_entities( $1 ) : "";
+		$gp{ num_members } = $row =~ /(\d+) member/                       ? $1 : 0;  # "8397"
+		$gp{ img_url     } = $row =~ /<img src="([^"]+)/                  ? $1 : $_NOGROUPIMGURL;
+		$gp{ url         } = _group_url( $gp{id} );
+		
+		$rh->{$gp{id}} = \%gp;
+		$ret++;
+		$gfn->( \%gp );
+	}
+	
+	$pfn->( $ret );
 	return $ret;
 }
 
