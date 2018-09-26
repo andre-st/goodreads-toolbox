@@ -106,6 +106,8 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
+STDOUT->autoflush( 1 );
+
 our $TSTART    = time();
 our $CACHEDAYS = 31;
 our $OUTPATH;
@@ -118,11 +120,8 @@ GetOptions( 'help|?'       => sub{ pod2usage( -verbose => 2 ) },
 
 $USERID  = $ARGV[0] or pod2usage( 1 );
 $OUTPATH = "friendgroup-${USERID}.html" if !$OUTPATH;
-
 gsetcookie();  # Followed list, friend list and user groups list are private
 gsetcache( $CACHEDAYS );
-STDOUT->autoflush( 1 );
-
 
 
 #-----------------------------------------------------------------------------

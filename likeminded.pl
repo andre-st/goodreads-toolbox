@@ -150,6 +150,8 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
+STDOUT->autoflush( 1 );
+
 our $TSTART    = time();
 our $MINSIMIL  = 5;
 our $RIGOR     = 1;
@@ -176,7 +178,6 @@ $OUTPATH = sprintf( "likeminded-%s-%s.html", $USERID, join( '-', @SHELVES )) if 
 
 gsetcookie() if $USECOOKIE;
 gsetcache( $CACHEDAYS );
-STDOUT->autoflush( 1 );
 
 
 

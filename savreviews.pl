@@ -114,6 +114,8 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
+STDOUT->autoflush( 1 );
+
 our $TSTART    = time();
 our $CACHEDAYS = 7;
 our $RIGOR     = 10;
@@ -131,9 +133,7 @@ GetOptions( 'rigor|x=i'   => \$RIGOR,
 
 $BOOKID  = $ARGV[0] or pod2usage( 1 );
 $OUTPATH = "savreviews-${BOOKID}.txt" if !$OUTPATH;
-
 gsetcache( $CACHEDAYS );
-STDOUT->autoflush( 1 );
 
 
 

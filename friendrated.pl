@@ -123,6 +123,8 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
+STDOUT->autoflush( 1 );
+
 our $TSTART      = time();
 our $MINFAVORERS = 3;
 our $MINRATED    = 4;
@@ -140,10 +142,8 @@ GetOptions( 'favorers|f=i' => \$MINFAVORERS,
 
 $USERID  = $ARGV[0] or pod2usage( 1 );
 $OUTPATH = "friendrated-${USERID}.html" if !$OUTPATH;
-
 gsetcookie();  # Followed list, friend list and some shelves are private
 gsetcache( $CACHEDAYS );
-STDOUT->autoflush( 1 );
 
 
 

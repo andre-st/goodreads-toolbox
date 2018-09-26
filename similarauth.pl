@@ -128,6 +128,8 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
+STDOUT->autoflush( 1 );
+
 our $TSTART    = time();
 our $CACHEDAYS = 31;
 our @SHELVES;
@@ -145,10 +147,8 @@ GetOptions( 'help|?'      => sub{ pod2usage( -verbose => 2 ) },
 $USERID  = $ARGV[0] or pod2usage( 1 );
 @SHELVES = qw( %23ALL%23 ) if !@SHELVES;
 $OUTPATH = sprintf( "similarauth-%s-%s.html", $USERID, join( '-', @SHELVES ) ) if !$OUTPATH;
-
 gsetcookie() if $USECOOKIE;
 gsetcache( $CACHEDAYS );
-STDOUT->autoflush( 1 );
 
 
 
