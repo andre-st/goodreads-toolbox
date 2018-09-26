@@ -6,7 +6,7 @@
 
 =head1 NAME
 
-friendrated - books common among the members I follow
+friendrated - books common among the members you follow
 
 
 =head1 SYNOPSIS

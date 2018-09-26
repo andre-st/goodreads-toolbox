@@ -3,13 +3,12 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
 
-## Groups common among the people I follow
+## Groups common among the people you follow
 
 From the Goodreads Forums, [Carlissa (2018)](https://www.goodreads.com/topic/show/19548229-finding-a-particular-type-of-group):
-> ... The best way to find a group is by word of mouth from friends or by
-> posting like you did and ask for recommendations.
+> ... The best way to find a group is by word of mouth from friends ...
 
-or Faith:
+or Faith (ibidem):
 > Look at the lists of groups to which your friends or people you follow belong. 
 
 
