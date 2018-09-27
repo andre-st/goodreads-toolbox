@@ -163,9 +163,9 @@ https://github.com/andre-st/
 
 =item * is_female   =E<gt> C<bool>
 
-=item * is_private  =E<gt> C<bool>   (not supported yet)
+=item * is_private  =E<gt> C<bool>
 
-=item * is_staff    =E<gt> C<bool>   (not supported yet), is a Goodreads.com employee
+=item * is_staff    =E<gt> C<bool>, is a Goodreads.com employee
 
 =item * url         =E<gt> C<string> URL to the user's profile page
 

@@ -300,9 +300,9 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =item * is_female   =E<gt> C<bool>
 
-=item * is_private  =E<gt> C<bool>   (not supported yet)
+=item * is_private  =E<gt> C<bool>
 
-=item * is_staff    =E<gt> C<bool>   (not supported yet), is a Goodreads.com employee
+=item * is_staff    =E<gt> C<bool>, is a Goodreads.com employee
 
 =item * url         =E<gt> C<string> URL to the user's profile page
 
@@ -1358,9 +1358,10 @@ sub _extract_user
 	$us{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? $1 : "";
 	$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : 0;
 	$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/            ? 1  : 0;
+	$us{ is_private } = $htm =~ /<div id="privateProfile"/                           ? 1  : 0;
 	$us{ is_friend  } = undef;
 	$us{ is_author  } = undef;
-	$us{ is_private } = undef;  # TODO
+
 	$us{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/ ? 1 : 0;
 	$us{ url        } = _user_url( $us{id}, $us{is_author} );
 	$us{ works_url  } = undef;
