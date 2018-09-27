@@ -196,7 +196,7 @@ print $fh qq{
 		<th>#</th> 
 		<th>Group</th>
 		<th>Members</th>
-		<th>Joins</th>
+		<th>Joined</th>
 		<th>Joined by</th>
 		</tr>
 		};
