@@ -4,7 +4,7 @@
 
 =head1 NAME
 
-Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
+Goodscrapes - Goodreads.com HTML API
 
 
 =head1 VERSION
@@ -24,7 +24,6 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 =item * focuses on analysing, not updating info on GR
 
 =item * less limited, e.g., reading shelves and reviews of other members:
-        the official API just gets you excerpts(!) of max. 300(!) reviews,
         Goodscrapes can scrape thousands of fulltext reviews.
 
 =item * official is slow too; API users are even second-class citizen
@@ -71,7 +70,7 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
 
 =item * for real-world usage examples see Andre's Goodreads Toolbox
 
-=item * C<_> prefix means I<private> function or constant (don't use)
+=item * C<_> prefix means I<private> function or constant (use in module only)
 
 =item * C<ra> prefix means array reference, C<rh> prefix means hash reference
 
@@ -88,7 +87,8 @@ Goodscrapes - Simple Goodreads.com scraping helpers (HTML API)
         bid = book id, aid = author id, rat = rating, tit = title, 
         q   = query string, slf = shelf name, shv = shelves names, 
         t0  = start time of an operation, ret = return code, 
-        tmp = temporary helper variable, gp = group, gid = group id
+        tmp = temporary helper variable, gp = group, gid = group id,
+	   us  = user
 
 =back
 
@@ -155,13 +155,13 @@ https://github.com/andre-st/
 
 =item * name        =E<gt> C<string>
 
-=item * age         =E<gt> C<int>    (not supported yet)
+=item * age         =E<gt> C<int>
 
 =item * is_friend   =E<gt> C<bool>
 
 =item * is_author   =E<gt> C<bool>
 
-=item * is_female   =E<gt> C<bool>   (not supported yet)
+=item * is_female   =E<gt> C<bool>
 
 =item * is_private  =E<gt> C<bool>   (not supported yet)
 
@@ -267,7 +267,7 @@ https://github.com/andre-st/
 =item * generates and returns a CLI progress indicator function $f, 
         with I<$f-E<gt>( 20 )> adding 20 to the last values and 
         printing the sum like "40 unit_str".
-        Given a second argument (the max value), 
+        Given a second (max value) argument I<$f-E<gt>( 10, 100 )>, 
         it will print a percentage without any unit: "10%".
         Given a modern terminal, the text remains at the same 
         position if the progress function is called multiple times.
@@ -280,10 +280,10 @@ https://github.com/andre-st/
 
 =item * some Goodreads.com pages are only accessible by authenticated members
 
-=item * I<content> =E<gt> C<string> with cookie data that can be send to Goodreads,
+=item * C<content  =E<gt> string> with cookie data that can be send to Goodreads,
         alternatively see I<filepath> [optional]
 
-=item * I<filepath> =E<gt> path to a text-file with cookie-data; 
+=item * C<filepath =E<gt> string> path to a text-file with cookie-data; 
         parameter is ignored if I<content> is set [optional, default '.cookie']
 
 =item * copy-paste cookie from Chrome's DevTools network-view:
@@ -298,12 +298,9 @@ https://github.com/andre-st/
 =item * scraping Goodreads.com is a very slow process
 
 =item * scraped documents can be cached if you don't need them "fresh"
-
-=item * during development time
-
-=item * during long running sessions (cheap recovery on crash, power blackout or pauses)
-
-=item * when experimenting with parameters
+        during development time,
+        during long running sessions (cheap recovery on crash, power blackout or pauses),
+        when experimenting with parameters
 
 =item * unit can be C<"minutes">, C<"hours">, C<"days">
 
@@ -319,13 +316,13 @@ https://github.com/andre-st/
 
 =item * reads all group memberships of the given user into I<rh_into>
 
-=item * I<from_user_id> =E<gt> C<string>
+=item * C<from_user_id =E<gt> string>
 
-=item * I<rh_into>      =E<gt> hash reference C<(id =E<gt> L<%group|"%group">,...)>
+=item * C<rh_into      =E<gt> hash reference (id =E<gt> L<%group|"%group">,...)>
 
-=item * I<on_group>     =E<gt> C<sub( L<%group|"%group"> )> [optional]
+=item * C<on_group     =E<gt> sub( L<%group|"%group"> )> [optional]
 
-=item * I<on_progress>  =E<gt> see C<gmeter()> [optional]
+=item * C<on_progress  =E<gt> sub> see C<gmeter()> [optional]
 
 =back
 
@@ -335,15 +332,15 @@ https://github.com/andre-st/
 
 =item * reads a list of books present in the given shelves of the given user
 
-=item * I<from_user_id>    =E<gt> C<string>
+=item * C<from_user_id    =E<gt> string>
 
-=item * I<ra_from_shelves> =E<gt> C<string>-array reference with shelf names
+=item * C<ra_from_shelves =E<gt> string-array reference> with shelf names
 
-=item * I<rh_into>         =E<gt> hash reference C<(id =E<gt> L<%book|"%book">,...)> [optional]
+=item * C<rh_into         =E<gt> hash reference (id =E<gt> L<%book|"%book">,...)> [optional]
 
-=item * I<on_book>         =E<gt> C<sub( L<%book|"%book"> )> [optional]
+=item * C<on_book         =E<gt> sub( L<%book|"%book"> )> [optional]
 
-=item * I<on_progress>     =E<gt> see C<gmeter()> [optional]
+=item * C<on_progress     =E<gt> sub> see C<gmeter()> [optional]
 
 =back
 
@@ -353,13 +350,13 @@ https://github.com/andre-st/
 
 =item * gets a list of authors whose books are present in the given shelves of the given user
 
-=item * I<from_user_id>    =E<gt> string
+=item * C<from_user_id    =E<gt> string>
 
-=item * I<ra_from_shelves> =E<gt> string-array reference with shelf names
+=item * C<ra_from_shelves =E<gt> string-array reference> with shelf names
 
-=item * I<rh_into>         =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)> [optional]
+=item * C<rh_into         =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)> [optional]
 
-=item * I<on_progress>     =E<gt> see C<gmeter()> [optional]
+=item * C<on_progress     =E<gt> sub> see C<gmeter()> [optional]
 
 =item * If you need authors I<and> books data, then use C<greadshelf>
         which also populates the I<author> property of every book
@@ -374,13 +371,13 @@ https://github.com/andre-st/
 
 =item * reads the Goodreads.com list of books written by the given author
 
-=item * I<author_id>   =E<gt> C<string>
+=item * C<author_id   =E<gt> string>
 
-=item * I<rh_into>     =E<gt> hash reference C<(id =E<gt> L<%book|"%book">,...)>
+=item * C<rh_into     =E<gt> hash reference (id =E<gt> L<%book|"%book">,...)>
 
-=item * I<on_book>     =E<gt> C<sub( L<%book|"%book"> )> [optional]
+=item * C<on_book     =E<gt> sub( L<%book|"%book"> )> [optional]
 
-=item * I<on_progress> =E<gt> see C<gmeter()> [optional]
+=item * C<on_progress =E<gt> sub> see C<gmeter()> [optional]
 
 =back
 
@@ -391,19 +388,19 @@ https://github.com/andre-st/
 =item * loads ratings (no text), reviews (text), "to-read", "added" etc;
         you can filter later or via I<on_filter> parameter
 
-=item * I<rh_for_book> =E<gt> hash reference C<L<%book|"%book">>, see C<greadbook()>
+=item * C<rh_for_book =E<gt> hash reference L<%book|"%book">>, see C<greadbook()>
 
-=item * I<rh_into>     =E<gt> hash reference C<(id =E<gt> L<%review|"%review">,...)>
+=item * C<rh_into     =E<gt> hash reference (id =E<gt> L<%review|"%review">,...)>
 
-=item * I<since>       =E<gt> of type C<Time::Piece> [optional]
+=item * C<since       =E<gt> Time::Piece> [optional]
 
-=item * I<on_filter>   =E<gt> C<sub( L<%review|"%review"> )>, return 0 to drop [optional]
+=item * C<on_filter   =E<gt> sub( L<%review|"%review"> )>, return 0 to drop [optional]
 
-=item * I<on_progress> =E<gt> see C<gmeter()> [optional]
+=item * C<on_progress =E<gt> sub> see C<gmeter()> [optional]
 
-=item * I<dict_path>   =E<gt> path to a dictionary text-file (1 word per line) [optional]
+=item * C<dict_path   =E<gt> string> path to a dictionary file (1 word per line) [optional]
 
-=item * I<rigor>       =E<gt> C<int> [optional, default 2]
+=item * C<rigor       =E<gt> int> [optional, default 2]
 
   level 0   = search newest reviews only (max 300 ratings)
   level 1   = search with a combination of filters (max 5400 ratings)
@@ -418,17 +415,17 @@ https://github.com/andre-st/
 
 =item * queries Goodreads.com for the friends and followees list of the given user
 
-=item * I<rh_into>        =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)>
+=item * C<rh_into        =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
 
-=item * I<from_user_id>   =E<gt> C<string>
+=item * C<from_user_id   =E<gt> string>
 
-=item * I<on_progress>    =E<gt> see C<gmeter()> [optional]
+=item * C<on_progress    =E<gt> sub> see C<gmeter()> [optional]
 
-=item * I<incl_authors>   =E<gt> C<bool> [optional, default 1]
+=item * C<incl_authors   =E<gt> bool> [optional, default 1]
 
-=item * I<incl_friends>   =E<gt> C<bool> [optional, default 1]
+=item * C<incl_friends   =E<gt> bool> [optional, default 1]
 
-=item * I<incl_followees> =E<gt> C<bool> [optional, default 1]
+=item * C<incl_followees =E<gt> bool> [optional, default 1]
 
 =item * Precondition: gsetcookie()
 
@@ -440,13 +437,13 @@ https://github.com/andre-st/
 
 =item * reads the Goodreads.com list of authors who are similar to the given author
 
-=item * I<rh_into>     =E<gt> hash reference C<(id =E<gt> L<%user|"%user">,...)>
+=item * C<rh_into     =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
 
-=item * I<author_id>   =E<gt> string
+=item * C<author_id   =E<gt> string>
 
-=item * I<on_progress> =E<gt> see C<gmeter()> [optional]
+=item * C<on_progress =E<gt> sub> see C<gmeter()> [optional]
 
-=item * increments I<'_seen'> counter of each author if already in I<%$rh_into>
+=item * increments C<'_seen'> counter of each author if already in I<%$rh_into>
 
 =back
 
@@ -456,18 +453,18 @@ https://github.com/andre-st/
 
 =item * searches the Goodreads.com database for books that match a given phrase
 
-=item * I<ra_into>     =E<gt> array reference C<(L<%book|"%book">,...)> 
+=item * C<ra_into     =E<gt> array reference (L<%book|"%book">,...)> 
 
-=item * I<phrase>      =E<gt> C<string> with space separated keywords
+=item * C<phrase      =E<gt> string> with space separated keywords
 
-=item * I<is_exact>    =E<gt> C<bool> [optional, default 0]
+=item * C<is_exact    =E<gt> bool> [optional, default 0]
 
-=item * I<ra_order_by> =E<gt> array reference: property names from C<(L<%book|"%book">,...)> 
+=item * C<ra_order_by =E<gt> array reference> property names from C<(L<%book|"%book">,...)> 
                        [optional, default: 'stars', 'num_ratings', 'year']
 
-=item * I<num_ratings> =E<gt> C<int> only list books with at least N ratings [optional, default 0]
+=item * C<num_ratings =E<gt> int> only list books with at least N ratings [optional, default 0]
 
-=item * I<on_progress> =E<gt> see C<gmeter()>  [optional]
+=item * C<on_progress =E<gt> sub> see C<gmeter()>  [optional]
 
 =back
 
