@@ -44,7 +44,7 @@ feature requested in the Goodreads forums.
 Prints authors who Goodreads thinks are similar to all the authors you're reading.
 It's a naive implementation of the "Finding [all] similar authors"
 feature requested in the Goodreads forums.
-[Learn more](likeminded.md)
+[Learn more](similarauth.md)
 
 
 ## [search.pl](search.md)
