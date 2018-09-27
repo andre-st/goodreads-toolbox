@@ -245,7 +245,7 @@ print $fh qq{
 undef $fh;
 
 
-printf "%d books\n", $num_finds;
+printf "%d groups\n", $num_finds;
 printf "Total time: %.0f minutes\n", (time()-$TSTART)/60;
 
 
