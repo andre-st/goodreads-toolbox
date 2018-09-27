@@ -459,7 +459,7 @@ https://github.com/andre-st/
 
 =item * C<is_exact    =E<gt> bool> [optional, default 0]
 
-=item * C<ra_order_by =E<gt> array reference> property names from C<(L<%book|"%book">,...)> 
+=item * C<ra_order_by =E<gt> array reference> property names from C<L<%book|"%book">> 
                        [optional, default: 'stars', 'num_ratings', 'year']
 
 =item * C<num_ratings =E<gt> int> only list books with at least N ratings [optional, default 0]
