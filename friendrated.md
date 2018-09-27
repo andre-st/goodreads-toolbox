@@ -61,7 +61,7 @@ content](https://www.youtube.com/watch?v=o_CYdZBPDCg).
 of that person (depends on used cookie).
 
 
-## Observations
+## Observations and limitations
 
 - books in the upper value range are usually well-known titles, fiction, classics, no surprises
 - female GR members mainly read fiction, tend to give 4 and 5 stars pretty generously, and their networks are female
