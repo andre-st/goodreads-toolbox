@@ -662,7 +662,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 _extract_user_groups( I<$rh_into, $on_group_fn, on_progress_fn, $groups_html_str> )
+=head2 C<bool> _extract_user_groups( I<$rh_into, $on_group_fn, on_progress_fn, $groups_html_str> )
 
 =head1 PRIVATE I/O PLUMBING SUBROUTINES
 

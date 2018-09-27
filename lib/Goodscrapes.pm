@@ -172,6 +172,7 @@ our $_ENO_GRUNEXPECT  = $_ENO_ERROR + 2;
 our $_ENO_GRCAPACITY  = $_ENO_ERROR + 3;
 our $_ENO_GRMAINTNC   = $_ENO_ERROR + 4;
 our $_ENO_CURL        = $_ENO_ERROR + 5;
+our $_ENO_NOHTML      = $_ENO_ERROR + 6;
 our $_ENO_FATAL       = 500;  # abort
 our $_ENO_NOCOOKIE    = $_ENO_FATAL + 1;
 our $_ENO_BADCOOKIE   = $_ENO_FATAL + 2;
@@ -189,16 +190,17 @@ our $_MSG_COOKIEHELP  = "Save a Goodreads.com cookie to the file \"%s\". "  # pa
 our %_ERRMSG = 
 (
 	# _ENO_GRxxx are messages from the Goodreads.com website:
-	$_ENO_WARN       => "\n[WARN ] unspecified: %s",  # url
+	$_ENO_WARN       => "\n[WARN ] %s",               # url
 	$_ENO_GR404      => "\n[WARN ] Not found: %s",    # url
 	$_ENO_GRSIGNIN   => "\n[WARN ] Sign-in for %s => Cookie invalid or not set: see gsetcookie()", # url
-	$_ENO_ERROR      => "\n[ERROR] unspecified: %s",  # url
+	$_ENO_ERROR      => "\n[ERROR] %s",               # url
 	$_ENO_GRUNAVAIL  => "\n[ERROR] Goodreads.com \"temporarily unavailable\".",
 	$_ENO_GRUNEXPECT => "\n[ERROR] Goodreads.com encountered an \"unexpected error\".",
 	$_ENO_GRCAPACITY => "\n[ERROR] Goodreads.com is over capacity.",
 	$_ENO_GRMAINTNC  => "\n[ERROR] Goodreads.com is down for maintenance.",
 	$_ENO_CURL       => "\n[ERROR] %s: %s %s",        # url, err, errbuf
-	$_ENO_FATAL      => "\n[FATAL] unspecified: %s",  # url
+	$_ENO_NOHTML     => "\n[ERROR] No HTML body: %s", # url
+	$_ENO_FATAL      => "\n[FATAL] %s",               # url
 	$_ENO_NOCOOKIE   => "\n[FATAL] Missing cookie. $_MSG_COOKIEHELP",                # path
 	$_ENO_BADCOOKIE  => "\n[FATAL] Goodreads.com rejects cookie. $_MSG_COOKIEHELP",  # path
 	$_ENO_NODICT     => "\n[FATAL] Cannot open dictionary file: %s",                 # path
@@ -380,7 +382,7 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 sub gverifyuser
 {
-	my $uid = shift || '';
+	my $uid = shift // '';
 	
 	return $1 if $uid =~ /(\d+)/ 
 		or croak( _errmsg( $_ENO_BADUSER, $uid ) );
@@ -405,7 +407,7 @@ sub gverifyuser
 
 sub gverifyshelf
 {
-	my $nam = shift || ''; # '%23ALL%23';
+	my $nam = shift // ''; # '%23ALL%23';
 	
 	croak( _errmsg( $_ENO_BADSHELF, $nam ) )
  		if length $nam == 0 || $nam =~ /[^%a-zA-Z0-9_\-,]/;
@@ -424,10 +426,7 @@ sub _require_arg
 {
 	my $nam = shift;
 	my $val = shift;
-	
-	croak( _errmsg( $_ENO_BADARG, $nam ) ) 
-		if !defined $val;
-	
+	croak( _errmsg( $_ENO_BADARG, $nam ) ) if !defined $val;
 	return $val;
 }
 
@@ -447,7 +446,7 @@ sub _require_arg
 
 sub gisbaduser
 {
-	my $uid = shift;
+	my $uid = shift or return 1;
 	return grep{ $_ eq $uid } @_BADPROFILES;
 }
 
@@ -482,7 +481,7 @@ sub gmeter
 		   $v  = 100 if defined $_[1] && $v > 100;  # Allows to trigger "100%" by passing (1, 1)
 		my $s  = sprintf( $f, $v );
 		
-		print "\b" x (length $s) if !$is_first;  # Backspaces prev meter if any (same-width format str)
+		print "\b" x (length $s) if !$is_first;     # Backspaces prev meter if any (same-width format str)
 		print $s;
 		$is_first = 0;
 	};
@@ -797,7 +796,7 @@ sub greadreviews
 	# Goodreads reviews filters get us dissimilar(!) subsets which are merged
 	# here: Don't assume that these filters just load a _subset_ of what you
 	# see if _no filters_ are applied. Given enough ratings and reviews, each
-	# filter finds reviews not included in any other revs.  Theoretical
+	# filter finds reviews not included in any other subset.  Theoretical
 	# limit here is 5400 reviews: 6*3 filter combinations * max. 300 displayed 
 	# reviews (Goodreads limit).
 	# 
@@ -823,7 +822,9 @@ sub greadreviews
 
 	# Dict-search works well with many ratings but sometimes poorly with few.
 	# Woolf's "To the Lighthouse" has 5514 text reviews: 948 found without 
-	# dict-search, with dict-search: 3057 (ngrams) or 4962 (words)
+	# dict-search, with dict-search: 3057 (ngrams) or 4962 (words).
+	# If searching and searching and nothing happens after $stalltime seconds
+	# then we abort this method.
 	# 
 	goto DONE if $rigor <  2;
 	goto DONE if $rigor == 2 && $limit < 3000;
@@ -1190,10 +1191,10 @@ sub _user_url
 sub _revs_url
 {
 	my $bid  = shift;
-	my $sort = shift // undef;
-	my $rat  = shift // undef;
-	my $txt  = shift // undef;
-	   $txt  =~ s/\s+/+/g if $txt;
+	my $sort = shift;
+	my $rat  = shift;
+	my $txt  = shift;
+	   $txt  =~ s/\s+/+/g  if $txt;
 	my $pag  = shift // 1;
 	
 	return "https://www.goodreads.com/book/reviews/${bid}?"
@@ -1325,10 +1326,8 @@ sub _group_url
 
 sub _extract_book
 {
-	my $htm = shift;
+	my $htm = shift or return;
 	my %bk;
-	
-	return undef if !$htm;
 	
 	$bk{ id          } = $htm =~ /id="book_id" value="([^"]+)"/                         ? $1 : undef;
 	$bk{ isbn        } = $htm =~ /<meta content='([^']+)' property='books:isbn'/        ? $1 : ''; # ISBN13
@@ -1355,26 +1354,24 @@ sub _extract_book
 
 sub _extract_user
 {
-	my $htm = shift;
-	my %u;
+	my $htm = shift or return;
+	my %us;
 	
-	return undef if !$htm;
+	$us{ id         } = $htm =~ /<meta property="og:url" content="https:\/\/www\.goodreads\.com\/user\/show\/(\d+)/ ? $1 : undef;
+	$us{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? $1 : "";
+	$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : 0;
+	$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/            ? 1  : 0;
+	$us{ is_friend  } = undef;
+	$us{ is_author  } = undef;
+	$us{ is_private } = undef;  # TODO
+	$us{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/ ? 1 : 0;
+	$us{ url        } = _user_url( $us{id}, $us{is_author} );
+	$us{ works_url  } = undef;
+	$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/ ? $1 : $_NOUSERIMGURL;
+	$us{ _seen      } = 1;
+	$us{ groups     } = undef;
 	
-	$u{ id         } = $htm =~ /<meta property="og:url" content="https:\/\/www\.goodreads\.com\/user\/show\/(\d+)/ ? $1 : undef;
-	$u{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? $1 : "";
-	$u{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : 0;
-	$u{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/            ? 1  : 0;
-	$u{ is_friend  } = undef;
-	$u{ is_author  } = undef;
-	$u{ is_private } = undef;  # TODO
-	$u{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/ ? 1 : 0;
-	$u{ url        } = _user_url( $u{id}, $u{is_author} );
-	$u{ works_url  } = undef;
-	$u{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/ ? $1 : $_NOUSERIMGURL;
-	$u{ _seen      } = 0;
-	$u{ groups     } = undef;
-	
-	return %u;
+	return %us;
 }
 
 
@@ -1395,7 +1392,7 @@ sub _extract_books
 	my $rh  = shift;
 	my $bfn = shift;
 	my $pfn = shift;
-	my $htm = shift;
+	my $htm = shift or return 0;
 	my $ret = 0;
 	
 	# TODO verify if shelf is the given one or redirected by GR to #ALL# bc misspelled	
@@ -1432,7 +1429,7 @@ sub _extract_books
 		$bk{ rh_author   } = \%au;
 		
 		$ret++ unless exists $rh->{$bk{id}};  # Don't count duplicates (multiple shelves)
-		$rh->{$bk{id}} = \%bk if $rh;
+		$rh->{ $bk{id} } = \%bk if $rh;
 		$bfn->( \%bk );
 	}
 	
@@ -1489,7 +1486,7 @@ sub _extract_author_books
 		$bk{ rh_author   } = \%au;
 		
 		$ret++; # Count duplicates too: 10 books of author A, 9 of B; called for single author
-		$rh->{$bk{id}} = \%bk;
+		$rh->{ $bk{id} } = \%bk;
 		$bfn->( \%bk );
 	}
 	
@@ -1515,7 +1512,7 @@ sub _extract_followees
 	my $rh  = shift;
 	my $pfn = shift;
 	my $iau = shift;
-	my $htm = shift;
+	my $htm = shift or return 0;
 	my $ret = 0;
 	
 	while( $htm =~ /<div class='followingItem elementList'>(.*?)<\/a>/gs )
@@ -1536,7 +1533,7 @@ sub _extract_followees
 			
 		next if !$iau && $us{is_author};
 		$ret++;
-		$rh->{$us{id}} = \%us;
+		$rh->{ $us{id} } = \%us;
 	}
 	
 	$pfn->( $ret );
@@ -1561,7 +1558,7 @@ sub _extract_friends
 	my $rh  = shift;
 	my $pfn = shift;
 	my $iau = shift;
-	my $htm = shift;
+	my $htm = shift or return 0;
 	my $ret = 0;
 	
 	while( $htm =~ /<tr>\s*<td width="1%">(.*?)<\/td>/gs )
@@ -1582,7 +1579,7 @@ sub _extract_friends
 		
 		next if !$iau && $us{ is_author };
 		$ret++;
-		$rh->{$us{id}} = \%us;
+		$rh->{ $us{id} } = \%us;
 	}
 	
 	$pfn->( $ret );
@@ -1658,7 +1655,7 @@ sub _extract_revs
 		if( $ffn->( \%rv ) )  # Filter
 		{
 			$ret++ unless exists $rh->{$rv{id}};  # Don't count duplicates (multiple searches for same book)
-			$rh->{$rv{id}} = \%rv;
+			$rh->{ $rv{id} } = \%rv;
 		}
 	}
 	
@@ -1679,7 +1676,7 @@ sub _extract_similar_authors
 	my $rh          = shift;
 	my $uid_to_skip = shift;
 	my $pfn         = shift;
-	my $htm         = shift;
+	my $htm         = shift or return 0;
 	my $ret         = 0;
 	
 	while( $htm =~ /<li class='listElement'>(.*?)<\/li>/gs )
@@ -1706,7 +1703,7 @@ sub _extract_similar_authors
 		$au{ is_private } = 0;
 		$au{ _seen      } = 1;
 		
-		$rh->{$au{id}} = \%au;
+		$rh->{ $au{id} } = \%au;
 	}
 	
 	$pfn->( $ret );
@@ -1737,7 +1734,7 @@ sub _extract_search_books
 {
 	my $ra  = shift;
 	my $pfn = shift;
-	my $htm = shift;
+	my $htm = shift or return 0;
 	my $ret = 0;
 	my $max = $htm =~ /Page \d+ of about (\d+) results/  ? $1 : 0;
 	
@@ -1785,7 +1782,7 @@ sub _extract_search_books
 
 
 
-=head2 _extract_user_groups( I<$rh_into, $on_group_fn, on_progress_fn, $groups_html_str> )
+=head2 C<bool> _extract_user_groups( I<$rh_into, $on_group_fn, on_progress_fn, $groups_html_str> )
 
 =cut
 
@@ -1794,7 +1791,7 @@ sub _extract_user_groups
 	my $rh  = shift;
 	my $gfn = shift;
 	my $pfn = shift;
-	my $htm = shift;
+	my $htm = shift or return 0;
 	my $ret = 0;
 	
 	while( $htm =~ /<div class="elementList">(.*?)<div class="clear">/gs )
@@ -1874,7 +1871,7 @@ sub _extract_user_groups
 
 sub _check_page
 {
-	my $htm = shift;
+	my $htm = shift or return $_ENO_NOHTML;
 	
 	# Try to be precise, don't stop just because someone wrote a pattern 
 	# in his review or a book title. Characters such as < and > are 
