@@ -183,7 +183,7 @@ our $_ENO_BADARG      = $_ENO_FATAL + 6;
 
 
 # Misc module message strings:
-our $_MSG_RETRYING    = "\n[INFO ] Retrying in 3 minutes... Press CTRL-C to exit";
+our $_MSG_RETRYING    = "[INFO ] Retrying in 3 minutes... Press CTRL-C to exit";
 our $_MSG_COOKIEHELP  = "Save a Goodreads.com cookie to the file \"%s\". "  # path
                       . "Check out https://www.youtube.com/watch?v=o_CYdZBPDCg for a tutorial "
                       . "on cookie-extraction using Chrome's DevTools Network-view.";
@@ -511,9 +511,9 @@ sub gmeter
 
 sub gsetcookie
 {	
-	my (%args)  = @_;
-	my $path    = $args{ filepath }  // $_COOKIEPATH;
-	$_cookie    = $args{ content  }  // undef;
+	my (%args) = @_;
+	my $path   = $args{ filepath }  // $_COOKIEPATH;
+	$_cookie   = $args{ content  }  // undef;
 	
 	goto TEST if defined( $_cookie );
 	
@@ -1351,22 +1351,37 @@ sub _extract_book
 
 sub _extract_user
 {
-	my $htm = shift or return;
+	my $htm  = shift or return;
+	my $uid  = $htm =~ /<meta property="og:url" content="https:\/\/www\.goodreads\.com\/user\/show\/(\d+)/ ? $1 : undef;
+	my $auid = $htm =~ /<meta content='https:\/\/www\.goodreads\.com\/author\/show\/(\d+)/                 ? $1 : undef;
 	my %us;
 	
-	$us{ id         } = $htm =~ /<meta property="og:url" content="https:\/\/www\.goodreads\.com\/user\/show\/(\d+)/ ? $1 : undef;
-	$us{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? $1 : "";
-	$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : 0;
-	$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/            ? 1  : 0;
-	$us{ is_private } = $htm =~ /<div id="privateProfile"/                           ? 1  : 0;
-	$us{ is_friend  } = undef;
-	$us{ is_author  } = undef;
-
-	$us{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/ ? 1 : 0;
-	$us{ url        } = _user_url( $us{id}, $us{is_author} );
-	$us{ works_url  } = undef;
-	$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/ ? $1 : $_NOUSERIMGURL;
-	$us{ _seen      } = 1;
+	$us{ id } = $uid ? $uid : $auid;
+	
+	if( $auid )  # Author page:
+	{
+		$us{ name       } = $htm =~ /<meta content='([^']+)' property='og:title'>/ ? decode_entities( $1 ) : "";
+		$us{ img_url    } = $htm =~ /<meta content='([^']+)' property='og:image'>/ ? $1 : $_NOUSERIMGURL;
+		$us{ is_staff   } = $htm =~ /<h3 class="right goodreadsAuthor">/           ? 1  : 0;
+		$us{ is_private } = 0;
+		$us{ is_female  } = undef;  # TODO
+		$us{ works_url  } = _author_books_url( $auid );
+	}
+	else  # Normal users:
+	{
+		$us{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? $1 : "";
+		$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : 0;
+		$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/            ? 1  : 0;
+		$us{ is_private } = $htm =~ /<div id="privateProfile"/                           ? 1  : 0;
+		$us{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/    ? 1  : 0;
+		$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/         ? $1 : $_NOUSERIMGURL;
+		$us{ works_url  } = undef;
+	}
+	
+	$us{ is_friend } = undef;
+	$us{ is_author } = $auid ? 1 : 0;
+	$us{ url       } = _user_url( $us{id}, $us{is_author} );
+	$us{ _seen     } = 1;
 	
 	return %us;
 }
