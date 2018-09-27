@@ -7,9 +7,6 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - new program: friendgroup.pl ([#6](https://github.com/andre-st/goodreads/issues/6))
-
-### Changed
-
 - cookie validity is tested against Goodreads at the start of a program (using cookies)
 
 
