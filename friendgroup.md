@@ -5,7 +5,7 @@
 
 ## Discussion groups common among the people you follow
 
-From the Goodreads Forums, [Carlissa (2018)](https://www.goodreads.com/topic/show/19548229-finding-a-particular-type-of-group):
+From the _Goodreads Feedback_ forum, [Carlissa (2018)](https://www.goodreads.com/topic/show/19548229-finding-a-particular-type-of-group):
 > ... The best way to find a group is by word of mouth from friends ...
 
 or Faith (ibidem):
