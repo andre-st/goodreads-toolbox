@@ -60,7 +60,7 @@ content](https://www.youtube.com/watch?v=o_CYdZBPDCg).
 
 ## Observations and limitations
 
-- sometimes you don't know what you can have and wouldn't search for it &rarr; shows up here
+- sometimes you don't know what you can have and you wouldn't search for it, but it might show up here
 
 
 ## Feedback
