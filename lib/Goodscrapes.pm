@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.96';  # X.XX version format required by Perl
+our $VERSION = '1.97';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
