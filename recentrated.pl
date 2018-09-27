@@ -142,7 +142,7 @@ if( $csv )
 		
 		my $num_new_rat = $b->{num_ratings} - $csv->{$b->{id}}->{num_ratings};
 		
-		next if $num_new_rat <= 0;
+		next unless $num_new_rat > 0;
 		
 		my %revs;
 		greadreviews( rh_for_book => $b, 
