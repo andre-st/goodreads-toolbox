@@ -2,8 +2,8 @@
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
-[Goodreads.com](http://www.goodreads.com/) is the world largest book community 
-and a tools provider for web-based (home-)library management.
+8 tools for [Goodreads.com](http://www.goodreads.com/)—the world largest book community 
+and a provider for web-based (home-)library management.
 
 
 ## [recentrated.pl](recentrated.md)
