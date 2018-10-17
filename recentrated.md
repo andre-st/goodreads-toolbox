@@ -75,7 +75,7 @@ Recently rated books in your "watch-ratings" shelf:
 ### Installation to a server:
 
 1. open a GNU/Linux terminal and install the Goodreads Toolbox:
-	``` sh
+	``` console
 	$ git clone https://github.com/andre-st/goodreads.git
 	$ cd goodreads
 	$ sudo make
