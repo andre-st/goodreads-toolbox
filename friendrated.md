@@ -21,7 +21,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 
 ## How to generate this on a GNU/Linux operating system
 
-```
+```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make
