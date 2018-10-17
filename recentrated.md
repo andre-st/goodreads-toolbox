@@ -45,7 +45,7 @@ Recently rated books in your "watch-ratings" shelf:
  [9 new] ratings better viewed on book page
  ...   
 ```
-- low-bandwidth, distraction-free plaintext mail; HTML mail appeals to marketers because it's another place to stick their logo, nobody else needs it; it sucked [earlier](http://www.asciiribbon.org/) and still sucks in 2018
+- low-bandwidth, distraction-free plaintext mail; HTML mail appeals to marketers because it's another place to stick their logo, nobody else needs it
 - most mail-clients recognize the signature and the links and make the latter clickable
 - changes are collected in periodic mails; individual mails would be annoying
 - text-reviews in the mail are bloat, a click on a review-link is bearable - I would have checked the reviewer on the GR website anyway
