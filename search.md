@@ -44,7 +44,7 @@ or [Ian (2016)](https://www.goodreads.com/topic/show/18115612-search-prioritise-
 
 ## How to generate this on a GNU/Linux operating system
 
-```
+```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make
