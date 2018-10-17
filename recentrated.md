@@ -72,7 +72,7 @@ Recently rated books in your "watch-ratings" shelf:
 	Such a shelf prevents unnecessary mails and eases manual checks if this system is discontinued someday
 
 
-### Self-hosted:
+### Installation to a server (self-hosted):
 
 1. open a GNU/Linux terminal and install the Goodreads Toolbox:
 	``` sh
