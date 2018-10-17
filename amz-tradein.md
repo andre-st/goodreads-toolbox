@@ -4,7 +4,7 @@
 
 
 ## Autom. Amazon-Trade-In-Preisliste für Goodreads-Bücher
-```
+```console
 $ ./gr-tradein.pl 18418712 books-for-sale
 EUR 8,50   Schneekreuzer. Alle drei Teile in einem Band
 EUR 3,37   Exit Wounds
