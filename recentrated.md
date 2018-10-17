@@ -45,7 +45,7 @@ Recently rated books in your "watch-ratings" shelf:
  [9 new] ratings better viewed on book page
  ...   
 ```
-- low-bandwidth, distraction-free plaintext mail; HTML-mails are the devil's tools
+- low-bandwidth, distraction-free plaintext mail; HTML-mails are [the devil's tools](http://www.asciiribbon.org/)
 - most mail-clients recognize the signature and the links and make the latter clickable
 - changes are collected in periodic mails; individual mails would be annoying
 - text-reviews in the mail are bloat, a click on a review-link is bearable - I would have checked the reviewer on the GR website anyway
