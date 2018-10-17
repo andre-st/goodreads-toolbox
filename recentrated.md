@@ -72,7 +72,7 @@ Recently rated books in your "watch-ratings" shelf:
 	Such a shelf prevents unnecessary mails and eases manual checks if this system is discontinued someday
 
 
-### Installation to a server (self-hosted):
+### Installation to a server:
 
 1. open a GNU/Linux terminal and install the Goodreads Toolbox:
 	``` sh
@@ -93,7 +93,7 @@ Recently rated books in your "watch-ratings" shelf:
 	# `ifne` is part of `moreutils`
 	/path/to/recentrated.pl GOODUSERID SHELFNAME YOURMAIL@EXAMPLE.COM | ifne /usr/sbin/sendmail -t
 	
-	# Provide this service to your Goodreads friends too!
+	# Provide this self-hosted service to your Goodreads friends too!
 	# ... HERUSERID HERSHELF HERMAIL@EXAMPLE.COM ADMIN@EXAMLE.COM | ...
 	# ...
 	```
