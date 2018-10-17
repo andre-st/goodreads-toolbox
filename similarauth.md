@@ -22,7 +22,7 @@ From the _Goodreads Feedback_ forum,
 
 ## How to generate this on a GNU/Linux operating system
 
-```
+```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make
