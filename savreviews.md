@@ -16,7 +16,7 @@ or [Giulia (2018)](https://www.goodreads.com/topic/show/19477061-how-can-i-extra
 
 
 ## Output format
-```
+```console
 $ cat savreviews-8882222.txt
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -51,7 +51,7 @@ me or add an [issue](https://github.com/andre-st/goodreads/issues).
 
 ## How to generate this on a GNU/Linux operating system
 
-```
+```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make
