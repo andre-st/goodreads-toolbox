@@ -75,7 +75,7 @@ Recently rated books in your "watch-ratings" shelf:
 ### Installation to a server:
 
 1. open a GNU/Linux terminal and install the Goodreads Toolbox:
-	``` console
+	```console
 	$ git clone https://github.com/andre-st/goodreads.git
 	$ cd goodreads
 	$ sudo make
@@ -88,7 +88,7 @@ Recently rated books in your "watch-ratings" shelf:
    
 3. add a cron-job (I prefer [anacrony](https://en.wikipedia.org/wiki/Anacron "performs pending jobs if the computer was previously shut down") daemons such as [dcron](https://github.com/dubiousjim/dcron) or [fcron](https://en.wikipedia.org/wiki/Fcron)):
 	edit `/etc/cron.daily/goodratings` and replace ARGUMENTS:
-	``` sh
+	```sh
 	#!/usr/bin/env sh
 	# `ifne` is part of `moreutils`
 	/path/to/recentrated.pl GOODUSERID SHELFNAME YOURMAIL@EXAMPLE.COM | ifne /usr/sbin/sendmail -t
