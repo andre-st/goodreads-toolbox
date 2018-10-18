@@ -140,6 +140,8 @@ our @EXPORT = qw(
 	greadreviews
 	greadfolls 
 	
+	gfollow
+	
 	amz_book_html 
 	);
 
@@ -1946,7 +1948,7 @@ sub _updcookie
 {
 	my $changes = shift or return;
 	my $sid2    = $changes =~ /_session_id2=([^;]*)/ ? $1 : undef;
-	if( !$sid2 ) return;
+	return if !$sid2;
 	
 	$_cookie  =~ s/;*\s*_session_id2=[^;]*;*//g;  # Remove if exists
 	$_cookie .= "; _session_id2=${sid2}";
@@ -2055,6 +2057,47 @@ DONE:
 	
 	return $htm;
 }
+
+
+
+
+
+=head2 C<void> gfollow(I< good_user_id >)
+
+=over
+
+=item * Experimental
+
+=item * make cookie-owner follow the user with given ID
+
+=item * Precondition: gsetcookie()
+
+=back
+
+=cut
+
+sub gfollow
+{
+	my $uid     = gverifyuser( shift );
+	my $csrftok = _extract_csrftok( _html( _user_url( $uid ) ) );
+	
+	state $curl;
+	my    $curlret;
+	my    $errno;
+	
+	$curl = WWW::Curl::Easy->new if !$curl;
+	_setcurlopts( $curl );
+	$curl->setopt( $curl->CURLOPT_URL,        "https://www.goodreads.com/user/${uid}/followers.json" );
+	$curl->setopt( $curl->CURLOPT_REFERER,    "https://www.goodreads.com/user/show/${uid}" );
+	$curl->setopt( $curl->CURLOPT_POST,       1 );
+	$curl->setopt( $curl->CURLOPT_POSTFIELDS, 'from_user_show_page%3Dtrue');  # Otherwise "Bad Request"
+	$curl->setopt( $curl->CURLOPT_HTTPHEADER, [
+			"X-CSRF-Token: ${csrftok}",
+			"X-Requested-With: XMLHttpRequest" ]);
+	
+	$curlret = $curl->perform;
+}
+
 
 
 1;

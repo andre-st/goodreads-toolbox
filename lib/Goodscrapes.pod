@@ -741,3 +741,15 @@ https://github.com/andre-st/
 
 =back
 
+=head2 C<void> gfollow(I< good_user_id >)
+
+=over
+
+=item * Experimental
+
+=item * make cookie-owner follow the user with given ID
+
+=item * Precondition: gsetcookie()
+
+=back
+
