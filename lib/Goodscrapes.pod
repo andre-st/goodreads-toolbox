@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2018-09-27
+=item * Updated: 2018-10-18
 
 =item * Since: 2014-11-05
 
@@ -138,6 +138,8 @@ https://github.com/andre-st/
 =item * url         =E<gt> C<string>
 
 =item * img_url     =E<gt> C<string>
+
+=item * review_id   =E<gt> C<string>
 
 =item * year        =E<gt> C<int>    (publishing date)
 
@@ -661,6 +663,8 @@ https://github.com/andre-st/
 
 =head2 C<bool> _extract_user_groups( I<$rh_into, $on_group_fn, on_progress_fn, $groups_html_str> )
 
+=head2 C<string> _extract_csrftok(I< $html >)
+
 =head1 PRIVATE I/O PLUMBING SUBROUTINES
 
 
@@ -708,6 +712,22 @@ https://github.com/andre-st/
         https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/hostedimages/1404319071i/10224522.png
 
 =back
+
+=head2 C<void> _updcookie(I< $string_with_changed_fields >)
+
+=over
+
+=item updates "_session_id2" for X-CSRF-Token
+
+=item TODO: replace all fields
+
+=back
+
+=head2 C<void> _setcurlopts(I< $curl_ref >)
+
+=over
+
+=item Sets default options for GET, POST, PUT, DELETE
 
 =head2 C<string> _html( I<$url, $warn_level = $_ENO_WARN, $can_cache = 1> )
 

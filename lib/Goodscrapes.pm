@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2018-09-27
+=item * Updated: 2018-10-18
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.97';  # X.XX version format required by Perl
+our $VERSION = '1.98';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -275,6 +275,8 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =item * url         =E<gt> C<string>
 
 =item * img_url     =E<gt> C<string>
+
+=item * review_id   =E<gt> C<string>
 
 =item * year        =E<gt> C<int>    (publishing date)
 
@@ -1433,6 +1435,7 @@ sub _extract_books
 		$bk{ num_ratings } = $row =~ />num ratings<\/label><div class="value">\s*([0-9]+)/        ? $1 : 0;  # TODO is there comma?
 		$bk{ img_url     } = $row =~ /<img [^>]* src="([^"]+)"/                                   ? $1 : $_NOBOOKIMGURL;
 		$bk{ year        } = $row =~ />date pub<\/label><div class="value">\s*[^<]*(\d{4})\s*</s  ? $1 : 0;  # "2017" and "Feb 01, 2017" (there's also "edition date pub")
+		$bk{ review_id   } = $row =~ /review\/show\/([0-9]+)"/                                    ? $1 : undef;
 		$bk{ title       } = $tit;
 		$bk{ user_rating } = () = $row =~ /staticStar p10/g;        # Counts occurances
 		$bk{ url         } = _book_url( $bk{id} );
@@ -1829,6 +1832,19 @@ sub _extract_user_groups
 
 
 
+=head2 C<string> _extract_csrftok(I< $html >)
+
+=cut
+
+sub _extract_csrftok
+{
+	my $htm = shift or return 0;
+	return $htm =~ /<meta name="csrf-token" content="([^"]*)/ ? $1 : undef;
+}
+
+
+
+
 ###############################################################################
 
 =head1 PRIVATE I/O PLUMBING SUBROUTINES
@@ -1914,6 +1930,72 @@ sub _check_page
 
 
 
+=head2 C<void> _updcookie(I< $string_with_changed_fields >)
+
+=over
+
+=item updates "_session_id2" for X-CSRF-Token
+
+=item TODO: replace all fields
+
+=back
+
+=cut
+
+sub _updcookie
+{
+	my $changes = shift or return;
+	my $sid2    = $changes =~ /_session_id2=([^;]*)/ ? $1 : undef;
+	if( !$sid2 ) return;
+	
+	$_cookie  =~ s/;*\s*_session_id2=[^;]*;*//g;  # Remove if exists
+	$_cookie .= "; _session_id2=${sid2}";
+}
+
+
+
+
+=head2 C<void> _setcurlopts(I< $curl_ref >)
+
+=over
+
+=item Sets default options for GET, POST, PUT, DELETE
+
+=cut
+
+sub _setcurlopts
+{
+	my $curl = shift;
+	
+	# Misc:
+	$curl->setopt( $curl->CURLOPT_FOLLOWLOCATION, 1           );
+	$curl->setopt( $curl->CURLOPT_USERAGENT,      $_USERAGENT );
+	$curl->setopt( $curl->CURLOPT_COOKIE,         $_cookie    ) if $_cookie;
+	$curl->setopt( $curl->CURLOPT_HEADER,         0           );
+	$curl->setopt( $curl->CURLOPT_HEADERFUNCTION, sub
+	{
+		my $chunk = shift;
+		_updcookie( $chunk =~ /Set-Cookie:(.*)/i ? $1 : undef );  # for CSRF-Token
+		return length( $chunk );
+	});
+	
+	# Performance options:
+	# - don't hang too long, better disconnect and retry
+	# - reduce number of SSL handshakes (reuse connection)
+	# - reduce SSL overhead
+	$curl->setopt( $curl->CURLOPT_TIMEOUT,        60  );
+	$curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 60  );
+	$curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0   );  # CURL default
+	$curl->setopt( $curl->CURLOPT_FRESH_CONNECT,  0   );  # CURL default
+	$curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1   );
+	$curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120 );
+	$curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  );
+	$curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   );
+}
+
+
+
+
 =head2 C<string> _html( I<$url, $warn_level = $_ENO_WARN, $can_cache = 1> )
 
 =over
@@ -1947,28 +2029,11 @@ DOWNLOAD:
 	my    $errno;
 	
 	$curl = WWW::Curl::Easy->new if !$curl;
-
-	$curl->setopt( $curl->CURLOPT_URL,            $url        );
-	$curl->setopt( $curl->CURLOPT_REFERER,        $url        );  # https://www.goodreads.com/...  [F5]
-	$curl->setopt( $curl->CURLOPT_USERAGENT,      $_USERAGENT );
-	$curl->setopt( $curl->CURLOPT_COOKIE,         $_cookie    ) if $_cookie;
-	$curl->setopt( $curl->CURLOPT_HTTPGET,        1           );
-	$curl->setopt( $curl->CURLOPT_FOLLOWLOCATION, 1           );
-	$curl->setopt( $curl->CURLOPT_HEADER,         0           );
-	$curl->setopt( $curl->CURLOPT_WRITEDATA,      \$htm       );
-	
-	# Performance options:
-	# - don't hang too long, better disconnect and retry
-	# - reduce number of SSL handshakes (reuse connection)
-	# - reduce SSL overhead
-	$curl->setopt( $curl->CURLOPT_TIMEOUT,        60  );
-	$curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 60  );
-	$curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0   );  # CURL default
-	$curl->setopt( $curl->CURLOPT_FRESH_CONNECT,  0   );  # CURL default
-	$curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1   );
-	$curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120 );
-	$curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  );
-	$curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   );
+	_setcurlopts( $curl );
+	$curl->setopt( $curl->CURLOPT_URL,       $url  );
+	$curl->setopt( $curl->CURLOPT_REFERER,   $url  );  # https://www.goodreads.com/...  [F5]
+	$curl->setopt( $curl->CURLOPT_HTTPGET,   1     );
+	$curl->setopt( $curl->CURLOPT_WRITEDATA, \$htm );
 	
 	$curlret = $curl->perform;
 	$errno   = $curlret == 0 ? _check_page( $htm ) : $_ENO_CURL;
@@ -1984,15 +2049,12 @@ DOWNLOAD:
 		goto DOWNLOAD;
 	}
 	
-DONE:
+DONE:	
 	$_cache->set( $url, $htm, $_cache_age )
 		if $cancache && $errno == 0;
 	
 	return $htm;
 }
-
-
-
 
 
 1;
