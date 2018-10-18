@@ -665,6 +665,14 @@ https://github.com/andre-st/
 
 =head2 C<string> _extract_csrftok(I< $html >)
 
+=over
+
+=item Example:
+	my $csrftok = _extract_csrftok( _html( _user_url( $uid ) ) );
+	$curl->setopt( $curl->CURLOPT_HTTPHEADER, [ "X-CSRF-Token: ${csrftok}",
+
+=back
+
 =head1 PRIVATE I/O PLUMBING SUBROUTINES
 
 
@@ -738,18 +746,6 @@ https://github.com/andre-st/
 =item * caches documents (if I<$can_cache> is true)
 
 =item * retries on errors
-
-=back
-
-=head2 C<void> gfollow(I< good_user_id >)
-
-=over
-
-=item * Experimental
-
-=item * make cookie-owner follow the user with given ID
-
-=item * Precondition: gsetcookie()
 
 =back
 
