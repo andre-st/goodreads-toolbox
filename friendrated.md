@@ -75,6 +75,7 @@ Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](A
 
 ## See also
 
+- [Popular books][https://www.goodreads.com/friend/popular_books) among my friends _this month_ (Goodreads feature)
 - [likeminded.pl](likeminded.md)   - Find Goodreads members with similar book taste
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [friendgroup.pl](friendgroup.md) - Groups common among the people you follow
