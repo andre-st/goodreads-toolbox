@@ -1954,7 +1954,7 @@ sub _updcookie
 {
 	my $changes = shift or return;
 	my $sid2    = $changes =~ /_session_id2=([^;]*)/ ? $1 : undef;
-	return if !$sid2;
+	return if !$sid2 || !$_cookie;
 	
 	$_cookie  =~ s/;*\s*_session_id2=[^;]*;*//g;  # Remove if exists
 	$_cookie .= "; _session_id2=${sid2}";
