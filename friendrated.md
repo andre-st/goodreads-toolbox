@@ -70,7 +70,9 @@ of that person (depends on used cookie).
 
 ## Feedback
 
-Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](AUTHORS.md) file
+If you like this project, give it a star on GitHub.
+Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads/issues) 
+or see the [AUTHORS.md](AUTHORS.md) file.
 
 
 ## See also
