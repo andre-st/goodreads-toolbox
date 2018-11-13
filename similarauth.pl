@@ -150,6 +150,8 @@ $OUTPATH = sprintf( "similarauth-%s-%s.html", $USERID, join( '-', @SHELVES ) ) i
 gsetcookie() if $USECOOKIE;
 gsetcache( $CACHEDAYS );
 
+pod2usage( -exitval => "NOEXIT", -sections => [ "REPORTING BUGS" ], -verbose => 99 );
+
 
 
 # ----------------------------------------------------------------------------

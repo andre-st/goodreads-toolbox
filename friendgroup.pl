@@ -123,6 +123,9 @@ $OUTPATH = "friendgroup-${USERID}.html" if !$OUTPATH;
 gsetcookie();  # Followed list, friend list and user groups list are private
 gsetcache( $CACHEDAYS );
 
+pod2usage( -exitval => "NOEXIT", -sections => [ "REPORTING BUGS" ], -verbose => 99 );
+
+
 
 #-----------------------------------------------------------------------------
 my %members;  # {user_id}
