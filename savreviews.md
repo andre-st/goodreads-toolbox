@@ -69,7 +69,7 @@ Total time: 87 minutes
 
 - there's no way to load _all_ reviews of a book, but the program 
   tries different things to get as many fulltext reviews as 
-  possible -- this can take very long
+  possible -- this can take very long (see `--rigor` parameter)
 - needs data cleansing on your side
 - review text might include (broken) HTML code, URLs
 - review text can be in any language, e.g., german or russian
@@ -80,7 +80,9 @@ Total time: 87 minutes
 
 ## Feedback
 
-Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](AUTHORS.md) file
+If you like this project, give it a star on GitHub.
+Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads/issues) 
+or see the [AUTHORS.md](AUTHORS.md) file.
 
 
 ## See also

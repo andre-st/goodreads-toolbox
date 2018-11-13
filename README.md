@@ -98,4 +98,5 @@ alternative dictionary-file in this folder.
 - [#members on GR](https://www.statista.com/statistics/252986/number-of-registered-members-on-goodreadscom/), source probably [Goodreads](https://www.goodreads.com/about/us)
 - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors
 - [GR subreddit](https://www.reddit.com/r/goodreads/)
+- [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
 - [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)

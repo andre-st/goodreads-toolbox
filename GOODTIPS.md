@@ -1,4 +1,4 @@
-# Tips
+# Tips on Goodreads, i.a.
 
 ## Table of Contents
 - [Things That Improved My Goodreads.com Experience](#things-that-improved-my-goodreadscom-experience)
