@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2018-10-18
+=item * Updated: 2018-11-13
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.98';  # X.XX version format required by Perl
+our $VERSION = '1.100';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -222,13 +222,13 @@ our $_SORTNEW       = 'newest';
 our $_SORTOLD       = 'oldest';
 our $_EARLIEST      = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
 our @_BADPROFILES   =     # TODO external config file
-[
+(
 	'1000834',  #  3.000 books   NOT A BOOK author
 	'5158478',  # 10.000 books   Anonymous
 	'2938140',  #  2.218 books   Jacob Grimm (Grimm brothers)
 	'128382',   #  2.802 books   Leo Tolstoy
 	'173327'    #    365 books   Germany (Gov?)
-];
+);
 
 our $_cookie    = undef;
 our $_cache_age = $EXPIRES_NOW;  # see gsetcache()
