@@ -212,6 +212,7 @@ sub _errmsg{ my $eno = shift; return sprintf( $_ERRMSG{$eno}, shift, shift, shif
 
 
 # Misc module constants:
+#our $_USERAGENT     = 'Googlebot/2.1 (+http://www.google.com/bot.html)';
 our $_USERAGENT     = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
 our $_COOKIEPATH    = '.cookie';
 our $_NOBOOKIMGURL  = 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png';
