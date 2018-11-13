@@ -179,7 +179,10 @@ $OUTPATH = sprintf( "likeminded-%s-%s.html", $USERID, join( '-', @SHELVES )) if 
 gsetcookie() if $USECOOKIE;
 gsetcache( $CACHEDAYS );
 
-pod2usage( -exitval => "NOEXIT", -sections => [ "REPORTING BUGS" ], -verbose => 99 );
+pod2usage( -exitval   => "NOEXIT", 
+           -sections  => [ "REPORTING BUGS" ], 
+           -verbose   => 99, 
+           -noperldoc => 1 );
 
 
 

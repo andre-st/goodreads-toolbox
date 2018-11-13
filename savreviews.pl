@@ -135,7 +135,10 @@ $BOOKID  = $ARGV[0] or pod2usage( 1 );
 $OUTPATH = "savreviews-${BOOKID}.txt" if !$OUTPATH;
 gsetcache( $CACHEDAYS );
 
-pod2usage( -exitval => "NOEXIT", -sections => [ "REPORTING BUGS" ], -verbose => 99 );
+pod2usage( -exitval   => "NOEXIT", 
+           -sections  => [ "REPORTING BUGS" ], 
+           -verbose   => 99,
+           -noperldoc => 1 );
 
 
 

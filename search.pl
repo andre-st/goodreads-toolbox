@@ -149,7 +149,10 @@ $ordercsv   =~ s/\s+//g;  # Mistakenly added spaces
 gsetcache( $CACHEDAYS );
 STDOUT->autoflush( 1 );
 
-pod2usage( -exitval => "NOEXIT", -sections => [ "REPORTING BUGS" ], -verbose => 99 );
+pod2usage( -exitval   => "NOEXIT", 
+           -sections  => [ "REPORTING BUGS" ], 
+           -verbose   => 99,
+           -noperldoc => 1 );
 
 
 

@@ -145,7 +145,10 @@ $OUTPATH = "friendrated-${USERID}.html" if !$OUTPATH;
 gsetcookie();  # Followed list, friend list and some shelves are private
 gsetcache( $CACHEDAYS );
 
-pod2usage( -exitval => "NOEXIT", -sections => [ "REPORTING BUGS" ], -verbose => 99 );
+pod2usage( -exitval   => "NOEXIT", 
+           -sections  => [ "REPORTING BUGS" ], 
+           -verbose   => 99,
+           -noperldoc => 1 );
 
 
 
