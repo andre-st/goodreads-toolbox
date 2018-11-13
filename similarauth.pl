@@ -100,7 +100,7 @@ More info in similarauth.md
 
 =head1 VERSION
 
-2018-08-12 (Since 2018-07-05)
+2018-11-13 (Since 2018-07-05)
 
 =cut
 

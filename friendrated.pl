@@ -95,7 +95,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2018-09-26 (Since 2018-05-10)
+2018-11-13 (Since 2018-05-10)
 
 =cut
 

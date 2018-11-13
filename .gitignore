@@ -11,6 +11,8 @@
 *.cookie
 *.sh
 *.xcf
+.build
+t
 test*
 TODO.txt
 cve*
