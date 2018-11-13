@@ -1,15 +1,23 @@
-# André's Goodreads Toolbox Makefile
-# Some day I'll try a MakeMaker Makefile.PL 
+# Andre's Goodreads Toolbox Makefile
+# 
+# TODO: Install perl dependencies to a local dir (no root required)
+# TODO: convert perl scripts to Windows executables (Windows release)
 # 
 
-RR_LOGFILE = /var/log/good.log
-RR_DB_DIR  = /var/db/good
+RR_LOGFILE  = /var/log/good.log
+RR_DB_DIR   = /var/db/good
+CACHE_DIR   = /tmp/FileCache/Goodscrapes
+BUILD_DIR   = .build
+PACKAGE     = gtoolbox
+VERSION     = $(shell date +"%Y.%m%d")
+RELEASE     = $(PACKAGE)-$(VERSION)
+RELEASE_WIN = $(PACKAGE)-$(VERSION)-win
 
 
 LIBCURLDEV_ERR = "Requires: libcurl-dev (on Debian or Ubuntu try `apt-get install libcurl-dev` before running this)"
 LIBCURLDEV    := $(shell command -v curl-config 2> /dev/null)
 
-
+# ----------------------------------------------------------------------------
 ## make all      :  Installs all programs
 all :
 ifndef LIBCURLDEV
@@ -25,13 +33,22 @@ endif
 	chown --reference=recentrated.pl "${RR_DB_DIR}" "${RR_LOGFILE}"
 
 
+# ----------------------------------------------------------------------------
 ## make uninstall:  Deletes work- and log-files in /var
 .PHONY : uninstall
 uninstall :
 	rm -rf "${RR_DB_DIR}"
 	rm -rf "${RR_LOGFILE}"
+	rm -rf "${CACHE_DIR}"
 
 
+# ----------------------------------------------------------------------------
+## make dist     :  Builds Linux or Windows release archives (NOT SUPPORTED)
+.PHONY : dist
+dist :
+	
+
+# ----------------------------------------------------------------------------
 # Prints all comments with two leading # characters in this Makefile
 .PHONY : help
 help : Makefile
