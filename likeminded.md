@@ -78,26 +78,26 @@ Goodreads.com is very time consuming.  The script internally uses a
 ## Observations and limitations
 
 **Latest version:**
-- loading data could take a month with too many books: Prefer a separate "best-of" shelf
-  (with 100 representative books) over the "All" or "Read" shelves.
-  You can specify multiple shelves in a single run (--shelf parameter).
-- the more popular your literature, the longer the program's runtime and the 
-  more questionable its results (too generic, many unseen reviewers) - or: 
-  add good but rare books to your "best-of" shelf
-- make sure you have some _Gigabytes_ of free diskspace for /tmp/
+- loading data could take a month given too many books  &rArr;  prefer a separate "best-of" shelf
+  with 100 representative books over the "All" or "Read" shelves.
+  Or specify multiple smaller shelves with the `--shelf` parameter.
+- add good but rare books to your "best-of" shelf:
+  the more popular your literature, the longer the program's runtime and the 
+  more questionable its results (too generic, many unseen reviewers, ...)
+- make sure you have some _Gigabytes_ of free diskspace in `/tmp/`
 - there's no way to load _all_ reviews of a book, but the program tries different 
   things to get as many reviews as possible.
   This means there is a number of readers not considered in our statistics,
   and we cannot randomize in a way which would produce samples of similar size.
   Although, we don't get _all_ members (for books with ten of thousand
   reviews), the final report still contains _enough_ members who read the 
-  same N authors
+  same N authors. You can tune this with the `--rigor` parameter
 - there are members with 94.857 ratings, likely bots
 - lists members with private accounts
 - slow but good enough since you run it 4x a year
 - your Goodreads account must be viewable by 
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
-  which is the default (alternatively try --cookie parameter)
+  which is the default (alternatively try the `--cookie` parameter)
 - "_...most number of shared books would be a list of children's books_"—`likeminded.pl` has a shelf parameter (sort of selection)
 
 **First version compared books, not authors:**
@@ -108,7 +108,7 @@ Goodreads.com is very time consuming.  The script internally uses a
   and only 1 member already on my hand-curated list of 137 followees
 - a minimum of 6 common books (2%) listed 43 members, more or less interesting
 - we learn: book combinations tend to become unique quickly
-- combinations of same books are more rare than combinations of same authors, while latter still satisfies the 'same taste' condition (assumption with books is that likeminded people have the same exposure to the same books, but that's questionable and comparing the _authors_ relaxes or widens this assumption)
+- combinations of same books are more rare than combinations of same authors, while latter still satisfies the 'same taste' condition (the assumption with 'same books' is that likeminded people had the same exposure to the same books, but that's questionable - and comparing the _authors_ relaxes this assumption)
 - the new authors-version takes longer but yields better results, e.g.,
   more matches with my hand-curated followees list
 
