@@ -63,7 +63,7 @@
 - **Force view settings**, e.g., unify the [quasi-random](https://en.wikipedia.org/wiki/Principle_of_least_astonishment) view settings when browsing (other people's)
   shelves, by rewriting Goodreads URLs via Einar Egilsson's 
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
-  Chrome browser extension: 
+  Chrome browser extension (or my [Tiny JS Injector](https://github.com/andre-st/chrome-injectjs)): 
   ```
   Description: Goodreads Shelves: 100 books per page, sort by user-rating (highest first), covers-view
   Example    : https://www.goodreads.com/review/list/13055874?per_page=20&sort=reviews&view=table&shelf=ㅡxx-xx&page=2
