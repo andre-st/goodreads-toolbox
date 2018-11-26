@@ -12,14 +12,14 @@ Checks all the books in a given Goodreads.com shelf for new ratings and notifies
 via periodical e-mail. This helps discover new criticisms and users with interesting 
 libraries. You can [subscribe there](https://andre-st.github.io/goodreads/) if you 
 don't want to install anything.
-It addresses the "follow book" feature that was requested in the Goodreads forums. 
+It implements the "follow book" feature that was requested in the Goodreads forums. 
 [Learn more](recentrated.md)
 
 
 ## [friendrated.pl](friendrated.md)
 
 Prints all books which have been rated 4 or 5 stars by 3 or more persons you
-follow (including friends). It addresses the "books common
+follow (including friends). It implements the "books common
 among the people I follow" feature that was requested in the Goodreads forums.
 [Learn more](friendrated.md)
 
@@ -34,7 +34,7 @@ and wouldn't search for it. [Learn more](friendgroup.md)
 ## [likeminded.pl](likeminded.md)
 
 Prints Goodreads members who are interested in the same books as you.
-It's addresses the "Finding people based on the books they've read"
+It implements the "Finding people based on the books they've read"
 feature that was requested in the Goodreads forums.
 [Learn more](likeminded.md)
 
@@ -42,7 +42,7 @@ feature that was requested in the Goodreads forums.
 ## [similarauth.pl](similarauth.md)
 
 Prints authors who Goodreads thinks are similar to all the authors you're reading.
-It addresses the "Finding [all] similar authors" feature that was requested in the 
+It implements the "Finding [all] similar authors" feature that was requested in the 
 Goodreads forums.
 [Learn more](similarauth.md)
 
@@ -52,14 +52,14 @@ Goodreads forums.
 Prints a books search result, ordered by average rating and number of ratings 
 (most popular books), or date published, optionally with exact title matches. 
 The Goodreads website doesn't offer it for some reason.
-It addresses the "Sort search results by rating" feature that was requested 
+It implements the "Sort search results by rating" feature that was requested 
 in the Goodreads forums.
 [Learn more](search.md)
 
 
 ## [savreviews.pl](savreviews.md)
 
-Saves text-reviews for a book to a text-file. It addresses the "Extract all 
+Saves text-reviews for a book to a text-file. It implements the "Extract all 
 reviews for a specific book" feature that was requested in the Goodreads forums.
 [Learn more](savreviews.md)
 
