@@ -112,6 +112,9 @@ Goodreads.com is very time consuming.  The script internally uses a
 - the new authors-version takes longer but yields better results, e.g.,
   more matches with my hand-curated followees list
 
+**Alternatives to consider:**
+- _"I look for people who dislike the same books that I do. I don’t have a problem finding books to read. What I need is someone who can warn me about the books that everyone else seems to love."_
+
 
 ## Feedback
 
