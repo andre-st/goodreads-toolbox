@@ -8,27 +8,28 @@
 
 ## Things That Improved My Goodreads.com Experience
 
-- **Grouping shelves** with a prefix, e.g., _"region-usa"_,
+- **Group shelves** with a prefix, e.g., _"region-usa"_,
   _"region-..."_. Goodreads sorts shelf lists in alphabetical order.
   Related but scattered shelves impair findability.  
   - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with "z_" or Unicode 0x3161: ㅡ
-  - next to pseudo sub-shelves _"computer-history"_, _"computer-networks"_ and so on I'm using a separate _"computer"_ pseudo super-shelf which contains _all_ books from the sub-shelves
+  - next to pseudo sub-shelves _"computer-history"_, _"computer-networks"_ and so on I'm using a separate _"computer"_ pseudo super-shelf which contains _all_ books from the sub-shelves (useful for shelf-intersection)
 
-- **Creating a "more-urgent" shelf** from unread books
+- **Create a "more-urgent" shelf** from unread books
 
-- **Creating an "abandoned" shelf** to compensate the missing reading-status. 
+- **Create an "abandoned" shelf** to compensate the missing reading-status. 
   Have the exclusive-checkbox [activated](https://www.goodreads.com/shelf/edit)
 
-- **Tracking physical book location** with shelves such as _"shelf-kitchen"_ or 
+- **Track physical book location** with shelves such as _"shelf-kitchen"_ or 
   _"shelf-berlin"_ if the amount of books exceeds memory (Future me)
 
-- **Limiting the number of shelves** to max. 1 page. 
+- **Limit the number of shelves** to max. 1 page. 
   Few coarse-grained shelves better than 100+ fine-grained shelves: faster to navigate and more likely to keep up-to-date for every book.
   Anemic shelves also render functions such as "[select multiple shelves](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)" (intersection ∩) useless.
   - avoid shelves that will likely never contain more than 3 books
   - merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_
+  - remove shelves only good in theory but never used practically
 
-- **Adding unread books to my custom shelves too.** This works
+- **Add unread books to custom shelves too.** This works
   well with Goodreads own _"[select multiple](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)"_ feature beneath your
   shelf list. It's clearer than having hundreds of books in _"want-to-read"_ over time,
   and helps others discovering new books more easily. Pick your next book by intersection ∩, e.g.,
@@ -39,7 +40,7 @@
   
 - **Negative shelves**, or [non-shelves](https://www.goodreads.com/topic/show/19369665-reverse-results-on-my-shelf#comment_id_181173145): e.g., _"fiction" + "lang-de" + "non-computing"_ would exclude nerd fiction; also useful for friends who are interested in everything but computers; most common negative shelf is _"non-fiction"_; limit to few but big shelves
   
-- **Decluttering my library** with cardboxes and GR-shelves labeled
+- **Declutter the library** with cardboxes and GR-shelves labeled
   _"donations"_ and _"resales"_. My city library took 30 books
   after receiving a link to my donations shelf.  Such link may also appear in
   your email signature: "I give away books: ...". 
@@ -47,7 +48,7 @@
 
 - **Batch edit** shelf feature
 
-- **Becoming a Goodreads librarian** by applying 
+- **Become a Goodreads librarian** by applying 
   [there](https://www.goodreads.com/about/apply_librarian). Quickly
   edit wrong or missing book/author info and add cover images by yourself,
   combine stray book editions (take over reviews etc.)
@@ -55,11 +56,11 @@
 - [Goodreads Ratings for Amazon](https://chrome.google.com/webstore/detail/goodreads-ratings-for-ama/fkkcefhhadenobhjnngfdahhlodolkjg) – a Chrome-browser extension by Rubén Martínez; 
   also reminds you of GR reviews when you're shopping on Amazon 
 
-- **Checking out users who rate good books**. 
+- **Check out users who rate good books**. 
   [This service](https://andre-st.github.io/goodreads/) notifies you of new ratings for specific books.
   Be picky, create a special-purpose shelf with good but rare books, don't submit your whole _"read"_ shelf.
 
-- **Forcing view settings**, e.g., unify the [quasi-random](https://en.wikipedia.org/wiki/Principle_of_least_astonishment) view settings when browsing (other people's)
+- **Force view settings**, e.g., unify the [quasi-random](https://en.wikipedia.org/wiki/Principle_of_least_astonishment) view settings when browsing (other people's)
   shelves, by rewriting Goodreads URLs via Einar Egilsson's 
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
   Chrome browser extension: 
@@ -79,7 +80,8 @@
   ```
   All expressions takes inexact matches like "page" ∈ "per_page", randomly ordered or missing 
   parameters and Unicode values into account. Given duplicate query arguments, the last one applies.
-  
+
+
 ## Discovering Non-Fiction Books
 - checkout the bibliography section of a good book (best signal-to-noise ratio); I use a separate _"bibliogr-to-check"_ Goodreads shelf to keep track of unchecked books
 - notice books mentioned in the _footnotes_ section of Wikipedia articles
