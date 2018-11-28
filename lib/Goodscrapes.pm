@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2018-11-13
+=item * Updated: 2018-11-28
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.100';  # X.XX version format required by Perl
+our $VERSION = '1.110';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -1334,8 +1334,8 @@ sub _extract_book
 	$bk{ img_url     } = $htm =~ /<meta content='([^']+)' property='og:image'/          ? $1 : '';
 	$bk{ title       } = $htm =~ /<meta content='([^']+)' property='og:title'/          ? decode_entities( $1 ) : '';
 	$bk{ num_pages   } = $htm =~ /<meta content='([^']+)' property='books:page_count'/  ? $1 : $_NOBOOKIMGURL;
-	$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d+)[,.]?(\d+) review/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
-	$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d+)[,.]?(\d+) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+	$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) review/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+	$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
 	$bk{ avg_rating  } = $htm =~ /itemprop="ratingValue">([0-9.]+)/  ? $1       : 0;  # # 3.77
 	$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
 	$bk{ url         } = _book_url( $bk{id} );
@@ -1495,7 +1495,7 @@ sub _extract_author_books
 		$au{ _seen       } = 1;
 		
 		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
-		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d+)[,.]?(\d+) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
 		$bk{ img_url     } = $row =~ /src="[^"]+/                        ? $1       : $_NOBOOKIMGURL;
 		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/     ? decode_entities( $1 ) : '';
 		$bk{ url         } = _book_url( $bk{id} );
@@ -1769,7 +1769,7 @@ sub _extract_search_books
 		my %bk;
 		
 		$au{ id          } = $row =~ /\/author\/show\/([0-9]+)/  ? $1 : undef;
-		$au{ name        } = $row =~ /<a class="authorName" [^>]+><span itemprop="name">([^>]+)/  ? decode_entities( $1 ) : '';
+		$au{ name        } = $row =~ /<a class="authorName" [^>]+><span itemprop="name">([^<]+)/  ? decode_entities( $1 ) : '';
 		$au{ url         } = _user_url        ( $au{id}, 1 );
 		$au{ works_url   } = _author_books_url( $au{id}    );
 		$au{ img_url     } = $_NOUSERIMGURL;
@@ -1778,7 +1778,7 @@ sub _extract_search_books
 		$au{ _seen       } = 1;
 		
 		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
-		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d+)[,.]?(\d+) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
 		$bk{ avg_rating  } = $row =~ /([0-9.,]+) avg rating/             ? $1       : 0;  # 3.8
 		$bk{ year        } = $row =~ /published\s+(\d+)/                 ? $1       : 0;  # 2018
 		$bk{ img_url     } = $row =~ /src="([^"]+)/                      ? $1       : $_NOBOOKIMGURL;

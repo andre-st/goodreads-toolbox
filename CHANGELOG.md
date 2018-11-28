@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.0] - 2018-11-28
+### Fixed
+
+- missing results in search.pl and other tools
+  if `num_ratings` or `num_reviews` &lt; 100
+  due to regex mistake
+
 
 ## [1.10.0] - 2018-09-27
 ### Added
