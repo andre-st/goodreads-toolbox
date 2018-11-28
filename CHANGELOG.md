@@ -7,7 +7,8 @@ All notable changes to this project will be documented in this file.
 
 - missing results in search.pl and other tools
   if `num_ratings` or `num_reviews` &lt; 100
-  due to regex mistake
+  due to regex mistake, which existed for 3 months 
+  (since v1.9.0)
 
 
 ## [1.10.0] - 2018-09-27
