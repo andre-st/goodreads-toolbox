@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.110';  # X.XX version format required by Perl
+our $VERSION = '1.111';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -1334,9 +1334,9 @@ sub _extract_book
 	$bk{ img_url     } = $htm =~ /<meta content='([^']+)' property='og:image'/          ? $1 : '';
 	$bk{ title       } = $htm =~ /<meta content='([^']+)' property='og:title'/          ? decode_entities( $1 ) : '';
 	$bk{ num_pages   } = $htm =~ /<meta content='([^']+)' property='books:page_count'/  ? $1 : $_NOBOOKIMGURL;
-	$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) review/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
-	$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
-	$bk{ avg_rating  } = $htm =~ /itemprop="ratingValue">([0-9.]+)/  ? $1       : 0;  # # 3.77
+	$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) review/    ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+	$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/    ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+	$bk{ avg_rating  } = $htm =~ /itemprop="ratingValue">\s*([0-9.]+)/ ? $1       : 0;  # # 3.77
 	$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
 	$bk{ url         } = _book_url( $bk{id} );
 	$bk{ rh_author   } = undef;  # TODO
