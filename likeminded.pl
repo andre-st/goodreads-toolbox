@@ -34,6 +34,10 @@ similarity. Cut away the huge bulge, and check the rest manually
 
 =item B<-x, --rigor>=F<numlevel>
 
+we need to find members who rate the books of our authors, 
+though Goodreads just shows a few ratings. 
+We exploit ratings filters and the reviews-search to find more members:
+
  level 1 = filters-based search of book-raters (max 5400 ratings) - default
  level 2 = like 1 plus dict-search if >3000 ratings with stall-time of 2min
  level n = like 1 plus dict-search with stall-time of n minutes
@@ -94,7 +98,7 @@ $ ./likeminded.pl 55554444
 
 $ ./likeminded.pl --shelf=science --shelf=music  55554444
 
-$ ./likeminded.pl --shelf=animals,fiction  55554444
+$ ./likeminded.pl --shelf=animals,fiction --cookie 55554444
 
 $ ./likeminded.pl --outfile=./sub/myfile.html  55554444
 
