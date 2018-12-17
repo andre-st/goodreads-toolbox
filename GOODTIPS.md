@@ -65,7 +65,7 @@
   shelves, by rewriting Goodreads URLs via Einar Egilsson's 
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
   Chrome browser extension (or my [Tiny JS Injector](https://github.com/andre-st/chrome-injectjs)). 
-  Once you are familiar with the Redirector user interface, you can simply copy/paste the values 
+  Once you are familiar with the Redirector user interface, you can simply copy/paste these values 
   into the appropriate fields: 
   ```
   Description: Goodreads Shelves: 100 books per page, sort by user-rating (highest first), covers-view
