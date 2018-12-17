@@ -20,13 +20,13 @@
   Have the exclusive-checkbox [activated](https://www.goodreads.com/shelf/edit)
 
 - **Track physical book location** with shelves such as _"shelf-kitchen"_ or 
-  _"shelf-berlin"_ if the amount of books exceeds memory (Future me)
+  _"shelf-berlin"_ or _"shelf-office"_ if the amount of books exceeds memory (Future me)
 
 - **Limit the number of shelves** to max. 1 page. 
   Few coarse-grained shelves better than 100+ fine-grained shelves: faster to navigate and more likely to keep up-to-date for every book.
   Anemic shelves also render functions such as "[select multiple shelves](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)" (intersection ∩) useless.
   - avoid shelves that will likely never contain more than 3 books
-  - merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_
+  - merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_ (minimizing difference within a shelf and maximize difference between shelves)
   - remove shelves only good in theory but never used practically
 
 - **Add unread books to custom shelves too.** This works
