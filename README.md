@@ -2,8 +2,8 @@
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
-8 tools for [Goodreads.com](http://www.goodreads.com/)—the world largest book community 
-and a provider for web-based (home-)library management.
+8 Perl-scripts for [Goodreads.com](http://www.goodreads.com/)—the world largest book community 
+and (home-)library cataloging software as a service.
 
 
 ## [recentrated.pl](recentrated.md)
