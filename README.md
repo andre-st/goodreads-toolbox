@@ -1,9 +1,9 @@
 # :books: André's Goodreads Toolbox
 
-![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
-8 tools for [Goodreads.com](http://www.goodreads.com/)—the world largest book community 
-and a provider for web-based (home-)library management.
+8 Perl-scripts for [Goodreads.com](http://www.goodreads.com/)—the world largest book community 
+and (home-)library cataloging software as a service.
 
 
 ## [recentrated.pl](recentrated.md)
@@ -91,7 +91,7 @@ alternative dictionary-file in this folder.
 
 - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
 - [GR developers group](https://www.goodreads.com/group/show/8095-goodreads-developers)
-- [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt)
+- [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt) or [DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/)
 - [GR workplace reviews](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), anonymously about being acquired by Amazon, bureaucracy etc.
 - [Crunchbase on GR](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
 - [#members on GR](https://www.statista.com/statistics/252986/number-of-registered-members-on-goodreadscom/), source probably [Goodreads](https://www.goodreads.com/about/us)

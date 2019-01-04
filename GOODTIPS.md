@@ -20,12 +20,13 @@
   Have the exclusive-checkbox [activated](https://www.goodreads.com/shelf/edit)
 
 - **Track physical book location** with shelves such as _"shelf-kitchen"_ or 
-  _"shelf-berlin"_ if the amount of books exceeds memory (Future me)
+  _"shelf-berlin"_ or _"shelf-office"_ if the amount of books exceeds memory (Future me)
 
 - **Limit the number of shelves** to max. 1 page. 
   Few coarse-grained shelves better than 100+ fine-grained shelves: faster to navigate and more likely to keep up-to-date for every book.
   Anemic shelves also render functions such as "[select multiple shelves](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html)" (intersection ∩) useless.
   - avoid shelves that will likely never contain more than 3 books
+  - try to minimize difference within a shelf and maximize difference between shelves (similar to cluster analysis)
   - merge strongly overlapping shelves, e.g., _"politics-economy-history"_ or _"software-testing-infosec"_
   - remove shelves only good in theory but never used practically
 
@@ -63,7 +64,9 @@
 - **Force view settings**, e.g., unify the [quasi-random](https://en.wikipedia.org/wiki/Principle_of_least_astonishment) view settings when browsing (other people's)
   shelves, by rewriting Goodreads URLs via Einar Egilsson's 
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
-  Chrome browser extension (or my [Tiny JS Injector](https://github.com/andre-st/chrome-injectjs)): 
+  Chrome browser extension (or my [Tiny JS Injector](https://github.com/andre-st/chrome-injectjs)). 
+  Once you are familiar with the Redirector user interface, you can simply copy/paste these values 
+  into the appropriate fields: 
   ```
   Description: Goodreads Shelves: 100 books per page, sort by user-rating (highest first), covers-view
   Example    : https://www.goodreads.com/review/list/13055874?per_page=20&sort=reviews&view=table&shelf=ㅡxx-xx&page=2
