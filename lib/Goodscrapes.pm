@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2018-11-28
+=item * Updated: 2018-12-04
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.111';  # X.XX version format required by Perl
+our $VERSION = '1.120';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -218,6 +218,7 @@ our $_COOKIEPATH    = '.cookie';
 our $_NOBOOKIMGURL  = 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png';
 our $_NOUSERIMGURL  = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png';
 our $_NOGROUPIMGURL = 'https://s.gr-assets.com/assets/nophoto/group/50x66-14672b6c5b97a4836a13efdb6a1958d2.jpg';
+our $_ANYPRIVATEURL = 'https://www.goodreads.com/friend';
 our $_SORTNEW       = 'newest';
 our $_SORTOLD       = 'oldest';
 our $_EARLIEST      = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
@@ -245,7 +246,8 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =item * never cast 'id' to int or use %d format string, despite digits only, 
         compare as strings
 
-=item * don't expect all attributes set (C<undef>), this depends on context
+=item * don't expect all attributes set (C<undef>), 
+        this depends on the available info on the scraped page
 
 =back
 
@@ -294,6 +296,8 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =item * id          =E<gt> C<string>
 
 =item * name        =E<gt> C<string>
+
+=item * residence   =E<gt> C<string>
 
 =item * age         =E<gt> C<int>
 
@@ -528,7 +532,7 @@ sub gsetcookie
 	close( $fh );
 	
 TEST:
-	my $htm   = _html( 'https://www.goodreads.com/friend', $_ENO_ERROR, 0 );
+	my $htm   = _html( $_ANYPRIVATEURL, $_ENO_ERROR, 0 );
 	my $errno = _check_page( $htm );
 	croak( _errmsg( $_ENO_BADCOOKIE, $path ) ) if $errno == $_ENO_GRSIGNIN;
 }
@@ -1369,16 +1373,25 @@ sub _extract_user
 		$us{ is_private } = 0;
 		$us{ is_female  } = undef;  # TODO
 		$us{ works_url  } = _author_books_url( $auid );
+		$us{ residence  } = undef;
 	}
 	else  # Normal users:
 	{
-		$us{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? $1 : "";
+		$us{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? decode_entities( $1 ) : "";
 		$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : 0;
 		$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/            ? 1  : 0;
 		$us{ is_private } = $htm =~ /<div id="privateProfile"/                           ? 1  : 0;
 		$us{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/    ? 1  : 0;
 		$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/         ? $1 : $_NOUSERIMGURL;
 		$us{ works_url  } = undef;
+		
+		# Details string doesn't include Firstname/Middlename/Lastname, no Zip-Code
+		my $r = $htm =~ /Details<\/div>\s*<div class="infoBoxRowItem">([^<]+)/ ? decode_entities( $1 ) : "";
+		   $r =~ s/Age \d+,?//;        # remove optional Age part
+		   $r =~ s/(Male|Female),?//;  # remove optional gender; TODO custom genders (neglectable atm)
+		   $r =~ s/^\s+|\s+$//g;       # trim both ends
+		   $r =~ s/\s*,\s*/, /g;       # "City , State" -> "City, State" (some consistency)
+		$us{ residence } = ($r =~ m/any details yet/) ? '' : $r;  # remaining string is the residence (City, State)
 	}
 	
 	$us{ is_friend } = undef;
@@ -1424,6 +1437,7 @@ sub _extract_books
 		
 		$au{ id          } = $row =~ /author\/show\/([0-9]+)/       ? $1                    : undef;
 		$au{ name        } = $row =~ /author\/show\/[^>]+>([^<]+)/  ? decode_entities( $1 ) : '';
+		$au{ residence   } = undef;
 		$au{ url         } = _user_url( $au{id}, 1 );
 		$au{ works_url   } = _author_books_url( $au{id} );
 		$au{ is_author   } = 1;
@@ -1487,6 +1501,7 @@ sub _extract_author_books
 		
 		$au{ id          } = $aid;
 		$au{ name        } = $aunm;
+		$au{ residence   } = undef;
   		$au{ img_url     } = $auimg;
 		$au{ url         } = _user_url( $aid, 1 );
 		$au{ works_url   } = _author_books_url( $aid );
@@ -1546,6 +1561,7 @@ sub _extract_followees
 		$us{ is_author } = defined $aid;
 		$us{ is_friend } = 0;
 		$us{ _seen     } = 1;
+		$us{ residence } = undef;
 			
 		next if !$iau && $us{is_author};
 		$ret++;
@@ -1592,6 +1608,7 @@ sub _extract_friends
 		$us{ is_author } = defined $aid;
 		$us{ is_friend } = 1;
 		$us{ _seen     } = 1;
+		$us{ residence } = undef;
 		
 		next if !$iau && $us{ is_author };
 		$ret++;
@@ -1655,6 +1672,7 @@ sub _extract_revs
 		
 		$us{ id         } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
 		$us{ name       } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : decode_entities( $1 )) : '';
+		$us{ residence  } = undef;
   		$us{ img_url    } = $_NOUSERIMGURL;  # TODO
 		$us{ url        } = _user_url( $us{id} );
 		$us{ _seen      } = 1;
@@ -1718,6 +1736,7 @@ sub _extract_similar_authors
 		$au{ is_author  } = 1;
 		$au{ is_private } = 0;
 		$au{ _seen      } = 1;
+		$au{ residence  } = undef;
 		
 		$rh->{ $au{id} } = \%au;
 	}
@@ -1776,6 +1795,7 @@ sub _extract_search_books
 		$au{ is_author   } = 1;
 		$au{ is_private  } = 0;
 		$au{ _seen       } = 1;
+		$au{ residence   } = undef;
 		
 		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
 		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200

@@ -96,6 +96,7 @@ alternative dictionary-file in this folder.
 - [Crunchbase on GR](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
 - [#members on GR](https://www.statista.com/statistics/252986/number-of-registered-members-on-goodreadscom/), source probably [Goodreads](https://www.goodreads.com/about/us)
 - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors
-- [GR subreddit](https://www.reddit.com/r/goodreads/)
+- [GR subreddit](https://www.reddit.com/r/goodreads/) with my ignored [post](https://www.reddit.com/r/goodreads/comments/9i9qhe/andres_toolbox_find_likeminded_users_subscribe_to/)
 - [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
 - [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
+

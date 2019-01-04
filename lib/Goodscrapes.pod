@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2018-11-28
+=item * Updated: 2018-12-04
 
 =item * Since: 2014-11-05
 
@@ -107,7 +107,8 @@ https://github.com/andre-st/
 =item * never cast 'id' to int or use %d format string, despite digits only, 
         compare as strings
 
-=item * don't expect all attributes set (C<undef>), this depends on context
+=item * don't expect all attributes set (C<undef>), 
+        this depends on the available info on the scraped page
 
 =back
 
@@ -156,6 +157,8 @@ https://github.com/andre-st/
 =item * id          =E<gt> C<string>
 
 =item * name        =E<gt> C<string>
+
+=item * residence   =E<gt> C<string>
 
 =item * age         =E<gt> C<int>
 

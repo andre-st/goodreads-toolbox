@@ -1,6 +1,6 @@
 # savreviews.md
 
-![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
 
 ## Download all reviews for a book, e.g., for sentiment analysis
