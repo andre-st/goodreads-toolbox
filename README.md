@@ -1,6 +1,6 @@
 # :books: André's Goodreads Toolbox
 
-![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
 8 Perl-scripts for [Goodreads.com](http://www.goodreads.com/)—the world largest book community 
 and (home-)library cataloging software as a service.
@@ -97,5 +97,6 @@ alternative dictionary-file in this folder.
 - [#members on GR](https://www.statista.com/statistics/252986/number-of-registered-members-on-goodreadscom/), source probably [Goodreads](https://www.goodreads.com/about/us)
 - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors
 - [GR subreddit](https://www.reddit.com/r/goodreads/)
+- [GR and DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/), 2018
 - [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
 - [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
