@@ -73,6 +73,11 @@ program in 2015.
 [Learn more](amz-tradein.md)
 
 
+## dependencies
+
+Perl depencencies are listed in the [Makefile](Makefile) and should install via `$ sudo make`.
+
+
 ## www/
 
 Static webpages that I use to offer [this software as a service](https://andre-st.github.io/goodreads/) 
@@ -84,11 +89,6 @@ to people who don't know Linux etc. You probably won't need this directory.
 Some programs use dictionaries. You can point these programs to an
 alternative dictionary-file in this folder.
 [Learn more](dict/README.md)
-
-
-## dependencies
-
-Perl depencencies are listed in the [Makefile](Makefile) and should install via `$ sudo make`.
 
 
 ## further reading 
