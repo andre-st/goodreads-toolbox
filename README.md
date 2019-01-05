@@ -86,6 +86,10 @@ alternative dictionary-file in this folder.
 [Learn more](dict/README.md)
 
 
+## dependencies
+
+Perl depencencies are listed in the [Makefile](Makefile) and should install via `$ sudo make`.
+
 
 ## further reading 
 
