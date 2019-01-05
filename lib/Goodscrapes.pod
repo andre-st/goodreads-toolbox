@@ -740,6 +740,8 @@ https://github.com/andre-st/
 
 =item Sets default options for GET, POST, PUT, DELETE
 
+=back
+
 =head2 C<string> _html( I<$url, $warn_level = $_ENO_WARN, $can_cache = 1> )
 
 =over

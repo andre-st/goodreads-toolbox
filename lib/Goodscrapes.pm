@@ -1990,6 +1990,8 @@ sub _updcookie
 
 =item Sets default options for GET, POST, PUT, DELETE
 
+=back
+
 =cut
 
 sub _setcurlopts
