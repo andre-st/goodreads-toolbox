@@ -47,7 +47,7 @@ or [Ian (2016)](https://www.goodreads.com/topic/show/18115612-search-prioritise-
 ```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make
+$ sudo make   # Required Perl modules from CPAN
 $ ./search.pl --help
 $ ./search.pl YOURKEYWORD
 

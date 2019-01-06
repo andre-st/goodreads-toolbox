@@ -73,9 +73,10 @@ program in 2015.
 [Learn more](amz-tradein.md)
 
 
-## dependencies
+## requires
 
-Perl depencencies are listed in the [Makefile](Makefile) and should install via `$ sudo make`.
+Perl depencencies are listed in the [Makefile](Makefile) 
+and should be installed via `$ sudo make` on GNU/Linux systems.
 
 
 ## www/

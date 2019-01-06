@@ -24,7 +24,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 ```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make
+$ sudo make        # Required Perl modules from CPAN
 $ ./friendrated.pl --help
 $ ./friendrated.pl YOURGOODUSERNUMBER
 

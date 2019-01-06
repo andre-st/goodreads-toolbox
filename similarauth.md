@@ -25,7 +25,7 @@ From the _Goodreads Feedback_ forum,
 ```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make
+$ sudo make        # Required Perl modules from CPAN
 $ ./similarauth.pl --help
 $ ./similarauth.pl YOURGOODUSERNUMBER
 

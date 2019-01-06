@@ -23,7 +23,7 @@ or Faith (ibidem):
 ```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make
+$ sudo make        # Required Perl modules from CPAN
 $ ./friendgroup.pl --help
 $ ./friendgroup.pl YOURGOODUSERNUMBER
 

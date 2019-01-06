@@ -54,7 +54,7 @@ me or add an [issue](https://github.com/andre-st/goodreads/issues).
 ```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make
+$ sudo make       # Required Perl modules from CPAN
 $ ./savreviews.pl --help
 $ ./savreviews.pl GOODREADSBOOKID
 

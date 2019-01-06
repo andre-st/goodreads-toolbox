@@ -78,7 +78,7 @@ Recently rated books in your "watch-ratings" shelf:
 	```console
 	$ git clone https://github.com/andre-st/goodreads.git
 	$ cd goodreads
-	$ sudo make
+	$ sudo make     # Required Perl modules from CPAN etc.
 	```
 2. have a sendmail MTA set up (most simple thing is [ssmtp](https://wiki.debian.org/sSMTP)
    or [nullmailer](http://untroubled.org/nullmailer/)
