@@ -73,12 +73,6 @@ program in 2015.
 [Learn more](amz-tradein.md)
 
 
-## requires
-
-Perl depencencies are listed in the [Makefile](Makefile) 
-and should be installed via `$ sudo make` on GNU/Linux systems.
-
-
 ## www/
 
 Static webpages that I use to offer [this software as a service](https://andre-st.github.io/goodreads/) 
@@ -92,7 +86,16 @@ alternative dictionary-file in this folder.
 [Learn more](dict/README.md)
 
 
-## further reading 
+## Installation
+
+```console
+$ git clone https://github.com/andre-st/goodreads.git
+$ cd goodreads
+$ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
+```
+
+
+## Further readings
 
 - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
 - [GR developers group](https://www.goodreads.com/group/show/8095-goodreads-developers)
