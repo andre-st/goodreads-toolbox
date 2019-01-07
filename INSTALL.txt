@@ -1,0 +1,46 @@
+Installing André's Goodreads Toolbox
+
+
+
+Download latest
+---------------
+$ git clone https://github.com/andre-st/goodreads.git
+
+
+
+Requirements
+---------------
+Linux, Perl 5.18
+
+
+
+Install
+---------------
+$ cd goodreads
+$ sudo make       # Gets required Perl modules from CPAN etc (see Makefile)
+
+
+  Each script has its own documentation, 
+  e.g., recentrated.md for recentrated.pl.
+  You should read them as they detail limitations
+  and probably additional installation steps.
+
+
+
+Uninstall
+---------------
+$ sudo make uninstall   # Details see Makefile
+
+
+
+Cookies
+---------------
+Some (not all) programs use your Goodreads-cookie to access 
+information which is available to authenticated members only:
+
+  1. get the cookie content via Chrome browser: 
+     https://www.youtube.com/watch?v=o_CYdZBPDCg
+
+  2. save the cookie content to "goodreads/.cookie"
+
+

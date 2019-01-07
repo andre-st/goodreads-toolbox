@@ -12,7 +12,10 @@
   _"region-..."_. Goodreads sorts shelf lists in alphabetical order.
   Related but scattered shelves impair findability.  
   - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with "z_" or Unicode 0x3161: ㅡ
-  - next to pseudo sub-shelves _"computer-history"_, _"computer-networks"_ and so on I'm using a separate _"computer"_ pseudo super-shelf which contains _all_ books from the sub-shelves (useful for shelf-intersection)
+  - next to pseudo sub-shelves _"computer-history"_, _"computer-networks"_ 
+    and so on I'm using a separate _"computer"_ pseudo super-shelf which 
+    contains _all_ books from the sub-shelves 
+    (useful for [shelf-intersection](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html))
 
 - **Create a "more-urgent" shelf** from unread books
 
@@ -61,7 +64,7 @@
   [This service](https://andre-st.github.io/goodreads/) notifies you of new ratings for specific books.
   Be picky, create a special-purpose shelf with good but rare books, don't submit your whole _"read"_ shelf.
 
-- **Force view settings**, e.g., unify the [quasi-random](https://en.wikipedia.org/wiki/Principle_of_least_astonishment) view settings when browsing (other people's)
+- **Force view settings**, e.g., unify the quasi-random view settings when browsing (other people's)
   shelves, by rewriting Goodreads URLs via Einar Egilsson's 
   [Redirector](https://chrome.google.com/webstore/detail/redirector/ocgpenflpmgnfapjedencafcfakcekcd)
   Chrome browser extension (or my [Tiny JS Injector](https://github.com/andre-st/chrome-injectjs)). 

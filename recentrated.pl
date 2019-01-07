@@ -63,7 +63,6 @@ Report bugs to <datakadabra@gmail.com> or use Github's issue tracker
 
 =head1 COPYRIGHT
 
-Copyright (C) Free Software Foundation, Inc.
 This is free software. You may redistribute copies of it under the terms of
 the GNU General Public License <https://www.gnu.org/licenses/gpl.html>.
 There is NO WARRANTY, to the extent permitted by law.

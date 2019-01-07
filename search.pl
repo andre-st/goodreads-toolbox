@@ -81,7 +81,6 @@ L<https://github.com/andre-st/goodreads/issues>
 
 =head1 COPYRIGHT
 
-Copyright (C) Free Software Foundation, Inc.
 This is free software. You may redistribute copies of it under the terms of
 the GNU General Public License L<https://www.gnu.org/licenses/gpl.html>.
 There is NO WARRANTY, to the extent permitted by law.

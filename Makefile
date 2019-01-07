@@ -18,7 +18,7 @@ LIBCURLDEV_ERR = "Requires: libcurl-dev (on Debian or Ubuntu try `apt-get instal
 LIBCURLDEV    := $(shell command -v curl-config 2> /dev/null)
 
 # ----------------------------------------------------------------------------
-## make all      :  Installs all programs
+## make all      :  Installs programs and dependencies (CPAN)
 all :
 ifndef LIBCURLDEV
 	$(error ${LIBCURLDEV_ERR})
