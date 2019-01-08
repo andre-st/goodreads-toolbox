@@ -145,17 +145,17 @@ STDOUT->autoflush( 1 );
 our $TSTART      = time();
 our $MINFAVORERS = 3;
 our $MINRATED    = 4;
-our $MAXRATINGS  = 10000000000;
-our $MINYEAR     = 0;
-our $MAXYEAR     = 2999;
 our $FRIENDSHELF = 'read';
 our $CACHEDAYS   = 31;
+our $MAXRATS;
+our $MINYEAR;
+our $MAXYEAR;
 our $OUTPATH;
 our $USERID;
 
 GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
             'rated|r=i'      => \$MINRATED,
-		  'maxratings|m=i' => \$MAXRATINGS,
+		  'maxratings|m=i' => \$MAXRATS,
 		  'minyear|y=i'    => \$MINYEAR,
 		  'maxyear|e=i'    => \$MAXYEAR,
             'help|?'         => sub{ pod2usage( -verbose => 2 ) },
@@ -164,7 +164,9 @@ GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
              or pod2usage( 1 );
 
 die( "[ERROR] Invalid argument: --minyear=$MINYEAR higher than --maxyear=$MAXYEAR" )
-	if $MINYEAR > $MAXYEAR;
+	if defined $MINYEAR 
+	&& defined $MAXYEAR 
+	&& $MINYEAR > $MAXYEAR;
 
 $USERID  = $ARGV[0] or pod2usage( 1 );
 $OUTPATH = "friendrated-${USERID}.html" if !$OUTPATH;
@@ -240,8 +242,14 @@ say "\nPerfect! Got favourites of ${memdone} users.";
 # 
 print "Writing results to \"$OUTPATH\"... ";
 
-my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
-my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
+my $fh   = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
+my $now  = strftime( '%a %b %e %H:%M:%S %Y', localtime );
+my $capt = "Books"
+		.( defined $MINYEAR || defined $MAXYEAR ? " published $MINYEAR-$MAXYEAR" : "" )
+		.( defined $MAXRATS                     ? " with max $MAXRATS ratings, " : "" )
+		." rated $MINRATED stars or better"
+		." by $MINFAVORERS+ friends or followees"
+		." of member $USERID, on $now";
 
 print $fh qq{
 		<!DOCTYPE html>
@@ -251,20 +259,13 @@ print $fh qq{
 		</head>
 		<body style="font-family: sans-serif;">
 		<table border="1" width="100%" cellpadding="6">
-		<caption>
-		  Books published $MINYEAR-$MAXYEAR,
-		  with less than $MAXRATINGS ratings,
-		  rated $MINRATED or better 
-		  by $MINFAVORERS+ friends or followees 
-		  of member $USERID, 
-		  on $now
-		</caption>
+		<caption>$capt</caption>
 		<tr>
 		<th>#</th>
 		<th>Cover</th>
-		<th>Title</th>
-		<th>GR Ratings</th>
-		<th>Published</th>
+		<th style="width: 13em">Title</th>
+		<th>Num GR Ratings</th>
+		<th>Year Published</th>
 		<th>Faved</th>
 		<th>Faved by</th>
 		</tr>
@@ -277,10 +278,10 @@ for my $bid (sort { scalar keys $faved_for{$b} <=>
 	my @favorer_ids  = keys $faved_for{$bid};
 	my $num_favorers = scalar @favorer_ids;
 	
-	next if $num_favorers               < $MINFAVORERS;
-	next if $books{$bid}->{num_ratings} > $MAXRATINGS;
-	next if $books{$bid}->{year}        > $MAXYEAR;
-	next if $books{$bid}->{year}        < $MINYEAR;
+	next if $num_favorers                                   < $MINFAVORERS;
+	next if defined $MAXRATS && $books{$bid}->{num_ratings} > $MAXRATS;
+	next if defined $MAXYEAR && $books{$bid}->{year}        > $MAXYEAR;
+	next if defined $MINYEAR && $books{$bid}->{year}        < $MINYEAR;
 	
 	$num_finds++;
 	
