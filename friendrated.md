@@ -1,6 +1,6 @@
 # friendrated.pl
 
-![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
 
 ## Books common among the people I follow
