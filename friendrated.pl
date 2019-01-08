@@ -12,7 +12,8 @@ friendrated - books common among the members you follow
 =head1 SYNOPSIS
 
 B<friendrated.pl> [B<-f> F<number>] [B<-r> F<number>] [B<-c> F<numdays>] 
-[B<-o> F<filename>] F<goodusernumber>
+[B<-m> F<number>] [B<-y> F<number>] [B<-e> F<number>] [B<-o> F<filename>] 
+F<goodusernumber>
 
 You find your F<goodusernumber> by looking at your shelf URLs.
 
@@ -33,6 +34,21 @@ or followees, default is 3
 
 number between 1 and 5: only consider books rated at least n stars,
 default is 4
+
+
+=item B<-m, --maxratings>=F<number>
+
+exclude books with more than say 1000 ratings by the Goodreads community
+
+
+=item B<-y, --minyear>=F<number>
+
+exclude books published before say 1950
+
+
+=item B<-e, --maxyear>=F<number>
+
+exclude books published after say 1980
 
 
 =item B<-c, --cache>=F<numdays>
@@ -69,6 +85,8 @@ $ ./friendrated.pl 55554444
 
 $ ./friendrated.pl --rated=4 --favorers=5  55554444
 
+$ ./friendrated.pl --minyear=1950 --maxyear=1980 --maxratings=1000 55554444
+
 $ ./friendrated.pl --outfile=./sub/myfile.html  55554444
 
 $ ./friendrated.pl -c 31 -r 4 -f 3 -o myfile.html  55554444
@@ -94,7 +112,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2018-11-13 (Since 2018-05-10)
+2019-01-08 (Since 2018-05-10)
 
 =cut
 
@@ -127,17 +145,26 @@ STDOUT->autoflush( 1 );
 our $TSTART      = time();
 our $MINFAVORERS = 3;
 our $MINRATED    = 4;
+our $MAXRATINGS  = 10000000000;
+our $MINYEAR     = 0;
+our $MAXYEAR     = 2999;
 our $FRIENDSHELF = 'read';
 our $CACHEDAYS   = 31;
 our $OUTPATH;
 our $USERID;
 
-GetOptions( 'favorers|f=i' => \$MINFAVORERS,
-            'rated|r=i'    => \$MINRATED,
-            'help|?'       => sub{ pod2usage( -verbose => 2 ) },
-            'outfile|o=s'  => \$OUTPATH,
-            'cache|c=i'    => \$CACHEDAYS )
+GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
+            'rated|r=i'      => \$MINRATED,
+		  'maxratings|m=i' => \$MAXRATINGS,
+		  'minyear|y=i'    => \$MINYEAR,
+		  'maxyear|e=i'    => \$MAXYEAR,
+            'help|?'         => sub{ pod2usage( -verbose => 2 ) },
+            'outfile|o=s'    => \$OUTPATH,
+            'cache|c=i'      => \$CACHEDAYS )
              or pod2usage( 1 );
+
+die( "[ERROR] Invalid argument: --minyear=$MINYEAR higher than --maxyear=$MAXYEAR" )
+	if $MINYEAR > $MAXYEAR;
 
 $USERID  = $ARGV[0] or pod2usage( 1 );
 $OUTPATH = "friendrated-${USERID}.html" if !$OUTPATH;
@@ -225,17 +252,21 @@ print $fh qq{
 		<body style="font-family: sans-serif;">
 		<table border="1" width="100%" cellpadding="6">
 		<caption>
-		  Books rated 
-		  $MINRATED or better, by
-		  $MINFAVORERS+ friends or followees of member
-		  $USERID, on $now
+		  Books published $MINYEAR-$MAXYEAR,
+		  with less than $MAXRATINGS ratings,
+		  rated $MINRATED or better 
+		  by $MINFAVORERS+ friends or followees 
+		  of member $USERID, 
+		  on $now
 		</caption>
 		<tr>
-		<th>#</th> 
+		<th>#</th>
 		<th>Cover</th>
 		<th>Title</th>
-		<th>Rated</th>
-		<th>Rated by</th>
+		<th>GR Ratings</th>
+		<th>Published</th>
+		<th>Faved</th>
+		<th>Faved by</th>
 		</tr>
 		};
 
@@ -246,7 +277,11 @@ for my $bid (sort { scalar keys $faved_for{$b} <=>
 	my @favorer_ids  = keys $faved_for{$bid};
 	my $num_favorers = scalar @favorer_ids;
 	
-	next if $num_favorers < $MINFAVORERS;
+	next if $num_favorers               < $MINFAVORERS;
+	next if $books{$bid}->{num_ratings} > $MAXRATINGS;
+	next if $books{$bid}->{year}        > $MAXYEAR;
+	next if $books{$bid}->{year}        < $MINYEAR;
+	
 	$num_finds++;
 	
 	print $fh qq{
@@ -255,6 +290,8 @@ for my $bid (sort { scalar keys $faved_for{$b} <=>
 			<td><img src="$books{$bid}->{img_url}"></td>
 			<td><a  href="$books{$bid}->{url}" target="_blank"
 			             >$books{$bid}->{title}</a></td>
+			<td          >$books{$bid}->{num_ratings}</td>
+			<td          >$books{$bid}->{year}</td>
 			<td          >${num_favorers}x</td>
 			<td>
 			};

@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## [1.12.0] - 2019-01-08
+### Added
+
+- friendrated: more filters, e.g., _"books with less than 1000 ratings 
+  and published between 1950 to 1980 and ..."_ ([#16](https://github.com/andre-st/goodreads/issues/16))
+
+
 ## [1.11.0] - 2018-11-28
 ### Fixed
 
