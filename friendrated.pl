@@ -155,9 +155,9 @@ our $USERID;
 
 GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
             'rated|r=i'      => \$MINRATED,
-		  'maxratings|m=i' => \$MAXRATS,
-		  'minyear|y=i'    => \$MINYEAR,
-		  'maxyear|e=i'    => \$MAXYEAR,
+            'maxratings|m=i' => \$MAXRATS,
+            'minyear|y=i'    => \$MINYEAR,
+            'maxyear|e=i'    => \$MAXYEAR,
             'help|?'         => sub{ pod2usage( -verbose => 2 ) },
             'outfile|o=s'    => \$OUTPATH,
             'cache|c=i'      => \$CACHEDAYS )
@@ -244,12 +244,18 @@ print "Writing results to \"$OUTPATH\"... ";
 
 my $fh   = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 my $now  = strftime( '%a %b %e %H:%M:%S %Y', localtime );
-my $capt = "Books"
-		.( defined $MINYEAR || defined $MAXYEAR ? " published $MINYEAR-$MAXYEAR" : "" )
-		.( defined $MAXRATS                     ? " with max $MAXRATS ratings, " : "" )
-		." rated $MINRATED stars or better"
-		." by $MINFAVORERS+ friends or followees"
-		." of member $USERID, on $now";
+my $capt = "Books";
+
+$capt .= sprintf( " published %s-%s,", $MINYEAR//"*", $MAXYEAR//"*" ) 
+	if defined $MINYEAR || defined $MAXYEAR;
+
+$capt .= " with max $MAXRATS ratings," 
+	if defined $MAXRATS;
+
+$capt .= " rated $MINRATED stars or better";
+$capt .= " by $MINFAVORERS+ friends or followees";
+$capt .= " of member $USERID, on $now";
+
 
 print $fh qq{
 		<!DOCTYPE html>
