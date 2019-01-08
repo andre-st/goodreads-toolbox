@@ -1444,13 +1444,13 @@ sub _extract_books
 		$au{ is_private  } = 0;
 		$au{ _seen       } = 1;
 		
-		$bk{ id          } = $row =~ /data-resource-id="([0-9]+)"/                                ? $1 : undef;
-		$bk{ isbn        } = $row =~ />isbn<\/label><div class="value">\s*([0-9X\-]*)/            ? $1 : '';
+		$bk{ id          } = $row =~ /data-resource-id="([0-9]+)"/                                           ? $1 : undef;
+		$bk{ isbn        } = $row =~ />isbn<\/label><div class="value">\s*([0-9X\-]*)/                       ? $1 : '';
 		$bk{ num_reviews } = undef;  # Not available here!
-		$bk{ num_ratings } = $row =~ />num ratings<\/label><div class="value">\s*([0-9]+)/        ? $1 : 0;  # TODO is there comma?
-		$bk{ img_url     } = $row =~ /<img [^>]* src="([^"]+)"/                                   ? $1 : $_NOBOOKIMGURL;
-		$bk{ year        } = $row =~ />date pub<\/label><div class="value">\s*[^<]*(\d{4})\s*</s  ? $1 : 0;  # "2017" and "Feb 01, 2017" (there's also "edition date pub")
-		$bk{ review_id   } = $row =~ /review\/show\/([0-9]+)"/                                    ? $1 : undef;
+		$bk{ num_ratings } = $row =~ />num ratings<\/label><div class="value">\s*(\d+)[,.]?(\d*)[,.]?(\d*)/  ? $1.$2.$3 : 0;
+		$bk{ img_url     } = $row =~ /<img [^>]* src="([^"]+)"/                                              ? $1 : $_NOBOOKIMGURL;
+		$bk{ year        } = $row =~ />date pub<\/label><div class="value">\s*[^<]*(\d{4})\s*</s             ? $1 : 0;  # "2017" and "Feb 01, 2017" (there's also "edition date pub")
+		$bk{ review_id   } = $row =~ /review\/show\/([0-9]+)"/                                               ? $1 : undef;
 		$bk{ title       } = $tit;
 		$bk{ user_rating } = () = $row =~ /staticStar p10/g;        # Counts occurances
 		$bk{ url         } = _book_url( $bk{id} );
