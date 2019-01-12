@@ -278,10 +278,10 @@ print $fh qq{
 		};
 
 my $num_finds = 0;
-for my $bid (sort { scalar keys $faved_for{$b} <=> 
-                    scalar keys $faved_for{$a} } keys %faved_for)
+for my $bid (sort { scalar keys %{$faved_for{$b}} <=> 
+                    scalar keys %{$faved_for{$a}} } keys %faved_for)
 {
-	my @favorer_ids  = keys $faved_for{$bid};
+	my @favorer_ids  = keys %{$faved_for{$bid}};
 	my $num_favorers = scalar @favorer_ids;
 	
 	next if $num_favorers                                   < $MINFAVORERS;

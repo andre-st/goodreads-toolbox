@@ -207,10 +207,10 @@ print $fh qq{
 		};
 
 my $num_finds = 0;
-for my $gid (sort { scalar keys $joins{$b} <=> 
-                    scalar keys $joins{$a} } keys %joins)
+for my $gid (sort { scalar keys %{$joins{$b}} <=> 
+                    scalar keys %{$joins{$a}} } keys %joins)
 {
-	my @joiner_ids  = keys $joins{$gid};
+	my @joiner_ids  = keys %{$joins{$gid}};
 	my $num_joiners = scalar @joiner_ids;
 	
 	$num_finds++;

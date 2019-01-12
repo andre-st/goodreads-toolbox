@@ -316,10 +316,10 @@ print $fh qq{
 		};
 
 my $line;
-for my $userid (sort{ scalar keys $authors_read_by{$b} <=> 
-                      scalar keys $authors_read_by{$a} } keys %authors_read_by) 
+for my $userid (sort{ scalar keys %{$authors_read_by{$b}} <=> 
+                      scalar keys %{$authors_read_by{$a}} } keys %authors_read_by)
 {
-	my $common_aucount = scalar keys $authors_read_by{$userid};
+	my $common_aucount = scalar keys %{$authors_read_by{$userid}};
 	my $simil          = int( $common_aucount / $aucount * 100 + 0.5 );  # round
 	
 	next if $userid == $USERID;
@@ -336,7 +336,7 @@ for my $userid (sort{ scalar keys $authors_read_by{$b} <=>
 			
 	print $fh qq{
 			<div><img src="$authors{$_}->{img_url}">$authors{$_}->{name}</div>
-			} foreach (keys $authors_read_by{$userid});
+			} foreach (keys %{$authors_read_by{$userid}});
 
 	print $fh qq{
 			</td>
