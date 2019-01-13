@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 
 ## [1.12.5] - 2019-01-13
+### Fixed
+
+- "Experimental keys on scalar is now forbidden" if Perl 5.20+
+
 ### Added
 
 - likeminded: new parameter `--maxbookauthors` to limit authors with too many 
@@ -16,7 +20,8 @@ All notable changes to this project will be documented in this file.
 - if Goodreads shows an "unexpected error", all programs retry multiple times but continue in any case;
   critical conditions such as "maintenance mode", "over capacity", connection issues etc
   are handled as usual (continuous retries or user CTRL-C)
-  
+
+ 
 
 ## [1.11.0] - 2018-11-28
 ### Fixed
