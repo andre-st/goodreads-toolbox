@@ -195,7 +195,7 @@ our %_ERRMSG =
 	$_ENO_GRSIGNIN   => "\n[WARN ] Sign-in for %s => Cookie invalid or not set: see gsetcookie()", # url
 	$_ENO_ERROR      => "\n[ERROR] %s",               # url
 	$_ENO_GRUNAVAIL  => "\n[ERROR] Goodreads.com \"temporarily unavailable\".",
-	$_ENO_GRUNEXPECT => "\n[ERROR] Goodreads.com encountered an \"unexpected error\".",
+	$_ENO_GRUNEXPECT => "\n[ERROR] Goodreads.com encountered an \"unexpected error\": %s",  #url
 	$_ENO_GRCAPACITY => "\n[ERROR] Goodreads.com is over capacity.",
 	$_ENO_GRMAINTNC  => "\n[ERROR] Goodreads.com is down for maintenance.",
 	$_ENO_CURL       => "\n[ERROR] %s: %s %s",        # url, err, errbuf
@@ -226,9 +226,9 @@ our @_BADPROFILES   =     # TODO external config file
 (
 	'1000834',  #  3.000 books   NOT A BOOK author
 	'5158478',  # 10.000 books   Anonymous
-	'2938140',  #  2.218 books   Jacob Grimm (Grimm brothers)
-	'128382',   #  2.802 books   Leo Tolstoy
 	'173327'    #    365 books   Germany (Gov?)
+	#'2938140', #  2.218 books   Jacob Grimm (Grimm brothers)
+	#'128382',  #  2.802 books   Leo Tolstoy
 );
 
 our $_cookie    = undef;
@@ -727,6 +727,8 @@ sub greadauthors
 
 =item * C<author_id   =E<gt> string>
 
+=item * C<limit       =E<gt> int> number of books to read into C<rh_into>
+
 =item * C<rh_into     =E<gt> hash reference (id =E<gt> L<%book|"%book">,...)>
 
 =item * C<on_book     =E<gt> sub( L<%book|"%book"> )> [optional]
@@ -742,11 +744,12 @@ sub greadauthorbk
 	my (%args) = @_;	
 	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
 	my $aid    = gverifyuser( $args{ author_id });
+	my $limit  = $args{ limit       }  // 999999999;
 	my $bfn    = $args{ on_book     }  // sub{};
 	my $pfn    = $args{ on_progress }  // sub{};
 	my $pag    = 1;
 	
-	while( _extract_author_books( $rh, $bfn, $pfn, _html( _author_books_url( $aid, $pag++ ) ) ) ) {};
+	while( _extract_author_books( $rh, \$limit, $bfn, $pfn, _html( _author_books_url( $aid, $pag++ ) ) ) ) {};
 }
 
 
@@ -1232,7 +1235,7 @@ sub _author_books_url
 {
 	my $uid = shift;
 	my $pag = shift // 1;
-	return "https://www.goodreads.com/author/list/${uid}?per_page=100&page=${pag}";
+	return "https://www.goodreads.com/author/list/${uid}?per_page=100&sort=popularity&page=${pag}";
 }
 
 
@@ -1470,11 +1473,13 @@ sub _extract_books
 
 
 
-=head2 C<bool> _extract_author_books( I<$rh_books, $on_book_fn, $on_progress_fn, $html_str> )
+=head2 C<bool> _extract_author_books( I<$rh_books, $r_limit, $on_book_fn, $on_progress_fn, $html_str> )
 
 =over
 
 =item * I<$rh_books>: C<(id =E<gt> L<%book|"\%book">,...)>
+
+=item * I<$r_limit>: is counted to zero
 
 =back
 
@@ -1484,14 +1489,17 @@ sub _extract_author_books
 {
 	# Book without title on https://www.goodreads.com/author/list/1094257
 	
-	my $rh    = shift;
-	my $bfn   = shift;
-	my $pfn   = shift;
-	my $htm   = shift or return 0;
-	my $auimg = $htm =~ /(https:\/\/images.gr-assets.com\/authors\/.*?\.jpg)/gs  ? $1 : $_NOUSERIMGURL;
-	my $aid   = $htm =~ /author\/show\/([0-9]+)/                                 ? $1 : undef;
-	my $aunm  = $htm =~ /<h1>Books by ([^<]+)/                                   ? decode_entities( $1 ) : '';
-	my $ret   = 0;
+	my $rh      = shift;
+	my $r_limit = shift;
+	my $bfn     = shift;
+	my $pfn     = shift;
+	my $htm     = shift or return 0;
+	my $auimg   = $htm =~ /(https:\/\/images.gr-assets.com\/authors\/.*?\.jpg)/gs  ? $1 : $_NOUSERIMGURL;
+	my $aid     = $htm =~ /author\/show\/([0-9]+)/                                 ? $1 : undef;
+	my $aunm    = $htm =~ /<h1>Books by ([^<]+)/                                   ? decode_entities( $1 ) : '';
+	my $ret     = 0;
+	
+	return $ret if $$r_limit == 0;
 	
 	while( $htm =~ /<tr itemscope itemtype="http:\/\/schema.org\/Book">(.*?)<\/tr>/gs )
 	{
@@ -1519,6 +1527,7 @@ sub _extract_author_books
 		$ret++; # Count duplicates too: 10 books of author A, 9 of B; called for single author
 		$rh->{ $bk{id} } = \%bk;
 		$bfn->( \%bk );
+		$$r_limit--;
 	}
 	
 	$pfn->( $ret );

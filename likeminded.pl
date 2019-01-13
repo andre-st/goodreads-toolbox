@@ -11,7 +11,7 @@ likeminded - finding people on Goodreads.com based on the books they've read
 
 =head1 SYNOPSIS
 
-B<likeminded.pl> [B<-n>] [B<-m> F<number>] [B<-t> F<numsecs>] [B<-r> F<number>] 
+B<likeminded.pl> [B<-m> F<number>] [B<-a> F<number>] [B<-x> F<number>] 
 [B<-c> F<numdays>] [B<-o> F<filename>] [B<-s> F<shelfname> ...] F<goodusernumber>
 
 You find your F<goodusernumber> by looking at your shelf URLs.
@@ -30,6 +30,14 @@ authors you did, which is unlikely, so better use lower values, default is a
 minimum similarity of 5 (5%).
 There's a huge bulge of members with low similarity and just a few with higher
 similarity. Cut away the huge bulge, and check the rest manually
+
+
+=item B<-a, --maxauthorbooks>=F<number>
+
+some authors list over 2000 books, either due to bad cataloging on the 
+Goodreads site or too different editions which couldn't be combined.
+Chewing them all would significantly increase the program's runtime.
+Better we limit the number to the most N popular; default is 600
 
 
 =item B<-x, --rigor>=F<numlevel>
@@ -155,24 +163,26 @@ use Goodscrapes;
 # 
 STDOUT->autoflush( 1 );
 
-our $TSTART    = time();
-our $MINSIMIL  = 5;
-our $RIGOR     = 1;
-our $DICTPATH  = './dict/default.lst';
-our $CACHEDAYS = 31;
-our $USECOOKIE = 0;
+our $TSTART     = time();
+our $MINSIMIL   = 5;
+our $MAXAUBOOKS = 600;
+our $RIGOR      = 1;
+our $DICTPATH   = './dict/default.lst';
+our $CACHEDAYS  = 31;
+our $USECOOKIE  = 0;
 our @SHELVES;
 our $OUTPATH;
 our $USERID;
 
-GetOptions( 'similar|m=i' => \$MINSIMIL,
-            'rigor|x=i'   => \$RIGOR,
-            'dict|d=s'    => \$DICTPATH,
-            'help|?'      => sub{ pod2usage( -verbose => 2 ) },
-            'outfile|o=s' => \$OUTPATH,
-            'cache|c=i'   => \$CACHEDAYS,
-            'cookie|k'    => \$USECOOKIE,
-            'shelf|s=s'   => \@SHELVES ) 
+GetOptions( 'similar|m=i'        => \$MINSIMIL,
+            'maxauthorbooks|a=i' => \$MAXAUBOOKS,
+            'rigor|x=i'          => \$RIGOR,
+            'dict|d=s'           => \$DICTPATH,
+            'help|?'             => sub{ pod2usage( -verbose => 2 ) },
+            'outfile|o=s'        => \$OUTPATH,
+            'cache|c=i'          => \$CACHEDAYS,
+            'cookie|k'           => \$USECOOKIE,
+            'shelf|s=s'          => \@SHELVES ) 
              or pod2usage( 1 );
 
 $USERID  = $ARGV[0] or pod2usage( 1 );
@@ -226,6 +236,7 @@ for my $auid (keys %authors)
 	my $imgurlupdatefn = sub{ $authors{$auid} = $_[0]->{rh_author} };  # TODO ugly
 	
 	greadauthorbk( author_id   => $auid,
+	               limit       => $MAXAUBOOKS,
 	               rh_into     => \%books, 
 	               on_book     => $imgurlupdatefn,
 	               on_progress => gmeter( 'books' ));
