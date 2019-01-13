@@ -10,8 +10,8 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- likeminded: new parameter `--maxbookauthors` to limit authors with too many 
-  books for whatever reason, default ist 600
+- likeminded: new parameter `--maxauthorbooks` to limit the amount of books per author
+  since some authors list more than 2000 books; default is 600 most popular books
 - friendrated: more filters, e.g., _"books with less than 1000 ratings 
   and published between 1950 to 1980 and ..."_ ([#16](https://github.com/andre-st/goodreads/issues/16))
 
