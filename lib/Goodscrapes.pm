@@ -161,19 +161,20 @@ our $GOOD_ERRMSG_NOMEMBERS = '[FATAL] No members found. Check cookie and try emp
 
 
 # Module error codes:
-#   Severity levels:  0 < WARN < ERROR < FATAL
+#   Severity levels:  0 < WARN < ERROR < CRITICAL < FATAL
 #   Adding a severity level influences coping strategy
-our $_ENO_WARN        = 300;  # continue
+our $_ENO_WARN        = 300;  # ignore and continue
 our $_ENO_GR404       = $_ENO_WARN  + 1;
 our $_ENO_GRSIGNIN    = $_ENO_WARN  + 2;
-our $_ENO_ERROR       = 400;  # retry
+our $_ENO_ERROR       = 400;  # retry n times and continue
 our $_ENO_GRUNAVAIL   = $_ENO_ERROR + 1;
 our $_ENO_GRUNEXPECT  = $_ENO_ERROR + 2;
-our $_ENO_GRCAPACITY  = $_ENO_ERROR + 3;
-our $_ENO_GRMAINTNC   = $_ENO_ERROR + 4;
-our $_ENO_CURL        = $_ENO_ERROR + 5;
-our $_ENO_NOHTML      = $_ENO_ERROR + 6;
-our $_ENO_FATAL       = 500;  # abort
+our $_ENO_CRIT        = 500;  # retry until user CTRL-C
+our $_ENO_GRCAPACITY  = $_ENO_CRIT  + 1;
+our $_ENO_GRMAINTNC   = $_ENO_CRIT  + 2;
+our $_ENO_CURL        = $_ENO_CRIT  + 3;
+our $_ENO_NOHTML      = $_ENO_CRIT  + 4;
+our $_ENO_FATAL       = 600;  # abort
 our $_ENO_NOCOOKIE    = $_ENO_FATAL + 1;
 our $_ENO_BADCOOKIE   = $_ENO_FATAL + 2;
 our $_ENO_NODICT      = $_ENO_FATAL + 3;
@@ -181,9 +182,12 @@ our $_ENO_BADSHELF    = $_ENO_FATAL + 4;
 our $_ENO_BADUSER     = $_ENO_FATAL + 5;
 our $_ENO_BADARG      = $_ENO_FATAL + 6;
 
+our $_MAXRETRIES      = 5;     # 
+our $_RETRYDELAY_SECS = 60*3;  # Total retry time: 15 minutes
+
 
 # Misc module message strings:
-our $_MSG_RETRYING    = "[INFO ] Retrying in 3 minutes... Press CTRL-C to exit";
+our $_MSG_RETRYING    = "[NOTE ] Retrying in 3 minutes... Press CTRL-C to exit";
 our $_MSG_COOKIEHELP  = "Save a Goodreads.com cookie to the file \"%s\". "  # path
                       . "Check out https://www.youtube.com/watch?v=o_CYdZBPDCg for a tutorial "
                       . "on cookie-extraction using Chrome's DevTools Network-view.";
@@ -196,10 +200,10 @@ our %_ERRMSG =
 	$_ENO_ERROR      => "\n[ERROR] %s",               # url
 	$_ENO_GRUNAVAIL  => "\n[ERROR] Goodreads.com \"temporarily unavailable\".",
 	$_ENO_GRUNEXPECT => "\n[ERROR] Goodreads.com encountered an \"unexpected error\": %s",  #url
-	$_ENO_GRCAPACITY => "\n[ERROR] Goodreads.com is over capacity.",
-	$_ENO_GRMAINTNC  => "\n[ERROR] Goodreads.com is down for maintenance.",
-	$_ENO_CURL       => "\n[ERROR] %s: %s %s",        # url, err, errbuf
-	$_ENO_NOHTML     => "\n[ERROR] No HTML body: %s", # url
+	$_ENO_GRCAPACITY => "\n[CRIT ] Goodreads.com is over capacity.",
+	$_ENO_GRMAINTNC  => "\n[CRIT ] Goodreads.com is down for maintenance.",
+	$_ENO_CURL       => "\n[CRIT ] %s - %s %s",       # url, err, errbuf
+	$_ENO_NOHTML     => "\n[CRIT ] No HTML body: %s", # url
 	$_ENO_FATAL      => "\n[FATAL] %s",               # url
 	$_ENO_NOCOOKIE   => "\n[FATAL] Missing cookie. $_MSG_COOKIEHELP",                # path
 	$_ENO_BADCOOKIE  => "\n[FATAL] Goodreads.com rejects cookie. $_MSG_COOKIEHELP",  # path
@@ -208,7 +212,7 @@ our %_ERRMSG =
 	$_ENO_BADUSER    => "\n[FATAL] Invalid Goodreads user ID \"%s\".",  # id
 	$_ENO_BADARG     => "\n[FATAL] Argument \"%s\" expected.",          # name
 );
-sub _errmsg{ my $eno = shift; return sprintf( $_ERRMSG{$eno}, shift, shift, shift ); }  # TODO ugly
+sub _errmsg{ my $eno = shift; return sprintf( $_ERRMSG{$eno}, @_ ); }
 
 
 # Misc module constants:
@@ -2055,6 +2059,7 @@ sub _html
 	my $url       = shift or return '';
 	my $warnlevel = shift // $_ENO_WARN;
 	my $cancache  = shift // 1;
+	my $retry     = $_MAXRETRIES;
 	my $htm;
 	
 	$htm = $_cache->get( $url ) 
@@ -2081,11 +2086,12 @@ DOWNLOAD:
 	warn( _errmsg( $errno, $url, $curl->strerror( $curlret ), $curl->errbuf ) )
 		if $errno >= $warnlevel;
 	
-	if( $errno >= $_ENO_ERROR )
+	if( $errno >= $_ENO_CRIT 
+	||( $errno >= $_ENO_ERROR && $retry-- > 0 ))
 	{
-		say $_MSG_RETRYING;
+		say( $_MSG_RETRYING );
 		$curl = undef;  # disconnect
-		sleep 3*60;
+		sleep( $_RETRYDELAY_SECS );
 		goto DOWNLOAD;
 	}
 	
