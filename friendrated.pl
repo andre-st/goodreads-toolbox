@@ -112,7 +112,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2019-01-08 (Since 2018-05-10)
+2019-01-12 (Since 2018-05-10)
 
 =cut
 
