@@ -3,12 +3,20 @@
 All notable changes to this project will be documented in this file.
 
 
-## [1.12.0] - 2019-01-08
+## [1.12.5] - 2019-01-13
 ### Added
 
+- likeminded: new parameter `--maxbookauthors` to limit authors with too many 
+  books for whatever reason, default ist 600
 - friendrated: more filters, e.g., _"books with less than 1000 ratings 
   and published between 1950 to 1980 and ..."_ ([#16](https://github.com/andre-st/goodreads/issues/16))
 
+### Changed
+
+- if Goodreads shows an "unexpected error", all programs retry multiple times but continue in any case;
+  critical conditions such as "maintenance mode", "over capacity", connection issues etc
+  are handled as usual (continuous retries or user CTRL-C)
+  
 
 ## [1.11.0] - 2018-11-28
 ### Fixed
