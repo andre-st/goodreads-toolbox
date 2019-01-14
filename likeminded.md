@@ -79,13 +79,12 @@ Goodreads.com is very time consuming.  The script internally uses a
 
 **Latest version:**
 - loading data could take a month given too many books  &rArr;  prefer a separate _"best-of"_ shelf
-  over the _"All"_ or _"Read"_ shelves:
-	- with 100 representative books
-	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode 
-	- or specify multiple smaller shelves via `--shelf` parameter
-	- add good but rare books to your _"best-of"_ shelf:
+  over _"All"_ or _"Read"_:
+	- with _100_ good but rare books:
 	  the more popular your literature, the longer the program's runtime and the 
 	  more questionable its results (too generic, many unseen reviewers, ...)
+	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
+	- alternatively specify multiple smaller shelves via `--shelf` parameter  
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`
 - there's no way to load _all_ reviews of a book, but the program tries different 
   things to get as many reviews as possible.
