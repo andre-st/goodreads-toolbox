@@ -85,7 +85,7 @@ Goodreads.com is very time consuming.  The script internally uses a
 	  more questionable its results (too generic, many unseen reviewers, ...)
 	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
 	- alternatively specify multiple smaller shelves via `--shelf` parameter  
-- make sure you have some _Gigabytes_ of free diskspace in `/tmp/`
+- make sure you have some _Gigabytes_ of free diskspace in `/tmp/`: my last run with 356 books filled 11 GB in ~25 hours
 - there's no way to load _all_ reviews of a book, but the program tries different 
   things to get as many reviews as possible.
   This means there is a number of readers not considered in our statistics,
