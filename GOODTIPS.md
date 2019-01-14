@@ -50,7 +50,7 @@
   your email signature: "I give away books: ...". 
   PS: There is a "book condition" column (shelf settings: table view, [x] condition).
 
-- **Batch edit** shelf feature
+- **Batch edit** shelf feature ([tutorial](https://www.soobsessedwith.com/2014/01/get-organized-on-goodreads.html))
 
 - **Become a Goodreads librarian** by applying 
   [there](https://www.goodreads.com/about/apply_librarian). Quickly

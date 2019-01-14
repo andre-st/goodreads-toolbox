@@ -78,12 +78,14 @@ Goodreads.com is very time consuming.  The script internally uses a
 ## Observations and limitations
 
 **Latest version:**
-- loading data could take a month given too many books  &rArr;  prefer a separate "best-of" shelf
-  with 100 representative books over the "All" or "Read" shelves.
-  Or specify multiple smaller shelves with the `--shelf` parameter.
-- add good but rare books to your "best-of" shelf:
-  the more popular your literature, the longer the program's runtime and the 
-  more questionable its results (too generic, many unseen reviewers, ...)
+- loading data could take a month given too many books  &rArr;  prefer a separate _"best-of"_ shelf
+  over the _"All"_ or _"Read"_ shelves:
+	- with 100 representative books
+	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode 
+	- or specify multiple smaller shelves via `--shelf` parameter
+	- add good but rare books to your _"best-of"_ shelf:
+	  the more popular your literature, the longer the program's runtime and the 
+	  more questionable its results (too generic, many unseen reviewers, ...)
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`
 - there's no way to load _all_ reviews of a book, but the program tries different 
   things to get as many reviews as possible.
@@ -98,7 +100,8 @@ Goodreads.com is very time consuming.  The script internally uses a
 - your Goodreads account must be viewable by 
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
   which is the default (alternatively try the `--cookie` parameter)
-- "_...most number of shared books would be a list of children's books_"—`likeminded.pl` has a shelf parameter (sort of selection)
+- _"...most number of shared books would be a list of children's books"_—`likeminded.pl` 
+  has a `--shelf` parameter
 
 **First version compared books, not authors:**
 - turned out to be too narrow in order to produce satisfying results
