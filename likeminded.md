@@ -82,7 +82,7 @@ Goodreads.com is very time consuming.  The script internally uses a
   over _"All"_ or _"Read"_:
 	- with _100_ good but rare books:
 	  the more popular your literature, the longer the program's runtime and the 
-	  more questionable its results (too generic, many unseen reviewers, ...)
+	  more questionable or generic the final members list: who would you expect by adding Harry Potter (500 million sales)?
 	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
 	- alternatively specify multiple smaller shelves via `--shelf` parameter  
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`: 
