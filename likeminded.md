@@ -80,7 +80,7 @@ The program is designed to run unattended, outwaits connection issues etc.
 **Latest version:**
 - loading data could take a month given too many books
 - prefer loading from a separate _"best-of"_ shelf via `--shelf` parameter, avoid _"All"_ or _"Read"_ 
-	- with _100_ good but rare books
+	- use _100_ good but rare books
 	- the more popular your literature, the longer the program's runtime
 	- the more popular your lit, the more generic the results (500 million sales of Harry Potter)
 	- the more popular your lit, the less likely we detect reoccuring members (we cannot see all reviews)
