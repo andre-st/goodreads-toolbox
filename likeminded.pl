@@ -12,7 +12,8 @@ likeminded - finding people on Goodreads.com based on the books they've read
 =head1 SYNOPSIS
 
 B<likeminded.pl> [B<-m> F<number>] [B<-a> F<number>] [B<-x> F<number>] 
-[B<-c> F<numdays>] [B<-o> F<filename>] [B<-s> F<shelfname> ...] F<goodusernumber>
+[B<-d> F<filename>] [B<-c> F<numdays>] [B<-k>] [B<-o> F<filename>] 
+[B<-s> F<shelfname> ...] F<goodusernumber>
 
 You find your F<goodusernumber> by looking at your shelf URLs.
 
