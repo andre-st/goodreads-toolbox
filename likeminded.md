@@ -79,13 +79,13 @@ The program is designed to run unattended, outwaits connection issues etc.
 
 **Latest version:**
 - loading data could take a month given too many books
-- prefer loading from a separate _"best-of"_ shelf over _"All"_ or _"Read"_:
+- prefer loading from a separate _"best-of"_ shelf instead of _"All"_ or _"Read"_ via `--shelf` parameter
 	- with _100_ good but rare books
 	- the more popular your literature, the longer the program's runtime
 	- the more popular your lit, the more generic the results (500 million sales of Harry Potter)
 	- the more popular your lit, the less likely we detect reoccuring members (we cannot see all reviews)
 	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
-	- alternatively specify multiple smaller shelves via `--shelf` parameter  
+	- alternatively load from N smaller shelves via multiple `--shelf` arguments
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`: 
 	- my last test run with 356 books filled 11 GB in ~25 hours
 - there's no way to load _all_ reviews of a book
