@@ -73,6 +73,7 @@ without having to re-read all online sources again, as reading from
 Goodreads.com is very time consuming.  The script internally uses a
 **file-cache** which is busted after 31 days and saves to /tmp/FileCache/.
 
+The program is designed to run unattended, outwaits connection issues etc.
 
 
 ## Observations and limitations
