@@ -81,20 +81,20 @@ Goodreads.com is very time consuming.  The script internally uses a
 - loading data could take a month given too many books
 - prefer loading from a separate _"best-of"_ shelf over _"All"_ or _"Read"_:
 	- with _100_ good but rare books
-	  (the more popular your literature, the longer the program's runtime and the 
-	  more generic the final members list: Who would you expect by adding Harry Potter (500 million sales)? 
-	  Also, too many unseen reviewers would render the result questionable)
+	- the more popular your literature, the longer the program's runtime
+	- the more popular your lit, the more generic the results (500 million sales of Harry Potter)
+	- the more popular your lit, the less likely we detect reoccuring members (we cannot see all reviews)
 	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
 	- alternatively specify multiple smaller shelves via `--shelf` parameter  
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`: 
 	- my last test run with 356 books filled 11 GB in ~25 hours
-- there's no way to load _all_ reviews of a book, but the program tries different 
-  things to get as many reviews as possible.
-  This means there is a number of readers not considered in our statistics,
-  and we cannot randomize in a way which would produce samples of similar size.
-  Although, we don't get _all_ members (for books with ten of thousand
-  reviews), the final report still contains _enough_ members who read the 
-  same N authors. You can tune this with the `--rigor` parameter
+- there's no way to load _all_ reviews of a book
+	- the program tries different things to get as many reviews as possible
+	- you can tune this with the `--rigor` parameter (increases runtime)
+	- there is a number of readers not considered in our statistics
+	- we cannot randomize in a way which would produce samples of similar size
+	- although, we don't get _all_ members (for books with ten of thousand reviews), 
+	  the final report still contains _enough_ members who read the same N authors
 - there are members with 94.857 ratings, likely bots
 - lists members with private accounts
 - slow but good enough since you run it 4x a year
