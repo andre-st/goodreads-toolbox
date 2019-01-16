@@ -77,6 +77,7 @@ program in 2015.
 
 Static webpages that I use to offer [this software as a service](https://andre-st.github.io/goodreads/) 
 to people who don't know Linux etc. You probably won't need this directory.
+I do not earn money and I hope that Goodreads will eventually make these scripts superfluous.
 
 
 ## dict/
