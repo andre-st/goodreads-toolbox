@@ -106,7 +106,7 @@ $ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
 - [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt) or [DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/)
 - [GR workplace reviews](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), anonymously about being acquired by Amazon, bureaucracy etc.
 - [Crunchbase on GR](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
-- [GR members stats](https://www.statista.com/search/?q=goodreads&qKat=search), source probably [Goodreads](https://www.goodreads.com/about/us)
+- [GR members stats](https://www.statista.com/search/?q=goodreads&qKat=search), source probably [Goodreads](https://www.goodreads.com/about/us), or [here](https://qz.com/1106341/most-women-reading-self-help-books-are-getting-advice-from-men/) or [here](https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.23733) or [here](http://www.amphoraepublishing.com/wp-content/uploads/2017/06/Goodreads-Research.pdf)
 - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors
 - [GR subreddit](https://www.reddit.com/r/goodreads/) with my ignored [post](https://www.reddit.com/r/goodreads/comments/9i9qhe/andres_toolbox_find_likeminded_users_subscribe_to/)
 - [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
