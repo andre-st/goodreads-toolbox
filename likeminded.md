@@ -88,7 +88,7 @@ The program is designed to run unattended, outwaits connection issues etc.
 	- alternatively load from N smaller shelves via multiple `--shelf` arguments
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`: 
 	- my last test run with 356 books filled 11 GB in ~24 hours
-- there's no way to load _all_ readers of a book
+- there's no way to get _all_ readers of a book
 	- the program tries different things to get as many as possible
 	- you can tune this with the `--rigor` parameter (increases runtime)
 	- there is a number of readers not considered in our statistics
