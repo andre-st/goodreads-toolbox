@@ -48,7 +48,7 @@ Loading books of 95 authors:
 ...
 [100%] Fertl, Herbert L.          #16159494   1 books    1.03s
 Done.
-Loading reviews for 1625 author books:
+Loading readers of 1625 author books:
 [  0%] First as Tragedy, Then as Farce           #6636487    2278 memb     134.20s
 [  0%] The Parallax View                         #18910      1039 memb      66.35s
 [  0%] The Year of Dreaming Dangerously          #15901602    949 memb      50.08s
@@ -77,13 +77,13 @@ The program is designed to run unattended, outwaits connection issues etc.
 
 ## Observations and limitations
 
-### Latest version:
+#### Latest version:
 - loading data could take a month given too many books
 - prefer loading from a separate _"best-of"_ shelf via `--shelf` parameter, avoid _"All"_ or _"Read"_ 
 	- use _100_ good but rare books
 	- the more popular your literature, the longer the program's runtime
 	- the more popular your lit, the more generic the results (500 million sales of Harry Potter)
-	- the more popular your lit, the less likely we detect reoccuring members (we cannot see all reviews)
+	- the more popular your lit, the less likely we detect reoccuring members (we cannot see all readers)
 	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
 	- alternatively load from N smaller shelves via multiple `--shelf` arguments
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`: 
@@ -104,7 +104,7 @@ The program is designed to run unattended, outwaits connection issues etc.
 - _"...most number of shared books would be a list of children's books"_—`likeminded.pl` 
   has a `--shelf` parameter
 
-### First version compared books, not authors:
+#### First version compared books, not authors:
 - turned out to be too narrow in order to produce satisfying results
 - given 299 books and a minimum of 9 _common_ books (3% similarity), 
   I've got 10 of 31.398 members,
@@ -116,7 +116,7 @@ The program is designed to run unattended, outwaits connection issues etc.
 - the new authors-version takes longer but yields better results, e.g.,
   more matches with my hand-curated followees list
 
-### Alternatives to consider:
+#### Alternatives to consider:
 - _"I look for people who __dislike__ the same books that I do. I don’t have a problem finding books to read. What I need is someone who can warn me about the books that everyone else seems to love."_
 
 
