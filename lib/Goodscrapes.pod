@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-01-13
+=item * Updated: 2019-01-16
 
 =item * Since: 2014-11-05
 
@@ -161,6 +161,8 @@ https://github.com/andre-st/
 =item * residence   =E<gt> C<string>
 
 =item * age         =E<gt> C<int>
+
+=item * num_books   =E<gt> C<int>
 
 =item * is_friend   =E<gt> C<bool>
 

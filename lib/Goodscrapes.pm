@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-01-13
+=item * Updated: 2019-01-16
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.122';  # X.XX version format required by Perl
+our $VERSION = '1.130';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -304,6 +304,8 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 =item * residence   =E<gt> C<string>
 
 =item * age         =E<gt> C<int>
+
+=item * num_books   =E<gt> C<int>
 
 =item * is_friend   =E<gt> C<bool>
 
@@ -1381,15 +1383,17 @@ sub _extract_user
 		$us{ is_female  } = undef;  # TODO
 		$us{ works_url  } = _author_books_url( $auid );
 		$us{ residence  } = undef;
+		$us{ num_books  } = $htm =~ /=reviews">(\d+)[,.]?(\d*)[,.]?(\d*) ratings</ ? $1.$2.$3 : 0; # Closest we can get
 	}
 	else  # Normal users:
 	{
-		$us{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/ ? decode_entities( $1 ) : "";
-		$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/         ? $1 : 0;
-		$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/            ? 1  : 0;
-		$us{ is_private } = $htm =~ /<div id="privateProfile"/                           ? 1  : 0;
-		$us{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/    ? 1  : 0;
-		$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/         ? $1 : $_NOUSERIMGURL;
+		$us{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/       ? decode_entities( $1 ) : "";
+		$us{ num_books  } = $htm =~ /<meta content='[^']+ has (\d+)[,.]?(\d*)[,.]?(\d*) books/ ? $1.$2.$3 : 0;
+		$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/               ? $1 : 0;
+		$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/                  ? 1  : 0;
+		$us{ is_private } = $htm =~ /<div id="privateProfile"/                                 ? 1  : 0;
+		$us{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/          ? 1  : 0;
+		$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/               ? $1 : $_NOUSERIMGURL;
 		$us{ works_url  } = undef;
 		
 		# Details string doesn't include Firstname/Middlename/Lastname, no Zip-Code
@@ -1575,6 +1579,7 @@ sub _extract_followees
 		$us{ is_friend } = 0;
 		$us{ _seen     } = 1;
 		$us{ residence } = undef;
+		$us{ num_books } = undef;  # TODO
 			
 		next if !$iau && $us{is_author};
 		$ret++;
@@ -1622,6 +1627,7 @@ sub _extract_friends
 		$us{ is_friend } = 1;
 		$us{ _seen     } = 1;
 		$us{ residence } = undef;
+		$us{ num_books } = undef;  # TODO
 		
 		next if !$iau && $us{ is_author };
 		$ret++;
@@ -1680,12 +1686,13 @@ sub _extract_revs
 		   $txt  = $txts if length( $txts ) > length( $txt );
 		
    		$txt =~ s/\\"/"/g;
-		$txt =~ s/\\u(....)/ pack 'U*', hex($1) /eg;  # Convert Unicode codepoints such as \u003c
+		$txt =~ s/\\u(....)/ pack 'U*', hex($1) /eg;  # Convert Unicode codepoints such as \u003c; TODO: "Illegal hexadecimal digit 'n' ignored"
 		$txt =~ s/<br \/>/\n/g;
 		
 		$us{ id         } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
 		$us{ name       } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : decode_entities( $1 )) : '';
 		$us{ residence  } = undef;
+		$us{ num_books  } = undef;
   		$us{ img_url    } = $_NOUSERIMGURL;  # TODO
 		$us{ url        } = _user_url( $us{id} );
 		$us{ _seen      } = 1;
@@ -1750,6 +1757,7 @@ sub _extract_similar_authors
 		$au{ is_private } = 0;
 		$au{ _seen      } = 1;
 		$au{ residence  } = undef;
+		$au{ num_books  } = undef;  # TODO
 		
 		$rh->{ $au{id} } = \%au;
 	}
@@ -1809,6 +1817,7 @@ sub _extract_search_books
 		$au{ is_private  } = 0;
 		$au{ _seen       } = 1;
 		$au{ residence   } = undef;
+		$au{ num_books   } = undef;
 		
 		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
 		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
