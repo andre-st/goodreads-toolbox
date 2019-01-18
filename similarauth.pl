@@ -99,7 +99,7 @@ More info in similarauth.md
 
 =head1 VERSION
 
-2018-11-13 (Since 2018-07-05)
+2019-01-18 (Since 2018-07-05)
 
 =cut
 
@@ -214,8 +214,10 @@ print $fh qq{
 		<html>
 		<head>
 		<title> Similar Goodreads Authors </title>
+		<link rel="stylesheet" property="stylesheet" type="text/css" 
+		    media="all" href="report.css">
 		</head>
-		<body style="font-family: sans-serif;">
+		<body class="similarauth">
 		<table border="1" width="100%" cellpadding="6">
 		<caption>
 		  Similar Authors, $now

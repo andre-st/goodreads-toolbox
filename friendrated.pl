@@ -112,7 +112,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2019-01-12 (Since 2018-05-10)
+2019-01-18 (Since 2018-05-10)
 
 =cut
 
@@ -262,8 +262,10 @@ print $fh qq{
 		<html>
 		<head>
 		<title> Books common among friends and followees </title>
+		<link rel="stylesheet" property="stylesheet" type="text/css" 
+		    media="all" href="report.css">
 		</head>
-		<body style="font-family: sans-serif;">
+		<body class="friendrated">
 		<table border="1" width="100%" cellpadding="6">
 		<caption>$capt</caption>
 		<tr>

@@ -1,0 +1,85 @@
+/*
+
+Stylesheets for all generated reports
+
+Version: 2019-01-18 (Since 2019-01-18)
+
+
+*/
+
+
+
+/* ---------------------- All reports --------------------- */
+
+body
+{
+	font-family: sans-serif;
+}
+
+
+
+/* --------------------- likeminded.pl -------------------- */
+
+.likeminded td
+{ 
+	vertical-align: top; 
+}
+
+
+.likeminded td:nth-child(1) 
+{
+	text-align: center; 
+}
+
+.likeminded td:nth-child(2) a
+{
+	display   : inline-block;
+	width     : 15em;
+	padding   : 0.25em;
+}
+
+.likeminded td:nth-child(2) a:hover
+{
+	background-color: #00f;
+	color: #fff;	
+}
+
+.likeminded td:nth-child(2) a img
+{
+	width     : 100px;
+	word-break: break-all;
+}
+
+.likeminded td:nth-child(2) a small
+{
+	font-size : 8pt;
+}
+
+.likeminded td:nth-child(3) div 
+{
+	background-color: #eeeddf;
+	float     : left; 
+	display   : inline-block; 
+	height    : 95px; 
+	max-width : 50px; 
+	font-size : 8pt; 
+	text-align: center; 
+	margin    : 0.25em;
+}
+
+
+
+/* ----------------------- search.pl ---------------------- */
+
+.search th 
+{
+	text-transform: capitalize 
+}
+
+
+
+
+
+
+
+

@@ -93,7 +93,7 @@ More info in search.md
 
 =head1 VERSION
 
-2018-11-13 (Since 2018-07-29)
+2019-01-18 (Since 2018-07-29)
 
 =cut
 
@@ -188,11 +188,10 @@ print $fh qq{
 		<html>
 		<head>
 		<title>Goodreads search result</title>
-		<style>
-		  th { text-transform: capitalize }
-		</style>
+		<link rel="stylesheet" property="stylesheet" type="text/css" 
+		    media="all" href="report.css">
 		</head>
-		<body style="font-family: sans-serif;">
+		<body class="search">
 		<table border="1" width="100%" cellpadding="6">
 		<caption>
 		  Query: "$PHRASE", $now

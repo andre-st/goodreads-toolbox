@@ -77,7 +77,7 @@ More info in friendgroup.md
 
 =head1 VERSION
 
-2019-11-12 (Since 2018-09-26)
+2019-01-18 (Since 2018-09-26)
 
 =cut
 
@@ -191,8 +191,10 @@ print $fh qq{
 		<html>
 		<head>
 		<title> Groups common among friends and followees </title>
+		<link rel="stylesheet" property="stylesheet" type="text/css" 
+		    media="all" href="report.css">
 		</head>
-		<body style="font-family: sans-serif;">
+		<body class="friendgroup">
 		<table border="1" width="100%" cellpadding="6">
 		<caption>
 		  Groups joined by friends or followees of member $USERID, on $now

@@ -30,7 +30,8 @@ value between 0 and 100; members with 100% commonality have read *all* the
 authors you did, which is unlikely, so better use lower values. 
 Default is 5, that is, members who have read at least 5% of your authors.
 There's a huge bulge of members with low commonality and just a few with 
-higher commonality. Cut away the huge bulge, and check the rest manually
+higher commonality. Cut away the huge bulge, and check the rest manually.
+In my tests, 5% cut away 99% of members.
 
 
 =item B<-a, --maxauthorbooks>=F<number>
@@ -137,7 +138,7 @@ More info in likeminded.md
 
 =head1 VERSION
 
-2019-01-17 (Since 2018-06-22)
+2019-01-18 (Since 2018-06-22)
 
 =cut
 
@@ -353,31 +354,11 @@ print $fh qq{
 		<!DOCTYPE html>
 		<html>
 		<head>
-		  <meta charset="utf-8">
-		  <title> Goodreads members with similar taste </title>
-		  <style>
-		  td:nth-child(3) div 
-		  {
-		    background-color: #eeeddf;
-		    float     : left; 
-		    display   : inline-block; 
-		    height    : 95px; 
-		    max-width : 50px; 
-		    font-size : 8pt; 
-		    text-align: center; 
-		    margin    : 0.25em;
-		  }
-		  td:nth-child(2) a,
-		  td:nth-child(2) a img
-		  {
-		    display   : inline-block;
-		    width     : 100px;
-		    max-width : 100px;
-		    word-break: break-all;
-		  }
-		  </style>
+		<title> Goodreads members with similar taste </title>
+		<link rel="stylesheet" property="stylesheet" type="text/css" 
+		    media="all" href="report.css">
 		</head>
-		<body style="font-family: sans-serif;">
+		<body class="likeminded">
 		<table border="1" width="100%" cellpadding="6">
 		<caption>
 		  Members who read at least 
@@ -400,14 +381,14 @@ for my $userid (sort{ $readers{$b}->{match} <=>
 			<tr>
 			<td>$line</td>
 			<td>
-				<a href="https://www.goodreads.com/user/show/${userid}" target="_blank">
-					<img src="$readers{$userid}->{img_url}">$readers{$userid}->{name}
-				</a>
-				<br>
-				<small>
-				$readers{$userid}->{aucommon}&nbsp;authors&nbsp;over<br>
-				$readers{$userid}->{num_books}&nbsp;books
-				</small>
+			  <a href="https://www.goodreads.com/user/show/${userid}" target="_blank">
+			    <img src="$readers{$userid}->{img_url}">$readers{$userid}->{name}
+			    <br>
+			    <small>
+			      $readers{$userid}->{aucommon}&nbsp;authors&nbsp;over<br>
+			      $readers{$userid}->{num_books}&nbsp;books
+			    </small>
+			  </a>
 			</td>
 			<td>
 			};
