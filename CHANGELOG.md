@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.13.0] - 2019-01-18
+
+### Changed
+
+- likeminded: 
+	- `--similar` parameter is `--common` now
+	- final report does not rank members by number of common authors only but
+	  includes library-sizes ([#18](https://github.com/andre-st/goodreads/issues/18))
+- generated HTML-reports now include `report.css`
+
+
 ## [1.12.5] - 2019-01-13
 ### Fixed
 
