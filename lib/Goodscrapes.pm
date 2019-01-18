@@ -229,10 +229,7 @@ our $_EARLIEST      = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
 our @_BADPROFILES   =     # TODO external config file
 (
 	'1000834',  #  3.000 books   NOT A BOOK author
-	'5158478',  # 10.000 books   Anonymous
-	'173327'    #    365 books   Germany (Gov?)
-	#'2938140', #  2.218 books   Jacob Grimm (Grimm brothers)
-	#'128382',  #  2.802 books   Leo Tolstoy
+	'5158478'   # 10.000 books   Anonymous
 );
 
 our $_cookie    = undef;
@@ -1387,7 +1384,11 @@ sub _extract_user
 	}
 	else  # Normal users:
 	{
-		$us{ name       } = $htm =~ /<meta property="profile:username" content="([^"]+)/       ? decode_entities( $1 ) : "";
+		my $fname = $htm =~ /<meta property="profile:first_name" content="([^"]+)/ ? decode_entities( "$1 "  ) : "";
+		my $lname = $htm =~ /<meta property="profile:last_name" content="([^"]+)/  ? decode_entities( "$1 "  ) : "";
+		my $uname = $htm =~ /<meta property="profile:username" content="([^"]+)/   ? decode_entities( "($1)" ) : "";
+		
+		$us{ name       } = $fname.$lname.$uname;
 		$us{ num_books  } = $htm =~ /<meta content='[^']+ has (\d+)[,.]?(\d*)[,.]?(\d*) books/ ? $1.$2.$3 : 0;
 		$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/               ? $1 : 0;
 		$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/                  ? 1  : 0;
