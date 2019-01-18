@@ -38,7 +38,7 @@ $ sudo make       # Required Perl modules from CPAN
 $ ./likeminded.pl --help
 $ ./likeminded.pl YOURGOODUSERNUMBER
 
-Loading books from "ALL" may take a while... 108 books
+Loading authors from "ALL" may take a while... 95 authors
 Loading books of 95 authors:
 [  1%] Schuberth, Richard         #2793763    6 books    1.03s
 [  2%] Lohoff, Ernst              #1339033    4 books    1.05s
@@ -49,21 +49,26 @@ Loading books of 95 authors:
 [100%] Fertl, Herbert L.          #16159494   1 books    1.03s
 Done.
 Loading readers of 1625 author books:
-[  0%] First as Tragedy, Then as Farce           #6636487    2278 memb     134.20s
-[  0%] The Parallax View                         #18910      1039 memb      66.35s
-[  0%] The Year of Dreaming Dangerously          #15901602    949 memb      50.08s
-[  0%] Descriptive Check List: Together With Sh  #6517166       0 memb       1.41s
-[  0%] Old Fences, New Neighbors                 #17461487      0 memb       1.13s
-[  0%] Little Brother (Little Brother, #1)       #25547383   5885 memb     324.83s
-[  0%] The Hardware Hacker: Adventures in Makin  #30804383    219 memb      11.25s
-[  0%] Hacking the Xbox: An Introduction to Rev  #984394      206 memb      10.26s
-[  1%] The Essential Guide to Electronics in Sh  #33401673     27 memb       1.11s
-[  1%] The Sublime Object of Ideology            #18912      2229 memb      69.87s
+[  0%] First as Tragedy, Then as Farce           #6636487    2278 memb    134.20s
+[  0%] Descriptive Check List: Together With     #6517166       0 memb      1.41s
+[  0%] Little Brother (Little Brother, #1)       #25547383   5885 memb    324.83s
+[  0%] The Hardware Hacker: Adventures in Ma     #30804383    219 memb     11.25s
+[  1%] Hacking the Xbox: An Introduction to      #984394      206 memb     10.26s
 ...
-[100%] Maker Pro: Essays on Making a Living as   #24214717     33 memb       1.09s
+[100%] Maker Pro Essays on Making a Living a     #24214717     33 memb      1.09s
 Done.
-Writing members (N=39129) with 5% similarity or better to "likeminded-18418712.html"...
-Total time: 274 minutes
+Dropping who read less than 5% of your authors... -20205 memb (99.998%)
+Loading profiles of the remaining 420 members:
+[  0%] goodreads.com/user/show/120456      1.21s     *
+[  1%] goodreads.com/user/show/65482       2.10s     ****
+[  1%] goodreads.com/user/show/45763483    0.90s
+[  2%] goodreads.com/user/show/773911      2.23s     private account
+[  2%] goodreads.com/user/show/1031286     3.01s
+...
+[100%] goodreads.com/user/show/818022      1.01s     **
+Done.
+Writing report (N=399) to "likeminded-18418712.html"...
+Total time: 294 minutes
 ```
 
 **Note:**
@@ -80,14 +85,14 @@ The program is designed to run unattended, outwaits connection issues etc.
 #### Latest version:
 - loading data could take a month given too many books
 - prefer loading from a separate _"best-of"_ shelf via `--shelf` parameter, avoid _"All"_ or _"Read"_ 
-	- use _100_ good but rare books
+	- use _100_ good but rare books (&lt;5000 ratings)
 	- the more popular your literature, the longer the program's runtime
 	- the more popular your lit, the more generic the results (500 million sales of Harry Potter)
 	- the more popular your lit, the less likely we detect reoccuring members (we cannot see all readers)
 	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
 	- alternatively load from N smaller shelves via multiple `--shelf` arguments
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`: 
-	- my last test run with 356 books filled 11 GB in ~24 hours
+	- my last test run with 356 books filled 11 GB in ~24 hours (many small files)
 - there's no way to get _all_ readers of a book
 	- the program tries different things to get as many as possible
 	- you can tune this with the `--rigor` parameter (increases runtime)
@@ -96,13 +101,25 @@ The program is designed to run unattended, outwaits connection issues etc.
 	- although, we don't get _all_ readers (for books with ten of thousand readers), 
 	  the final report still contains _enough_ members who read the same N authors
 - there are members with 94.857 ratings, likely bots
-- lists members with private accounts
+- does _not_ list members with private accounts anymore
 - slow but good enough since you run it 4x a year
 - your Goodreads account must be viewable by 
   ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
   which is the default (alternatively try the `--cookie` parameter)
 - _"...most number of shared books would be a list of children's books"_—`likeminded.pl` 
   has a `--shelf` parameter
+
+
+#### Library sizes as ranking factor:
+- there are members with many common authors just because they have huge libraries
+- in a previous program version,
+  a member with 11 common authors and 3000 books in total was shown earlier than
+  a member with 10 common authors and  300 books in total, 
+  although the latter one is probably more "like-minded"
+- getting the library sizes requires an additional profiles loading stage
+	- increased runtime is accepted as weeding out members
+	  by hand takes even longer
+
 
 #### First version compared books, not authors:
 - turned out to be too narrow in order to produce satisfying results
@@ -116,8 +133,10 @@ The program is designed to run unattended, outwaits connection issues etc.
 - the new authors-version takes longer but yields better results, e.g.,
   more matches with my hand-curated followees list
 
+  
 #### Alternatives to consider:
 - _"I look for people who __dislike__ the same books that I do. I don’t have a problem finding books to read. What I need is someone who can warn me about the books that everyone else seems to love."_
+
 
 
 ## Feedback

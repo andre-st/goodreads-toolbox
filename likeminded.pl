@@ -24,13 +24,13 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =over 4
 
-=item B<-m, --similar>=F<number>
+=item B<-m, --common>=F<number>
 
-value between 0 and 100; members with 100% similarity have read *all* the
-authors you did, which is unlikely, so better use lower values, default is a
-minimum similarity of 5 (5%).
-There's a huge bulge of members with low similarity and just a few with higher
-similarity. Cut away the huge bulge, and check the rest manually
+value between 0 and 100; members with 100% commonality have read *all* the
+authors you did, which is unlikely, so better use lower values. 
+Default is 5, that is, members who have read at least 5% of your authors.
+There's a huge bulge of members with low commonality and just a few with 
+higher commonality. Cut away the huge bulge, and check the rest manually
 
 
 =item B<-a, --maxauthorbooks>=F<number>
@@ -50,6 +50,9 @@ We exploit ratings filters and the reviews-search to find more members:
  level 1 = filters-based search of book-raters (max 5400 ratings) - default
  level 2 = like 1 plus dict-search if >3000 ratings with stall-time of 2min
  level n = like 1 plus dict-search with stall-time of n minutes
+
+Rigor level 0 is useless here (latest readers only), 
+and 2+ (dict-search) has a bad cost/benefit ratio given hundreds of books.
 
 
 =item B<-d, --dict>=F<filename>
@@ -134,7 +137,7 @@ More info in likeminded.md
 
 =head1 VERSION
 
-2019-01-13 (Since 2018-06-22)
+2019-01-17 (Since 2018-06-22)
 
 =cut
 
@@ -148,8 +151,8 @@ use 5.18.0;
 # Perl core:
 use FindBin;
 use lib "$FindBin::Bin/lib/";
-use Time::HiRes qw( time tv_interval );
-use POSIX       qw( strftime floor );
+use Time::HiRes   qw( time tv_interval );
+use POSIX         qw( strftime floor );
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
@@ -165,7 +168,7 @@ use Goodscrapes;
 STDOUT->autoflush( 1 );
 
 our $TSTART     = time();
-our $MINSIMIL   = 5;
+our $MINCOMMON  = 5;
 our $MAXAUBOOKS = 600;
 our $RIGOR      = 1;
 our $DICTPATH   = './dict/default.lst';
@@ -175,7 +178,7 @@ our @SHELVES;
 our $OUTPATH;
 our $USERID;
 
-GetOptions( 'similar|m=i'        => \$MINSIMIL,
+GetOptions( 'common|m=i'         => \$MINCOMMON,
             'maxauthorbooks|a=i' => \$MAXAUBOOKS,
             'rigor|x=i'          => \$RIGOR,
             'dict|d=s'           => \$DICTPATH,
@@ -202,8 +205,9 @@ pod2usage( -exitval   => "NOEXIT",
 
 # ----------------------------------------------------------------------------
 my %authors;          # {$auid   => %author}
-my %books;            # {$bookid => %book}, just check 1 book if 2 authors
 my %authors_read_by;  # {$userid}->{$auid => 1}
+my %readers;          # {$userid => %user}
+my %books;            # {$bookid => %book}, just check 1 book if 2 authors
 
 
 
@@ -249,13 +253,13 @@ say "Done.";
 
 
 # ----------------------------------------------------------------------------
-# Query reviews for all author books:
+# Query readers of all author books:
 # Lot of duplicates (not combined as editions), but with unique reviewers tho
 # 
 my $bocount = scalar keys %books;
 my $bodone  = 0;
 
-printf( "Loading reviews for %d author books:\n", $bocount );
+printf( "Loading readers of %d author books:\n", $bocount );
 
 for my $b (values %books)
 {
@@ -263,9 +267,7 @@ for my $b (values %books)
 
 	my $t0 = time();
 	my %revs;
-	
-	# Rigor level 0 is useless here, and 2+ (dict-search) has a bad 
-	# cost/benefit ratio given hundreds of books:
+
 	greadreviews( rh_for_book => $b, 
 	              rh_into     => \%revs,
 	              rigor       => $RIGOR,  
@@ -282,10 +284,64 @@ say "Done.";
 
 
 # ----------------------------------------------------------------------------
+# Query additional info on all readers with P percent common books.
+# We need to know their library sizes to calc a similarity ranking ("match") 
+# (Github #18). At the same time, we can get profile pics for the report.
+# 
+# Note: The match-value isn't coverage and percentage but a relation of the
+# number of common authors to the number of all books in the match-mate's
+# library - it's not a as good as comparing #authors to #authors (coverage)
+# but it comes close. Comparing #authors would require loading all the books
+# of the match-mates which takes forever as opposed to a single request
+# for the number of books. Think of the match-value as stars or points
+# or score, not percent - the higher the better.
+#
+# 
+printf( "Dropping who read less than %d%% of your authors... ", $MINCOMMON );
+
+my $bycount0 = scalar keys %authors_read_by;
+for my $userid (keys %authors_read_by)
+{
+	my $aucommon     = scalar keys %{$authors_read_by{$userid}};
+	my $aucommonperc = int($aucommon/$aucount*100+0.5);  # Rounded
+	
+	delete $authors_read_by{$userid}
+		if $aucommonperc < $MINCOMMON || $userid eq $USERID;  # Drops ~99%
+}
+my $bycount1 = scalar keys %authors_read_by;
+printf( "-%d memb (%3.3fs%%)\n", $bycount0-$bycount1, 100-($bycount1/$bycount0*100) );
+
+
+
+my $ucount = scalar keys %authors_read_by;
+my $udone  = 0;
+
+printf( "Loading profiles of the remaining %d members:\n", $ucount );
+
+for my $userid (keys %authors_read_by)
+{
+	printf( "[%3d%%] goodreads.com/user/show/%-8s", ++$udone/$ucount*100, $userid );
+	
+	my $t0 = time();
+	my %u  = greaduser( $userid );
+	
+	printf( "\t%6.2fs", time()-$t0 );
+	print ( "\tprivate account\n" ) and next if $u{num_books} == 0 || $u{is_private};
+	
+	$u{ aucommon }    = scalar keys %{$authors_read_by{$userid}};	
+	$u{ match    }    = int( $u{aucommon}/$u{num_books}*1000 + 0.5 ); # Watch div by zero!
+	$readers{$userid} = \%u;
+	
+	print( "\t".( "*" x ($u{match}/10) )."\n" );
+}
+say "Done.";
+
+
+
+# ----------------------------------------------------------------------------
 # Write results to HTML file:
 # 
-printf( "Writing members (N=%d) with %d%% similarity or better to \"%s\"... ", 
-		scalar keys %authors_read_by, $MINSIMIL, $OUTPATH );
+printf( "Writing report (N=%d) to \"%s\"... ", scalar keys %readers, $OUTPATH );
 
 my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
@@ -297,52 +353,62 @@ print $fh qq{
 		<!DOCTYPE html>
 		<html>
 		<head>
-		<title> Goodreads members with similar taste </title>
-		<style>
-		td div 
-		{
-		  background-color: #eeeddf;
-		  float     : left; 
-		  display   : inline-block; 
-		  height    : 95px; 
-		  max-width : 50px; 
-		  font-size : 8pt; 
-		  text-align: center; 
-		  margin    : 0.25em;
-		}
-		</style>
+		  <meta charset="utf-8">
+		  <title> Goodreads members with similar taste </title>
+		  <style>
+		  td:nth-child(3) div 
+		  {
+		    background-color: #eeeddf;
+		    float     : left; 
+		    display   : inline-block; 
+		    height    : 95px; 
+		    max-width : 50px; 
+		    font-size : 8pt; 
+		    text-align: center; 
+		    margin    : 0.25em;
+		  }
+		  td:nth-child(2) a,
+		  td:nth-child(2) a img
+		  {
+		    display   : inline-block;
+		    width     : 100px;
+		    max-width : 100px;
+		    word-break: break-all;
+		  }
+		  </style>
 		</head>
 		<body style="font-family: sans-serif;">
 		<table border="1" width="100%" cellpadding="6">
 		<caption>
 		  Members who read at least 
-		  ${MINSIMIL}% of the authors in 
+		  ${MINCOMMON}% of the authors in 
 		  ${USERID}'s ${shv}, on $now
 		</caption>
 		<tr>
-		<th>#</th>  
-		<th>Member</th>  
-		<th>Common</th>  
-		<th>Authors</th>  
+		<th>Rank</th>  
+		<th>Match</th>  
+		<th>Common Authors</th>  
 		</tr>
 		};
 
 my $line;
-for my $userid (sort{ scalar keys %{$authors_read_by{$b}} <=> 
-                      scalar keys %{$authors_read_by{$a}} } keys %authors_read_by)
+for my $userid (sort{ $readers{$b}->{match} <=> 
+                      $readers{$a}->{match} } keys %readers)
 {
-	my $common_aucount = scalar keys %{$authors_read_by{$userid}};
-	my $simil          = int( $common_aucount / $aucount * 100 + 0.5 );  # round
-	
-	next if $userid == $USERID;
-	next if $simil  <  $MINSIMIL;
-	
 	$line++;
 	print $fh qq{
 			<tr>
 			<td>$line</td>
-			<td><a href="https://www.goodreads.com/user/show/${userid}" target="_blank">$userid</a></td>
-			<td>$common_aucount ($simil%)</td>
+			<td>
+				<a href="https://www.goodreads.com/user/show/${userid}" target="_blank">
+					<img src="$readers{$userid}->{img_url}">$readers{$userid}->{name}
+				</a>
+				<br>
+				<small>
+				$readers{$userid}->{aucommon}&nbsp;authors&nbsp;over<br>
+				$readers{$userid}->{num_books}&nbsp;books
+				</small>
+			</td>
 			<td>
 			};
 			
