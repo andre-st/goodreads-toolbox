@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 	- `--similar` parameter is `--common` now
 	- final report does not rank members by number of common authors only but
 	  includes library-sizes ([#18](https://github.com/andre-st/goodreads/issues/18))
+	- final report does not list private accounts anymore
 - generated HTML-reports now include `report.css`
 
 
