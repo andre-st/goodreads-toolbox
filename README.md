@@ -103,7 +103,7 @@ $ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
 
 - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
 - [GR developers group](https://www.goodreads.com/group/show/8095-goodreads-developers)
-- [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt) or [DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/)
+- [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt) or [here](https://builtwith.com/goodreads.com) or [DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/)
 - [GR workplace reviews](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), anonymously about being acquired by Amazon, bureaucracy etc.
 - [GR on Crunchbase](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
 - [GR members stats](https://www.statista.com/search/?q=goodreads&qKat=search) or [here](https://qz.com/1106341/most-women-reading-self-help-books-are-getting-advice-from-men/) or [here](https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.23733)+[Sci-Hub](https://twitter.com/scihub_love) or [here](https://book.pressbooks.com/chapter/goodreads-otis-chandler) – source probably [Goodreads](https://www.goodreads.com/about/us)
