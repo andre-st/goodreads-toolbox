@@ -136,7 +136,7 @@ The program is designed to run unattended, outwaits connection issues etc.
   
 #### Alternatives to consider:
 - _"I look for people who __dislike__ the same books that I do. I don’t have a problem finding books to read. What I need is someone who can warn me about the books that everyone else seems to love."_
-
+- current results based on stuff you already liked, model the past as identical to the future, based on who you are/were not who you want or could become (stuff that's out of your current wheelhouse but still has likeable features)
 
 
 ## Feedback
