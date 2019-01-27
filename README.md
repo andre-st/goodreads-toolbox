@@ -18,10 +18,9 @@ It implements the "follow book" feature that was requested in the Goodreads foru
 
 ## [friendrated.pl](friendrated.md)
 
-Prints all books which have been rated 4 or 5 stars by 3 or more persons you
-follow (including friends). It implements the "books common
-among the people I follow" feature that was requested in the Goodreads forums.
-It also lists the most read authors.
+Prints all books rated 4 or 5 stars by 3 or more persons you follow (including friends). 
+It implements the "books common among the people I follow" feature that was requested 
+in the Goodreads forums. It also lists the most read authors.
 [Learn more](friendrated.md)
 
 
