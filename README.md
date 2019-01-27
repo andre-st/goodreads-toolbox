@@ -101,11 +101,6 @@ $ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
 
 ## Further readings
 
-#### Personal:
-
-- [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
-- [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
-
 #### About Goodreads:
 - [GR developers group](https://www.goodreads.com/group/show/8095-goodreads-developers)
 - [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt) or [here](https://builtwith.com/goodreads.com) or [DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/)
@@ -121,3 +116,7 @@ $ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
 - Paul Klinger's [Bookstats](https://github.com/PaulKlinger/Bookstats) or [here](https://almoturg.com/bookstats/)
 - [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
 
+#### Personal:
+
+- [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
+- [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
