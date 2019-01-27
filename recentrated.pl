@@ -84,11 +84,13 @@ More info in recentrated.md
 
 use strict;
 use warnings;
+use locale;
 use 5.18.0;
 
 # Perl core:
 use FindBin;
 use lib "$FindBin::Bin/lib/";
+use POSIX     qw( locale_h );
 use Log::Any '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
 use Text::CSV qw( csv );
 use Time::Piece;
@@ -103,6 +105,8 @@ use Goodscrapes;
 # Program configuration:
 # 
 pod2usage( -verbose => 2 ) if $#ARGV < 0;
+setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
+
 our $USERID   = gverifyuser ( $ARGV[0] );
 our $SHELF    = gverifyshelf( $ARGV[1] );
 our $MAILTO   = $ARGV[2];

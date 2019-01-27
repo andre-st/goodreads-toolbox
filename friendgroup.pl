@@ -86,13 +86,14 @@ More info in friendgroup.md
 
 use strict;
 use warnings;
+use locale;
 use 5.18.0;
 
 # Perl core:
 use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
-use POSIX       qw( strftime );
+use POSIX       qw( strftime locale_h );
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
@@ -105,6 +106,7 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
+setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
 STDOUT->autoflush( 1 );
 
 our $TSTART    = time();

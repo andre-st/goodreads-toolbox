@@ -102,13 +102,14 @@ More info in search.md
 
 use strict;
 use warnings;
+use locale;
 use 5.18.0;
 
 # Perl core:
 use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
-use POSIX       qw( strftime );
+use POSIX       qw( strftime locale_h );
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
@@ -122,6 +123,9 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
+setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
+STDOUT->autoflush( 1 );
+ 
 our $TSTART    = time();
 our $CACHEDAYS = 7;
 our @ORDER;
@@ -146,7 +150,6 @@ $ordercsv   =~ s/\s+//g;  # Mistakenly added spaces
 @ORDER      = uniq(( split( ',', lc $ordercsv ), qw( stars num_ratings year )));  # Adds missing
 
 gsetcache( $CACHEDAYS );
-STDOUT->autoflush( 1 );
 
 pod2usage( -exitval   => "NOEXIT", 
            -sections  => [ "REPORTING BUGS" ], 
