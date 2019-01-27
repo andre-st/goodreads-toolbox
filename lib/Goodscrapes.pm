@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-01-16
+=item * Updated: 2019-01-27
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.130';  # X.XX version format required by Perl
+our $VERSION = '1.150';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -226,6 +226,7 @@ our $_ANYPRIVATEURL = 'https://www.goodreads.com/friend';
 our $_SORTNEW       = 'newest';
 our $_SORTOLD       = 'oldest';
 our $_EARLIEST      = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
+our $_EARLIEST2     = DateTime->new( year => 0, month => 1, day => 1 );
 our @_BADPROFILES   =     # TODO external config file
 (
 	'1000834',  #  3.000 books   NOT A BOOK author
@@ -258,33 +259,49 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =over
 
-=item * id          =E<gt> C<string>
+=item * id              =E<gt> C<string>
 
-=item * title       =E<gt> C<string>
+=item * title           =E<gt> C<string>
 
-=item * isbn        =E<gt> C<string>
+=item * isbn            =E<gt> C<string>
 
-=item * num_pages   =E<gt> C<int>
+=item * isbn13          =E<gt> C<string>
 
-=item * num_reviews =E<gt> C<int>
+=item * num_pages       =E<gt> C<int>
 
-=item * num_ratings =E<gt> C<int>    103 for example
+=item * num_reviews     =E<gt> C<int>
 
-=item * avg_rating  =E<gt> C<float>  4.36 for example
+=item * num_ratings     =E<gt> C<int>    103 for example
 
-=item * stars       =E<gt> C<int>    rounded avg_rating, e.g., 4
+=item * avg_rating      =E<gt> C<float>  4.36 for example
 
-=item * user_rating =E<gt> C<int>    number of stars 1,2,3,4 or 5
+=item * stars           =E<gt> C<int>    rounded avg_rating, e.g., 4
 
-=item * url         =E<gt> C<string>
+=item * format          =E<gt> C<string> (binding)
 
-=item * img_url     =E<gt> C<string>
+=item * user_rating     =E<gt> C<int>    number of stars 1,2,3,4 or 5
 
-=item * review_id   =E<gt> C<string>
+=item * user_read_count =E<gt> C<int>
 
-=item * year        =E<gt> C<int>    (publishing date)
+=item * user_num_owned  =E<gt> C<int>
 
-=item * rh_author   =E<gt> C<L<%user|"%user">> reference
+=item * user_date_read  =E<gt> C<Time::Piece>
+
+=item * user_date_added =E<gt> C<Time::Piece>
+
+=item * ra_user_shelves =E<gt> C<string[]> reference
+
+=item * url             =E<gt> C<string>
+
+=item * img_url         =E<gt> C<string>
+
+=item * review_id       =E<gt> C<string>
+
+=item * year            =E<gt> C<int>     (original publishing date)
+
+=item * year_edit       =E<gt> C<int>     (edition publishing date)
+
+=item * rh_author       =E<gt> C<L<%user|"%user">> reference
 
 =back
 
@@ -296,7 +313,9 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =item * id          =E<gt> C<string>
 
-=item * name        =E<gt> C<string>
+=item * name        =E<gt> C<string>  "Firstname Lastname"
+
+=item * name_lf     =E<gt> C<string>  "Lastname, Firstname"
 
 =item * residence   =E<gt> C<string>
 
@@ -1341,6 +1360,7 @@ sub _extract_book
 	
 	$bk{ id          } = $htm =~ /id="book_id" value="([^"]+)"/                         ? $1 : undef;
 	$bk{ isbn        } = $htm =~ /<meta content='([^']+)' property='books:isbn'/        ? $1 : ''; # ISBN13
+	$bk{ isbn13      } = undef;  # TODO
 	$bk{ img_url     } = $htm =~ /<meta content='([^']+)' property='og:image'/          ? $1 : '';
 	$bk{ title       } = $htm =~ /<meta content='([^']+)' property='og:title'/          ? decode_entities( $1 ) : '';
 	$bk{ num_pages   } = $htm =~ /<meta content='([^']+)' property='books:page_count'/  ? $1 : $_NOBOOKIMGURL;
@@ -1351,6 +1371,8 @@ sub _extract_book
 	$bk{ url         } = _book_url( $bk{id} );
 	$bk{ rh_author   } = undef;  # TODO
 	$bk{ year        } = undef;  # TODO
+	$bk{ year_edit   } = undef;  # TODO
+	$bk{ format      } = undef;  # TODO
 	
 	return %bk;
 }
@@ -1374,6 +1396,7 @@ sub _extract_user
 	if( $auid )  # Author page:
 	{
 		$us{ name       } = $htm =~ /<meta content='([^']+)' property='og:title'>/ ? decode_entities( $1 ) : "";
+		$us{ name_lf    } = $us{name};   # TODO
 		$us{ img_url    } = $htm =~ /<meta content='([^']+)' property='og:image'>/ ? $1 : $_NOUSERIMGURL;
 		$us{ is_staff   } = $htm =~ /<h3 class="right goodreadsAuthor">/           ? 1  : 0;
 		$us{ is_private } = 0;
@@ -1389,6 +1412,7 @@ sub _extract_user
 		my $uname = $htm =~ /<meta property="profile:username" content="([^"]+)/   ? decode_entities( "($1)" ) : "";
 		
 		$us{ name       } = $fname.$lname.$uname;
+		$us{ name_lf    } = $us{name};  # TODO
 		$us{ num_books  } = $htm =~ /<meta content='[^']+ has (\d+)[,.]?(\d*)[,.]?(\d*) books/ ? $1.$2.$3 : 0;
 		$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/               ? $1 : 0;
 		$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/                  ? 1  : 0;
@@ -1440,35 +1464,54 @@ sub _extract_books
 	while( $htm =~ /<tr id="review_\d+" class="bookalike review">(.*?)<\/tr>/gs ) # each book row
 	{	
 		my $row = $1;
+		my %au;
+		my %bk;
+		
 		my $tit = $row =~ />title<\/label><div class="value">\s*<a[^>]+>\s*(.*?)\s*<\/a>/s  ? $1 : '';
 		   $tit =~ s/\<[^\>]+\>//g;         # remove HTML tags "Title <span>(Volume 2)</span>"
 		   $tit =~ s/( {1,}|[\r\n])/ /g;    # reduce spaces
 		   $tit = decode_entities( $tit );  # &quot -> "
-		my %au;
-		my %bk;
 		
-		$au{ id          } = $row =~ /author\/show\/([0-9]+)/       ? $1                    : undef;
-		$au{ name        } = $row =~ /author\/show\/[^>]+>([^<]+)/  ? decode_entities( $1 ) : '';
-		$au{ residence   } = undef;
-		$au{ url         } = _user_url( $au{id}, 1 );
-		$au{ works_url   } = _author_books_url( $au{id} );
-		$au{ is_author   } = 1;
-		$au{ is_private  } = 0;
-		$au{ _seen       } = 1;
+		my $dadd  = $row =~ />date added<\/label><div class="value">\s*<span title="([^"]*)/ ? $1 : undef;
+		my $dread = $row =~ /<span class="date_read_value">([^<]*)/                          ? $1 : undef;
+		my $tadd  = $dadd ? Time::Piece->strptime( $dadd,  "%B %d, %Y" ) : $_EARLIEST; # "June 19, 2015"
+		my $tread = eval{   Time::Piece->strptime( $dread, "%b %d, %Y" ); } ||         # "Sep 06, 2018"
+		            eval{   Time::Piece->strptime( $dread, "%b %Y"     ); } ||         # "Sep 2018"
+		            eval{   Time::Piece->strptime( $dread, "%Y"        ); } ||         # "2018"
+				  $_EARLIEST;
 		
-		$bk{ id          } = $row =~ /data-resource-id="([0-9]+)"/                                           ? $1 : undef;
-		$bk{ isbn        } = $row =~ />isbn<\/label><div class="value">\s*([0-9X\-]*)/                       ? $1 : '';
-		$bk{ num_reviews } = undef;  # Not available here!
-		$bk{ num_ratings } = $row =~ />num ratings<\/label><div class="value">\s*(\d+)[,.]?(\d*)[,.]?(\d*)/  ? $1.$2.$3 : 0;
-		$bk{ img_url     } = $row =~ /<img [^>]* src="([^"]+)"/                                              ? $1 : $_NOBOOKIMGURL;
-		$bk{ year        } = $row =~ />date pub<\/label><div class="value">\s*[^<]*(\d{4})\s*</s             ? $1 : 0;  # "2017" and "Feb 01, 2017" (there's also "edition date pub")
-		$bk{ review_id   } = $row =~ /review\/show\/([0-9]+)"/                                               ? $1 : undef;
-		$bk{ title       } = $tit;
-		$bk{ user_rating } = () = $row =~ /staticStar p10/g;        # Counts occurances
-		$bk{ url         } = _book_url( $bk{id} );
-		$bk{ avg_rating  } = 0; # TODO
-		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
-		$bk{ rh_author   } = \%au;
+		$au{ id              } = $row =~ /author\/show\/([0-9]+)/       ? $1                    : undef;
+		$au{ name_lf         } = $row =~ /author\/show\/[^>]+>([^<]+)/  ? decode_entities( $1 ) : '';
+		$au{ name            } = $au{name_lf};  # Shelves already list names with "lastname, firstname"
+		$au{ residence       } = undef;
+		$au{ url             } = _user_url( $au{id}, 1 );
+		$au{ works_url       } = _author_books_url( $au{id} );
+		$au{ is_author       } = 1;
+		$au{ is_private      } = 0;
+		$au{ _seen           } = 1;
+		
+		$bk{ rh_author       } = \%au;
+		$bk{ id              } = $row =~ /data-resource-id="([0-9]+)"/                                                ? $1 : undef;
+		$bk{ year            } = $row =~         />date pub<\/label><div class="value">\s*[^<]*(\d{4})\s*</s          ? $1 : 0;  # "2017" and "Feb 01, 2017"
+		$bk{ year_edit       } = $row =~ />date pub edition<\/label><div class="value">\s*[^<]*(\d{4})\s*</s          ? $1 : 0;  # "2017" and "Feb 01, 2017"
+		$bk{ isbn            } = $row =~             />isbn<\/label><div class="value">\s*([0-9X\-]*)/                ? $1 : '';
+		$bk{ isbn13          } = $row =~           />isbn13<\/label><div class="value">\s*([0-9X\-]*)/                ? $1 : '';
+		$bk{ avg_rating      } = $row =~       />avg rating<\/label><div class="value">\s*([0-9\.]*)/                 ? $1 : 0;
+		$bk{ num_pages       } = $row =~        />num pages<\/label><div class="value">\s*<nobr>\s*([0-9]*)/          ? $1 : 0;
+		$bk{ num_ratings     } = $row =~      />num ratings<\/label><div class="value">\s*(\d+)[,.]?(\d*)[,.]?(\d*)/  ? $1.$2.$3 : 0;
+		$bk{ format          } = $row =~           />format<\/label><div class="value">\s*((.*?)(\s*<))/s             ? decode_entities( $2 ) : ""; # also trims ">  avc def  <"
+		$bk{ user_read_count } = $row =~     /># times read<\/label><div class="value">\s*([0-9]*)/                   ? $1 : 0;
+		$bk{ user_num_owned  } = $row =~            />owned<\/label><div class="value">\s*([0-9]*)/                   ? $1 : 0;
+		$bk{ user_date_added } = $tadd;
+		$bk{ user_date_read  } = $tread;
+		$bk{ user_rating     } = () = $row =~ /staticStar p10/g;        # Counts occurances
+		$bk{ ra_user_shelves } = [];      # TODO;
+		$bk{ num_reviews     } = undef;  # Not available here!
+		$bk{ img_url         } = $row =~ /<img [^>]* src="([^"]+)"/                                                   ? $1 : $_NOBOOKIMGURL;
+		$bk{ review_id       } = $row =~ /review\/show\/([0-9]+)"/                                                    ? $1 : undef;
+		$bk{ title           } = $tit;
+		$bk{ url             } = _book_url( $bk{id} );
+		$bk{ stars           } = int( $bk{ avg_rating } + 0.5 );
 		
 		$ret++ unless exists $rh->{$bk{id}};  # Don't count duplicates (multiple shelves)
 		$rh->{ $bk{id} } = \%bk if $rh;
@@ -1518,6 +1561,7 @@ sub _extract_author_books
 		
 		$au{ id          } = $aid;
 		$au{ name        } = $aunm;
+		$au{ name_lf     } = $au{name};  # TODO
 		$au{ residence   } = undef;
   		$au{ img_url     } = $auimg;
 		$au{ url         } = _user_url( $aid, 1 );
@@ -1526,12 +1570,18 @@ sub _extract_author_books
 		$au{ is_private  } = 0;
 		$au{ _seen       } = 1;
 		
+		$bk{ rh_author   } = \%au;
 		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
 		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
 		$bk{ img_url     } = $row =~ /src="[^"]+/                        ? $1       : $_NOBOOKIMGURL;
 		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/     ? decode_entities( $1 ) : '';
 		$bk{ url         } = _book_url( $bk{id} );
-		$bk{ rh_author   } = \%au;
+		$bk{ isbn        } = undef;  # TODO?
+		$bk{ isbn13      } = undef;  # TODO?
+		$bk{ format      } = undef;  # TODO?
+		$bk{ num_pages   } = undef;  # TODO?
+		$bk{ year        } = undef;  # TODO?
+		$bk{ year_edit   } = undef;  # TODO?
 		
 		$ret++; # Count duplicates too: 10 books of author A, 9 of B; called for single author
 		$rh->{ $bk{id} } = \%bk;
@@ -1573,14 +1623,15 @@ sub _extract_followees
 		
 		$us{ id        } = $uid ? $uid : $aid;
 		$us{ name      } = $row =~ /img alt="([^"]+)/  ? decode_entities( $1 )     : '';
+		$us{ name_lf   } = $us{name};  # TODO
 		$us{ img_url   } = $row =~ /src="([^"]+)/      ? $1                        : $_NOUSERIMGURL;
 		$us{ works_url } = $aid                        ? _author_books_url( $aid ) : '';
 		$us{ url       } = _user_url( $us{id}, $aid );
 		$us{ is_author } = defined $aid;
 		$us{ is_friend } = 0;
 		$us{ _seen     } = 1;
-		$us{ residence } = undef;
-		$us{ num_books } = undef;  # TODO
+		$us{ residence } = undef;  # TODO?
+		$us{ num_books } = undef;  # TODO?
 			
 		next if !$iau && $us{is_author};
 		$ret++;
@@ -1621,14 +1672,15 @@ sub _extract_friends
 		
 		$us{ id        } = $uid ? $uid : $aid;
 		$us{ name      } = $row =~ /img alt="([^"]+)/  ? decode_entities( $1 )     : '';
+		$us{ name_lf   } = $us{name};  # TODO
 		$us{ img_url   } = $row =~     /src="([^"]+)/  ? $1                        : $_NOUSERIMGURL;
 		$us{ works_url } = $aid                        ? _author_books_url( $aid ) : '';
 		$us{ url       } = _user_url( $us{id}, $aid );
 		$us{ is_author } = defined $aid;
 		$us{ is_friend } = 1;
 		$us{ _seen     } = 1;
-		$us{ residence } = undef;
-		$us{ num_books } = undef;  # TODO
+		$us{ residence } = undef;  # TODO?
+		$us{ num_books } = undef;  # TODO?
 		
 		next if !$iau && $us{ is_author };
 		$ret++;
@@ -1692,8 +1744,7 @@ sub _extract_revs
 		
 		$us{ id         } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
 		$us{ name       } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : decode_entities( $1 )) : '';
-		$us{ residence  } = undef;
-		$us{ num_books  } = undef;
+		$us{ name_lf    } = $us{name};  # TODO
   		$us{ img_url    } = $_NOUSERIMGURL;  # TODO
 		$us{ url        } = _user_url( $us{id} );
 		$us{ _seen      } = 1;
@@ -1751,13 +1802,14 @@ sub _extract_similar_authors
 		}
 
 		$au{ name       } = $row =~ /class="bookTitle" href="\/author\/show\/[^>]+>([^<]+)/  ? decode_entities( $1 ) : '';
+		$au{ name_lf    } = $au{name};  # TODO
 		$au{ img_url    } = $row =~ /(https:\/\/images\.gr-assets\.com\/authors\/[^"]+)/     ? $1 : $_NOUSERIMGURL;
 		$au{ url        } = _user_url( $au{id}, 1 );
 		$au{ works_url  } = _author_books_url( $au{id} );
 		$au{ is_author  } = 1;
 		$au{ is_private } = 0;
 		$au{ _seen      } = 1;
-		$au{ residence  } = undef;
+		$au{ residence  } = undef;  # TODO?
 		$au{ num_books  } = undef;  # TODO
 		
 		$rh->{ $au{id} } = \%au;
@@ -1811,14 +1863,13 @@ sub _extract_search_books
 		
 		$au{ id          } = $row =~ /\/author\/show\/([0-9]+)/  ? $1 : undef;
 		$au{ name        } = $row =~ /<a class="authorName" [^>]+><span itemprop="name">([^<]+)/  ? decode_entities( $1 ) : '';
+		$au{ name_lf     } = $au{name};  # TODO
 		$au{ url         } = _user_url        ( $au{id}, 1 );
 		$au{ works_url   } = _author_books_url( $au{id}    );
 		$au{ img_url     } = $_NOUSERIMGURL;
 		$au{ is_author   } = 1;
 		$au{ is_private  } = 0;
 		$au{ _seen       } = 1;
-		$au{ residence   } = undef;
-		$au{ num_books   } = undef;
 		
 		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
 		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200

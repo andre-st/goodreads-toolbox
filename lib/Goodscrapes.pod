@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-01-16
+=item * Updated: 2019-01-27
 
 =item * Since: 2014-11-05
 
@@ -118,33 +118,49 @@ https://github.com/andre-st/
 
 =over
 
-=item * id          =E<gt> C<string>
+=item * id              =E<gt> C<string>
 
-=item * title       =E<gt> C<string>
+=item * title           =E<gt> C<string>
 
-=item * isbn        =E<gt> C<string>
+=item * isbn            =E<gt> C<string>
 
-=item * num_pages   =E<gt> C<int>
+=item * isbn13          =E<gt> C<string>
 
-=item * num_reviews =E<gt> C<int>
+=item * num_pages       =E<gt> C<int>
 
-=item * num_ratings =E<gt> C<int>    103 for example
+=item * num_reviews     =E<gt> C<int>
 
-=item * avg_rating  =E<gt> C<float>  4.36 for example
+=item * num_ratings     =E<gt> C<int>    103 for example
 
-=item * stars       =E<gt> C<int>    rounded avg_rating, e.g., 4
+=item * avg_rating      =E<gt> C<float>  4.36 for example
 
-=item * user_rating =E<gt> C<int>    number of stars 1,2,3,4 or 5
+=item * stars           =E<gt> C<int>    rounded avg_rating, e.g., 4
 
-=item * url         =E<gt> C<string>
+=item * format          =E<gt> C<string> (binding)
 
-=item * img_url     =E<gt> C<string>
+=item * user_rating     =E<gt> C<int>    number of stars 1,2,3,4 or 5
 
-=item * review_id   =E<gt> C<string>
+=item * user_read_count =E<gt> C<int>
 
-=item * year        =E<gt> C<int>    (publishing date)
+=item * user_num_owned  =E<gt> C<int>
 
-=item * rh_author   =E<gt> C<L<%user|"%user">> reference
+=item * user_date_read  =E<gt> C<Time::Piece>
+
+=item * user_date_added =E<gt> C<Time::Piece>
+
+=item * ra_user_shelves =E<gt> C<string[]> reference
+
+=item * url             =E<gt> C<string>
+
+=item * img_url         =E<gt> C<string>
+
+=item * review_id       =E<gt> C<string>
+
+=item * year            =E<gt> C<int>     (original publishing date)
+
+=item * year_edit       =E<gt> C<int>     (edition publishing date)
+
+=item * rh_author       =E<gt> C<L<%user|"%user">> reference
 
 =back
 
@@ -156,7 +172,9 @@ https://github.com/andre-st/
 
 =item * id          =E<gt> C<string>
 
-=item * name        =E<gt> C<string>
+=item * name        =E<gt> C<string>  "Firstname Lastname"
+
+=item * name_lf     =E<gt> C<string>  "Lastname, Firstname"
 
 =item * residence   =E<gt> C<string>
 
