@@ -18,7 +18,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 
 ![Screenshot](img/friendrated2.png?raw=true "Screenshot")
 
-and this:
+and most read authors:
 
 ![Screenshot](img/friendrated3.png?raw=true "Screenshot")
 
