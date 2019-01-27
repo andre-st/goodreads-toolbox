@@ -57,7 +57,7 @@ You will need to save your Goodreads cookie to the dotfile `.cookie` in the
 project directory.  I use Chrome's DevTools Network-view to [copy the cookie
 content](https://www.youtube.com/watch?v=o_CYdZBPDCg).
 
-"0 read 0 favs" is either an empty shelf or a shelf accessible only to friends
+"0 read 0 hits" is either an empty shelf or a shelf accessible only to friends
 of that person (depends on used cookie).
 
 
