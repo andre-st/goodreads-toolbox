@@ -226,7 +226,6 @@ our $_ANYPRIVATEURL = 'https://www.goodreads.com/friend';
 our $_SORTNEW       = 'newest';
 our $_SORTOLD       = 'oldest';
 our $_EARLIEST      = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
-our $_EARLIEST2     = DateTime->new( year => 0, month => 1, day => 1 );
 our @_BADPROFILES   =     # TODO external config file
 (
 	'1000834',  #  3.000 books   NOT A BOOK author
