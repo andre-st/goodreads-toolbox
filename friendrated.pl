@@ -6,7 +6,7 @@
 
 =head1 NAME
 
-friendrated - books common among the members you follow
+friendrated - books and authors common among the members you follow
 
 
 =head1 SYNOPSIS
@@ -112,7 +112,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2019-01-18 (Since 2018-05-10)
+2019-01-27 (Since 2018-05-10)
 
 =cut
 
@@ -184,9 +184,9 @@ pod2usage( -exitval   => "NOEXIT",
 
 #-----------------------------------------------------------------------------
 my %members;
-my %books;      # bookid => %book
-my %faved_for;  # {bookid}{favorerid}, favorers hash-type because of uniqueness;
-
+my %books;       # bookid   => %book
+my %bkfaved_for; # {bookid}{favorerid}, favorers hash-type because of uniqueness;
+my %aufaved_for; # {auname}{favorerid}
 
 
 #-----------------------------------------------------------------------------
@@ -206,7 +206,7 @@ printf( " (%.2fs)\n", time()-$t0 );
 
 #-----------------------------------------------------------------------------
 # Load each members 'read'-bookshelf into the global books list %books, and
-# vote on a book (%faved_for) if the member rated the book better than x:
+# vote on a book (%bkfaved_for) if the member rated the book better than x:
 # 
 my $memdone  = 0;
 my $memcount = scalar keys %members;
@@ -218,12 +218,17 @@ for my $mid (keys %members)
 	printf( "[%3d%%] %-25s #%-10s\t", ++$memdone/$memcount*100, $members{$mid}->{name}, $mid );
 	
 	my $t0       = time();
-	my $favcount = 0;
+	my $hitcount = 0;
 	
 	my $trackfavsfn = sub{
-		return if $_[0]->{user_rating} < $MINRATED;
-		$favcount++;
-		$faved_for{ $_[0]->{id} }{ $mid } = 1;
+		return if defined $MINRATED && $_[0]->{user_rating} < $MINRATED;
+		return if defined $MAXRATS  && $_[0]->{num_ratings} > $MAXRATS;
+		return if defined $MAXYEAR  && $_[0]->{year}        > $MAXYEAR;
+		return if defined $MINYEAR  && $_[0]->{year}        < $MINYEAR;
+		
+		$hitcount++;
+		$bkfaved_for{ $_[0]->{id}                   }{ $mid } = 1;
+		$aufaved_for{ $_[0]->{rh_author}->{name_lf} }{ $mid } = 1;
 	};
 	
 	greadshelf( from_user_id    => $mid,
@@ -232,7 +237,7 @@ for my $mid (keys %members)
 	            on_book         => $trackfavsfn,
 	            on_progress     => gmeter( $FRIENDSHELF ));
 	
-	printf( "\t%4d favs\t%6.2fs\n", $favcount, time()-$t0 );
+	printf( "\t%4d hits\t%6.2fs\n", $hitcount, time()-$t0 );
 }
 
 say "\nPerfect! Got favourites of ${memdone} users.";
@@ -242,7 +247,7 @@ say "\nPerfect! Got favourites of ${memdone} users.";
 #-----------------------------------------------------------------------------
 # Write results to HTML file:
 # 
-print "Writing results to \"$OUTPATH\"... ";
+print( "Writing results to \"$OUTPATH\"... " );
 
 my $fh   = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 my $now  = strftime( '%a %b %e %H:%M:%S %Y', localtime );
@@ -268,7 +273,14 @@ print $fh qq{
 		    media="all" href="report.css">
 		</head>
 		<body class="friendrated">
-		<table border="1" width="100%" cellpadding="6">
+		<nav>
+		  Tables in this document:
+		  <ul>
+		  <li><a href="#commonbooks"  >Common Books</a></li>
+		  <li><a href="#commonauthors">Common Authors</a></li>
+		  </ul>
+		</nav>
+		<table border="1" width="100%" cellpadding="6" id="commonbooks">
 		<caption>$capt</caption>
 		<tr>
 		<th>#</th>
@@ -281,23 +293,20 @@ print $fh qq{
 		</tr>
 		};
 
-my $num_finds = 0;
-for my $bid (sort { scalar keys %{$faved_for{$b}} <=> 
-                    scalar keys %{$faved_for{$a}} } keys %faved_for)
+my $num_bkfinds = 0;
+for my $bid (sort { scalar keys %{$bkfaved_for{$b}} <=> 
+                    scalar keys %{$bkfaved_for{$a}} } keys %bkfaved_for)
 {
-	my @favorer_ids  = keys %{$faved_for{$bid}};
+	my @favorer_ids  = keys %{$bkfaved_for{$bid}};
 	my $num_favorers = scalar @favorer_ids;
 	
-	next if $num_favorers                                   < $MINFAVORERS;
-	next if defined $MAXRATS && $books{$bid}->{num_ratings} > $MAXRATS;
-	next if defined $MAXYEAR && $books{$bid}->{year}        > $MAXYEAR;
-	next if defined $MINYEAR && $books{$bid}->{year}        < $MINYEAR;
+	next if $num_favorers < $MINFAVORERS;
 	
-	$num_finds++;
+	$num_bkfinds++;
 	
 	print $fh qq{
 			<tr>
-			<td          >$num_finds</td>
+			<td          >$num_bkfinds</td>
 			<td><img src="$books{$bid}->{img_url}"></td>
 			<td><a  href="$books{$bid}->{url}" target="_blank"
 			             >$books{$bid}->{title}</a></td>
@@ -320,6 +329,54 @@ for my $bid (sort { scalar keys %{$faved_for{$b}} <=>
 			};
 }
 
+
+# Common authors table:
+print $fh qq{
+		</table>
+		<table border="1" width="100%" cellpadding="6" id="commonauthors">
+		<caption>Common Authors From The Previous Books Set</caption>
+		<tr>
+		<th>#</th>
+		<th>Author</th>
+		<th>Faved</th>
+		<th>Faved by</th>
+		</tr>
+		};
+
+my $num_aufinds = 0;
+for my $auname (sort { scalar keys %{$aufaved_for{$b}} <=> 
+                       scalar keys %{$aufaved_for{$a}} } keys %aufaved_for)
+{
+	my @favorer_ids  = keys %{$aufaved_for{$auname}};
+	my $num_favorers = scalar @favorer_ids;
+	
+	next if $num_favorers < $MINFAVORERS;  # Just cut away the huge bulge of 1x
+	
+	$num_aufinds++;
+	
+	print $fh qq{
+			<tr>
+			<td>$num_aufinds</td>
+			<td>$auname</td>
+			<td>${num_favorers}x</td>
+			<td>
+			};
+	
+	print $fh qq{
+			<a  href="$members{$_}->{url}" target="_blank">
+			<img src="$members{$_}->{img_url}" 
+			   title="$members{$_}->{name}">
+			</a>
+			} foreach (@favorer_ids);
+	
+	print $fh qq{
+			</td>
+			</tr> 
+			};
+}
+
+
+# End of file
 print $fh qq{
 		</table>
 		</body>
@@ -329,8 +386,8 @@ print $fh qq{
 undef $fh;
 
 
-printf "%d books\n", $num_finds;
-printf "Total time: %.0f minutes\n", (time()-$TSTART)/60;
+printf( "%d books and %d authors\n", $num_bkfinds, $num_aufinds );
+printf( "Total time: %.0f minutes\n", (time()-$TSTART)/60 );
 
 
 

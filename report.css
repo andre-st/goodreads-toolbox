@@ -2,7 +2,7 @@
 
 Stylesheets for all generated reports
 
-Version: 2019-01-18 (Since 2019-01-18)
+Version: 2019-01-27 (Since 2019-01-18)
 
 
 */
@@ -14,6 +14,43 @@ Version: 2019-01-18 (Since 2019-01-18)
 body
 {
 	font-family: sans-serif;
+}
+
+table caption
+{
+	background-color: #ffffdd;
+}
+
+table + table
+{
+	margin-top: 5em;
+}
+
+nav
+{
+	font-weight: bold;
+	line-height: 1.45em;
+}
+
+nav ul
+{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	font-weight: normal;
+}
+
+nav li:before
+{
+	content: "\2193\0020";
+}
+
+
+/* --------------------- likeminded.pl -------------------- */
+
+.friendrated #commonbooks
+{
+	margin-top: 2em;
 }
 
 

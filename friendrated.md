@@ -3,7 +3,7 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
 
-## Books common among the people I follow
+## Books and authors common among the people I follow
 
 From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/topic/show/1573755-most-popular-books-among-friends?page=1) or [Anne (2018):](https://www.goodreads.com/topic/show/19320371-recommendations)
 > I often choose a book to read if many of the people I follow have read it
@@ -16,7 +16,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 
 ## This
 
-![Screenshot](img/friendrated.png?raw=true "Screenshot")
+![Screenshot](img/friendrated2.png?raw=true "Screenshot")
 
 
 ## How to generate this on a GNU/Linux operating system
@@ -29,20 +29,20 @@ $ ./friendrated.pl --help
 $ ./friendrated.pl YOURGOODUSERNUMBER
 
 Getting list of members known to #18418712... 164 members (0.18s)
-[  0%] Aron Mellendar            #21254511    247 read      94 favs     0.41s
-[  1%] Moshe Fiono               #3932835     520 read     126 favs     0.80s
-[  2%] Peter Glowwa              #18936366    392 read     148 favs     0.58s
-[  3%] DuyGeboad                 #73957929      9 read       0 favs     0.05s
-[  3%] Michael                   #9482539      88 read      61 favs     0.15s
-[  5%] Peter Prischl             #17272051   1034 read     913 favs     1.47s
-[  6%] Steven Shoffork           #51011129     69 read      50 favs     0.15s
-[  7%] 2mo                       #32504210     12 read       6 favs     0.07s
+[  0%] Aron Mellendar            #21254511    247 read      94 hits     0.41s
+[  1%] Moshe Fiono               #3932835     520 read     126 hits     0.80s
+[  2%] Peter Glowwa              #18936366    392 read     148 hits     0.58s
+[  3%] DuyGeboad                 #73957929      9 read       0 hits     0.05s
+[  3%] Michael                   #9482539      88 read      61 hits     0.15s
+[  5%] Peter Prischl             #17272051   1034 read     913 hits     1.47s
+[  6%] Steven Shoffork           #51011129     69 read      50 hits     0.15s
+[  7%] 2mo                       #32504210     12 read       6 hits     0.07s
 ...
-[ 99%] Charlene                  #2442665    1172 read     732 favs     2.41s
-[100%] David                     #7634567     142 read      58 favs     0.01s
+[ 99%] Charlene                  #2442665    1172 read     732 hits     2.41s
+[100%] David                     #7634567     142 read      58 hits     0.01s
 
 Perfect! Got favourites of 164 users.
-Writing results to "friendrated-1234567.html"... 271 books (0.31s)
+Writing results to "friendrated-1234567.html"... 271 books/96 authors (0.31s)
 Total time: 18 minutes
 ```
 
