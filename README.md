@@ -101,22 +101,18 @@ $ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
 
 ## Further readings
 
-#### About Goodreads:
-- [GR developers group](https://www.goodreads.com/group/show/8095-goodreads-developers)
-- [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt) or [here](https://builtwith.com/goodreads.com) or [DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/)
-- [GR workplace reviews](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), anonymously about being acquired by Amazon, bureaucracy etc.
-- [GR on Crunchbase](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
-- [GR members stats](https://www.statista.com/search/?q=goodreads&qKat=search) or [here](https://qz.com/1106341/most-women-reading-self-help-books-are-getting-advice-from-men/) or [here](https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.23733)+[Sci-Hub](https://twitter.com/scihub_love) or [here](https://book.pressbooks.com/chapter/goodreads-otis-chandler) – source probably [Goodreads](https://www.goodreads.com/about/us)
-- [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors
-- [GR subreddit](https://www.reddit.com/r/goodreads/) with my ignored [post](https://www.reddit.com/r/goodreads/comments/9i9qhe/andres_toolbox_find_likeminded_users_subscribe_to/)
-
-#### Further software:
-
-- John Smith's [Goodreads Analysis](https://github.com/JohnSmithDev/GoodreadsAnalysis/blob/master/REPORTS.md) (not tested yet but looks good)
-- Paul Klinger's [Bookstats](https://github.com/PaulKlinger/Bookstats) or [here](https://almoturg.com/bookstats/)
-- [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
-
-#### Personal:
-
-- [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
-- [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
+- About Goodreads
+  - [GR developers group](https://www.goodreads.com/group/show/8095-goodreads-developers)
+  - [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt) or [here](https://builtwith.com/goodreads.com) or [DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/)
+  - [GR workplace reviews](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), anonymously about being acquired by Amazon, bureaucracy etc.
+  - [GR on Crunchbase](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
+  - [GR members stats](https://www.statista.com/search/?q=goodreads&qKat=search) or [here](https://qz.com/1106341/most-women-reading-self-help-books-are-getting-advice-from-men/) or [here](https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.23733)+[Sci-Hub](https://twitter.com/scihub_love) or [here](https://book.pressbooks.com/chapter/goodreads-otis-chandler) – source probably [Goodreads](https://www.goodreads.com/about/us)
+  - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors
+  - [GR subreddit](https://www.reddit.com/r/goodreads/) with my ignored [post](https://www.reddit.com/r/goodreads/comments/9i9qhe/andres_toolbox_find_likeminded_users_subscribe_to/)
+- Further software
+  - John Smith's [Goodreads Analysis](https://github.com/JohnSmithDev/GoodreadsAnalysis/blob/master/REPORTS.md) (not tested yet but looks good)
+  - Paul Klinger's [Bookstats](https://github.com/PaulKlinger/Bookstats) or [here](https://almoturg.com/bookstats/)
+  - [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
+- Personal
+  - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
+  - [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
