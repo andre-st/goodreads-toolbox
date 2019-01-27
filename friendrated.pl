@@ -386,7 +386,7 @@ print $fh qq{
 undef $fh;
 
 
-printf( "%d books and %d authors\n", $num_bkfinds, $num_aufinds );
+printf( "%d books/%d authors\n", $num_bkfinds, $num_aufinds );
 printf( "Total time: %.0f minutes\n", (time()-$TSTART)/60 );
 
 
