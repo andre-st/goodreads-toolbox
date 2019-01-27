@@ -112,3 +112,9 @@ $ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
 - [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
 - [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
 
+## Other GR projects
+
+- John Smith's [Goodreads Analysis](https://github.com/JohnSmithDev/GoodreadsAnalysis/blob/master/REPORTS.md)
+- Paul Klinger's [Bookstats](https://github.com/PaulKlinger/Bookstats) or [here](https://almoturg.com/bookstats/)
+
+
