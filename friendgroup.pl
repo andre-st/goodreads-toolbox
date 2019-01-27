@@ -77,7 +77,7 @@ More info in friendgroup.md
 
 =head1 VERSION
 
-2019-01-18 (Since 2018-09-26)
+2019-01-27 (Since 2018-09-26)
 
 =cut
 

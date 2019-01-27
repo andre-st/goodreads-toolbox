@@ -138,7 +138,7 @@ More info in likeminded.md
 
 =head1 VERSION
 
-2019-01-18 (Since 2018-06-22)
+2019-01-27 (Since 2018-06-22)
 
 =cut
 

@@ -75,7 +75,7 @@ More info in recentrated.md
 
 =head1 VERSION
 
-2018-08-12 (Since 2018-01-09)
+2018-08-27 (Since 2018-01-09)
 
 =cut
 

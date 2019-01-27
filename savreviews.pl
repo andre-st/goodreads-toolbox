@@ -86,7 +86,7 @@ More info in savreviews.md
 
 =head1 VERSION
 
-2018-11-13 (Since 2018-08-13)
+2018-11-27 (Since 2018-08-13)
 
 =cut
 
