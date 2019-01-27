@@ -47,8 +47,14 @@ body
 
 .likeminded td:nth-child(2) a:hover
 {
-	background-color: #00f;
+	background-color: #0000FF;
 	color: #fff;	
+}
+
+.likeminded td:nth-child(2) a:visited:hover
+{
+	background-color: #551A9B;
+	color: #fff;
 }
 
 .likeminded td:nth-child(2) a:hover img
