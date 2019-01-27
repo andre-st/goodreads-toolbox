@@ -83,13 +83,6 @@ and I hope Goodreads will eventually make those scripts obsolete
 by offering own solutions to the Goodreads community.
 
 
-## dict/
-
-Some programs use dictionaries. You can point these programs to an
-alternative dictionary-file in this folder.
-[Learn more](dict/README.md)
-
-
 ## Installation
 
 ```console
