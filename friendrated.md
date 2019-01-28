@@ -3,7 +3,7 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
 
-## Books and authors common among the people I follow
+## Books common among the people I follow
 
 From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/topic/show/1573755-most-popular-books-among-friends?page=1) or [Anne (2018):](https://www.goodreads.com/topic/show/19320371-recommendations)
 > I often choose a book to read if many of the people I follow have read it
@@ -18,7 +18,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 
 ![Screenshot](img/friendrated2.png?raw=true "Screenshot")
 
-and most read authors:
+plus most liked authors:
 
 ![Screenshot](img/friendrated3.png?raw=true "Screenshot")
 
