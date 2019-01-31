@@ -65,7 +65,7 @@ Total time: 3 minutes
 
 ## Observations and limitations
 
-- start with defaults and re-run again to fine-tune with parameters (it's fast because as previously downloaded resources are reused); you might not know how many ratings actually exists, if --ratings is too high you might just see an `N=0` (no results)
+- start the program with defaults and re-run to fine-tune with parameters later (previously downloaded resources are reused so it's faster than the first run); you might not know how many ratings actually exists, if `--ratings` is too high you will not get any results (`N=0`)
 - [GIGO](https://en.wikipedia.org/wiki/Garbage_in,_garbage_out)
 
 
