@@ -18,7 +18,7 @@ From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/t
 
 ![Screenshot](img/friendrated2.png?raw=true "Screenshot")
 
-plus most liked authors:
+The report also includes a table with the most liked authors among the friends and followees:
 
 ![Screenshot](img/friendrated3.png?raw=true "Screenshot")
 

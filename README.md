@@ -10,7 +10,7 @@ and (home-)library cataloging software as a service.
 
 Checks all the books in a given Goodreads.com shelf for new ratings and notifies you
 via periodical e-mail. This helps discover new criticisms and users with interesting 
-libraries. You can [subscribe there](https://andre-st.github.io/goodreads/) if you 
+libraries. You can [use this online](https://andre-st.github.io/goodreads/) if you 
 don't want to install anything.
 It implements the "follow book" feature that was requested in the Goodreads forums. 
 [Learn more](recentrated.md)
