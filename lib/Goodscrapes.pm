@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-01-27
+=item * Updated: 2019-01-31
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.150';  # X.XX version format required by Perl
+our $VERSION = '1.152';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -2083,18 +2083,23 @@ sub _setcurlopts
 		return length( $chunk );
 	});
 	
+	
 	# Performance options:
 	# - don't hang too long, better disconnect and retry
 	# - reduce number of SSL handshakes (reuse connection)
 	# - reduce SSL overhead
-	$curl->setopt( $curl->CURLOPT_TIMEOUT,        60  );
-	$curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 60  );
-	$curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0   );  # CURL default
-	$curl->setopt( $curl->CURLOPT_FRESH_CONNECT,  0   );  # CURL default
-	$curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1   );
-	$curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120 );
-	$curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  );
-	$curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   );
+	# 
+	# The module works without any of these options, but probably slower.
+	# All `eval` due to https://github.com/andre-st/goodreads/issues/20
+	eval{ $curl->setopt( $curl->CURLOPT_BULLSHIT,       60  ); };
+	eval{ $curl->setopt( $curl->CURLOPT_TIMEOUT,        60  ); };
+	eval{ $curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 60  ); };
+	eval{ $curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0   ); };  # CURL default
+	eval{ $curl->setopt( $curl->CURLOPT_FRESH_CONNECT,  0   ); };  # CURL default
+	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1   ); };  
+	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120 ); }; 
+	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  ); };
+	eval{ $curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   ); };
 }
 
 
