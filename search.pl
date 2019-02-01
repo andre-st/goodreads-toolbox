@@ -34,7 +34,9 @@ default is "stars,num_ratings,year"
 only include books with N or more ratings:
 a 4-stars book rated by 30 readers might be "better" than a 5-stars book rated
 by 1 reader (perhaps the author). This also declutters our F<outfile>.
-Default is 5 or 0 if exact match.
+Use low values to cut away the nonsense, use high values only if you know
+the available range otherwise you might get zero results.
+Default is 5 or 0 if exact match. 
 
 
 =item B<-c, --cache>=F<numdays>
