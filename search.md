@@ -1,6 +1,6 @@
 # search.pl
 
-![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
 
 ## Sort Goodreads search results by popularity or date published
@@ -65,6 +65,7 @@ Total time: 3 minutes
 
 ## Observations and limitations
 
+- start the program with defaults and re-run to fine-tune with parameters later (previously downloaded resources are reused so it's faster than the first run); you might not know how many ratings actually exists, if `--ratings` is too high you will not get any results (`N=0`)
 - [GIGO](https://en.wikipedia.org/wiki/Garbage_in,_garbage_out)
 
 
