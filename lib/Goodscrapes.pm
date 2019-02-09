@@ -795,7 +795,7 @@ sub greadauthorbk
 
 =item * C<dict_path   =E<gt> string> path to a dictionary file (1 word per line) [optional]
 
-=item * C<text_only   =E<gt> bool, overwrites C<on_filter> argument [optional, default 0 ]
+=item * C<text_only   =E<gt> bool> overwrites C<on_filter> argument [optional, default 0 ]
 
 =item * C<rigor       =E<gt> int> [optional, default 2]
 

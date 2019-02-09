@@ -427,9 +427,9 @@ https://github.com/andre-st/
 
 =item * C<dict_path   =E<gt> string> path to a dictionary file (1 word per line) [optional]
 
-=item * C<text_only   =E<gt> bool, overwrites C<on_filter> argument [optional, default 0 ]
+=item * C<text_only   =E<gt> bool> overwrites C<on_filter> argument [optional, default 0 ]
 
->=item * C<rigor       =E<gt> int> [optional, default 2]
+=item * C<rigor       =E<gt> int> [optional, default 2]
 
   level 0   = search newest reviews only (max 300 ratings)
   level 1   = search with a combination of filters (max 5400 ratings)
