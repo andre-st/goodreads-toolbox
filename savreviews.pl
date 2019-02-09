@@ -60,7 +60,7 @@ show full man page
 
 F</tmp/FileCache/>
 
-./savreviews-book*-stars{0..5}.txt
+F<./savreviews-book*-stars{0..5}.txt>
 
 
 =head1 EXAMPLES
@@ -134,7 +134,7 @@ our $REVIEWSEPERATOR = "\n".( '-' x 79 )."\n\n";  # long line
 GetOptions( 'rigor|x=i'  => \$RIGOR,
             'dict|d=s'   => \$DICTPATH,
             'help|?'     => sub{ pod2usage( -verbose => 2 ) },
-		  'outdir|o=s' => \$OUTDIR,
+            'outdir|o=s' => \$OUTDIR,
             'cache|c=i'  => \$CACHEDAYS )
              or pod2usage( 1 );
 
