@@ -129,7 +129,7 @@ our $OUTDIR     = '.';
 our $OUTNAMEFMT = 'savreviews-book%s-stars%d.txt';
 our $OUTDATEFMT = "%Y/%m/%d\n\n";  # man strptime
 our $BOOKID;
-our $REVIEWSEPERATOR = "\n".( '-' x 79 )."\n\n";  # long line
+our $REVIEWSEPARATOR = "\n".( '-' x 79 )."\n\n";  # long line
 
 GetOptions( 'rigor|x=i'  => \$RIGOR,
             'dict|d=s'   => \$DICTPATH,
@@ -183,7 +183,7 @@ for my $n (0..$MAXSTARS)
 print {$files[$_->{rating}]} 
 		$_->{date}->strftime( $OUTDATEFMT ) .
 		$_->{text} .
-		$REVIEWSEPERATOR 
+		$REVIEWSEPARATOR 
 	for (values %reviews);
 
 
