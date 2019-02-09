@@ -11,8 +11,10 @@ savreviews - Download reviews for a book
 
 =head1 SYNOPSIS
 
-B<savreviews.pl> [B<-x> F<numlevel>] [B<-c> F<numdays>] [B<-o> F<filename>] 
-F<goodbookid>...
+B<savreviews.pl> [B<-x> F<numlevel>] [B<-c> F<numdays>] [B<-d> F<filename>] 
+[B<-o> F<dirname>] F<goodbookid>
+
+You find the F<goodbookid> by looking at the book URL.
 
 
 =head1 OPTIONS
@@ -23,10 +25,10 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =item B<-x, --rigor>=F<numlevel>
 
- level 0   = search newest reviews only (max 300 ratings)
- level 1   = search with a combination of filters (max 5400 ratings)
- level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
- level n   = like 1 plus dict-search with stall-time of n minutes - default is 10
+ level 0 = search newest reviews only (max 300 ratings)
+ level 1 = search with a combination of filters (max 5400 ratings)
+ level 2 = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
+ level n = like 1 plus dict-search with stall-time of n minutes - default is 10
 
 
 =item B<-d, --dict>=F<filename>
@@ -41,10 +43,10 @@ default is 7 days. This helps on experimenting with parameters.
 Loading data from Goodreads is a time consuming process.
 
 
-=item B<-o, --outfile>=F<filename>
+=item B<-o, --outdir>=F<path>
 
-name of the text file where we write results to, default is
-"./savreviews-F<goodbookid>.txt"
+directory path where the final reports will be saved,
+default is the working directory
 
 
 =item B<-?, --help>
@@ -58,12 +60,12 @@ show full man page
 
 F</tmp/FileCache/>
 
+./savreviews-book*-stars{0..5}.txt
+
 
 =head1 EXAMPLES
 
 $ ./savreviews.pl 333222
-
-$ ./savreviews.pl --outfile=myfile.txt 333222
 
 
 =head1 REPORTING BUGS
@@ -86,7 +88,7 @@ More info in savreviews.md
 
 =head1 VERSION
 
-2018-11-27 (Since 2018-08-13)
+2019-02-09 (Since 2018-08-13)
 
 =cut
 
@@ -103,6 +105,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( locale_h );
+use File::Spec; # Platform indep. directory separator
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
@@ -115,30 +118,31 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
-setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
+setlocale( LC_CTYPE, 'en_US' );  # GR dates all en_US
 STDOUT->autoflush( 1 );
 
-our $TSTART    = time();
-our $CACHEDAYS = 7;
-our $RIGOR     = 10;
-our $DICTPATH  = './dict/default.lst';
-our $OUTPATH;
+our $TSTART     = time();
+our $CACHEDAYS  = 7;
+our $RIGOR      = 10;
+our $DICTPATH   = './dict/default.lst';
+our $OUTDIR     = '.';
+our $OUTNAMEFMT = 'savreviews-book%s-stars%d.txt';
+our $OUTDATEFMT = "%Y/%m/%d\n\n";  # man strptime
 our $BOOKID;
-our $REVSEPERATOR = "\n\n".( '-' x 79 )."\n\n";
+our $REVIEWSEPERATOR = "\n".( '-' x 79 )."\n\n";  # long line
 
-GetOptions( 'rigor|x=i'   => \$RIGOR,
-            'dict|d=s'    => \$DICTPATH,
-            'help|?'      => sub{ pod2usage( -verbose => 2 ) },
-            'cache|c=i'   => \$CACHEDAYS,
-            'outfile|o=s' => \$OUTPATH ) 
+GetOptions( 'rigor|x=i'  => \$RIGOR,
+            'dict|d=s'   => \$DICTPATH,
+            'help|?'     => sub{ pod2usage( -verbose => 2 ) },
+		  'outdir|o=s' => \$OUTDIR,
+            'cache|c=i'  => \$CACHEDAYS )
              or pod2usage( 1 );
 
-$BOOKID  = $ARGV[0] or pod2usage( 1 );
-$OUTPATH = "savreviews-${BOOKID}.txt" if !$OUTPATH;
+$BOOKID = $ARGV[0] or pod2usage( 1 );
 gsetcache( $CACHEDAYS );
 
-pod2usage( -exitval   => "NOEXIT", 
-           -sections  => [ "REPORTING BUGS" ], 
+pod2usage( -exitval   => 'NOEXIT', 
+           -sections  => [ 'REPORTING BUGS' ], 
            -verbose   => 99,
            -noperldoc => 1 );
 
@@ -146,30 +150,43 @@ pod2usage( -exitval   => "NOEXIT",
 
 # ----------------------------------------------------------------------------
 my %reviews;
+my $MAXSTARS = 5;
+my @files;
 
-print( "Loading reviews " );
+print( 'Loading reviews ' );
 
 my %book = greadbook( $BOOKID );
 
-printf( "for \"%s\"...", $book{title} );
+printf( 'for "%s"...', $book{title} );
 
-my $fh = IO::File->new( $OUTPATH, '>:utf8' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 
 greadreviews( rh_for_book => \%book,
               rigor       => $RIGOR,
               rh_into     => \%reviews,
               dict_path   => $DICTPATH,
-              on_filter   => sub{ $_[0]->{text} },  # Reviews only
+              text_only   => 1,
               on_progress => gmeter( "of $book{num_reviews} reviews" ));
 
-printf( "\nWriting reviews to \"%s\"... ", $OUTPATH );
 
-print $fh $_->{text}.$REVSEPERATOR foreach (values %reviews);
-undef $fh;
+print( "\nWriting reviews to" );
+for my $n (0..$MAXSTARS)
+{
+	my $fpath = File::Spec->catfile( $OUTDIR, sprintf( $OUTNAMEFMT, $BOOKID, $n ) );
+	
+	print( "\n\t$fpath" );
+	
+	push @files, IO::File->new( $fpath, '>:utf8' ) 
+		or die( "[FATAL] Cannot write to $fpath ($!)" );
+}
 
-printf( "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
+
+print {$files[$_->{rating}]} 
+		$_->{date}->strftime( $OUTDATEFMT ) .
+		$_->{text} .
+		$REVIEWSEPERATOR 
+	for (values %reviews);
 
 
-
+printf( "\n\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
 
 

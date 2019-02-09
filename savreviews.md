@@ -17,7 +17,8 @@ or [Giulia (2018)](https://www.goodreads.com/topic/show/19477061-how-can-i-extra
 
 ## Output format
 ```console
-$ cat savreviews-8882222.txt
+$ cat savreviews-book12345-stars2.txt
+2018/12/29
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -29,11 +30,13 @@ dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 -------------------------------------------------------------------------------
+2018/10/21
 
 Ut enim ad minim veniam, quis nostrud <b>exercitation</b> ullamco laboris nisi 
 ut aliquip ex ea commodo consequat: <a href="https://example.com">example.com</a>
 
 -------------------------------------------------------------------------------
+2018/04/01
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -42,8 +45,8 @@ minim veniam, quis nostrud exercitation ullamco laboris nisi
 
 **Note:**
 
-The generated files contain review-texts only. They do not contain any other
-information, e.g., user names, datetime of a review, stars-rating etc.
+The generated files (one per star-rating) contain review-texts and dates only. 
+They do not contain any other information, e.g., user names.
 If there is interest in these details or other output formats, just contact 
 me or add an [issue](https://github.com/andre-st/goodreads/issues).
 
@@ -59,7 +62,14 @@ $ ./savreviews.pl --help
 $ ./savreviews.pl GOODREADSBOOKID
 
 Loading reviews for "To the Lighthouse"... 4962 of 5514 reviews
-Writing reviews to "savreviews-GOODREADSBOOKID.txt"... 
+Writing reviews to
+	./savreviews-book59716-stars0.txt
+	./savreviews-book59716-stars1.txt
+	./savreviews-book59716-stars2.txt
+	./savreviews-book59716-stars3.txt
+	./savreviews-book59716-stars4.txt
+	./savreviews-book59716-stars5.txt
+
 Total time: 87 minutes
 
 ```

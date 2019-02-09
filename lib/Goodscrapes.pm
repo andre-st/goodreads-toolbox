@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-01-31
+=item * Updated: 2019-02-09
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.152';  # X.XX version format required by Perl
+our $VERSION = '1.16';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -795,6 +795,8 @@ sub greadauthorbk
 
 =item * C<dict_path   =E<gt> string> path to a dictionary file (1 word per line) [optional]
 
+=item * C<text_only   =E<gt> bool, overwrites C<on_filter> argument [optional, default 0 ]
+
 =item * C<rigor       =E<gt> int> [optional, default 2]
 
   level 0   = search newest reviews only (max 300 ratings)
@@ -813,13 +815,17 @@ sub greadreviews
 	my $rigor    = $args{ rigor       }  // 2;
 	my $dictpath = $args{ dict_path   }  // undef;
 	my $rh       = $args{ rh_into     }  // undef;
-	my $ffn      = $args{ on_filter   }  // sub{ return 1 };
+	my $istxt    = $args{ text_only   }  // 0;
 	my $pfn      = $args{ on_progress }  // sub{};
 	my $since    = $args{ since       }  // $_EARLIEST;
 	   $since    = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
-	my $limit    = $rh_book->{num_ratings} // 5000000;
+	my $limit    = $istxt ? ( $rh_book->{num_reviews}  // 5000000 ) 
+	                      : ( $rh_book->{num_ratings}  // 5000000 );
+	my $ffn      = $istxt ? ( sub{ $_[0]->{text} } )
+	                      : ( $args{ on_filter }  // sub{ return 1 } );
 	my $bid      = $rh_book->{id};
 	my %revs;    # unique and empty, otherwise we cannot easily compute limits
+	
 	
 	# Goodreads reviews filters get us dissimilar(!) subsets which are merged
 	# here: Don't assume that these filters just load a _subset_ of what you

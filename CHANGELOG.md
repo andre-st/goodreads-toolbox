@@ -4,7 +4,17 @@ All notable changes to this project will be documented in this file.
 
 
 
-## [1.14.0] - 2019-01-27
+## [1.15.0] - 2019-02-09
+### Fixed
+
+- "Undefined subroutine &WWW::Curl::Easy::CURLOPT_TCP_KEEPALIVE" ([#20](https://github.com/andre-st/goodreads/issues/20))
+
+### Changed
+
+- savreviews: 
+	- writes multiple files at once with one file per star-rating ([#14](https://github.com/andre-st/goodreads/issues/14))
+	- reviews contain review date too
+	- `--outfile` parameter changed to `--outdir`
 
 ### Added
 
@@ -12,7 +22,6 @@ All notable changes to this project will be documented in this file.
 
 
 ## [1.13.0] - 2019-01-18
-
 ### Changed
 
 - likeminded: 
