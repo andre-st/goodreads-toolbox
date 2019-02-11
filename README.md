@@ -8,9 +8,9 @@ and (home-)library cataloging software as a service.
 
 ## [recentrated.pl](recentrated.md)
 
-Checks all the books in a given Goodreads.com shelf for new ratings and notifies you
-via periodical e-mail. This helps discover new criticisms and users with interesting 
-libraries. You can [use this online](https://andre-st.github.io/goodreads/) if you 
+Checks all the books in your shelf for new ratings and notifies you
+via periodical e-mail. It helps discover new criticisms and users with interesting 
+libraries. You can [try this online](https://andre-st.github.io/goodreads/) if you 
 don't want to install anything.
 It implements the "follow book" feature that was requested in the Goodreads forums. 
 [Learn more](recentrated.md)
