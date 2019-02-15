@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-02-09
+=item * Updated: 2019-02-15
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.16';  # X.XX version format required by Perl
+our $VERSION = '1.17';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -824,7 +824,12 @@ sub greadreviews
 	my $ffn      = $istxt ? ( sub{ $_[0]->{text} } )
 	                      : ( $args{ on_filter }  // sub{ return 1 } );
 	my $bid      = $rh_book->{id};
-	my %revs;    # unique and empty, otherwise we cannot easily compute limits
+	my %revs;    # Unique and empty, otherwise we cannot easily compute limits
+	
+	
+	# Allow user to interrupt search with CTRL-C:
+	my $gotsigint   = 0;
+	local $SIG{INT} = sub{ $gotsigint = 1; };  
 	
 	
 	# Goodreads reviews filters get us dissimilar(!) subsets which are merged
@@ -849,7 +854,7 @@ sub greadreviews
 			# Ugly code but correct in theory:
 			# 
 			my $numrated = scalar( grep{ defined $_->{rating} } values %revs ); 
-			goto DONE if $numrated >= $limit;
+			goto DONE if $numrated >= $limit || $gotsigint;
 		}
 	}
 	
@@ -872,7 +877,9 @@ sub greadreviews
 	
 	for my $word (@dict)
 	{
-		goto DONE if time-$t0 > $stalltime || scalar keys %revs >= $limit;
+		goto DONE if time-$t0 > $stalltime 
+				|| scalar keys %revs >= $limit 
+				|| $gotsigint;
 		
 		my $numbefore = scalar keys %revs;
 		
