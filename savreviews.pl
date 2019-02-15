@@ -165,7 +165,7 @@ greadreviews( rh_for_book => \%book,
               rh_into     => \%reviews,
               dict_path   => $DICTPATH,
               text_only   => 1,
-              on_progress => gmeter( "of $book{num_reviews} reviews" ));
+              on_progress => gmeter( "found, searching $book{num_reviews}" ));
 
 
 print( "\nWriting reviews to" );

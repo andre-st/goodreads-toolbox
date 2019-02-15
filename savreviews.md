@@ -61,7 +61,7 @@ $ sudo make       # Required Perl modules from CPAN
 $ ./savreviews.pl --help
 $ ./savreviews.pl GOODREADSBOOKID
 
-Loading reviews for "To the Lighthouse"... 5257 of 5842 reviews
+Loading reviews for "To the Lighthouse"... 5257 found, searching 5842
 Writing reviews to
 	./savreviews-book59716-stars0.txt
 	./savreviews-book59716-stars1.txt
