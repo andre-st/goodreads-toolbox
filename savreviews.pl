@@ -88,7 +88,7 @@ More info in savreviews.md
 
 =head1 VERSION
 
-2019-02-09 (Since 2018-08-13)
+2019-02-16 (Since 2018-08-13)
 
 =cut
 
@@ -186,7 +186,7 @@ printf( "\n%d %-${BARWIDTH}s %5d", $_, $BARCHAR x ($BARWIDTH/$maxycount*$ycount{
 
 
 # ----------------------------------------------------------------------------
-print( "\n\nWriting reviews to" );
+print( "\n\nWriting reviews to:" );
 
 my @files;
 
