@@ -103,9 +103,11 @@ $ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
   - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors
   - [GR subreddit](https://www.reddit.com/r/goodreads/) with my ignored [post](https://www.reddit.com/r/goodreads/comments/9i9qhe/andres_toolbox_find_likeminded_users_subscribe_to/)
 - Further software
-  - John Smith's [Goodreads Analysis](https://github.com/JohnSmithDev/GoodreadsAnalysis/blob/master/REPORTS.md) (not tested yet but looks good)
   - Paul Klinger's [Bookstats](https://github.com/PaulKlinger/Bookstats) or [here](https://almoturg.com/bookstats/)
-  - [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
+  - not tested yet: John Smith's [Goodreads Analysis](https://github.com/JohnSmithDev/GoodreadsAnalysis/blob/master/REPORTS.md)
+  - not tested yet: Petr's [Compare Books](https://github.com/vatioz/GoodreadsUserCompare) browser-extension which adds [demanded](https://www.goodreads.com/user/show/4218347-petr) "compare books" information right next to user names
+  - not tested yet: Andrea Samorini's [Samo Goodreads Utility](https://github.com/asamorini/goodreads.utility) which adds [demanded](https://www.goodreads.com/user/show/35318441-andrea-samorini) language filters to GR (not tested yet)
+  - not tested yet: [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
 - Personal
   - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
   - [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
