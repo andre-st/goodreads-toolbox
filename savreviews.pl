@@ -154,9 +154,9 @@ our $MAXPOSSIBLESTARS = 5;
 
 
 # ----------------------------------------------------------------------------
-my %reviews;
-
 print( 'Loading reviews ' );
+
+my %reviews;
 
 my %book = greadbook( $BOOKID );
 
