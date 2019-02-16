@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 
 
-## [1.15.0] - 2019-02-09
+## [1.16.0] - 2019-02-16
 ### Fixed
 
 - "Undefined subroutine &WWW::Curl::Easy::CURLOPT_TCP_KEEPALIVE" ([#20](https://github.com/andre-st/goodreads/issues/20))
@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - friendrated: second table in document with most read authors
+- savreviews: prints statistics with number of reviews per year
 
 
 ## [1.13.0] - 2019-01-18

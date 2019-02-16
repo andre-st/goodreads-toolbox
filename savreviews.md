@@ -61,14 +61,30 @@ $ sudo make       # Required Perl modules from CPAN
 $ ./savreviews.pl --help
 $ ./savreviews.pl GOODREADSBOOKID
 
-Loading reviews for "To the Lighthouse"... 5257 found, searching 5842
+Loading reviews for "To the Lighthouse"... 5271 of 5860 [searching]
+
+Number of reviews per year:
+2007 ################                           263
+2008 #####################                      343
+2009 ################                           266
+2010 #################                          276
+2011 ######################                     357
+2012 #############################              473
+2013 ##################################         565
+2014 ############################               456
+2015 ###########################                440
+2016 #############################              474
+2017 ####################################       599
+2018 ########################################   648
+2019 ######                                     111
+
 Writing reviews to
-	./savreviews-book59716-stars0.txt
-	./savreviews-book59716-stars1.txt
-	./savreviews-book59716-stars2.txt
-	./savreviews-book59716-stars3.txt
-	./savreviews-book59716-stars4.txt
-	./savreviews-book59716-stars5.txt
+./savreviews-book59716-stars0.txt
+./savreviews-book59716-stars1.txt
+./savreviews-book59716-stars2.txt
+./savreviews-book59716-stars3.txt
+./savreviews-book59716-stars4.txt
+./savreviews-book59716-stars5.txt
 
 Total time: 36 minutes
 ```

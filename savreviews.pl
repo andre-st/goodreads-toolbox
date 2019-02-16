@@ -105,6 +105,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( locale_h );
+use List::Util  qw( max );
 use File::Spec; # Platform indep. directory separator
 use IO::File;
 use Getopt::Long;
@@ -128,6 +129,8 @@ our $DICTPATH   = './dict/default.lst';
 our $OUTDIR     = '.';
 our $OUTNAMEFMT = 'savreviews-book%s-stars%d.txt';
 our $OUTDATEFMT = "%Y/%m/%d\n\n";  # man strptime
+our $BARWIDTH   = 40;   # Histogram
+our $BARCHAR    = '#';  # Histogram
 our $BOOKID;
 our $REVIEWSEPARATOR = "\n\n".( '-' x 79 )."\n";  # long line
 
@@ -146,12 +149,12 @@ pod2usage( -exitval   => 'NOEXIT',
            -verbose   => 99,
            -noperldoc => 1 );
 
+our $MAXPOSSIBLESTARS = 5;
+
 
 
 # ----------------------------------------------------------------------------
 my %reviews;
-my $MAXSTARS = 5;
-my @files;
 
 print( 'Loading reviews ' );
 
@@ -159,21 +162,39 @@ my %book = greadbook( $BOOKID );
 
 printf( 'for "%s"...', $book{title} );
 
-
 greadreviews( rh_for_book => \%book,
               rigor       => $RIGOR,
               rh_into     => \%reviews,
               dict_path   => $DICTPATH,
               text_only   => 1,
-              on_progress => gmeter( "found, searching $book{num_reviews}" ));
+              on_progress => gmeter( "of $book{num_reviews} [searching]" ));
 
 
-print( "\nWriting reviews to" );
-for my $n (0..$MAXSTARS)
+
+# ----------------------------------------------------------------------------
+print( "\n\nNumber of reviews per year:" );
+
+my %ycount;
+$ycount{$_} = 0                         for (2007 .. (localtime)[5]);  # Years not in reviews
+$ycount{$_->{date}->strftime( '%Y' )}++ for (values %reviews);
+
+my $maxycount = max( values %ycount );
+
+printf( "\n%d %-${BARWIDTH}s %5d", $_, $BARCHAR x ($BARWIDTH/$maxycount*$ycount{$_}), $ycount{$_} )
+	for (sort{ $a <=> $b } keys %ycount);
+
+
+
+# ----------------------------------------------------------------------------
+print( "\n\nWriting reviews to" );
+
+my @files;
+
+for my $n (0..$MAXPOSSIBLESTARS)
 {
 	my $fpath = File::Spec->catfile( $OUTDIR, sprintf( $OUTNAMEFMT, $BOOKID, $n ) );
 	
-	print( "\n\t$fpath" );
+	print( "\n$fpath" );
 	
 	push @files, IO::File->new( $fpath, '>:utf8' ) 
 		or die( "[FATAL] Cannot write to $fpath ($!)" );
@@ -185,6 +206,8 @@ print {$files[$_->{rating}]}
 		$_->{text} .
 		$REVIEWSEPARATOR 
 	for (values %reviews);
+
+
 
 
 printf( "\n\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
