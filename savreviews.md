@@ -78,7 +78,7 @@ Number of reviews per year:
 2018 ########################################   648
 2019 ######                                     111
 
-Writing reviews to
+Writing reviews to:
 ./savreviews-book59716-stars0.txt
 ./savreviews-book59716-stars1.txt
 ./savreviews-book59716-stars2.txt
