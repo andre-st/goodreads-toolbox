@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-02-15
+=item * Updated: 2019-02-20
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.17';  # X.XX version format required by Perl
+our $VERSION = '1.18';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -1087,7 +1087,8 @@ sub _amz_url
         on the Goodreads.com website.
 
 =item * "&per_page" in print-view can be any number if you work with your 
-        own shelf, otherwise max 200 if print view; ignored in non-print view
+        own shelf, otherwise max 200 if print view; ignored in non-print view;
+        per_page>20 requires access with a cookie, see gsetcookie()
 
 =item * "&view=table" puts I<all> book data in code, although invisible (display=none)
 
