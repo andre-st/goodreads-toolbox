@@ -100,7 +100,6 @@ The program is designed to run unattended, outwaits connection issues etc.
 	- we cannot randomize in a way which would produce samples of similar size
 	- although, we don't get _all_ readers (for books with ten of thousand readers), 
 	  the final report still contains _enough_ members who read the same N authors
-- there are members with 94.857 ratings, likely bots
 - does _not_ list members with private accounts anymore
 - slow but good enough since you run it 4x a year
 - your Goodreads account must be viewable by 
@@ -112,6 +111,7 @@ The program is designed to run unattended, outwaits connection issues etc.
 
 #### Library sizes as ranking factor:
 - there are members with many common authors just because they have huge libraries
+- there are members with 94.857 ratings, likely bots
 - in a previous program version,
   a member with 11 common authors and 3000 books in total was shown earlier than
   a member with 10 common authors and  300 books in total, 
