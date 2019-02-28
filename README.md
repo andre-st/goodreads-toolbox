@@ -103,7 +103,7 @@ $ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
   - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors, see also [Author Feedback Group](https://www.goodreads.com/group/show/31471) 
   - [GR subreddit](https://www.reddit.com/r/goodreads/)
 - Further software 
-  - I leave stats about your own reading habits to the following tools; my toolbox focuses a) on the social periphery, with b) _Goodreads_ providing the largest user base now and probably in the near future due to _network effects_ (60 Mio users is an advantage that cannot be easily copied by competitors as opposed to all the CRUD functions on the website)
+  - I leave statistics about your own reading habits to the following tools; my toolbox, in contrast, focuses a) on the social periphery, with b) _Goodreads_ providing the largest user base (due to network effects: 60 Mio users is an advantage that cannot be easily copied by competitors, unlike any of the CRUD function on the website)
   - Paul Klinger's [Bookstats](https://github.com/PaulKlinger/Bookstats) or [here](https://almoturg.com/bookstats/)
   - untested: John Smith's [GoodreadsAnalysis](https://github.com/JohnSmithDev/GoodreadsAnalysis/blob/master/REPORTS.md)
   - untested: Petr's [CompareBooks](https://github.com/vatioz/GoodreadsUserCompare) browser [extension](https://chrome.google.com/webstore/detail/goodreads-compare-books/jcbnjaifalpejkcgfbpjbcmkfdildgpi) which adds "compare" info next to usernames ([GR forum](https://www.goodreads.com/topic/show/1259264?comment=182399130#comment_182399130))
