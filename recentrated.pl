@@ -34,7 +34,11 @@ You would have to pipe its output into a C<sendmail> programm.
 =item I<MAILFROM>
 
 add an unsubscribe email header and a contact address for
-administrative issues to the programm output
+administrative issues to the programm output.
+Also limits the number of books in the mail, with the rest to be 
+mailed the next time (if I<MAILTO> does not equal I<MAILFROM>).
+This actually limits the program runtime for each receiver
+(GitHub #23).
 
 =back
 
@@ -75,7 +79,7 @@ More info in recentrated.md
 
 =head1 VERSION
 
-2018-08-27 (Since 2018-01-09)
+2019-03-04 (Since 2018-01-09)
 
 =cut
 
@@ -91,7 +95,7 @@ use 5.18.0;
 use FindBin;
 use lib "$FindBin::Bin/lib/";
 use POSIX     qw( locale_h );
-use Log::Any '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
+use Log::Any  '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
 use Text::CSV qw( csv );
 use Time::Piece;
 use Pod::Usage;
@@ -111,112 +115,135 @@ our $USERID   = gverifyuser ( $ARGV[0] );
 our $SHELF    = gverifyshelf( $ARGV[1] );
 our $MAILTO   = $ARGV[2];
 our $MAILFROM = $ARGV[3];
-our $CSVPATH  = "/var/db/good/${USERID}-${SHELF}.csv";
+our $DBPATH   = "/var/db/good/${USERID}-${SHELF}.csv";
 
 # The more URLs, the longer and untempting the mail.
 # If number exceeded, we link to the book page with *all* reviews.
 our $MAX_REVURLS_PER_BOOK = 2;
 
+# Limit number of books in the mail and the program runtime if not admin
+our $maxbooks = $MAILFROM && $MAILTO && $MAILFROM ne $MAILTO ? 20 : 999999;
+
 # GR-URLs in mail padded to average length, with "https://" stripped
 sub prettyurl{ return sprintf '%-36s', substr( shift, 8 ); }
 
 # effect in dev/debugging only
-# gsetcache( 4, 'hours' );
+#gsetcache( 4, 'hours' );
 
 
 
 # ----------------------------------------------------------------------------
-my $csv      = ( -e $CSVPATH  ?  csv( in => $CSVPATH, key => 'id' )  :  undef );  # ref
+my $db       = ( -e $DBPATH  ?  csv( in => $DBPATH, key => 'id' )  :  {} );
 my $num_hits = 0;
 my %books;
+
 
 greadshelf( from_user_id    => $USERID,
             ra_from_shelves => [ $SHELF ],
             rh_into         => \%books );
 
-if( $csv )
+
+my @added   = grep{ !exists $db->{$_}  } keys %books;
+my @removed = grep{ !exists $books{$_} } keys %{$db};
+
+delete $db->{$_} for( @removed );
+
+my @oldest_ids = sort{ $db->{$a}->{checked} <=> 
+                       $db->{$b}->{checked} } keys %{$db};  # Oldest first
+
+
+for my $id (@oldest_ids)
 {
-	my $mtime            = (stat $CSVPATH)[9];
-	my $last_csv_updtime = Time::Piece->strptime( $mtime, '%s' );
+	last unless $maxbooks;  # Mail the rest the next time
 	
-	for my $b (values %books)
+	my $num_new_rat = $books{$id}->{num_ratings} - $db->{$id}->{num_ratings};
+	
+	next unless $num_new_rat > 0;
+	
+	my %revs;
+	my $lastcheck = Time::Piece->strptime( $db->{$id}->{checked} // 0, '%s' );
+	
+	greadreviews( rh_for_book => $books{$id},
+			    since       => $lastcheck,
+			    rh_into     => \%revs,
+			    rigor       => 0 );
+	
+	$db->{$id}->{num_ratings} = $books{$id}->{num_ratings};
+	$db->{$id}->{checked    } = time;
+	$maxbooks--;
+	
+	next unless %revs;
+	
+	my $revcount = scalar keys %revs;
+	
+	$num_hits++;
+	
+	# E-Mail header and first body line:
+	if( $MAILTO && $num_hits == 1 )
 	{
-		next unless exists $csv->{$b->{id}};
-		
-		my $num_new_rat = $b->{num_ratings} - $csv->{$b->{id}}->{num_ratings};
-		
-		next unless $num_new_rat > 0;
-		
-		my %revs;
-		greadreviews( rh_for_book => $b, 
-		              since       => $last_csv_updtime,
-		              rh_into     => \%revs,
-		              rigor       => 0 );
-		
-		next unless %revs;
-		
-		my $revcount = scalar keys %revs;
-		
-		$num_hits++;
-		
-		# E-Mail header and first body line:
-		if( $MAILTO && $num_hits == 1 )
-		{
-			print( "To: ${MAILTO}\n"                           );
-			print( "From: ${MAILFROM}\n"                       ) if $MAILFROM;
-			print( "List-Unsubscribe: <mailto:${MAILFROM}>\n"  ) if $MAILFROM;
-			print( "Content-Type: text/plain; charset=utf-8\n" );
-			print( "Subject: New ratings on Goodreads.com\n\n" );  # 2x \n hdr end
-			print( "Recently rated books in your \"${SHELF}\" shelf:\n" );
-		}
-		
-		
-		#  ASCII design isn't responsive, and the GMail web client neither uses fixed
-		#  width fonts nor treats multiple space characters as defined, even on large
-		#  screens. It treats plain text mails as HTML text. I don't do HTML mails,
-		#  so mobile GMail web users will have the disadvantage.
-		#
-		#<-------------------- 78 chars per line i.a.w. RFC 2822 --------------------->
-		#
-		#  "Book Title1"
-		#   www.goodreads.com/book/show/609606     [9 new]
-		#  
-		#  "Book Title2"
-		#   www.goodreads.com/review/show/1234567  [TTT  ]
-		#   www.goodreads.com/user/show/2345       [*****]
-		#
-		printf( "\n  \"%s\"\n", $b->{title} );
-		
-		if( $revcount > $MAX_REVURLS_PER_BOOK )
-		{
-			printf( "   %s  [%d new]\n", prettyurl( $b->{url} ), $revcount );
-		}
-		else
-		{
-			printf( "   %s  %s\n", prettyurl( $_->{text} ? $_->{url} : $_->{rh_user}->{url} ), $_->{rating_str} )
-				foreach (values %revs);
-		}
+		print( "To: ${MAILTO}\n"                           );
+		print( "From: ${MAILFROM}\n"                       ) if $MAILFROM;
+		print( "List-Unsubscribe: <mailto:${MAILFROM}>\n"  ) if $MAILFROM;
+		print( "Content-Type: text/plain; charset=utf-8\n" );
+		print( "Subject: New ratings on Goodreads.com\n\n" );  # 2x \n hdr end
+		print( "Recently rated books in your \"${SHELF}\" shelf:\n" );
 	}
 	
-	# E-mail signature block if run for other users:
-	if( $MAILFROM && $num_hits > 0 )
-	{
-		print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
-		    . " [***  ] 3/5 stars rating without text      \n"
-		    . " [TTT  ] 3/5 stars rating with some text    \n"
-		    . " [9 new] ratings better viewed on book page \n"
-		    . "                                            \n"
-		    . " Reply 'weekly'      to avoid daily mails   \n"
-		    . " Reply 'shelf ...'   to change better shelf \n"
-		    . " Reply 'unsubscribe' to unsubscribe         \n"
-		    . " Via https://andre-st.github.io/goodreads/  \n";
-	}
 	
-	# Cronjob audits:
-	$_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s"', 
-			$num_hits, scalar keys %books, $USERID, $SHELF );
+	#  ASCII design isn't responsive, and the GMail web client neither uses fixed
+	#  width fonts nor treats multiple space characters as defined, even on large
+	#  screens. It treats plain text mails as HTML text. I don't do HTML mails,
+	#  so mobile GMail web users will have the disadvantage.
+	#
+	#<-------------------- 78 chars per line i.a.w. RFC 2822 --------------------->
+	#
+	#  "Book Title1"
+	#   www.goodreads.com/book/show/609606     [9 new]
+	#  
+	#  "Book Title2"
+	#   www.goodreads.com/review/show/1234567  [TTT  ]
+	#   www.goodreads.com/user/show/2345       [*****]
+	#
+	printf( "\n  \"%s\"\n", $books{$id}->{title} );
+	
+	if( $revcount > $MAX_REVURLS_PER_BOOK )
+	{
+		printf( "   %s  [%d new]\n", prettyurl( $books{$id}->{url} ), $revcount );
+	}
+	else
+	{
+		printf( "   %s  %s\n", prettyurl( $_->{text} ? $_->{url} : $_->{rh_user}->{url} ), $_->{rating_str} )
+			foreach (values %revs);
+	}
 }
 
-my @lines = values %books;
-csv( in => \@lines, out => $CSVPATH, headers => [qw( id num_ratings )] );
+
+# E-mail signature block if run for other users:
+if( $MAILFROM && $num_hits > 0 )
+{
+	print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
+	    . " [***  ] 3/5 stars rating without text      \n"
+	    . " [TTT  ] 3/5 stars rating with some text    \n"
+	    . " [9 new] ratings better viewed on book page \n"
+	    . "                                            \n"
+	    . " Reply 'weekly'      to avoid daily mails   \n"
+	    . " Reply 'shelf ...'   to select better shelf \n"
+	    . " Reply 'unsubscribe' to unsubscribe         \n"
+	    . " Via https://andre-st.github.io/goodreads/  \n";
+}
+
+
+# Add new books:
+$db->{$_} = { 'id' => $_, 'num_ratings' => $books{$_}->{num_ratings}, 'checked' => time }
+	for( @added );
+
+
+# Cronjob audits:
+$_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s"', 
+		$num_hits, scalar keys %books, $USERID, $SHELF );
+
+
+# Update database:
+my @lines = values %{$db};
+csv( in => \@lines, out => $DBPATH, headers => [qw( id num_ratings checked )] );
 
