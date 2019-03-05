@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-02-20
+=item * Updated: 2019-03-05
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.18';  # X.XX version format required by Perl
+our $VERSION = '1.19';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -2167,7 +2167,7 @@ DOWNLOAD:
 	if( $errno >= $_ENO_CRIT 
 	||( $errno >= $_ENO_ERROR && $retry-- > 0 ))
 	{
-		say( $_MSG_RETRYING );
+		warn( $_MSG_RETRYING );
 		$curl = undef;  # disconnect
 		sleep( $_RETRYDELAY_SECS );
 		goto DOWNLOAD;
