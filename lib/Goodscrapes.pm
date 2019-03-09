@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-03-05
+=item * Updated: 2019-03-09
 
 =item * Since: 2014-11-05
 
@@ -188,8 +188,7 @@ our $_RETRYDELAY_SECS = 60*3;  # Total retry time: 15 minutes
 
 # Misc module message strings:
 our $_MSG_RETRYING    = "[NOTE ] Retrying in 3 minutes... Press CTRL-C to exit";
-our $_MSG_COOKIEHELP  = "Save a Goodreads.com cookie to the file \"%s\". "  # path
-                      . "Check out https://www.youtube.com/watch?v=o_CYdZBPDCg for a tutorial "
+our $_MSG_COOKIEHELP  = "Check out https://www.youtube.com/watch?v=o_CYdZBPDCg for a tutorial "
                       . "on cookie-extraction using Chrome's DevTools Network-view.";
 our %_ERRMSG = 
 (
@@ -205,9 +204,9 @@ our %_ERRMSG =
 	$_ENO_CURL       => "\n[CRIT ] %s - %s %s",       # url, err, errbuf
 	$_ENO_NOHTML     => "\n[CRIT ] No HTML body: %s", # url
 	$_ENO_FATAL      => "\n[FATAL] %s",               # url
-	$_ENO_NOCOOKIE   => "\n[FATAL] Missing cookie. $_MSG_COOKIEHELP",                # path
-	$_ENO_BADCOOKIE  => "\n[FATAL] Goodreads.com rejects cookie. $_MSG_COOKIEHELP",  # path
-	$_ENO_NODICT     => "\n[FATAL] Cannot open dictionary file: %s",                 # path
+	$_ENO_NOCOOKIE   => "\n[FATAL] Missing cookie. Save a Goodreads.com cookie to the file \"%s\". $_MSG_COOKIEHELP", # path
+	$_ENO_BADCOOKIE  => "\n[FATAL] Goodreads.com rejects cookie (file exists). $_MSG_COOKIEHELP",  # path
+	$_ENO_NODICT     => "\n[FATAL] Cannot open dictionary file: %s",    # path
 	$_ENO_BADSHELF   => "\n[FATAL] Invalid Goodreads shelf name \"%s\". Look at your shelf URLs.",  # name
 	$_ENO_BADUSER    => "\n[FATAL] Invalid Goodreads user ID \"%s\".",  # id
 	$_ENO_BADARG     => "\n[FATAL] Argument \"%s\" expected.",          # name
@@ -555,7 +554,7 @@ sub gsetcookie
 TEST:
 	my $htm   = _html( $_ANYPRIVATEURL, $_ENO_ERROR, 0 );
 	my $errno = _check_page( $htm );
-	croak( _errmsg( $_ENO_BADCOOKIE, $path ) ) if $errno == $_ENO_GRSIGNIN;
+	croak( _errmsg( $_ENO_BADCOOKIE ) ) if $errno == $_ENO_GRSIGNIN;
 }
 
 

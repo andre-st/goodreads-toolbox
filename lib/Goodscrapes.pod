@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-03-05
+=item * Updated: 2019-03-09
 
 =item * Since: 2014-11-05
 
@@ -615,7 +615,7 @@ https://github.com/andre-st/
 
 =over
 
-=item * "&q=" URL-encoded, e.g., linux+%40+"häse (linux @ "häse)
+=item * "&q=" URL-encoded, e.g., linux+%40+"hase (linux @ "hase)
 
 =back
 
