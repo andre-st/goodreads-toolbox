@@ -1313,7 +1313,7 @@ sub _similar_authors_url
 
 =over
 
-=item * "&q=" URL-encoded, e.g., linux+%40+"häse (linux @ "häse)
+=item * "&q=" URL-encoded, e.g., linux+%40+"hase (linux @ "hase)
 
 =back
 
