@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-03-09
+=item * Updated: 2019-03-24
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.19';  # X.XX version format required by Perl
+our $VERSION = '1.22';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -126,7 +126,7 @@ our @EXPORT = qw(
 	gverifyshelf
 	gisbaduser
 	gmeter
-	gsetcookie
+	glogin
 	gsetcache
 	
 	gsearch
@@ -148,6 +148,8 @@ our @EXPORT = qw(
 use Time::Piece;
 use Carp qw( croak );
 # Third party:
+use IO::Prompter;
+use Email::Valid;
 use URI::Escape;
 use HTML::Entities;
 use WWW::Curl::Easy;
@@ -164,8 +166,9 @@ our $GOOD_ERRMSG_NOMEMBERS = '[FATAL] No members found. Check cookie and try emp
 #   Severity levels:  0 < WARN < ERROR < CRITICAL < FATAL
 #   Adding a severity level influences coping strategy
 our $_ENO_WARN        = 300;  # ignore and continue
-our $_ENO_GR404       = $_ENO_WARN  + 1;
-our $_ENO_GRSIGNIN    = $_ENO_WARN  + 2;
+our $_ENO_GR400       = $_ENO_WARN  + 1;
+our $_ENO_GR404       = $_ENO_WARN  + 2;
+our $_ENO_GRSIGNIN    = $_ENO_WARN  + 3;
 our $_ENO_ERROR       = 400;  # retry n times and continue
 our $_ENO_GRUNAVAIL   = $_ENO_ERROR + 1;
 our $_ENO_GRUNEXPECT  = $_ENO_ERROR + 2;
@@ -175,12 +178,11 @@ our $_ENO_GRMAINTNC   = $_ENO_CRIT  + 2;
 our $_ENO_CURL        = $_ENO_CRIT  + 3;
 our $_ENO_NOHTML      = $_ENO_CRIT  + 4;
 our $_ENO_FATAL       = 600;  # abort
-our $_ENO_NOCOOKIE    = $_ENO_FATAL + 1;
-our $_ENO_BADCOOKIE   = $_ENO_FATAL + 2;
-our $_ENO_NODICT      = $_ENO_FATAL + 3;
-our $_ENO_BADSHELF    = $_ENO_FATAL + 4;
-our $_ENO_BADUSER     = $_ENO_FATAL + 5;
-our $_ENO_BADARG      = $_ENO_FATAL + 6;
+our $_ENO_NODICT      = $_ENO_FATAL + 1;
+our $_ENO_BADSHELF    = $_ENO_FATAL + 2;
+our $_ENO_BADUSER     = $_ENO_FATAL + 3;
+our $_ENO_BADMAIL     = $_ENO_FATAL + 4;
+our $_ENO_BADARG      = $_ENO_FATAL + 5;
 
 our $_MAXRETRIES      = 5;     # 
 our $_RETRYDELAY_SECS = 60*3;  # Total retry time: 15 minutes
@@ -188,14 +190,13 @@ our $_RETRYDELAY_SECS = 60*3;  # Total retry time: 15 minutes
 
 # Misc module message strings:
 our $_MSG_RETRYING    = "[NOTE ] Retrying in 3 minutes... Press CTRL-C to exit";
-our $_MSG_COOKIEHELP  = "Check out https://www.youtube.com/watch?v=o_CYdZBPDCg for a tutorial "
-                      . "on cookie-extraction using Chrome's DevTools Network-view.";
 our %_ERRMSG = 
 (
 	# _ENO_GRxxx are messages from the Goodreads.com website:
 	$_ENO_WARN       => "\n[WARN ] %s",               # url
+	$_ENO_GR400      => "\n[WARN ] Bad request: %s",  # url
 	$_ENO_GR404      => "\n[WARN ] Not found: %s",    # url
-	$_ENO_GRSIGNIN   => "\n[WARN ] Sign-in for %s => Cookie invalid or not set: see gsetcookie()", # url
+	$_ENO_GRSIGNIN   => "\n[WARN ] Sign-in for %s => Cookie invalid or not set: see glogin()", # url
 	$_ENO_ERROR      => "\n[ERROR] %s",               # url
 	$_ENO_GRUNAVAIL  => "\n[ERROR] Goodreads.com \"temporarily unavailable\".",
 	$_ENO_GRUNEXPECT => "\n[ERROR] Goodreads.com encountered an \"unexpected error\": %s",  #url
@@ -204,12 +205,11 @@ our %_ERRMSG =
 	$_ENO_CURL       => "\n[CRIT ] %s - %s %s",       # url, err, errbuf
 	$_ENO_NOHTML     => "\n[CRIT ] No HTML body: %s", # url
 	$_ENO_FATAL      => "\n[FATAL] %s",               # url
-	$_ENO_NOCOOKIE   => "\n[FATAL] Missing cookie. Save a Goodreads.com cookie to the file \"%s\". $_MSG_COOKIEHELP", # path
-	$_ENO_BADCOOKIE  => "\n[FATAL] Goodreads.com rejects cookie (file exists). $_MSG_COOKIEHELP",  # path
-	$_ENO_NODICT     => "\n[FATAL] Cannot open dictionary file: %s",    # path
+	$_ENO_NODICT     => "\n[FATAL] Cannot open dictionary file: %s",       # path
 	$_ENO_BADSHELF   => "\n[FATAL] Invalid Goodreads shelf name \"%s\". Look at your shelf URLs.",  # name
-	$_ENO_BADUSER    => "\n[FATAL] Invalid Goodreads user ID \"%s\".",  # id
-	$_ENO_BADARG     => "\n[FATAL] Argument \"%s\" expected.",          # name
+	$_ENO_BADUSER    => "\n[FATAL] Invalid Goodreads user ID \"%s\".",     # id
+	$_ENO_BADMAIL    => "\n[FATAL] Invalid email address format \"%s\".",  # mail addr
+	$_ENO_BADARG     => "\n[FATAL] Argument \"%s\" expected.",             # name
 );
 sub _errmsg{ my $eno = shift; return sprintf( $_ERRMSG{$eno}, @_ ); }
 
@@ -217,18 +217,19 @@ sub _errmsg{ my $eno = shift; return sprintf( $_ERRMSG{$eno}, @_ ); }
 # Misc module constants:
 #our $_USERAGENT     = 'Googlebot/2.1 (+http://www.google.com/bot.html)';
 our $_USERAGENT     = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
-our $_COOKIEPATH    = '.cookie';
 our $_NOBOOKIMGURL  = 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png';
 our $_NOUSERIMGURL  = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png';
 our $_NOGROUPIMGURL = 'https://s.gr-assets.com/assets/nophoto/group/50x66-14672b6c5b97a4836a13efdb6a1958d2.jpg';
 our $_ANYPRIVATEURL = 'https://www.goodreads.com/friend';
+our $_SIGNINURL     = 'https://www.goodreads.com/user/sign_in';
+our $_HOMEURL       = 'https://www.goodreads.com';
 our $_SORTNEW       = 'newest';
 our $_SORTOLD       = 'oldest';
 our $_EARLIEST      = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
 our @_BADPROFILES   =     # TODO external config file
 (
-	'1000834',  #  3.000 books   NOT A BOOK author
-	'5158478'   # 10.000 books   Anonymous
+	'1000834',  #  3.000 books   "NOT A BOOK" author
+	'5158478'   # 10.000 books   "Anonymous"  author
 );
 
 our $_cookie    = undef;
@@ -517,44 +518,73 @@ sub gmeter
 
 
 
-=head2 C<void> gsetcookie(I<{ ... }>)
+=head2 C<void> glogin(I<{ ... }>)
 
 =over
 
 =item * some Goodreads.com pages are only accessible by authenticated members
 
-=item * C<content  =E<gt> string> with cookie data that can be send to Goodreads,
-        alternatively see I<filepath> [optional]
+=item * C<usermail =E<gt> string>
 
-=item * C<filepath =E<gt> string> path to a text-file with cookie-data; 
-        parameter is ignored if I<content> is set [optional, default '.cookie']
+=item * C<userpass =E<gt> string> 
 
-=item * copy-paste cookie from Chrome's DevTools network-view:
-        L<https://www.youtube.com/watch?v=o_CYdZBPDCg>
+=item * C<r_userid =E<gt> string ref> set user ID if variable is empty/undef [optional]
 
 =back
 
 =cut
 
-sub gsetcookie
-{	
+sub glogin
+{
 	my (%args) = @_;
-	my $path   = $args{ filepath }  // $_COOKIEPATH;
-	$_cookie   = $args{ content  }  // undef;
+	my $mail   =_require_arg( 'usermail', $args{ usermail });
+	my $pass   = $args{ userpass } // undef;
+	my $ruid   = $args{ r_userid } // undef;
 	
-	goto TEST if defined( $_cookie );
+	croak( _errmsg( $_ENO_BADMAIL, $mail ) ) 
+		unless Email::Valid->address( -address => $mail, 
+		                              -mxcheck => 0 );
 	
-	local $/=undef;
-	open( my $fh, "<", $path ) or croak( _errmsg( $_ENO_NOCOOKIE, $path ) );
- 
-	binmode( $fh );
-	$_cookie = <$fh>;
-	close( $fh );
+	# Some people don't want their password on the command line 
+	# as it shows up in the command history, process list etc.
+	# 
+	$pass = prompt( -prompt => 'Enter Goodreads password [CTRL-C to abort]:', 
+	                -echo   => '*',
+	                -return => "\nSigning in...\n\n",
+	                -out    => *STDOUT,
+	                -in     => *STDIN ) while !$pass;
 	
-TEST:
-	my $htm   = _html( $_ANYPRIVATEURL, $_ENO_ERROR, 0 );
-	my $errno = _check_page( $htm );
-	croak( _errmsg( $_ENO_BADCOOKIE ) ) if $errno == $_ENO_GRSIGNIN;
+	
+	# Scrape current security tokens:
+	my $htm   = _html( $_SIGNINURL, $_ENO_ERROR, 0 );
+	my $tok   = $htm =~ /name="authenticity_token" value="([^"]+)/ ? $1 : undef;
+	my $nonce = $htm =~ /name='n' type='hidden' value='([^']+)/    ? $1 : undef;
+	
+	
+	# Send login form:
+	my $formdata = 'sign_in=1'
+	             . "&n=${nonce}"
+	             . '&authenticity_token=' . uri_escape( $tok  )
+	             . '&user%5Bemail%5D='    . uri_escape( $mail )
+	             . '&user%5Bpassword%5D=' . uri_escape( $pass )
+	             . '&remember_me=on'
+	             . '&next=Sign+in';
+	
+	my $curl = WWW::Curl::Easy->new;
+	_setcurlopts( $curl );
+	$curl->setopt( $curl->CURLOPT_URL,        $_SIGNINURL );
+	$curl->setopt( $curl->CURLOPT_POST,       1           );
+	$curl->setopt( $curl->CURLOPT_POSTFIELDS, $formdata   );
+	$curl->setopt( $curl->CURLOPT_WRITEDATA,  \$htm       );
+	$curl->perform();   # Saves login data to $_cookie (set by _setcurlopts)
+	
+	
+	# Get user ID if needed:
+	if( defined $ruid && !$$ruid )
+	{
+		$htm   = _html( $_HOMEURL, $_ENO_ERROR, 0 );  # Also POST 302 target
+		$$ruid = $htm =~ /setTargeting\("uid", "([^"]+)/ ? $1 : undef;
+	}
 }
 
 
@@ -913,7 +943,7 @@ DONE:
 
 =item * C<incl_followees =E<gt> bool> [optional, default 1]
 
-=item * Precondition: gsetcookie()
+=item * Precondition: glogin()
 
 =back
 
@@ -1087,7 +1117,7 @@ sub _amz_url
 
 =item * "&per_page" in print-view can be any number if you work with your 
         own shelf, otherwise max 200 if print view; ignored in non-print view;
-        per_page>20 requires access with a cookie, see gsetcookie()
+        per_page>20 requires access with a cookie, see glogin()
 
 =item * "&view=table" puts I<all> book data in code, although invisible (display=none)
 
@@ -2024,6 +2054,9 @@ sub _check_page
 		if $htm =~ /<head>\s*<title>\s*Sign in\s*<\/title>/s 
 		|| $htm =~ /<head>\s*<title>\s*Sign Up\s*<\/title>/s;
 		
+	return $_ENO_GR400
+		if $htm =~ /<head>\s*<title>\s*400 Bad Request\s*<\/title>/s;
+	
 	return $_ENO_GR404
 		if $htm =~ /<head>\s*<title>\s*Page not found\s*<\/title>/s;
 	
@@ -2049,9 +2082,7 @@ sub _check_page
 
 =over
 
-=item updates "_session_id2" for X-CSRF-Token
-
-=item TODO: replace all fields
+=item updates "_session_id2" for X-CSRF-Token, "csid", "u" (user?). "p" (password?)
 
 =back
 
@@ -2060,12 +2091,24 @@ sub _check_page
 sub _updcookie
 {
 	my $changes = shift or return;
-	my $sid2    = $changes =~ /_session_id2=([^;]*)/ ? $1 : undef;
-	return if !$sid2 || !$_cookie;
-	
-	$_cookie  =~ s/;*\s*_session_id2=[^;]*;*//g;  # Remove if exists
-	$_cookie .= "; _session_id2=${sid2}";
+	my %new     = _cookie2hash( $changes );
+	my %c       = _cookie2hash( $_cookie );
+	$c{$_}      = $new{$_} for keys %new;   # Merge new and old
+	$_cookie    = join( '; ', map{ "$_=$c{$_}" } keys %c );
 }
+
+sub _cookie2hash  # @TODO: ugly
+{
+	my @fields = split( /;/, shift // '' );
+	my %r      = ();
+	for my $f (@fields)
+	{
+		$f =~ /^\s*([^=]+)=(.+)$/;
+		$r{$1}=$2 if $1 && $2;
+	}
+	return %r;
+}
+
 
 
 
@@ -2112,6 +2155,7 @@ sub _setcurlopts
 	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120 ); }; 
 	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  ); };
 	eval{ $curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   ); };
+	eval{ $curl->setopt( $curl->CURLOPT_MAXREDIRS,      5   ); };
 }
 
 

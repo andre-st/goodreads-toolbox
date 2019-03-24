@@ -25,7 +25,10 @@ $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make        # Required Perl modules from CPAN
 $ ./friendgroup.pl --help
-$ ./friendgroup.pl YOURGOODUSERNUMBER
+$ ./friendgroup.pl YourGoodreadsLoginMail@example.com
+
+Enter Goodreads password [CTRL-C to abort]: *****************
+Signing in...
 
 Getting list of members known to #18418712... 141 members (0.18s)
 [  0%] Aron Mellendar            #21254511      0 groups     0.41s
@@ -51,10 +54,6 @@ You can break the process with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later
 without having to re-read all online sources again, as reading from
 Goodreads.com is very time consuming.  The script internally uses a
 **file-cache** which is busted after 31 days and saves to /tmp/FileCache/.
-
-You will need to save your Goodreads cookie to the dotfile `.cookie` in the
-project directory.  I use Chrome's DevTools Network-view to [copy the cookie
-content](https://www.youtube.com/watch?v=o_CYdZBPDCg).
 
 
 

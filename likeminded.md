@@ -36,7 +36,10 @@ $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make       # Required Perl modules from CPAN
 $ ./likeminded.pl --help
-$ ./likeminded.pl YOURGOODUSERNUMBER
+$ ./likeminded.pl YourGoodreadsLoginMail@example.com
+
+Enter Goodreads password [CTRL-C to abort]: ******************
+Signing in...
 
 Loading authors from "ALL" may take a while... 95 authors
 Loading books of 95 authors:
@@ -102,9 +105,6 @@ The program is designed to run unattended, outwaits connection issues etc.
 	  the final report still contains _enough_ members who read the same N authors
 - does _not_ list members with private accounts anymore
 - slow but good enough since you run it 4x a year
-- your Goodreads account must be viewable by 
-  ["anyone (including search engines)"](https://www.goodreads.com/user/edit?tab=settings) 
-  which is the default (alternatively try the `--cookie` parameter)
 - _"...most number of shared books would be a list of children's books"_—`likeminded.pl` 
   has a `--shelf` parameter
 

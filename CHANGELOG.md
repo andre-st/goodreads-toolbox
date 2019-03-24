@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 
 
+## [1.17.0] - 2019-03-24
+### Changed
+
+- New CPAN dependencies: `IO::Prompter`, `Email::Valid`
+- some programs no longer accept the user-ID as base argument but the login mail address;
+  you can still check another user with the `--userid` parameter:
+	- likeminded.pl
+	- friendrated.pl
+	- friendgroup.pl
+	- similarauth.pl
+
+### Added
+
+- Users don't have to extract the Goodreads cookie from their browsers anymore.
+  Programs which require a cookie can obtain it themselves now, 
+  given the user's login mail address and password.
+  This should render the toolbox more accessible to many users
+  ([#25](https://github.com/andre-st/goodreads/issues/25))
+
+
+
 ## [1.16.0] - 2019-02-16
 ### Fixed
 

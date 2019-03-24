@@ -33,14 +33,3 @@ $ sudo make uninstall   # Details see Makefile
 
 
 
-Cookies
----------------
-Some (not all) programs use your Goodreads-cookie to access 
-information which is available to authenticated members only:
-
-  1. get the cookie content via Chrome browser: 
-     https://www.youtube.com/watch?v=o_CYdZBPDCg
-
-  2. save the cookie content to "goodreads/.cookie"
-
-

@@ -11,7 +11,7 @@ recentrated - know when people rate or write reviews about a book
 
 =head1 SYNOPSIS
 
-B<recentrated.pl> I<GOODUSERNUMBER> [I<SHELFNAME>] [I<MAILTO>] [I<MAILFROM>]
+B<recentrated.pl> [-t] I<GOODUSERNUMBER> [I<SHELFNAME>] [I<MAILTO>] [I<MAILFROM>]
 
 You find your GOODUSERNUMBER by looking at your shelf URLs.
 
@@ -25,20 +25,32 @@ You find your GOODUSERNUMBER by looking at your shelf URLs.
 name of the shelf with a selecton of books to be checked, 
 default is "#ALL#".
 
+
 =item I<MAILTO>
 
-prepend an email header and append a helpful email signature to 
-the program output. This tool does not send mails by its own.
+prepend an email header.
+This tool does not send mails by its own.
 You would have to pipe its output into a C<sendmail> programm.
+
 
 =item I<MAILFROM>
 
 add an unsubscribe email header and a contact address for
 administrative issues to the programm output.
-Also limits the number of books in the mail, with the rest to be 
+This also appends a helpful email signature.
+It limits the number of books in the mail, with the rest to be 
 mailed the next time (if I<MAILTO> does not equal I<MAILFROM>).
-This actually limits the program runtime for each receiver
+Less books means shorter program runtimes for each receiver
 (GitHub #23).
+
+
+=item B<-t, --textonly>
+
+output links to text reviews only, this drops all non-text 
+ratings (stars only). This option is useful if you have many 
+books which get many ratings every day. But it shifts the use 
+case from finding new people to mere reading new ideas about 
+a book.
 
 =back
 
@@ -79,7 +91,7 @@ More info in recentrated.md
 
 =head1 VERSION
 
-2019-03-04 (Since 2018-01-09)
+2019-03-09 (Since 2018-01-09)
 
 =cut
 
@@ -94,10 +106,12 @@ use 5.18.0;
 # Perl core:
 use FindBin;
 use lib "$FindBin::Bin/lib/";
-use POSIX     qw( locale_h );
+use POSIX      qw( locale_h );
+use List::Util qw( max );
 use Log::Any  '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
-use Text::CSV qw( csv );
+use Text::CSV  qw( csv );
 use Time::Piece;
+use Getopt::Long;
 use Pod::Usage;
 # Third part:
 # Ours:
@@ -116,6 +130,11 @@ our $SHELF    = gverifyshelf( $ARGV[1] );
 our $MAILTO   = $ARGV[2];
 our $MAILFROM = $ARGV[3];
 our $DBPATH   = "/var/db/good/${USERID}-${SHELF}.csv";
+our $TEXTONLY = 0;
+
+GetOptions( 'textonly|t' => $TEXTONLY,
+            'help|?'     => sub{ pod2usage( -verbose => 2 ) });
+
 
 # The more URLs, the longer and untempting the mail.
 # If number exceeded, we link to the book page with *all* reviews.
@@ -133,6 +152,12 @@ sub prettyurl{ return sprintf '%-36s', substr( shift, 8 ); }
 
 
 # ----------------------------------------------------------------------------
+# Looking just at the shelves, we can already see the number of current 
+# ratings for each individual book. We compare them with the numbers from the
+# last check (stored in a CSV-file $db). For those books whose numbers differ,
+# we actually load the most recent ratings. This gets us info about the
+# members who rated the books, how they rated it, and whether they added text.
+# 
 my $db       = ( -e $DBPATH  ?  csv( in => $DBPATH, key => 'id' )  :  {} );
 my $num_hits = 0;
 my %books;
@@ -161,15 +186,16 @@ for my $id (@oldest_ids)
 	next unless $num_new_rat > 0;
 	
 	my %revs;
-	my $lastcheck = Time::Piece->strptime( $db->{$id}->{checked} // 0, '%s' );
+	my $lastcheck = Time::Piece->strptime( $db->{$id}->{checked} +(60*60*12), '%s' );
 	
 	greadreviews( rh_for_book => $books{$id},
-			    since       => $lastcheck,
-			    rh_into     => \%revs,
-			    rigor       => 0 );
+	              since       => $lastcheck,
+	              rh_into     => \%revs,
+	              text_only   => $TEXTONLY,
+	              rigor       => 0 );
 	
 	$db->{$id}->{num_ratings} = $books{$id}->{num_ratings};
-	$db->{$id}->{checked    } = time;
+	$db->{$id}->{checked    } = time;  # GR locale
 	$maxbooks--;
 	
 	next unless %revs;
@@ -219,31 +245,35 @@ for my $id (@oldest_ids)
 
 
 # E-mail signature block if run for other users:
-if( $MAILFROM && $num_hits > 0 )
-{
-	print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
-	    . " [***  ] 3/5 stars rating without text      \n"
-	    . " [TTT  ] 3/5 stars rating with some text    \n"
-	    . " [9 new] ratings better viewed on book page \n"
-	    . "                                            \n"
-	    . " Reply 'weekly'      to avoid daily mails   \n"
-	    . " Reply 'shelf ...'   to select better shelf \n"
-	    . " Reply 'unsubscribe' to unsubscribe         \n"
-	    . " Via https://andre-st.github.io/goodreads/  \n";
-}
+print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
+    . " [***  ] 3/5 stars rating without text           \n"
+    . " [TTT  ] 3/5 stars rating with some text         \n"
+    . " [9 new] ratings better viewed on the book page  \n"
+    . "                                                 \n"
+    . " Reply 'textonly'     to skip ratings w/o text   \n"
+    . " Reply 'weekly'       to avoid daily mails       \n"
+    . " Reply 'shelf name'   to check alternative shelf \n"
+    . " Reply 'unsubscribe'  to unsubscribe             \n"
+    . " Via https://andre-st.github.io/goodreads/       \n\n"
+	if $MAILFROM && $num_hits > 0;
 
 
 # Add new books:
-$db->{$_} = { 'id' => $_, 'num_ratings' => $books{$_}->{num_ratings}, 'checked' => time }
-	for( @added );
+$db->{$_} = { 'id'          => $_, 
+              'num_ratings' => $books{$_}->{num_ratings}, 
+              'checked'     => time } for( @added );
 
 
 # Cronjob audits:
 $_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s"', 
-		$num_hits, scalar keys %books, $USERID, $SHELF );
+               $num_hits, scalar keys %books, $USERID, $SHELF );
 
 
 # Update database:
 my @lines = values %{$db};
-csv( in => \@lines, out => $DBPATH, headers => [qw( id num_ratings checked )] );
+csv( in      => \@lines, 
+     out     => $DBPATH, 
+     headers => [qw( id num_ratings checked )] );
 
+
+# Done.

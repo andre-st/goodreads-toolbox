@@ -27,7 +27,10 @@ $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make        # Required Perl modules from CPAN
 $ ./similarauth.pl --help
-$ ./similarauth.pl YOURGOODUSERNUMBER
+$ ./similarauth.pl YourGoodreadsLoginMail@example.com
+
+Enter Goodreads password [CTRL-C to abort]: ****************
+Signing in...
 
 Loading books from "ALL" may take a while... 108 books
 Loading similar authors for 96 authors:

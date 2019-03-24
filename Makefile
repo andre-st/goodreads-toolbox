@@ -23,8 +23,7 @@ all :
 ifndef LIBCURLDEV
 	$(error ${LIBCURLDEV_ERR})
 endif
-	perl -MCPAN -e 'install List::MoreUtils, HTML::Entities, URI::Escape, Cache::FileCache, WWW::Curl::Easy'
-	perl -MCPAN -e 'install Text::CSV, Log::Any'
+perl -MCPAN -e 'install List::MoreUtils, HTML::Entities, URI::Escape, Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any, IO::Prompter, Email::Valid'
 	chmod +x *.pl
 	ln -sf words-en-xl.lst            ./dict/default.lst
 	ln -sf ../../git-hooks/pre-commit ./.git/hooks/pre-commit

@@ -11,9 +11,8 @@ friendgroup - groups common among the members I follow
 
 =head1 SYNOPSIS
 
-B<friendgroup.pl> [B<-c> F<numdays>] [B<-o> F<filename>] F<goodusernumber>
-
-You find your F<goodusernumber> by looking at your shelf URLs.
+B<friendgroup.pl> [B<-c> F<numdays>] [B<-o> F<filename>] [B<-u> F<string>]
+F<goodloginmail> [F<goodloginpass>]
 
 
 =head1 OPTIONS
@@ -28,6 +27,12 @@ number of days to store and reuse downloaded data in F</tmp/FileCache/>,
 default is 31 days. This helps with cheap recovery on a crash, power blackout 
 or pause, and when experimenting with parameters. Loading data from Goodreads
 is a very time consuming process.
+
+
+=item B<-u, --userid>=F<string>
+
+check another member instead of the one identified by the login-mail 
+and password arguments. You find the ID by looking at a shelf URLs.
 
 
 =item B<-o, --outfile>=F<filename>
@@ -47,14 +52,12 @@ show full man page
 
 F</tmp/FileCache/>
 
-F<./.cookie>
-
 
 =head1 EXAMPLES
 
-$ ./friendgroup.pl 55554444
+$ ./friendgroup.pl login@gmail.com MyPASSword
 
-$ ./friendgroup.pl --outfile=./sub/myfile.html  55554444
+$ ./friendgroup.pl --outfile=./sub/myfile.html  login@gmail.com
 
 
 =head1 REPORTING BUGS
@@ -114,20 +117,25 @@ our $CACHEDAYS = 31;
 our $OUTPATH;
 our $USERID;
 
-GetOptions( 'help|?'       => sub{ pod2usage( -verbose => 2 ) },
-            'outfile|o=s'  => \$OUTPATH,
-            'cache|c=i'    => \$CACHEDAYS )
+GetOptions( 'help|?'      => sub{ pod2usage( -verbose => 2 ) },
+            'outfile|o=s' => \$OUTPATH,
+            'userid|u=s'  => \$USERID,
+            'cache|c=i'   => \$CACHEDAYS )
              or pod2usage( 1 );
 
-$USERID  = $ARGV[0] or pod2usage( 1 );
-$OUTPATH = "friendgroup-${USERID}.html" if !$OUTPATH;
-gsetcookie();  # Followed list, friend list and user groups list are private
-gsetcache( $CACHEDAYS );
-
+pod2usage( 1 ) if !$ARGV[0];
 pod2usage( -exitval   => "NOEXIT", 
            -sections  => [ "REPORTING BUGS" ], 
            -verbose   => 99,
            -noperldoc => 1 );
+
+glogin( usermail => $ARGV[0],  # Login required: Followee/friend/groups list are private
+        userpass => $ARGV[1],  # Asks pw if omitted
+        r_userid => \$USERID );
+
+$OUTPATH = "friendgroup-${USERID}.html" if !$OUTPATH;
+   
+gsetcache( $CACHEDAYS );
 
 
 

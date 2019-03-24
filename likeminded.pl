@@ -12,10 +12,8 @@ likeminded - finding people on Goodreads.com based on the books they've read
 =head1 SYNOPSIS
 
 B<likeminded.pl> [B<-m> F<number>] [B<-a> F<number>] [B<-x> F<number>] 
-[B<-d> F<filename>] [B<-c> F<numdays>] [B<-k>] [B<-o> F<filename>] 
-[B<-s> F<shelfname> ...] F<goodusernumber>
-
-You find your F<goodusernumber> by looking at your shelf URLs.
+[B<-d> F<filename>] [B<-c> F<numdays>] [B<-u> F<string>] [B<-o> F<filename>] 
+[B<-s> F<shelfname> ...] F<goodloginmail> [F<goodloginpass>]
 
 
 =head1 OPTIONS
@@ -61,18 +59,18 @@ and 2+ (dict-search) has a bad cost/benefit ratio given hundreds of books.
 default is F<./dict/default.lst>
 
 
+=item B<-u, --userid>=F<string>
+
+check another member instead of the one identified by the login-mail 
+and password arguments. You find the ID by looking at a shelf URLs.
+
+
 =item B<-c, --cache>=F<numdays>
 
 number of days to store and reuse downloaded data in F</tmp/FileCache/>,
 default is 31 days. This helps with cheap recovery on a crash, power blackout 
 or pause, and when experimenting with parameters. Loading data from Goodreads
 is a very time consuming process.
-
-
-=item B<-k, --cookie>
-
-use cookie-file F<./.cookie> (only required for private accounts). 
-How to get the cookie content: https://www.youtube.com/watch?v=o_CYdZBPDCg
 
 
 =item B<-o, --outfile>=F<filename>
@@ -88,7 +86,7 @@ If the name contains special characters use an URL-encoded name.
 You can use this parameter multiple times if there is more than 1 shelf to
 include (boolean OR operation), see the examples section of this man page.
 Use B<--shelf>=shelf1,shelf2,shelf3 to intersect shelves (Intersection
-requires B<--cookie>).
+requires password).
 
 
 =item B<-?, --help>
@@ -102,8 +100,6 @@ show full man page
 
 F</tmp/FileCache/>
 
-F<./.cookie>
-
 
 =head1 EXAMPLES
 
@@ -111,7 +107,7 @@ $ ./likeminded.pl 55554444
 
 $ ./likeminded.pl --shelf=science --shelf=music  55554444
 
-$ ./likeminded.pl --shelf=animals,fiction --cookie 55554444
+$ ./likeminded.pl --shelf=animals,fiction 55554444
 
 $ ./likeminded.pl --outfile=./sub/myfile.html  55554444
 
@@ -176,7 +172,6 @@ our $MAXAUBOOKS = 600;
 our $RIGOR      = 1;
 our $DICTPATH   = './dict/default.lst';
 our $CACHEDAYS  = 31;
-our $USECOOKIE  = 0;
 our @SHELVES;
 our $OUTPATH;
 our $USERID;
@@ -185,24 +180,28 @@ GetOptions( 'common|m=i'         => \$MINCOMMON,
             'maxauthorbooks|a=i' => \$MAXAUBOOKS,
             'rigor|x=i'          => \$RIGOR,
             'dict|d=s'           => \$DICTPATH,
+            'userid|u=s'         => \$USERID,
             'help|?'             => sub{ pod2usage( -verbose => 2 ) },
             'outfile|o=s'        => \$OUTPATH,
             'cache|c=i'          => \$CACHEDAYS,
-            'cookie|k'           => \$USECOOKIE,
             'shelf|s=s'          => \@SHELVES ) 
              or pod2usage( 1 );
 
-$USERID  = $ARGV[0] or pod2usage( 1 );
-@SHELVES = qw( %23ALL%23 )                                                   if !@SHELVES;
-$OUTPATH = sprintf( "likeminded-%s-%s.html", $USERID, join( '-', @SHELVES )) if !$OUTPATH;
-
-gsetcookie() if $USECOOKIE;
-gsetcache( $CACHEDAYS );
-
+pod2usage( 1 ) if !$ARGV[0];
 pod2usage( -exitval   => "NOEXIT", 
            -sections  => [ "REPORTING BUGS" ], 
            -verbose   => 99, 
            -noperldoc => 1 );
+
+glogin( usermail => $ARGV[0],  # Login not really required at the moment
+        userpass => $ARGV[1],  # Asks pw if omitted
+        r_userid => \$USERID );
+
+@SHELVES = qw( %23ALL%23 )                                                   if !@SHELVES;
+$OUTPATH = sprintf( "likeminded-%s-%s.html", $USERID, join( '-', @SHELVES )) if !$OUTPATH;
+
+gsetcache( $CACHEDAYS );
+
 
 
 

@@ -13,9 +13,7 @@ friendrated - books and authors common among the members you follow
 
 B<friendrated.pl> [B<-f> F<number>] [B<-r> F<number>] [B<-c> F<numdays>] 
 [B<-m> F<number>] [B<-y> F<number>] [B<-e> F<number>] [B<-o> F<filename>] 
-F<goodusernumber>
-
-You find your F<goodusernumber> by looking at your shelf URLs.
+[B<-u> F<string>] F<goodloginmail> [F<goodloginpass>]
 
 
 =head1 OPTIONS
@@ -26,8 +24,8 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =item B<-f, --favorers>=F<number>
 
-only add books to the result which were rated by at least n friends 
-or followees, default is 3
+only add books to the resulting report which were rated by at least 
+n friends or followees, default is 3
 
 
 =item B<-r, --rated>=F<number>
@@ -38,7 +36,8 @@ default is 4
 
 =item B<-m, --maxratings>=F<number>
 
-exclude books with more than say 1000 ratings by the Goodreads community
+exclude books with more than say 1000 ratings by the Goodreads community,
+e.g., well known bestsellers
 
 
 =item B<-y, --minyear>=F<number>
@@ -49,6 +48,12 @@ exclude books published before say 1950
 =item B<-e, --maxyear>=F<number>
 
 exclude books published after say 1980
+
+
+=item B<-u, --userid>=F<string>
+
+check another member instead of the one identified by the login-mail 
+and password arguments. You find the ID by looking at a shelf URLs.
 
 
 =item B<-c, --cache>=F<numdays>
@@ -76,20 +81,18 @@ show full man page
 
 F</tmp/FileCache/>
 
-F<./.cookie>
-
 
 =head1 EXAMPLES
 
-$ ./friendrated.pl 55554444
+$ ./friendrated.pl login@gmail.com MyPASSword
 
-$ ./friendrated.pl --rated=4 --favorers=5  55554444
+$ ./friendrated.pl --rated=4 --favorers=5  login@gmail.com
 
-$ ./friendrated.pl --minyear=1950 --maxyear=1980 --maxratings=1000 55554444
+$ ./friendrated.pl --minyear=1950 --maxyear=1980 --maxratings=1000 login@gmail.com
 
-$ ./friendrated.pl --outfile=./sub/myfile.html  55554444
+$ ./friendrated.pl --outfile=./sub/myfile.html  login@gmail.com
 
-$ ./friendrated.pl -c 31 -r 4 -f 3 -o myfile.html  55554444
+$ ./friendrated.pl -c 31 -r 4 -f 3 -o myfile.html  login@gmail.com
 
 
 =head1 REPORTING BUGS
@@ -112,7 +115,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2019-01-27 (Since 2018-05-10)
+2019-03-24 (Since 2018-05-10)
 
 =cut
 
@@ -160,6 +163,7 @@ GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
             'maxratings|m=i' => \$MAXRATS,
             'minyear|y=i'    => \$MINYEAR,
             'maxyear|e=i'    => \$MAXYEAR,
+            'userid|u=s'     => \$USERID,
             'help|?'         => sub{ pod2usage( -verbose => 2 ) },
             'outfile|o=s'    => \$OUTPATH,
             'cache|c=i'      => \$CACHEDAYS )
@@ -170,15 +174,19 @@ die( "[ERROR] Invalid argument: --minyear=$MINYEAR higher than --maxyear=$MAXYEA
 	&& defined $MAXYEAR 
 	&& $MINYEAR > $MAXYEAR;
 
-$USERID  = $ARGV[0] or pod2usage( 1 );
-$OUTPATH = "friendrated-${USERID}.html" if !$OUTPATH;
-gsetcookie();  # Followed list, friend list and some shelves are private
-gsetcache( $CACHEDAYS );
-
+pod2usage( 1 ) if !$ARGV[0];
 pod2usage( -exitval   => "NOEXIT", 
            -sections  => [ "REPORTING BUGS" ], 
            -verbose   => 99,
            -noperldoc => 1 );
+
+glogin( usermail => $ARGV[0],  # Login required: Followee/friend list/some shelves are private
+        userpass => $ARGV[1],  # Asks pw if omitted
+        r_userid => \$USERID );
+
+$OUTPATH = "friendrated-${USERID}.html" if !$OUTPATH;
+
+gsetcache( $CACHEDAYS );
 
 
 

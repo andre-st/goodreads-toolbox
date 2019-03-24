@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-03-09
+=item * Updated: 2019-03-24
 
 =item * Since: 2014-11-05
 
@@ -299,20 +299,17 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<void> gsetcookie(I<{ ... }>)
+=head2 C<void> glogin(I<{ ... }>)
 
 =over
 
 =item * some Goodreads.com pages are only accessible by authenticated members
 
-=item * C<content  =E<gt> string> with cookie data that can be send to Goodreads,
-        alternatively see I<filepath> [optional]
+=item * C<usermail =E<gt> string>
 
-=item * C<filepath =E<gt> string> path to a text-file with cookie-data; 
-        parameter is ignored if I<content> is set [optional, default '.cookie']
+=item * C<userpass =E<gt> string> 
 
-=item * copy-paste cookie from Chrome's DevTools network-view:
-        L<https://www.youtube.com/watch?v=o_CYdZBPDCg>
+=item * C<r_userid =E<gt> string ref> set user ID if variable is empty/undef [optional]
 
 =back
 
@@ -456,7 +453,7 @@ https://github.com/andre-st/
 
 =item * C<incl_followees =E<gt> bool> [optional, default 1]
 
-=item * Precondition: gsetcookie()
+=item * Precondition: glogin()
 
 =back
 
@@ -531,7 +528,7 @@ https://github.com/andre-st/
 
 =item * "&per_page" in print-view can be any number if you work with your 
         own shelf, otherwise max 200 if print view; ignored in non-print view;
-        per_page>20 requires access with a cookie, see gsetcookie()
+        per_page>20 requires access with a cookie, see glogin()
 
 =item * "&view=table" puts I<all> book data in code, although invisible (display=none)
 
@@ -755,9 +752,7 @@ https://github.com/andre-st/
 
 =over
 
-=item updates "_session_id2" for X-CSRF-Token
-
-=item TODO: replace all fields
+=item updates "_session_id2" for X-CSRF-Token, "csid", "u" (user?). "p" (password?)
 
 =back
 

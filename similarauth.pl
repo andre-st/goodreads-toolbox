@@ -11,10 +11,8 @@ similarauth - Finding all similar authors
 
 =head1 SYNOPSIS
 
-B<similarauth.pl> [B<-c> F<numdays>] [B<-o> F<filename>] 
-[B<-s> F<shelfname> ...] F<goodusernumber>
-
-You find your F<goodusernumber> by looking at your shelf URLs.
+B<similarauth.pl> [B<-u> F<string>] [B<-c> F<numdays>] [B<-o> F<filename>]
+[B<-s> F<shelfname> ...] F<goodloginmail> [F<goodloginpass>]
 
 
 =head1 OPTIONS
@@ -23,18 +21,18 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =over 4
 
+=item B<-u, --userid>=F<string>
+
+check another member instead of the one identified by the login-mail 
+and password arguments. You find the ID by looking at a shelf URLs.
+
+
 =item B<-c, --cache>=F<numdays>
 
 number of days to store and reuse downloaded data in F</tmp/FileCache/>,
 default is 31 days. This helps with cheap recovery on a crash, power blackout 
 or pause, and when experimenting with parameters. Loading data from Goodreads
 is a very time consuming process.
-
-
-=item B<-k, --cookie>
-
-use cookie-file F<./.cookie> (only required for private accounts).
-How to get the cookie content: https://www.youtube.com/watch?v=o_CYdZBPDCg
 
 
 =item B<-o, --outfile>=F<filename>
@@ -50,7 +48,7 @@ name of the shelf with a selection of books to be considered, default is
 You can use this parameter multiple times if there is more than 1 shelf to
 include (boolean OR operation), see the examples section of this man page.
 Use B<--shelf>=shelf1,shelf2,shelf3 to intersect shelves (Intersection
-requires B<--cookie>).
+requires password).
 
 
 =item B<-?, --help>
@@ -64,18 +62,16 @@ show full man page
 
 F</tmp/FileCache/>
 
-F<./.cookie>
-
 
 =head1 EXAMPLES
 
-$ ./similarauth.pl 55554444
+$ ./similarauth.pl login@gmail.com MyPASSword
 
-$ ./similarauth.pl --shelf=science --shelf=music  55554444
+$ ./similarauth.pl --shelf=science --shelf=music  login@gmail.com
 
-$ ./similarauth.pl --shelf=read --outfile=./sub/myfile.html  55554444
+$ ./similarauth.pl --shelf=read --outfile=./sub/myfile.html  login@gmail.com
 
-$ ./similarauth.pl -c 31 -s science -s music -o myfile.html  55554444
+$ ./similarauth.pl -c 31 -s science -s music -o myfile.html  login@gmail.com
 
 
 
@@ -99,7 +95,7 @@ More info in similarauth.md
 
 =head1 VERSION
 
-2019-01-27 (Since 2018-07-05)
+2019-03-24 (Since 2018-07-05)
 
 =cut
 
@@ -132,27 +128,30 @@ STDOUT->autoflush( 1 );
 our $TSTART    = time();
 our $CACHEDAYS = 31;
 our @SHELVES;
-our $USECOOKIE;
 our $OUTPATH;
 our $USERID;
 
 GetOptions( 'help|?'      => sub{ pod2usage( -verbose => 2 ) },
             'shelf|s=s'   => \@SHELVES,
+            'userid|u=s'  => \$USERID,
             'cache|c=i'   => \$CACHEDAYS,
-            'cookie|k'    => \$USECOOKIE,
             'outfile|o=s' => \$OUTPATH ) 
              or pod2usage( 1 );
 
-$USERID  = $ARGV[0] or pod2usage( 1 );
-@SHELVES = qw( %23ALL%23 ) if !@SHELVES;
-$OUTPATH = sprintf( "similarauth-%s-%s.html", $USERID, join( '-', @SHELVES ) ) if !$OUTPATH;
-gsetcookie() if $USECOOKIE;
-gsetcache( $CACHEDAYS );
-
+pod2usage( 1 ) if !$ARGV[0];
 pod2usage( -exitval   => "NOEXIT", 
            -sections  => [ "REPORTING BUGS" ], 
            -verbose   => 99,
            -noperldoc => 1 );
+
+glogin( usermail => $ARGV[0],  # Login not really required at the moment
+        userpass => $ARGV[1],  # Asks pw if omitted
+        r_userid => \$USERID );
+
+@SHELVES = qw( %23ALL%23 ) if !@SHELVES;
+$OUTPATH = sprintf( "similarauth-%s-%s.html", $USERID, join( '-', @SHELVES ) ) if !$OUTPATH;
+
+gsetcache( $CACHEDAYS );
 
 
 
