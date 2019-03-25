@@ -7,14 +7,16 @@ All notable changes to this project will be documented in this file.
 ## [1.17.0] - 2019-03-24
 ### Fixed
 
-- similarauth.pl: showed 0 authors all time because source was changed by GR
+- similarauth.pl: showed 0 authors all the time because the source markup 
+  was changed by GR
 
 ### Changed
 
 - New CPAN dependencies, run Makefile or just run:
 	`$ sudo perl -MCPAN -e "install IO::Prompter"`
-- some programs no longer accept the user-ID as base argument but the login mail address;
-  you can still check another user with the `--userid` parameter:
+- some programs no longer accept the Goodreads user-ID as first positional 
+  parameter but expect the user's login email address;
+  you can still check another user with the `--userid` option:
 	- likeminded.pl
 	- friendrated.pl
 	- friendgroup.pl
@@ -22,12 +24,12 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Users don't have to extract the Goodreads cookie from their browsers anymore.
+- Users don't have to extract the Goodreads cookie from their web-browsers anymore.
   Programs which require a cookie can obtain it themselves now, 
-  given the user's login mail address and password.
-  This should render the toolbox more accessible to many users
+  given the user's login email address and password.
+  This should render the toolbox more accessible to its users
   ([#25](https://github.com/andre-st/goodreads/issues/25))
-- recentrated: `--textonly` parameter to skip ratings without text
+- recentrated: `--textonly` option to skip ratings without text
   
 
 
@@ -39,9 +41,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - savreviews: 
-	- writes multiple files at once with one file per star-rating ([#14](https://github.com/andre-st/goodreads/issues/14))
+	- writes multiple files at once, with one file per star-rating ([#14](https://github.com/andre-st/goodreads/issues/14))
 	- reviews contain review date too
-	- `--outfile` parameter changed to `--outdir`
+	- `--outfile` option changed to `--outdir`
 
 ### Added
 
@@ -53,11 +55,11 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - likeminded: 
-	- `--similar` parameter was renamed to `--common`
+	- `--similar` option was renamed to `--common`
 	- final report does not rank members by the number of common authors only but
 	  includes library-sizes ([#18](https://github.com/andre-st/goodreads/issues/18))
 	- final report does not list private accounts anymore
-- generated HTML-reports now include `report.css`
+- generated HTML-reports now include `report.css` for styling
 
 
 ## [1.12.5] - 2019-01-13
@@ -67,7 +69,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- likeminded: new parameter `--maxauthorbooks` to limit the amount of books per author
+- likeminded: new option `--maxauthorbooks` to limit the amount of books per author
   since some authors list more than 2000 books; default is 600 most popular books
 - friendrated: more filters, e.g., _"books with less than 1000 ratings 
   and published between 1950 to 1980 and ..."_ ([#16](https://github.com/andre-st/goodreads/issues/16))
@@ -111,8 +113,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - new program: savreviews.pl
-- multiple `--shelf` parameter: `--shelf=music --shelf=science` ([#10](https://github.com/andre-st/goodreads/issues/10))
-- `--dict` parameter for custom dictionaries
+- multiple `--shelf` options: `--shelf=music --shelf=science` ([#10](https://github.com/andre-st/goodreads/issues/10))
+- `--dict` options for custom dictionaries
 - added words-based dictionaries to `./dict/` folder (perform better than Ngram dicts)
 
 ### Fixed
