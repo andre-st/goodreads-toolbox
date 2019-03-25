@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-03-24
+=item * Updated: 2019-03-25
 
 =item * Since: 2014-11-05
 
@@ -659,6 +659,14 @@ https://github.com/andre-st/
 =over
 
 =item * I<$rh_users>: C<(user_id =E<gt> L<%user|"\%user">,...)> 
+
+=back
+
+=head2 C<string> _conv_uni_codepoints( I<$string> )
+
+=over
+
+=item Convert Unicode codepoints such as \u003c
 
 =back
 

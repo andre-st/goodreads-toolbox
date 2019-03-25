@@ -5,9 +5,14 @@ All notable changes to this project will be documented in this file.
 
 
 ## [1.17.0] - 2019-03-24
+### Fixed
+
+- similarauth.pl: showed 0 authors all time because source was changed by GR
+
 ### Changed
 
-- New CPAN dependencies: `IO::Prompter`, `Email::Valid`
+- New CPAN dependencies, run Makefile or just run:
+	`$ sudo perl -MCPAN -e "install IO::Prompter, Email::Valid"`
 - some programs no longer accept the user-ID as base argument but the login mail address;
   you can still check another user with the `--userid` parameter:
 	- likeminded.pl

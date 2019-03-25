@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-03-24
+=item * Updated: 2019-03-25
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.22';  # X.XX version format required by Perl
+our $VERSION = '1.25';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -1735,6 +1735,25 @@ sub _extract_friends
 
 
 
+=head2 C<string> _conv_uni_codepoints( I<$string> )
+
+=over
+
+=item Convert Unicode codepoints such as \u003c
+
+=back
+
+=cut
+
+sub _conv_uni_codepoints
+{
+	# TODO: "Illegal hexadecimal digit 'n' ignored"	
+	my $str = shift;
+	$str    =~ s/\\u(....)/ pack 'U*', hex($1) /eg; 
+	return $str;
+}
+
+
 
 =head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str> )
 
@@ -1781,7 +1800,7 @@ sub _extract_revs
 		   $txt  = $txts if length( $txts ) > length( $txt );
 		
    		$txt =~ s/\\"/"/g;
-		$txt =~ s/\\u(....)/ pack 'U*', hex($1) /eg;  # Convert Unicode codepoints such as \u003c; TODO: "Illegal hexadecimal digit 'n' ignored"
+		$txt = _conv_uni_codepoints( $txt );
 		$txt =~ s/<br \/>/\n/g;
 		
 		$us{ id         } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
@@ -1827,34 +1846,41 @@ sub _extract_similar_authors
 	my $htm         = shift or return 0;
 	my $ret         = 0;
 	
-	while( $htm =~ /<li class='listElement'>(.*?)<\/li>/gs )
+	# All nice JSON since 2019-03-25, but as long as it's simple
+	# we still regex and avoid dependencies to a JSON module
+	# 
+	while( $htm =~ /<div data-react-class="ReactComponents.SimilarAuthorsList" data-react-props="([^"]*)/gs )
 	{	
-		my $row = $1;
-		my %au;
-		$au{id} = $row =~ /author\/show\/([0-9]+)/  ? $1 : undef;
+		my $json = _conv_uni_codepoints( decode_entities( $1 ) );
 		
-		next if $au{id} eq $uid_to_skip;
-		
-		$ret++;  # Incl. duplicates: 10 similar to author A, 9 to B; A and B can incl same similar authors
-				
-		if( exists $rh->{$au{id}} )
+		while( $json =~ /{"author":{"id":([^,]+),"name":"([^"]+)",[^{]*"profileImage":"([^"]+)/gs )
 		{
-			$rh->{$au{id}}->{_seen}++;  # similarauth.pl
-			next;
+			my %au;
+			$au{ id      } = $1;
+			$au{ name    } = $2;
+			$au{ img_url } = $3;
+			
+			next if $au{id} eq $uid_to_skip;
+			
+			$ret++;  # Incl. duplicates: 10 similar to author A, 9 to B; A and B can incl same similar authors
+					
+			if( exists $rh->{$au{id}} )
+			{
+				$rh->{$au{id}}->{_seen}++;  # similarauth.pl
+				next;
+			}
+			
+			$au{ name_lf    } = $au{name};  # TODO
+			$au{ url        } = _user_url( $au{id}, 1 );
+			$au{ works_url  } = _author_books_url( $au{id} );
+			$au{ is_author  } = 1;
+			$au{ is_private } = 0;
+			$au{ _seen      } = 1;
+			$au{ residence  } = undef;  # TODO?
+			$au{ num_books  } = undef;  # TODO
+			
+			$rh->{ $au{id} } = \%au;
 		}
-
-		$au{ name       } = $row =~ /class="bookTitle" href="\/author\/show\/[^>]+>([^<]+)/  ? decode_entities( $1 ) : '';
-		$au{ name_lf    } = $au{name};  # TODO
-		$au{ img_url    } = $row =~ /(https:\/\/images\.gr-assets\.com\/authors\/[^"]+)/     ? $1 : $_NOUSERIMGURL;
-		$au{ url        } = _user_url( $au{id}, 1 );
-		$au{ works_url  } = _author_books_url( $au{id} );
-		$au{ is_author  } = 1;
-		$au{ is_private } = 0;
-		$au{ _seen      } = 1;
-		$au{ residence  } = undef;  # TODO?
-		$au{ num_books  } = undef;  # TODO
-		
-		$rh->{ $au{id} } = \%au;
 	}
 	
 	$pfn->( $ret );
