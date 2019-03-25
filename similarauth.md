@@ -27,11 +27,10 @@ $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make        # Required Perl modules from CPAN
 $ ./similarauth.pl --help
-$ ./similarauth.pl YourGoodreadsLoginMail@example.com
+$ ./similarauth.pl goodlogin@example.com
 
-Enter Goodreads password [CTRL-C to abort]: ****************
-Signing in...
-
+Enter GR password for goodlogin@example.com: ****************
+Signing in to Goodreads...
 Loading books from "ALL" may take a while... 108 books
 Loading similar authors for 96 authors:
 [  0%] Huhn, Willy               #17326001	  0 similar	  2.56s

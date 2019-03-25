@@ -548,9 +548,9 @@ sub glogin
 	# Some people don't want their password on the command line 
 	# as it shows up in the command history, process list etc.
 	# 
-	$pass = prompt( -prompt => 'Enter Goodreads password [CTRL-C to abort]:', 
+	$pass = prompt( -prompt => "Enter GR password for $mail:", 
 	                -echo   => '*',
-	                -return => "\nSigning in...\n\n",
+	                -return => "\nSigning in to Goodreads...\n",
 	                -out    => *STDOUT,
 	                -in     => *STDIN ) while !$pass;
 	

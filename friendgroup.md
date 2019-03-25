@@ -25,11 +25,10 @@ $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make        # Required Perl modules from CPAN
 $ ./friendgroup.pl --help
-$ ./friendgroup.pl YourGoodreadsLoginMail@example.com
+$ ./friendgroup.pl goodlogin@example.com
 
-Enter Goodreads password [CTRL-C to abort]: *****************
-Signing in...
-
+Enter GR password for goodlogin@example.com: *****************
+Signing in to Goodreads...
 Getting list of members known to #18418712... 141 members (0.18s)
 [  0%] Aron Mellendar            #21254511      0 groups     0.41s
 [  1%] Moshe Fiono               #3932835       0 groups     0.80s

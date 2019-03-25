@@ -36,11 +36,10 @@ $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make       # Required Perl modules from CPAN
 $ ./likeminded.pl --help
-$ ./likeminded.pl YourGoodreadsLoginMail@example.com
+$ ./likeminded.pl goodlogin@example.com
 
-Enter Goodreads password [CTRL-C to abort]: ******************
-Signing in...
-
+Enter GR password for goodlogin@example.com: ******************
+Signing in to Goodreads...
 Loading authors from "ALL" may take a while... 95 authors
 Loading books of 95 authors:
 [  1%] Schuberth, Richard         #2793763    6 books    1.03s
