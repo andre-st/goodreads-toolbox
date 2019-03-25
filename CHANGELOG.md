@@ -27,7 +27,8 @@ All notable changes to this project will be documented in this file.
   given the user's login mail address and password.
   This should render the toolbox more accessible to many users
   ([#25](https://github.com/andre-st/goodreads/issues/25))
-
+- recentrated: `--textonly` parameter to skip ratings without text
+  
 
 
 ## [1.16.0] - 2019-02-16
