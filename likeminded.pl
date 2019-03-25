@@ -103,15 +103,15 @@ F</tmp/FileCache/>
 
 =head1 EXAMPLES
 
-$ ./likeminded.pl 55554444
+$ ./likeminded.pl login@gmail.com MyPASSword
 
-$ ./likeminded.pl --shelf=science --shelf=music  55554444
+$ ./likeminded.pl --shelf=science --shelf=music  login@gmail.com
 
-$ ./likeminded.pl --shelf=animals,fiction 55554444
+$ ./likeminded.pl --shelf=animals,fiction login@gmail.com
 
-$ ./likeminded.pl --outfile=./sub/myfile.html  55554444
+$ ./likeminded.pl --outfile=./sub/myfile.html  login@gmail.com
 
-$ ./likeminded.pl -c 31 -s read -m 5 -o myfile.html  55554444
+$ ./likeminded.pl -c 31 -s read -m 5 -o myfile.html  login@gmail.com
 
 
 =head1 REPORTING BUGS
@@ -134,7 +134,7 @@ More info in likeminded.md
 
 =head1 VERSION
 
-2019-01-27 (Since 2018-06-22)
+2019-03-24 (Since 2018-06-22)
 
 =cut
 
