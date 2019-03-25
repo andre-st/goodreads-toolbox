@@ -149,7 +149,6 @@ use Time::Piece;
 use Carp qw( croak );
 # Third party:
 use IO::Prompter;
-use Email::Valid;
 use URI::Escape;
 use HTML::Entities;
 use WWW::Curl::Easy;
@@ -181,8 +180,8 @@ our $_ENO_FATAL       = 600;  # abort
 our $_ENO_NODICT      = $_ENO_FATAL + 1;
 our $_ENO_BADSHELF    = $_ENO_FATAL + 2;
 our $_ENO_BADUSER     = $_ENO_FATAL + 3;
-our $_ENO_BADMAIL     = $_ENO_FATAL + 4;
-our $_ENO_BADARG      = $_ENO_FATAL + 5;
+our $_ENO_BADARG      = $_ENO_FATAL + 4;
+our $_ENO_BADLOGIN    = $_ENO_FATAL + 5;
 
 our $_MAXRETRIES      = 5;     # 
 our $_RETRYDELAY_SECS = 60*3;  # Total retry time: 15 minutes
@@ -207,9 +206,9 @@ our %_ERRMSG =
 	$_ENO_FATAL      => "\n[FATAL] %s",               # url
 	$_ENO_NODICT     => "\n[FATAL] Cannot open dictionary file: %s",       # path
 	$_ENO_BADSHELF   => "\n[FATAL] Invalid Goodreads shelf name \"%s\". Look at your shelf URLs.",  # name
-	$_ENO_BADUSER    => "\n[FATAL] Invalid Goodreads user ID \"%s\".",     # id
-	$_ENO_BADMAIL    => "\n[FATAL] Invalid email address format \"%s\".",  # mail addr
+	$_ENO_BADUSER    => "\n[FATAL] Invalid Goodreads user ID \"%s\".",  # id
 	$_ENO_BADARG     => "\n[FATAL] Argument \"%s\" expected.",             # name
+	$_ENO_BADLOGIN   => "\n[FATAL] Incorrect login."
 );
 sub _errmsg{ my $eno = shift; return sprintf( $_ERRMSG{$eno}, @_ ); }
 
@@ -541,10 +540,6 @@ sub glogin
 	my $pass   = $args{ userpass } // undef;
 	my $ruid   = $args{ r_userid } // undef;
 	
-	croak( _errmsg( $_ENO_BADMAIL, $mail ) ) 
-		unless Email::Valid->address( -address => $mail, 
-		                              -mxcheck => 0 );
-	
 	# Some people don't want their password on the command line 
 	# as it shows up in the command history, process list etc.
 	# 
@@ -584,6 +579,7 @@ sub glogin
 	{
 		$htm   = _html( $_HOMEURL, $_ENO_ERROR, 0 );  # Also POST 302 target
 		$$ruid = $htm =~ /setTargeting\("uid", "([^"]+)/ ? $1 : undef;
+		croak( _errmsg( $_ENO_BADLOGIN ) ) unless $$ruid;
 	}
 }
 

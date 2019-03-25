@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - New CPAN dependencies, run Makefile or just run:
-	`$ sudo perl -MCPAN -e "install IO::Prompter, Email::Valid"`
+	`$ sudo perl -MCPAN -e "install IO::Prompter"`
 - some programs no longer accept the user-ID as base argument but the login mail address;
   you can still check another user with the `--userid` parameter:
 	- likeminded.pl
