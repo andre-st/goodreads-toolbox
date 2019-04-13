@@ -2,8 +2,7 @@
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
-8 Perl-scripts for Goodreads.com—the world largest book community 
-and cataloging software as a service. [What's new?](CHANGELOG.md)
+8 Perl-scripts for Goodreads.com—the world largest book (cataloging) community. [What's new?](CHANGELOG.md)
 
 
 ## [recentrated.pl](recentrated.md)
