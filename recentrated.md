@@ -40,7 +40,6 @@ Recently rated books in your "watch-ratings" shelf:
 
 
 --
-
  [***  ] 3/5 stars rating without text
  [ttt  ] 3/5 stars rating with tweet-size text
  [TTT  ] 3/5 stars rating with text
