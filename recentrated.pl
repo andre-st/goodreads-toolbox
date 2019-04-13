@@ -247,7 +247,8 @@ for my $id (@oldest_ids)
 # E-mail signature block if run for other users:
 print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
     . " [***  ] 3/5 stars rating without text           \n"
-    . " [TTT  ] 3/5 stars rating with some text         \n"
+    . " [ttt  ] 3/5 stars rating with tweet-size text   \n"
+    . " [TTT  ] 3/5 stars rating with text              \n"
     . " [9 new] ratings better viewed on the book page  \n"
     . "                                                 \n"
     . " Reply 'textonly'     to skip ratings w/o text   \n"

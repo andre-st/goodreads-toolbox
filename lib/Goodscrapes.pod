@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-03-25
+=item * Updated: 2019-04-13
 
 =item * Since: 2014-11-05
 
@@ -220,7 +220,7 @@ https://github.com/andre-st/
 
 =item * rating_str  =E<gt> C<string> 
                        represention of rating, e.g., 3/5 as S<"[***  ]"> or S<"[TTT  ]"> 
-                       if there's additional text
+                       if there's additional text, or S<"[ttt  ]"> if not longer than 160 chars
 
 =item * text        =E<gt> C<string>
 

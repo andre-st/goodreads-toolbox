@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-03-25
+=item * Updated: 2019-04-13
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.25';  # X.XX version format required by Perl
+our $VERSION = '1.27';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -359,7 +359,7 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =item * rating_str  =E<gt> C<string> 
                        represention of rating, e.g., 3/5 as S<"[***  ]"> or S<"[TTT  ]"> 
-                       if there's additional text
+                       if there's additional text, or S<"[ttt  ]"> if not longer than 160 chars
 
 =item * text        =E<gt> C<string>
 
@@ -1809,7 +1809,7 @@ sub _extract_revs
 		$rv{ id         } = $row =~ /\/review\/show\/([0-9]+)/ ? $1 : undef;
 		$rv{ text       } = $txt;
 		$rv{ rating     } = () = $row =~ /staticStar p10/g;  # Count occurances
-		$rv{ rating_str } = $rv{rating} ? ('[' . ($rv{text} ? 'T' : '*') x $rv{rating} . ' ' x (5-$rv{rating}) . ']') : '[added]';
+		$rv{ rating_str } = $rv{rating} ? ('[' . ($rv{text} ? (length($rv{text})>160?'T':'t') : '*') x $rv{rating} . ' ' x (5-$rv{rating}) . ']') : '[added]';
 		$rv{ url        } = _rev_url( $rv{id} );
 		$rv{ date       } = $dat_tpiece;
 		$rv{ book_id    } = $bid;
