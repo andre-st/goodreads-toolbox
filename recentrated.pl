@@ -138,7 +138,7 @@ GetOptions( 'textonly|t' => $TEXTONLY,
 
 # The more URLs, the longer and untempting the mail.
 # If number exceeded, we link to the book page with *all* reviews.
-our $MAX_REVURLS_PER_BOOK = 2;
+our $MAX_REVURLS_PER_BOOK = 3;
 
 # Limit number of books in the mail and the program runtime if not admin
 our $maxbooks = $MAILFROM && $MAILTO && $MAILFROM ne $MAILTO ? 20 : 999999;
