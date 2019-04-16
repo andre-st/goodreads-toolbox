@@ -91,7 +91,7 @@ More info in recentrated.md
 
 =head1 VERSION
 
-2019-03-09 (Since 2018-01-09)
+2019-04-16 (Since 2018-01-09)
 
 =cut
 
@@ -125,16 +125,16 @@ use Goodscrapes;
 pod2usage( -verbose => 2 ) if $#ARGV < 0;
 setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
 
+our $TEXTONLY = 0;
+
+GetOptions( 'textonly|t' => \$TEXTONLY,
+            'help|?'     => sub{ pod2usage( -verbose => 2 ) });
+
 our $USERID   = gverifyuser ( $ARGV[0] );
 our $SHELF    = gverifyshelf( $ARGV[1] );
 our $MAILTO   = $ARGV[2];
 our $MAILFROM = $ARGV[3];
 our $DBPATH   = "/var/db/good/${USERID}-${SHELF}.csv";
-our $TEXTONLY = 0;
-
-GetOptions( 'textonly|t' => $TEXTONLY,
-            'help|?'     => sub{ pod2usage( -verbose => 2 ) });
-
 
 # The more URLs, the longer and untempting the mail.
 # If number exceeded, we link to the book page with *all* reviews.
@@ -261,7 +261,7 @@ print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
     . " [9 new] ratings better viewed on the book page  \n"
     . "                                                 \n"
     . " Reply 'textonly'     to skip ratings w/o text   \n"
-    . " Reply 'weekly'       to avoid daily mails       \n"
+#   . " Reply 'weekly'       to avoid daily mails       \n"
     . " Reply 'shelf name'   to check alternative shelf \n"
     . " Reply 'unsubscribe'  to unsubscribe             \n"
     . " Via https://andre-st.github.io/goodreads/       \n\n"
