@@ -5,8 +5,8 @@
 # Put me to: /etc/cron.daily
 #
 
-readonly MAILFROM="YOUREMAIL@gmail.com"
-readonly SCRIPT="/home/andre/work/programs/goodreads/recentrated.pl"
+readonly MAILFROM="adminuser@gmail.com"
+readonly SCRIPT="/path/to/recentrated.pl"
 readonly DB_DIR="/var/db/good"
 readonly MAILERS=(
 		[0]="ifne /usr/sbin/sendmail -t"
@@ -38,6 +38,7 @@ chk()
 	 goodshelf="${2}" 
 	    mailto="${3}"
 	  mailerid="${4:-0}"
+	      opts=${5}
 	    mailer="${MAILERS[$mailerid]}"
 	   csvname="${gooduser}-${goodshelf}.csv"
 	   csvpath="${DB_DIR}/${csvname}"
@@ -54,17 +55,20 @@ chk()
 			cp --preserve --force "${csvpath}" "${csvbakpath}" || exit 1
 		fi
 	fi
-	( "${SCRIPT}" "${gooduser}" "${goodshelf}" "${mailto}" "${MAILFROM}" | ${mailer} ) \
+	( "${SCRIPT}" ${opts} "${gooduser}" "${goodshelf}" "${mailto}" "${MAILFROM}" | ${mailer} ) \
 		&& [ "$mailerid" != "9" ]     \
 		&& rm --force "${csvbakpath}"
 }
 
 
 
-#============================================================================================================
-#    USER      SHELF                     MAILTO                  MAILER  REALNAME            DATE      LINE
-#============================================================================================================
-chk  12345678  "%E3%85%A1watch-ratings"  usermail1@example1.com  0       # me                18/01/12
-chk  12345678  "watch-ratings"           user@example2.com       0       # Mrs. Jane Doe     18/02/05
-chk  12345678  "to-follow"               mail3@example3.com      1       # Mr. John Doe      18/05/04
+#==========================================================================================================================
+#    USER      SHELF                     MAILTO                  MAILER  OPTS  REALNAME              SINCE     BOOKS@04/10
+#==========================================================================================================================
+chk  12345678  "%E3%85%A1watch-ratings"  "${MAILFROM}"           0             # me                            123
+chk    345678  "watch-ratings"           example1@gmail.com      0             # Example 1           18/01/12    3
+chk   2345678  "de-mooisten"             example2@gmx.net        0             # Example 2           18/11/14   23
+chk      5678  "wishlist-to-buy"         example3@yahoo.com      0       -t    # Example 3           18/06/11  123
+
+
 

@@ -11,7 +11,7 @@
 # Put me to: /etc/cron.monthly
 #
 
-readonly MAILFROM="datakadabra@gmail.com"
+readonly MAILFROM="adminuser@gmail.com"
 readonly NET_NAMESPACE_ANON="ns_private"
 readonly MAILER="ifne /usr/sbin/sendmail -t"
 readonly MAILER_ANON="ifne ip netns exec ${NET_NAMESPACE_ANON} /usr/sbin/sendmail -t"
@@ -44,9 +44,9 @@ mailtxt()
 	echo
 	echo "--"
 	echo "  This is an automatically generated email."
-	echo "   Just reply 'unsubscribe' to unsubscribe."
-	echo "    Add new books to your shelf at any time."
-	echo "     Via https://andre-st.github.io/goodreads/"
+	echo "  Just reply 'unsubscribe' to unsubscribe."
+	echo "  Add new books to your shelf at any time."
+	echo "  Via https://andre-st.github.io/goodreads/"
 }
 
 
