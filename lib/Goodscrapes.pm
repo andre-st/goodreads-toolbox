@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-04-13
+=item * Updated: 2019-05-02
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.27';  # X.XX version format required by Perl
+our $VERSION = '1.28';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -147,6 +147,7 @@ our @EXPORT = qw(
 # Perl core:
 use Time::Piece;
 use Carp qw( croak );
+use List::Util qw(sum);
 # Third party:
 use IO::Prompter;
 use URI::Escape;
@@ -508,7 +509,9 @@ sub gmeter
 		   $v  = 100 if defined $_[1] && $v > 100;  # Allows to trigger "100%" by passing (1, 1)
 		my $s  = sprintf( $f, $v );
 		
-		print "\b" x (length $s) if !$is_first;     # Backspaces prev meter if any (same-width format str)
+		my $ansicodeslen = sum( map( length, $s =~ /\x1b\[[0-9;]*m/g ) );
+		
+		print "\b" x (length( $s )-$ansicodeslen) if !$is_first;     # Backspaces prev meter if any (same-width format str)
 		print $s;
 		$is_first = 0;
 	};
