@@ -141,7 +141,7 @@ our $DBPATH   = "/var/db/good/${USERID}-${SHELF}.csv";
 our $MAX_REVURLS_PER_BOOK = 3;
 
 # Limit number of books in the mail and the program runtime if not admin
-our $maxbooks = $MAILFROM && $MAILTO && $MAILFROM ne $MAILTO ? 20 : 999999;
+our $maxbooks = $MAILFROM && $MAILTO && $MAILFROM ne $MAILTO ? 50 : 999999;
 
 # GR-URLs in mail padded to average length, with "https://" stripped
 sub prettyurl{ return sprintf '%-36s', substr( shift, 8 ); }
@@ -253,6 +253,12 @@ for my $id (@oldest_ids)
 #	if $MAILFROM && $num_hits > 20;
 
 
+# Without a hint, the user doesn't know whether there are simply no 
+# stars-only ratings or whether they were intentionally ignored:
+print "\n\n\nRatings without text were ignored (Reply 'all' otherwise).\n" 
+	if $TEXTONLY;
+
+
 # E-mail signature block if run for other users:
 print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
     . " [***  ] 3/5 stars rating without text           \n"
@@ -262,10 +268,10 @@ print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
     . "                                                 \n"
     . " Reply 'textonly'     to skip ratings w/o text   \n"
 #   . " Reply 'weekly'       to avoid daily mails       \n"
-    . " Reply 'shelf name'   to check alternative shelf \n"
+    . " Reply 'shelf NAME'   to check alternative shelf \n"
     . " Reply 'unsubscribe'  to unsubscribe             \n"
     . " Via https://andre-st.github.io/goodreads/       \n\n"
-	if $MAILFROM && $num_hits > 0;
+	if( $MAILFROM && $num_hits > 0 );
 
 
 # Add new books:
