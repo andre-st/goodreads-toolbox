@@ -509,7 +509,7 @@ sub gmeter
 		   $v  = 100 if defined $_[1] && $v > 100;  # Allows to trigger "100%" by passing (1, 1)
 		my $s  = sprintf( $f, $v );
 		
-		my $ansicodeslen = sum( map( length, $s =~ /\x1b\[[0-9;]*m/g ) );
+		my $ansicodeslen = sum( map( length, $s =~ /\x1b\[[0-9;]*m/g ) ) || 0;
 		
 		print "\b" x (length( $s )-$ansicodeslen) if !$is_first;     # Backspaces prev meter if any (same-width format str)
 		print $s;
@@ -1852,7 +1852,7 @@ sub _extract_similar_authors
 	{	
 		my $json = _conv_uni_codepoints( decode_entities( $1 ) );
 		
-		while( $json =~ /{"author":{"id":([^,]+),"name":"([^"]+)",[^{]*"profileImage":"([^"]+)/gs )
+		while( $json =~ /\{"author":\{"id":([^,]+),"name":"([^"]+)",[^\{]*"profileImage":"([^"]+)/gs )
 		{
 			my %au;
 			$au{ id      } = $1;
