@@ -62,7 +62,7 @@ default is F<./dict/default.lst>
 =item B<-u, --userid>=F<string>
 
 check another member instead of the one identified by the login-mail 
-and password arguments. You find the ID by looking at a shelf URLs.
+and password arguments. You find the ID by looking at the shelf URLs.
 
 
 =item B<-c, --cache>=F<numdays>
