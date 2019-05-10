@@ -255,7 +255,7 @@ for my $id (@oldest_ids)
 
 # Without a hint, the user doesn't know whether there are simply no 
 # stars-only ratings or whether they were intentionally ignored:
-print "\n\n\nRatings without text were ignored (Reply 'all' otherwise).\n" 
+print "\n\n\nRatings without text were ignored (Reply 'all' otherwise)." 
 	if $TEXTONLY;
 
 
@@ -267,6 +267,7 @@ print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
     . " [9 new] ratings better viewed on the book page  \n"
     . "                                                 \n"
     . " Reply 'textonly'     to skip ratings w/o text   \n"
+#   . " Reply 'hateonly'     to see negative rat. only  \n"
 #   . " Reply 'weekly'       to avoid daily mails       \n"
     . " Reply 'shelf NAME'   to check alternative shelf \n"
     . " Reply 'unsubscribe'  to unsubscribe             \n"
