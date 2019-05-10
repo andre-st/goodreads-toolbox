@@ -13,7 +13,7 @@ friendrated - books and authors common among the members you follow
 
 B<friendrated.pl> [B<-f> F<number>] [B<-r> F<number>] [B<-c> F<numdays>] 
 [B<-m> F<number>] [B<-y> F<number>] [B<-e> F<number>] [B<-o> F<filename>] 
-[B<-u> F<string>] F<goodloginmail> [F<goodloginpass>]
+[B<-u> F<string>] [B<-t>] F<goodloginmail> [F<goodloginpass>]
 
 
 =head1 OPTIONS
@@ -30,14 +30,14 @@ n friends or followees, default is 3
 
 =item B<-r, --rated>=F<number>
 
-number between 1 and 5: only consider books rated at least n stars,
-default is 4
+only consider books rated at least n stars,
+0 includes no rating, maximum is 5; default is 4
 
 
 =item B<-m, --maxratings>=F<number>
 
 exclude books with more than say 1000 ratings by the Goodreads community,
-e.g., well known bestsellers
+e.g., well known bestsellers (Harry Potter)
 
 
 =item B<-y, --minyear>=F<number>
@@ -56,6 +56,14 @@ check another member instead of the one identified by the login-mail
 and password arguments. You find the ID by looking at the shelf URLs.
 
 
+=item B<-t, --toread>
+
+don't check the "read" but "to-read" shelves of the members.
+This option also overrides the B<--rated> option with value 0.
+The final report will be about the most wished-for books among 
+the members you follow.
+
+
 =item B<-c, --cache>=F<numdays>
 
 number of days to store and reuse downloaded data in F</tmp/FileCache/>,
@@ -67,7 +75,7 @@ is a very time consuming process.
 =item B<-o, --outfile>=F<filename>
 
 name of the HTML file where we write results to, default is
-"./friendrated-F<goodusernumber>.html"
+"./friendrated-F<goodusernumber>-F<shelfname>.html"
 
 
 =item B<-?, --help>
@@ -115,7 +123,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2019-03-24 (Since 2018-05-10)
+2019-05-10 (Since 2018-05-10)
 
 =cut
 
@@ -150,7 +158,8 @@ STDOUT->autoflush( 1 );
 our $TSTART      = time();
 our $MINFAVORERS = 3;
 our $MINRATED    = 4;
-our $FRIENDSHELF = 'read';
+our $FRIENDSHELF = "read";
+our $ISTOREAD    = 0;
 our $CACHEDAYS   = 31;
 our $MAXRATS;
 our $MINYEAR;
@@ -164,7 +173,8 @@ GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
             'minyear|y=i'    => \$MINYEAR,
             'maxyear|e=i'    => \$MAXYEAR,
             'userid|u=s'     => \$USERID,
-            'help|?'         => sub{ pod2usage( -verbose => 2 ) },
+            'toread|t'       => sub{ $FRIENDSHELF = "to-read"; $MINRATED = 0; },
+            'help|?'         => sub{ pod2usage( -verbose => 2 );              },
             'outfile|o=s'    => \$OUTPATH,
             'cache|c=i'      => \$CACHEDAYS )
              or pod2usage( 1 );
@@ -184,7 +194,7 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend list/some shelv
         userpass => $ARGV[1],  # Asks pw if omitted
         r_userid => \$USERID );
 
-$OUTPATH = "friendrated-${USERID}.html" if !$OUTPATH;
+$OUTPATH = "friendrated-${USERID}-${FRIENDSHELF}.html" if !$OUTPATH;
 
 gsetcache( $CACHEDAYS );
 
@@ -195,6 +205,7 @@ my %members;
 my %books;       # bookid   => %book
 my %bkfaved_for; # {bookid}{favorerid}, favorers hash-type because of uniqueness;
 my %aufaved_for; # {auname}{favorerid}
+
 
 
 #-----------------------------------------------------------------------------
@@ -259,7 +270,7 @@ print( "Writing results to \"$OUTPATH\"... " );
 
 my $fh   = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 my $now  = strftime( '%a %b %e %H:%M:%S %Y', localtime );
-my $capt = "Books";
+my $capt = "Books from the \"${FRIENDSHELF}\" shelves, ";
 
 $capt .= sprintf( " published %s-%s,", $MINYEAR//"*", $MAXYEAR//"*" ) 
 	if defined $MINYEAR || defined $MAXYEAR;

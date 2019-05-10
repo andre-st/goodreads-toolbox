@@ -3,7 +3,7 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
 
-## Books common among the people I follow
+## Books common among the people you follow
 
 From the _Goodreads Feedback_ forum, [Sophie (2013)](https://www.goodreads.com/topic/show/1573755-most-popular-books-among-friends?page=1) or [Anne (2018):](https://www.goodreads.com/topic/show/19320371-recommendations)
 > I often choose a book to read if many of the people I follow have read it
@@ -61,6 +61,9 @@ Goodreads.com is very time consuming.  The script internally uses a
 
 "0 read 0 hits" is either an empty shelf or a shelf accessible only to friends
 of that person (depends on your login).
+
+By using the `--toread` option you can generate an alternative list about the 
+most _wished-for_ books among the members you follow.
 
 
 ## Observations and limitations
