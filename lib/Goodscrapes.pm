@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-05-09
+=item * Updated: 2019-05-10
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.29';  # X.XX version format required by Perl
+our $VERSION = '1.30';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -189,7 +189,9 @@ our $_RETRYDELAY_SECS = 60*3;  # Total retry time: 15 minutes
 
 
 # Misc module message strings:
-our $_MSG_RETRYING    = "[NOTE ] Retrying in 3 minutes... Press CTRL-C to exit";
+our $_MSG_RETRYING_FOREVER = "[NOTE ] Retrying in 3 minutes... Press CTRL-C to exit\n";
+our $_MSG_RETRYING_NTIMES  = "[NOTE ] Retrying in 3 minutes (%d times before skipping this one)... Press CTRL-C to exit\n";  # retriesleft
+
 our %_ERRMSG = 
 (
 	# _ENO_GRxxx are messages from the Goodreads.com website:
@@ -2229,13 +2231,16 @@ DOWNLOAD:
 	$curlret = $curl->perform;
 	$errno   = $curlret == 0 ? _check_page( $htm ) : $_ENO_CURL;
 	
-	warn( _errmsg( $errno, $url, $curl->strerror( $curlret ), $curl->errbuf ) )
+	warn( _errmsg( $errno, $url, $curl->strerror( $curlret ), $curl->errbuf ))
 		if $errno >= $warnlevel;
 	
 	if( $errno >= $_ENO_CRIT 
 	||( $errno >= $_ENO_ERROR && $retry-- > 0 ))
 	{
-		warn( $_MSG_RETRYING );
+		warn( $errno >= $_ENO_CRIT 
+				? $_MSG_RETRYING_FOREVER
+				: sprintf( $_MSG_RETRYING_NTIMES, $retry ));
+		
 		$curl = undef;  # disconnect
 		sleep( $_RETRYDELAY_SECS );
 		goto DOWNLOAD;
