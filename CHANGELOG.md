@@ -15,7 +15,9 @@ All notable changes to this project will be documented in this file.
 - friendrated: new `--toread` option lists the most wished-for 
   books among the members you follow (program checks the "to-read" 
   shelves instead of the "read" shelves and sets `--rated=0`)
-- recentrated: indicate active text-only option in mail body
+- recentrated: 
+	- indicate active text-only option in mail body
+	- indicate tweet-size text reviews by [tttt ] versus [TTTT ]
 
 
 
