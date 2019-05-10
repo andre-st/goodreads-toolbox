@@ -7,15 +7,15 @@ All notable changes to this project will be documented in this file.
 ## [1.18.0] - 2019-05-10
 ### Fixed
 
-- "Unescaped left brace in regex is illegal here in regex [...] line 1852"
-   broke programs on some Perl version
+- "Unescaped left brace in regex is illegal here in regex [...] line 1852" 
+  error broke programs on some Perl version
 
 ### Added
 
-- friendrated.pl: new `--toread` option lists the most wished-for 
-  books among the members you follow (prgoram checks the "to-read" 
-  shelves instead of the "read" shelves)
-- recentrated.pl: indicate active text-only option in mail body
+- friendrated: new `--toread` option lists the most wished-for 
+  books among the members you follow (program checks the "to-read" 
+  shelves instead of the "read" shelves and sets `--rated=0`)
+- recentrated: indicate active text-only option in mail body
 
 
 
