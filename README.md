@@ -82,9 +82,10 @@ and I hope Goodreads will eventually make those scripts obsolete
 by offering own solutions to the Goodreads community.
 
 
-## Getting started on GNU/Linux
+## Getting started
 
 ```console
+GNU/Linux terminal:
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make             # Gets required Perl modules from CPAN (details see Makefile)
