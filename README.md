@@ -82,9 +82,7 @@ and I hope Goodreads will eventually make those scripts obsolete
 by offering own solutions to the Goodreads community.
 
 
-## Getting started
-
-**GNU/Linux:**
+## Getting started on GNU/Linux
 
 ```console
 $ git clone https://github.com/andre-st/goodreads.git
@@ -96,10 +94,9 @@ $ sudo make             # Gets required Perl modules from CPAN (details see Make
 $ sudo make uninstall   # Removes files in system directories (details see Makefile)
 ```
 
-**Microsoft Windows:**
-
-A user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).  
-Otherwise, Windows users have to resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/), which runs any [Linux image](https://www.osboxes.org/virtualbox-images/).
+**Microsoft Windows** is not officially supported.
+A user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).
+Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/) and run a [Linux image](https://www.osboxes.org/virtualbox-images/).
 
 
 
