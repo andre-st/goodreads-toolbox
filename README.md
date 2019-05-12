@@ -82,12 +82,19 @@ and I hope Goodreads will eventually make those scripts obsolete
 by offering own solutions to the Goodreads community.
 
 
-## Installation
+## Getting started
+
+The toolbox typically requires a GNU/Linux environment and the Perl programming language, which comes usually pre-installed with many Linux-distributions. 
+A Windows user wrote me that he ran the programs through the ["Windows 10 Subsystem for Linux"](https://linuxhint.com/install_ubuntu_windows_10_wsl/).
+Otherwise, Windows users would have to resort to a virtual machine program such as Oracle's VirtualBox (free).
+Open a terminal and type:
 
 ```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
-$ sudo make       # Gets required Perl modules from CPAN (details see Makefile)
+$ sudo make             # Gets required Perl modules from CPAN (details see Makefile)
+...
+$ sudo make uninstall   # Removes files in system directories (details see Makefile)
 ```
 
 
