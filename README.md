@@ -93,7 +93,9 @@ Open a terminal and type:
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make             # Gets required Perl modules from CPAN (details see Makefile)
-...
+
+...try scripts and finally...
+
 $ sudo make uninstall   # Removes files in system directories (details see Makefile)
 ```
 
