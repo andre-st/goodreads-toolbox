@@ -88,8 +88,8 @@ The toolbox typically requires a GNU/Linux environment and the Perl programming 
 
 A Microsoft Windows user wrote me that he ran the programs through the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/).
 Otherwise, Windows users would have to resort to a virtual machine program such as Oracle's VirtualBox (free).
-Open a terminal and type:
 
+Open a terminal and type:
 ```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
