@@ -84,8 +84,8 @@ by offering own solutions to the Goodreads community.
 
 ## Getting started
 
-```console
 GNU/Linux terminal:
+```console
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make             # Gets required Perl modules from CPAN (details see Makefile)
@@ -95,7 +95,7 @@ $ sudo make             # Gets required Perl modules from CPAN (details see Make
 $ sudo make uninstall   # Removes files in system directories (details see Makefile)
 ```
 
-**Microsoft Windows** is not officially supported.
+_Microsoft Windows_ is not officially supported.
 A user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).
 Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/) and run a [Linux image](https://www.osboxes.org/virtualbox-images/).
 
