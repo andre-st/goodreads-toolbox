@@ -84,7 +84,7 @@ by offering own solutions to the Goodreads community.
 
 ## Getting started
 
-**GNU/Linux operating system:**
+**GNU/Linux:**
 
 ```console
 $ git clone https://github.com/andre-st/goodreads.git
