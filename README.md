@@ -99,7 +99,7 @@ $ sudo make uninstall   # Removes files in system directories (details see Makef
 **Microsoft Windows:**
 
 A user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).  
-Otherwise, Windows users would have to resort to a virtual machine program such as Oracle's [VirtualBox](https://www.virtualbox.org/) (free) and a [Linux image](https://www.osboxes.org/virtualbox-images/) of your choice.
+Otherwise, Windows users have to resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/), which runs any [Linux image](https://www.osboxes.org/virtualbox-images/).
 
 
 
