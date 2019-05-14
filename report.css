@@ -134,7 +134,11 @@ nav li:before
 	text-transform: capitalize 
 }
 
-
+.search td img
+{
+	float: left;
+	margin-right: 1em;
+}
 
 
 
