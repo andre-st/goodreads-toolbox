@@ -152,3 +152,4 @@ or see the [AUTHORS.md](AUTHORS.md) file.
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [similarauth.pl](similarauth.md) - Find all similar authors
 - [search.pl](search.md)           - Sort books-search results by popularity or date published
+- [savreviews.pl](savreviews.md)   - Get all reviews of a book

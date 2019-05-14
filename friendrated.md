@@ -88,4 +88,4 @@ or see the [AUTHORS.md](AUTHORS.md) file.
 - [friendgroup.pl](friendgroup.md) - Groups common among the people you follow
 - [similarauth.pl](similarauth.md) - Find all similar authors
 - [search.pl](search.md)           - Sort books-search results by popularity or date published
-
+- [savreviews.pl](savreviews.md)   - Get all reviews of a book

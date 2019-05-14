@@ -80,4 +80,5 @@ or see the [AUTHORS.md](AUTHORS.md) file.
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [likeminded.pl](likeminded.md)   - Finding people based on the books they've read 
 - [search.pl](search.md)           - Sort books-search result by popularity or date published
+- [savreviews.pl](savreviews.md)   - Get all reviews of a book
 

@@ -83,5 +83,6 @@ or see the [AUTHORS.md](AUTHORS.md) file.
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [similarauth.pl](similarauth.md) - Find all similar authors
 - [likeminded.pl](likeminded.md)   - Finding people based on the books they've read
- 
+- [savreviews.pl](savreviews.md)   - Get all reviews of a book
+
 
