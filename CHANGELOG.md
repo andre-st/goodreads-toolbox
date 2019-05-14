@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 
 
+## [1.18.1] - 2019-05-14
+### Fixed
+
+- search.pl: Titles were missing in the generated HTML file due to changes
+  in the source markup
+
+
+
 ## [1.18.0] - 2019-05-10
 ### Fixed
 
