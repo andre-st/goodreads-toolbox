@@ -9,9 +9,9 @@
 
 
 use diagnostics; # this gives you more debugging information
-use warnings;    # this warns you of bad practices
-use strict;      # this prevents silly errors
-use Test::More qw( no_plan ); # for the ok( bool, testname ), is( x, expected, testname ) and isnt() functions
+use warnings;
+use strict;
+use Test::More qw( no_plan );  # for ok( bool, testname ), is( x, expected, testname ) and isnt() functions
 use List::MoreUtils qw( any firstval );
 use FindBin;
 use lib "$FindBin::Bin/../lib/";
@@ -50,16 +50,16 @@ isa_ok( $b, 'HASH', 'Book found in shelf via title' );
 BOOK_EXISTS: {
 	skip if !$b;
 	
-	is( $books{$b->{id}}->{id},  $b->{id},          'Books hash is indexed by book ID' );
-	is( $b->{id},                '5759',            'Book has ID'                     );
-	is( $b->{year},              1996,              'Book has year published'         );
-	is( $b->{year_edit},         2005,              'Book edition has year published' );
-	is( $b->{isbn},              '0393327345',      'Book has ISBN'              );
-	is( $b->{isbn13},            '9780393327342',   'Book has ISBN13'            );
-	ok( $b->{avg_rating}         > 0,               'Book has average rating'    );
-	is( $b->{num_pages},         218,               'Book has number of pages'   );
-	ok( $b->{num_ratings}        > 0,               'Book has number of ratings' );
-	is( $b->{format},            'Paperback',       'Book has format'            );
+	is( $books{$b->{id}}->{id},  $b->{id},         'Books hash is indexed by book ID' );
+	is( $b->{id},                '5759',           'Book has ID'                      );
+	is( $b->{year},              1996,             'Book has year published'          );
+	is( $b->{year_edit},         2005,             'Book edition has year published'  );
+	is( $b->{isbn},              '0393327345',     'Book has ISBN'                    );
+	is( $b->{isbn13},            '9780393327342',  'Book has ISBN13'                  );
+	ok( $b->{avg_rating}         > 0,              'Book has average rating'          );
+	is( $b->{num_pages},         218,              'Book has number of pages'         );
+	ok( $b->{num_ratings}        > 0,              'Book has number of ratings'       );
+	is( $b->{format},            'Paperback',      'Book has format'                  );
 	# user_xxx
 	# ra_user_shelves
 	# num_reviews
