@@ -1,6 +1,6 @@
 # Unit Tests
 
-## Purpose
+## Strategy, Coverage
 
 This only tests `lib/Goodscrapes.pm` which is the heart of the toolbox.
 
