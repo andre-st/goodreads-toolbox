@@ -12,7 +12,6 @@ use diagnostics; # this gives you more debugging information
 use warnings;
 use strict;
 use Test::More qw( no_plan );  # for ok( bool, testname ), is( x, expected, testname ) and isnt() functions
-use List::MoreUtils qw( any firstval );
 use FindBin;
 use lib "$FindBin::Bin/../lib/";
 
