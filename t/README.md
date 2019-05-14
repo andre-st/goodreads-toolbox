@@ -7,7 +7,7 @@ This only tests `lib/Goodscrapes.pm` which is the heart of the toolbox.
 One design objective in this project is to have very few code in the user scripts
 by moving as much code as possible to the libraries (down the stack).
 Covering just the libraries should cover most critical code, 
-which is good enough for gaining confidence into _this_ project.
+which is _good enough_ for gaining confidence into this project.
 
 The primary reason of testing here, however, is early detecting changes 
 on the Goodreads.com website markup.
