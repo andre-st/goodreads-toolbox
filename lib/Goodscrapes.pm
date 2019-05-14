@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-05-10
+=item * Updated: 2019-05-14
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.30';  # X.XX version format required by Perl
+our $VERSION = '1.31';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -1940,12 +1940,12 @@ sub _extract_search_books
 		$au{ is_private  } = 0;
 		$au{ _seen       } = 1;
 		
-		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
-		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
-		$bk{ avg_rating  } = $row =~ /([0-9.,]+) avg rating/             ? $1       : 0;  # 3.8
-		$bk{ year        } = $row =~ /published\s+(\d+)/                 ? $1       : 0;  # 2018
-		$bk{ img_url     } = $row =~ /src="([^"]+)/                      ? $1       : $_NOBOOKIMGURL;
-		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/     ? decode_entities( $1 ) : '';
+		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/               ? $1       : undef;
+		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/   ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ avg_rating  } = $row =~ /([0-9.,]+) avg rating/              ? $1       : 0;  # 3.8
+		$bk{ year        } = $row =~ /published\s+(\d+)/                  ? $1       : 0;  # 2018
+		$bk{ img_url     } = $row =~ /src="([^"]+)/                       ? $1       : $_NOBOOKIMGURL;
+		$bk{ title       } = $row =~ /<span itemprop='name'[^>]*>([^<]+)/ ? decode_entities( $1 ) : '';
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
 		$bk{ rh_author   } = \%au;
