@@ -10,7 +10,7 @@ Covering just the libraries should cover most critical code,
 which is _good enough_ for gaining confidence into this project.
 
 The primary reason of testing here, however, is early detecting changes 
-on the Goodreads.com website markup.
+on the Goodreads.com website which introduce bugs in our toolbox.
 
 
 ## Running all tests
