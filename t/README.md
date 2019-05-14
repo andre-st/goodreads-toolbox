@@ -1,14 +1,19 @@
 # Unit Tests
 
-I just test `lib/Goodscrapes.pm` which is the heart of everything.
+## Purpose
 
-My usual design goal is to have very few code in the usecase scripts
-and move as much as possible to the libraries (down the stack).
-Covering just the libraries is good enough for gaining confidence.
+This only tests `lib/Goodscrapes.pm` which is the heart of the toolbox.
 
-The primary point of testing here, however, is to detect changes 
-on the side of the Goodreads markup early.
+One design objective in this project is to have very few code in the user scripts
+by moving as much code as possible to the libraries (down the stack).
+Covering just the libraries should cover most critical code, 
+which is good enough for gaining confidence into _this_ project.
 
+The primary reason of testing here, however, is early detecting changes 
+on the Goodreads.com website markup.
+
+
+## Running all tests
 
 ```console
 $ cd goodreads
