@@ -176,7 +176,7 @@ gsearch( phrase      => $PHRASE,
          is_exact    => $ISEXACT,
          ra_order_by => \@ORDER,
          num_ratings => $NUMRATINGS,
-         on_progress => gmeter );
+         on_progress => gmeter() );
 
 
 
