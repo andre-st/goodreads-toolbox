@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 
 # Test cases realized:
-#   [x] 
-#   [ ] 
+#   [x] sanitization
+#   [x] dies on invalid/empty/missing argument
 #   [ ] 
 #   [ ] 
 
@@ -12,7 +12,7 @@ use diagnostics; # this gives you more debugging information
 use warnings;    # this warns you of bad practices
 use strict;      # this prevents silly errors
 use Test::More qw( no_plan ); # for the ok( bool, testname ), is( x, expected, testname ) and isnt() functions
-use List::MoreUtils qw( any firstval );
+use Test::Exception;
 use FindBin;
 use lib "$FindBin::Bin/../lib/";
 
@@ -20,7 +20,18 @@ use lib "$FindBin::Bin/../lib/";
 use_ok( 'Goodscrapes' );
 
 
-diag( "Tests TODO" );
-ok( 1 );
+is( gverifyuser( '123'          ), '123', 'Valid user ID'     );
+is( gverifyuser( '123-username' ), '123', 'Sanitized user ID' );
+
+dies_ok( sub{ gverifyuser( 'username' ); }, 'Invalid user ID' );
+dies_ok( sub{ gverifyuser( ''         ); }, 'Empty user ID'   );
+dies_ok( sub{ gverifyuser( undef      ); }, 'Missing user ID' );
+
+
+is( gverifyshelf( 'myshelf' ), 'myshelf', 'Valid shelf name' );
+
+dies_ok( sub{ gverifyshelf( '^@#' ); }, 'Invalid shelf name' );
+dies_ok( sub{ gverifyshelf( ''    ); }, 'Empty shelf name'   );
+dies_ok( sub{ gverifyshelf( undef ); }, 'Missing shelf name' );
 
 
