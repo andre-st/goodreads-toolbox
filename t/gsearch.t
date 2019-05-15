@@ -7,11 +7,10 @@
 #   [ ] exact matches
 
 
-
-use diagnostics; # this gives you more debugging information
+use diagnostics;  # More debugging info
 use warnings;
 use strict;
-use Test::More qw( no_plan );  # for ok( bool, testname ), is( x, expected, testname ) and isnt() functions
+use Test::More qw( no_plan );
 use List::MoreUtils qw( firstval );
 use FindBin;
 use lib "$FindBin::Bin/../lib/";

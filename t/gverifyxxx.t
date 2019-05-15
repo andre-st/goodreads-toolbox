@@ -7,11 +7,10 @@
 #   [ ] 
 
 
-
-use diagnostics; # this gives you more debugging information
-use warnings;    # this warns you of bad practices
-use strict;      # this prevents silly errors
-use Test::More qw( no_plan ); # for the ok( bool, testname ), is( x, expected, testname ) and isnt() functions
+use diagnostics;  # More debugging info
+use warnings;
+use strict;
+use Test::More qw( no_plan );
 use Test::Exception;
 use FindBin;
 use lib "$FindBin::Bin/../lib/";
