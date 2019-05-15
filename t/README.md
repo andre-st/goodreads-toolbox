@@ -20,6 +20,7 @@ $ cd goodreads
 $ prove
 t/gisxxx.t ........... ok   
 t/glogin.t ........... ok   
+t/gmeter.t ........... ok   
 t/greadauthorbk.t .... ok   
 t/greadauthors.t ..... ok   
 t/greadbook.t ........ ok   
