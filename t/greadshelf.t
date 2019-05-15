@@ -19,9 +19,11 @@ use lib "$FindBin::Bin/../lib/";
 use_ok( 'Goodscrapes' );
 
 
-# Never use caching during real tests. 
+# We should never use caching during real tests:
 # We need to test against the most up-to-date markup from Goodreads.com
-gsetcache( 31 );  # days
+# Having no cache during development is annoying, tho. 
+# So we leave a small window:
+gsetcache( 1 );  # days
 
 
 print( 'Reading book shelf... ');
