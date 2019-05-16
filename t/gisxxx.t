@@ -2,7 +2,7 @@
 
 # Test cases realized:
 #   [x] Good profiles, bad profiles
-#   [ ] unexpected values (undef etc)
+#   [x] unexpected values (undef etc)
 #   [ ] 
 #   [ ] 
 
@@ -22,7 +22,7 @@ ok( !gisbaduser( '1'       ), 'Otis Chandler (GR founder)' );
 ok( !gisbaduser( '2'       ), 'Goodreads employee'         );
 ok(  gisbaduser( '1000834' ), '"NOT A BOOK" author'        );
 ok(  gisbaduser( '5158478' ), '"Anonymous" author'         );
-
+ok(  gisbaduser( undef     ), 'Invalid value is bad'       );
 
 
 
