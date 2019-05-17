@@ -49,7 +49,7 @@ my $a = $authors{2546};
 
 isa_ok( $a, 'HASH', 'Author datatype' );
 is  ( $a->{id},         '2546',                                                 'Author has ID'          );
-is  ( $a->{name},       'Palahniuk, Chuck',                                     'Author has name'        );
+is  ( $a->{name_lf},    'Palahniuk, Chuck',                                     'Author has name'        );
 is  ( $a->{url},        'https://www.goodreads.com/author/show/2546',           'Author has URL'         );
 like( $a->{works_url},  qr/^https:\/\/www\.goodreads\.com\/author\/list\/2546/, 'Author has works URL'   );
 is  ( $a->{is_author},  1,                                                      'Author has author flag' );

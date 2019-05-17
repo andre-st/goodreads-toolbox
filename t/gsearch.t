@@ -62,3 +62,5 @@ is  ( $b->{rh_author}->{url},       'https://www.goodreads.com/author/show/49497
 like( $b->{rh_author}->{works_url}, qr/^https:\/\/www\.goodreads\.com\/author\/list\/4949703/, 'Book has author works URL' );
 
 
+
+# TODO: check other attributes against undef

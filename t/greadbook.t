@@ -57,7 +57,7 @@ ok( $b{num_reviews}  > 12000,          'Book has number of reviews' );
 #   ra_user_shelves
 #   review_id
 #   is  ( $b{rh_author}->{id},         '2546',                                                'Book has author ID'    );
-#   is  ( $b{rh_author}->{name},       'Palahniuk, Chuck',                                    'Book has author name'  );
+#   is  ( $b{rh_author}->{name_lf},    'Palahniuk, Chuck',                                    'Book has author name'  );
 #   is  ( $b{rh_author}->{url},        'https://www.goodreads.com/author/show/2546',          'Book has author URL'         );
 #   like( $b{rh_author}->{works_url},  qr/https:\/\/www.goodreads.com\/author\/list\/2546.*/, 'Book has author works URL'   );
 #   is  ( $b{rh_author}->{is_author},  1,                                                     'Book author has author flag' );

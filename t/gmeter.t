@@ -1,8 +1,8 @@
 #!/usr/bin/perl -w
 
 # Test cases realized:
-#   [x] additive percent progress
 #   [x] additive absolute progress with custom unit
+#   [x] additive percent progress
 #   [ ] invalid arguments
 #   [ ] 
 
@@ -26,7 +26,20 @@ my $stdout;
 	my $meter;
 	
 	
-	# Percent progress:
+	# Absolute progress with custom unit:
+	$meter = gmeter( 'test unit' );
+	
+	$stdout = '';
+	$meter->( 1 );
+	like( $stdout, qr/1 test unit/, 'Prints number with custom unit' );
+	
+	$stdout = '';
+	$meter->( 20 );  # Adds 20 to previous value 1
+	like( $stdout, qr/21 test unit/, 'Prints sum with custom unit' );
+	
+	
+	# Percent progress is enabled by using a second number with a known maximum
+	# Any custom unit is ignored.
 	$meter = gmeter();
 	
 	$stdout = '';
@@ -34,20 +47,8 @@ my $stdout;
 	like( $stdout, qr/10%/, 'Prints percent number' );
 	
 	$stdout = '';
-	$meter->( 5, 10 );  # Adds 50% to previous value 10%
-	like( $stdout, qr/60%/, 'Prints added percent number' );
-	
-	
-	# Absolute progress with custom unit:
-	$meter  = gmeter( 'test unit' );
-	
-	$stdout = '';
-	$meter->( 1 );
-	like( $stdout, qr/1 test unit/, 'Prints number with unit' );
-	
-	$stdout = '';
-	$meter->( 20 );  # Adds 20 to previous value 1
-	like( $stdout, qr/21 test unit/, 'Prints added number with unit' );
+	$meter->( 5, 10 );  # Adds another 5 to prev value 1; You must not read this as "5 of 10" or 50%
+	like( $stdout, qr/60%/, 'Prints percent number for sum' );
 }
 
 

@@ -1,9 +1,9 @@
 #!/usr/bin/perl -w
 
 # Test cases realized:
-#   [x] read user info and check attributes (detects changed markup)
+#   [x] read normal user info and check attributes (detects changed markup)
+#   [ ] read author user info and check attributes (detects changed markup)
 #   [ ] private users
-#   [ ] users vs authors
 #   [ ] 
 
 
@@ -26,29 +26,50 @@ use_ok( 'Goodscrapes' );
 gsetcache( 1 );  # days
 
 
-my %u = greaduser( '2' );
+# Normal user:
 
-#use Data::Dumper;
-#print Dumper(%u);
+my %u = greaduser( '2' );
 
 is  ( $u{id},         '2',             'User has Goodreads ID'    );
 is  ( $u{name},       'odawg Diggity', 'User has name'            );
 is  ( $u{is_female},  0,               'User isnt female'         );
 ok  ( $u{num_books}   > 10,            'User has number of books' );
 #ok ( $u{age}         > 40,            'User has age'             );   # login
+#is ( $u{residence},  '',              'User has residence'       );   # login
 #is ( $u{is_private}, 0,               'User is not private'      );   # login
+is  ( $u{is_author},  0,               'User not an author'       );
 is  ( $u{is_staff},   1,               'User is GR employee'      );
 is  ( $u{url},        'https://www.goodreads.com/user/show/2',    'User has URL'        );
 like( $u{img_url},    qr/^https:\/\/[a-z0-9]+\.gr-assets\.com\//, 'User has image URL'  );
+is  ( $u{works_url},  undef,           'User has no works URL (not an author) '         );
+
+# Not available or not scraped yet:
+is  ( $u{is_friend},  undef, 'Not avail: user friend status' );
 
 
-# works_url
-# is_friend
-# age
-# residence
-# is_author
+
+# Author user:
+
+my %au = greaduser( '2546', 1 );
+
+is  ( $au{id},         '2546',                                                 'Author has ID'          );
+is  ( $au{name},       'Chuck Palahniuk',                                      'Author has name'        );
+is  ( $au{url},        'https://www.goodreads.com/author/show/2546',           'Author has URL'         );
+like( $au{works_url},  qr/^https:\/\/www\.goodreads\.com\/author\/list\/2546/, 'Author has works URL'   );
+like( $au{img_url},    qr/^https:\/\/images.gr-assets.com/,                    'Author has image URL'   );
+is  ( $au{is_author},  1,                                                      'Author has author flag' );
+is  ( $au{is_private}, 0,                                                      'Author not private'     );
+is  ( $au{is_staff},   1,                                                      'Goodreads author'       );
+ok  ( $au{num_books}   > 10,                                                   'Author > 10 books'      );
+
+# Not available or not scraped yet:
+is  ( $au{is_friend},  undef, 'Not avail: author friend status' );
+is  ( $au{is_female},  undef, 'Not avail: author gender status' );
+is  ( $au{residence},  undef, 'Not avail: author residence'     );
 
 
+#use Data::Dumper;
+#print Dumper(%u);
 
 
 
