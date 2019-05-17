@@ -3,7 +3,7 @@
 # Test cases realized:
 #   [x] Read shelf, find specific book, check all attributes (detects changed markup)
 #   [ ] Reading from multiple shelves
-#   [ ] 
+#   [ ] invalid arguments
 #   [ ] 
 
 
@@ -61,12 +61,12 @@ is( $b->{title},       'Fight Club',     'Book has title'             );
 ok( $b->{stars}        > 2,              'Book has stars rating'      );
 is( $b->{img_url},     'https://images.gr-assets.com/books/1357128997s/5759.jpg', 'Book has image URL' );
 is( $b->{url},         'https://www.goodreads.com/book/show/5759',                'Book has URL'       );
-is  ( $b->{rh_author}->{id},         '2546',                                                  'Book has author ID'          );
-is  ( $b->{rh_author}->{name},       'Palahniuk, Chuck',                                      'Book has author name'        );
-is  ( $b->{rh_author}->{url},        'https://www.goodreads.com/author/show/2546',            'Book has author URL'         );
-like( $b->{rh_author}->{works_url},  qr/https:\/\/www\.goodreads\.com\/author\/list\/2546.*/, 'Book has author works URL'   );
-is  ( $b->{rh_author}->{is_author},  1,                                                       'Book author has author flag' );
-is  ( $b->{rh_author}->{is_private}, 0,                                                       'Book author not private'     );
+is  ( $b->{rh_author}->{id},         '2546',                                                 'Book has author ID'          );
+is  ( $b->{rh_author}->{name},       'Palahniuk, Chuck',                                     'Book has author name'        );
+is  ( $b->{rh_author}->{url},        'https://www.goodreads.com/author/show/2546',           'Book has author URL'         );
+like( $b->{rh_author}->{works_url},  qr/^https:\/\/www\.goodreads\.com\/author\/list\/2546/, 'Book has author works URL'   );
+is  ( $b->{rh_author}->{is_author},  1,                                                      'Book author has author flag' );
+is  ( $b->{rh_author}->{is_private}, 0,                                                      'Book author not private'     );
 
 # Not available or scraped:
 #   user_xxx

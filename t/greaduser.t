@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 # Test cases realized:
-#   [x] 
+#   [x] read user info and check attributes (detects changed markup)
 #   [ ] private users
 #   [ ] users vs authors
 #   [ ] 
@@ -38,8 +38,8 @@ ok  ( $u{num_books}   > 10,            'User has number of books' );
 #ok ( $u{age}         > 40,            'User has age'             );   # login
 #is ( $u{is_private}, 0,               'User is not private'      );   # login
 is  ( $u{is_staff},   1,               'User is GR employee'      );
-is  ( $u{url},       'https://www.goodreads.com/user/show/2',     'User has URL'        );
-like( $u{img_url},    qr/https:\/\/[a-z0-9]+\.gr-assets\.com\/.*/, 'User has image URL'  );
+is  ( $u{url},        'https://www.goodreads.com/user/show/2',    'User has URL'        );
+like( $u{img_url},    qr/^https:\/\/[a-z0-9]+\.gr-assets\.com\//, 'User has image URL'  );
 
 
 # works_url

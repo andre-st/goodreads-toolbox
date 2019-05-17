@@ -2,7 +2,7 @@
 
 # Test cases realized:
 #   [x] sanitization
-#   [x] dies on invalid/empty/missing argument
+#   [x] invalid/empty/missing argument -> die
 #   [ ] 
 #   [ ] 
 

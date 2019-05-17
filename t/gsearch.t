@@ -5,6 +5,7 @@
 #   [ ] order
 #   [ ] num_ratings
 #   [ ] exact matches
+#   [ ] invalid arguments
 
 
 use diagnostics;  # More debugging info
@@ -58,6 +59,6 @@ ok  ( $b->{num_ratings}             > 0,                                        
 is  ( $b->{year},                   2009,                                            'Book has year published'    );
 is  ( $b->{rh_author}->{name},      'William E. Shotts Jr.',                         'Book has author name'       );
 is  ( $b->{rh_author}->{url},       'https://www.goodreads.com/author/show/4949703', 'Book has author URL'        );
-like( $b->{rh_author}->{works_url}, qr/https:\/\/www\.goodreads\.com\/author\/list\/4949703.*/, 'Book has author works URL' );
+like( $b->{rh_author}->{works_url}, qr/^https:\/\/www\.goodreads\.com\/author\/list\/4949703/, 'Book has author works URL' );
 
 

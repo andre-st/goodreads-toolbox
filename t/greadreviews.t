@@ -4,7 +4,7 @@
 #   [x] latest and check attributes (detects changed markup)
 #   [ ] rigor 2, 3, ...
 #   [ ] 
-#   [ ] Invalid values
+#   [ ] invalid arguments
 
 
 
@@ -54,12 +54,12 @@ map {
 	ok  ( $_->{rating_str},         'Review has rating code'       );
 	#ok ( $_->{text},               'Review has text'              );  # Often no text but just stars
 	ok  ( $_->{date}->year > 2006,  'Review has date > 2006'       );  # GR was founded 2007
-	is  ( $_->{book_id},            $book{id},                                           'Review has Goodreads book ID' );
-	like( $_->{id},                 qr/^\d+$/,                                           'Review has ID'                );
-	like( $_->{url},                qr/https:\/\/www\.goodreads\.com\/review\/show\/.*/, 'Review has URL'               );
-	like( $_->{rh_user}->{url},     qr/https:\/\/www\.goodreads\.com\/user\/show\/.*/,   'Review has author URL'        );
-	like( $_->{rh_user}->{id},      qr/^\d+$/,                                           'Review has author ID'         );
-	like( $_->{rh_user}->{img_url}, qr/https:\/\/[a-z0-9]+\.gr-assets\.com\/.*/,         'Review has author image URL'  );
+	is  ( $_->{book_id},            $book{id},                                          'Review has Goodreads book ID' );
+	like( $_->{id},                 qr/^\d+$/,                                          'Review has ID'                );
+	like( $_->{url},                qr/^https:\/\/www\.goodreads\.com\/review\/show\//, 'Review has URL'               );
+	like( $_->{rh_user}->{url},     qr/^https:\/\/www\.goodreads\.com\/user\/show\//,   'Review has author URL'        );
+	like( $_->{rh_user}->{id},      qr/^\d+$/,                                          'Review has author ID'         );
+	like( $_->{rh_user}->{img_url}, qr/^https:\/\/[a-z0-9]+\.gr-assets\.com\//,         'Review has author image URL'  );
 	ok  ( $_->{rh_user}->{name},    'Review has author name'       );
 
 } values( %reviews );
