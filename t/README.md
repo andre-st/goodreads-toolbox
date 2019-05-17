@@ -12,6 +12,11 @@ That's _good enough_ to gain confidence.
 
 Currently, this only tests `lib/Goodscrapes.pm` which is the heart of the toolbox.
 
+I run all tests before pushing local changes to the Github repository, 
+reducing the chance of distributing buggy releases.
+
+Tests can also serve as tutorial for the Goodscrapes library and reduce 
+errors caused by incorrect use.
 
 ## Running all tests
 
