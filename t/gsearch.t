@@ -26,6 +26,8 @@ use_ok( 'Goodscrapes' );
 gsetcache( 1 );  # days
 
 
+diag( "takes ~3 minutes" );
+
 print( 'Searching books... ' );
 
 my @books;

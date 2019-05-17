@@ -49,12 +49,6 @@ ok( scalar( keys( %reviews )) > 0, 'Load some reviews' )
 	or BAIL_OUT( "Cannot test review attributes when there are no reviews." );
 
 
-#use Data::Dumper;
-#my $r = (values( %reviews ))[0];
-#print Dumper($r);
-#exit;
-
-
 map {
 	ok  ( $_->{rating} >= 0,        'Review has rating'            );
 	ok  ( $_->{rating_str},         'Review has rating code'       );
