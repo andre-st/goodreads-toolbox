@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-05-15
+=item * Updated: 2019-05-17
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.32';  # X.XX version format required by Perl
+our $VERSION = '1.34';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -44,11 +44,13 @@ our $VERSION = '1.32';  # X.XX version format required by Perl
 
 =item * theoretically this library is more likely to break, 
         but Goodreads progresses very very slowly: nothing
-        actually broke since 2014 (I started this);
+        actually broke between 2019-2014 (I started this);
         actually their API seems to change more often than
         their web pages; they can and do disable API functions 
         without being noticed by the majority, but they cannot
-        easily disable important webpages that we use too
+        easily disable important webpages that we use too;
+        There are unit-tests to detect markup changes on the
+        scraped Goodreads.com website.
 
 =item * this library grew with every new usecase and program;
         it retries operations on errors on Goodreads.com,
@@ -318,9 +320,9 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =item * name_lf     =E<gt> C<string>  "Lastname, Firstname"
 
-=item * residence   =E<gt> C<string>
+=item * residence   =E<gt> C<string>  (might require login)
 
-=item * age         =E<gt> C<int>
+=item * age         =E<gt> C<int>     (might require login)
 
 =item * num_books   =E<gt> C<int>
 
@@ -1408,7 +1410,7 @@ sub _extract_book
 	$bk{ isbn13      } = $htm =~ /<meta content='([^']+)' property='books:isbn'/        ? $1 : ''; # ISBN13
 	$bk{ isbn        } = undef;  # TODO
 	$bk{ img_url     } = $htm =~ /<meta content='([^']+)' property='og:image'/          ? $1 : '';
-	$bk{ title       } = $htm =~ /<meta content='([^']+)' property='og:title'/          ? decode_entities( $1 ) : '';
+	$bk{ title       } = $htm =~ /<meta content='([^']+)' property='og:title'/          ? _trim( decode_entities( $1 )) : '';
 	$bk{ num_pages   } = $htm =~ /<meta content='([^']+)' property='books:page_count'/  ? $1 : $_NOBOOKIMGURL;
 	$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) review/    ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
 	$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/    ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
@@ -1441,7 +1443,7 @@ sub _extract_user
 	
 	if( $auid )  # Author page:
 	{
-		$us{ name       } = $htm =~ /<meta content='([^']+)' property='og:title'>/ ? decode_entities( $1 ) : "";
+		$us{ name       } = $htm =~ /<meta content='([^']+)' property='og:title'>/ ? _trim( decode_entities( $1 )) : "";
 		$us{ name_lf    } = $us{name};   # TODO
 		$us{ img_url    } = $htm =~ /<meta content='([^']+)' property='og:image'>/ ? $1 : $_NOUSERIMGURL;
 		$us{ is_staff   } = $htm =~ /<h3 class="right goodreadsAuthor">/           ? 1  : 0;
@@ -1453,17 +1455,16 @@ sub _extract_user
 	}
 	else  # Normal users:
 	{
-		my $fname = $htm =~ /<meta property="profile:first_name" content="([^"]+)/ ? decode_entities( "$1 "  ) : "";
-		my $lname = $htm =~ /<meta property="profile:last_name" content="([^"]+)/  ? decode_entities( "$1 "  ) : "";
-		my $uname = $htm =~ /<meta property="profile:username" content="([^"]+)/   ? decode_entities( "($1)" ) : "";
-		
-		$us{ name       } = $fname.$lname.$uname;
+		my $fname   = $htm =~ /<meta property="profile:first_name" content="([^"]+)/ ? decode_entities( "$1 "  ) : "";
+		my $lname   = $htm =~ /<meta property="profile:last_name" content="([^"]+)/  ? decode_entities( "$1 "  ) : "";
+		my $uname   = $htm =~ /<meta property="profile:username" content="([^"]+)/   ? decode_entities( "($1)" ) : "";
+		$us{ name       } = _trim( $fname.$lname.$uname );
 		$us{ name_lf    } = $us{name};  # TODO
 		$us{ num_books  } = $htm =~ /<meta content='[^']+ has (\d+)[,.]?(\d*)[,.]?(\d*) books/ ? $1.$2.$3 : 0;
 		$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/               ? $1 : 0;
 		$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/                  ? 1  : 0;
 		$us{ is_private } = $htm =~ /<div id="privateProfile"/                                 ? 1  : 0;
-		$us{ is_staff   } = $htm =~ /<a href="\/about\/team">Goodreads employee<\/a>/          ? 1  : 0;
+		$us{ is_staff   } = $htm =~ /Goodreads employee/                                       ? 1  : 0;
 		$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/               ? $1 : $_NOUSERIMGURL;
 		$us{ works_url  } = undef;
 		
@@ -1520,14 +1521,15 @@ sub _extract_books
 		
 		my $dadd  = $row =~ />date added<\/label><div class="value">\s*<span title="([^"]*)/ ? $1 : undef;
 		my $dread = $row =~ /<span class="date_read_value">([^<]*)/                          ? $1 : undef;
-		my $tadd  = $dadd ? Time::Piece->strptime( $dadd,  "%B %d, %Y" ) : $_EARLIEST; # "June 19, 2015"
-		my $tread = eval{   Time::Piece->strptime( $dread, "%b %d, %Y" ); } ||         # "Sep 06, 2018"
-		            eval{   Time::Piece->strptime( $dread, "%b %Y"     ); } ||         # "Sep 2018"
-		            eval{   Time::Piece->strptime( $dread, "%Y"        ); } ||         # "2018"
-				  $_EARLIEST;
+		my $tadd  = $dadd  ? Time::Piece->strptime( $dadd,  "%B %d, %Y" ) : $_EARLIEST; # "June 19, 2015"
+		my $tread = $dread ? eval{   Time::Piece->strptime( $dread, "%b %d, %Y" ); } ||         # "Sep 06, 2018"
+		                     eval{   Time::Piece->strptime( $dread, "%b %Y"     ); } ||         # "Sep 2018"
+		                     eval{   Time::Piece->strptime( $dread, "%Y"        ); } ||         # "2018"
+		                     $_EARLIEST
+		                   : $_EARLIEST;
 		
-		$au{ id              } = $row =~ /author\/show\/([0-9]+)/       ? $1                    : undef;
-		$au{ name_lf         } = $row =~ /author\/show\/[^>]+>([^<]+)/  ? decode_entities( $1 ) : '';
+		$au{ id              } = $row =~ /author\/show\/([0-9]+)/       ? $1                            : undef;
+		$au{ name_lf         } = $row =~ /author\/show\/[^>]+>([^<]+)/  ? _trim( decode_entities( $1 )) : '';
 		$au{ name            } = $au{name_lf};  # Shelves already list names with "lastname, firstname"
 		$au{ residence       } = undef;
 		$au{ url             } = _user_url( $au{id}, 1 );
@@ -1555,7 +1557,7 @@ sub _extract_books
 		$bk{ num_reviews     } = undef;  # Not available here!
 		$bk{ img_url         } = $row =~ /<img [^>]* src="([^"]+)"/                                                   ? $1 : $_NOBOOKIMGURL;
 		$bk{ review_id       } = $row =~ /review\/show\/([0-9]+)"/                                                    ? $1 : undef;
-		$bk{ title           } = $tit;
+		$bk{ title           } = _trim( $tit );
 		$bk{ url             } = _book_url( $bk{id} );
 		$bk{ stars           } = int( $bk{ avg_rating } + 0.5 );
 		
@@ -1606,7 +1608,7 @@ sub _extract_author_books
 		my %bk;
 		
 		$au{ id          } = $aid;
-		$au{ name        } = $aunm;
+		$au{ name        } = _trim( $aunm );
 		$au{ name_lf     } = $au{name};  # TODO
 		$au{ residence   } = undef;
   		$au{ img_url     } = $auimg;
@@ -1620,7 +1622,7 @@ sub _extract_author_books
 		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
 		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
 		$bk{ img_url     } = $row =~ /src="[^"]+/                        ? $1       : $_NOBOOKIMGURL;
-		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/     ? decode_entities( $1 ) : '';
+		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/     ? _trim( decode_entities( $1 )) : '';
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ isbn        } = undef;  # TODO?
 		$bk{ isbn13      } = undef;  # TODO?
@@ -1668,7 +1670,7 @@ sub _extract_followees
 		my %us;
 		
 		$us{ id        } = $uid ? $uid : $aid;
-		$us{ name      } = $row =~ /img alt="([^"]+)/  ? decode_entities( $1 )     : '';
+		$us{ name      } = $row =~ /img alt="([^"]+)/  ? _trim( decode_entities( $1 )) : '';
 		$us{ name_lf   } = $us{name};  # TODO
 		$us{ img_url   } = $row =~ /src="([^"]+)/      ? $1                        : $_NOUSERIMGURL;
 		$us{ works_url } = $aid                        ? _author_books_url( $aid ) : '';
@@ -1717,7 +1719,7 @@ sub _extract_friends
 		my %us;
 		
 		$us{ id        } = $uid ? $uid : $aid;
-		$us{ name      } = $row =~ /img alt="([^"]+)/  ? decode_entities( $1 )     : '';
+		$us{ name      } = $row =~ /img alt="([^"]+)/  ? _trim( decode_entities( $1 )) : '';
 		$us{ name_lf   } = $us{name};  # TODO
 		$us{ img_url   } = $row =~     /src="([^"]+)/  ? $1                        : $_NOUSERIMGURL;
 		$us{ works_url } = $aid                        ? _author_books_url( $aid ) : '';
@@ -1759,6 +1761,19 @@ sub _conv_uni_codepoints
 
 
 
+=head2 C<string> _trim( I<$string> )
+
+=cut
+
+sub _trim
+{
+	my $s = shift;
+	$s =~ s/^\s+|\s+$//g;
+	return $s;
+}
+
+
+
 =head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str> )
 
 =over
@@ -1776,7 +1791,8 @@ sub _extract_revs
 	my $ffn          = shift;
 	my $since_tpiece = shift;
 	my $htm          = shift or return 0;  # < is \u003c, > is \u003e,  " is \" literally
-	my $bid          = $htm =~ /%2Fbook%2Fshow%2F([0-9]+)/  ? $1 : undef;
+#	my $bid          = $htm =~ /%2Fbook%2Fshow%2F([0-9]+)/  ? $1 : undef;
+	my $bid          = $htm =~ /\/book\/reviews\/([0-9]+)/  ? $1 : undef;
 	my $ret          = 0;
 	
 	while( $htm =~ /div id=\\"review_\d+(.*?)div class=\\"clear/gs )
@@ -1808,7 +1824,7 @@ sub _extract_revs
 		$txt =~ s/<br \/>/\n/g;
 		
 		$us{ id         } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
-		$us{ name       } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : decode_entities( $1 )) : '';
+		$us{ name       } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : _trim( decode_entities( $1 ))) : '';
 		$us{ name_lf    } = $us{name};  # TODO
   		$us{ img_url    } = $_NOUSERIMGURL;  # TODO
 		$us{ url        } = _user_url( $us{id} );
@@ -1861,7 +1877,7 @@ sub _extract_similar_authors
 		{
 			my %au;
 			$au{ id      } = $1;
-			$au{ name    } = $2;
+			$au{ name    } = _trim( $2 );
 			$au{ img_url } = $3;
 			
 			next if $au{id} eq $uid_to_skip;
@@ -1934,7 +1950,7 @@ sub _extract_search_books
 		my %bk;
 		
 		$au{ id          } = $row =~ /\/author\/show\/([0-9]+)/  ? $1 : undef;
-		$au{ name        } = $row =~ /<a class="authorName" [^>]+><span itemprop="name">([^<]+)/  ? decode_entities( $1 ) : '';
+		$au{ name        } = $row =~ /<a class="authorName" [^>]+><span itemprop="name">([^<]+)/  ? _trim( decode_entities( $1 )) : '';
 		$au{ name_lf     } = $au{name};  # TODO
 		$au{ url         } = _user_url        ( $au{id}, 1 );
 		$au{ works_url   } = _author_books_url( $au{id}    );
@@ -1948,7 +1964,7 @@ sub _extract_search_books
 		$bk{ avg_rating  } = $row =~ /([0-9.,]+) avg rating/              ? $1       : 0;  # 3.8
 		$bk{ year        } = $row =~ /published\s+(\d+)/                  ? $1       : 0;  # 2018
 		$bk{ img_url     } = $row =~ /src="([^"]+)/                       ? $1       : $_NOBOOKIMGURL;
-		$bk{ title       } = $row =~ /<span itemprop='name'[^>]*>([^<]+)/ ? decode_entities( $1 ) : '';
+		$bk{ title       } = $row =~ /<span itemprop='name'[^>]*>([^<]+)/ ? _trim( decode_entities( $1 )) : '';
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
 		$bk{ rh_author   } = \%au;
@@ -1982,7 +1998,7 @@ sub _extract_user_groups
 		my %gp;
 		
 		$gp{ id          } = $row =~ /\/group\/show\/(\d+)/               ? $1 : undef;
-		$gp{ name        } = $row =~ /<a class="groupName" [^>]+>([^<]+)/ ? decode_entities( $1 ) : "";
+		$gp{ name        } = $row =~ /<a class="groupName" [^>]+>([^<]+)/ ? _trim( decode_entities( $1 )) : "";
 		$gp{ num_members } = $row =~ /(\d+) member/                       ? $1 : 0;  # "8397"
 		$gp{ img_url     } = $row =~ /<img src="([^"]+)/                  ? $1 : $_NOGROUPIMGURL;
 		$gp{ url         } = _group_url( $gp{id} );

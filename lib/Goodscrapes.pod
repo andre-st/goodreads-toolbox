@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-05-15
+=item * Updated: 2019-05-17
 
 =item * Since: 2014-11-05
 
@@ -30,11 +30,13 @@ Goodscrapes - Goodreads.com HTML API
 
 =item * theoretically this library is more likely to break, 
         but Goodreads progresses very very slowly: nothing
-        actually broke since 2014 (I started this);
+        actually broke between 2019-2014 (I started this);
         actually their API seems to change more often than
         their web pages; they can and do disable API functions 
         without being noticed by the majority, but they cannot
-        easily disable important webpages that we use too
+        easily disable important webpages that we use too;
+        There are unit-tests to detect markup changes on the
+        scraped Goodreads.com website.
 
 =item * this library grew with every new usecase and program;
         it retries operations on errors on Goodreads.com,
@@ -176,9 +178,9 @@ https://github.com/andre-st/
 
 =item * name_lf     =E<gt> C<string>  "Lastname, Firstname"
 
-=item * residence   =E<gt> C<string>
+=item * residence   =E<gt> C<string>  (might require login)
 
-=item * age         =E<gt> C<int>
+=item * age         =E<gt> C<int>     (might require login)
 
 =item * num_books   =E<gt> C<int>
 
@@ -669,6 +671,8 @@ https://github.com/andre-st/
 =item Convert Unicode codepoints such as \u003c
 
 =back
+
+=head2 C<string> _trim( I<$string> )
 
 =head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str> )
 
