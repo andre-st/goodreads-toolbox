@@ -1,16 +1,16 @@
 # Unit Tests
 
-## Strategy, Coverage
+## Objectives, Strategy, Coverage
 
-This only tests `lib/Goodscrapes.pm` which is the heart of the toolbox.
+The main reason for testing is the early detection of changes to the
+Goodreads.com website that would cause our toolbox to read no or incorrect data.
 
-One design objective in this project is to have very few code in the user scripts
-by moving as much code as possible to the libraries (down the stack).
-Covering just the libraries should cover most critical code, 
-which is _good enough_ for gaining confidence into this project.
+A _design_ goal in this project is to have very little code in the user scripts 
+by moving as much code as possible into the libraries (down the stack).
+Covering only the libraries should cover the most critical code.
+That's _good enough_ to gain confidence.
 
-The primary reason of testing here, however, is early detecting changes 
-on the Goodreads.com website which introduce bugs in our toolbox.
+Currently, this only tests `lib/Goodscrapes.pm` which is the heart of the toolbox.
 
 
 ## Running all tests
