@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.34';  # X.XX version format required by Perl
+our $VERSION = '1.35';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -1619,10 +1619,10 @@ sub _extract_author_books
 		$au{ _seen       } = 1;
 		
 		$bk{ rh_author   } = \%au;
-		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/              ? $1       : undef;
-		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/  ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
-		$bk{ img_url     } = $row =~ /src="[^"]+/                        ? $1       : $_NOBOOKIMGURL;
-		$bk{ title       } = $row =~ /<span itemprop='name'>([^<]+)/     ? _trim( decode_entities( $1 )) : '';
+		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/               ? $1       : undef;
+		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/   ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ img_url     } = $row =~ /src="([^"]+)/                       ? $1       : $_NOBOOKIMGURL;
+		$bk{ title       } = $row =~ /<span itemprop='name'[^>]*>([^<]+)/ ? _trim( decode_entities( $1 )) : '';
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ isbn        } = undef;  # TODO?
 		$bk{ isbn13      } = undef;  # TODO?
@@ -1635,6 +1635,7 @@ sub _extract_author_books
 		$rh->{ $bk{id} } = \%bk;
 		$bfn->( \%bk );
 		$$r_limit--;
+		last if !$$r_limit;
 	}
 	
 	$pfn->( $ret );
