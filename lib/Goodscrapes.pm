@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.35';  # X.XX version format required by Perl
+our $VERSION = '1.37';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -417,7 +417,7 @@ sub gverifyuser
 	my $uid = shift // '';
 	
 	return $1 if $uid =~ /(\d+)/ 
-		or croak( _errmsg( $_ENO_BADUSER, $uid ) );
+		or croak( _errmsg( $_ENO_BADUSER, $uid ));
 }
 
 
@@ -441,7 +441,7 @@ sub gverifyshelf
 {
 	my $nam = shift // ''; # '%23ALL%23';
 	
-	croak( _errmsg( $_ENO_BADSHELF, $nam ) )
+	croak( _errmsg( $_ENO_BADSHELF, $nam ))
  		if length $nam == 0 || $nam =~ /[^%a-zA-Z0-9_\-,]/;
 		
 	return $nam;
@@ -458,7 +458,7 @@ sub _require_arg
 {
 	my $nam = shift;
 	my $val = shift;
-	croak( _errmsg( $_ENO_BADARG, $nam ) ) if !defined $val;
+	croak( _errmsg( $_ENO_BADARG, $nam )) if !defined $val;
 	return $val;
 }
 
@@ -586,7 +586,7 @@ sub glogin
 	{
 		$htm   = _html( $_HOMEURL, $_ENO_ERROR, 0 );  # Also POST 302 target
 		$$ruid = $htm =~ /setTargeting\("uid", "([^"]+)/ ? $1 : undef;
-		croak( _errmsg( $_ENO_BADLOGIN ) ) unless $$ruid;
+		croak( _errmsg( $_ENO_BADLOGIN )) unless $$ruid;
 	}
 }
 
@@ -627,23 +627,35 @@ sub gsetcache
 sub greadbook
 {
 	my $bid = _require_arg( 'book_id', shift );
-	return _extract_book( _html( _book_url( $bid ) ) );
+	return _extract_book( _html( _book_url( $bid )));
 }
 
 
 
 
-=head2 C<L<%user|"%user">> greaduser( $user_id )
+=head2 C<L<%user|"%user">> greaduser( $user_id, $prefer_author = 0 )
+
+=over
+
+=item * there can be a different user and author with the same ID 
+        (2456: Joana vs Chuck Palahniuk); 
+        if there's no user but an author, Goodreads would redirect 
+        to the author page with the same ID and this function
+        would return the author
+
+=item * if ambiguous you can set the I<$prefer_author> flag
+
+=back
 
 =cut
 
 sub greaduser
 {
-	# TODO author profiles != user profiles
-	my $uid = gverifyuser( shift );
-	return _extract_user( _html( _user_url( $uid, 0 ) ) );
+	my $uid  = gverifyuser( shift );
+	my $isau = shift // 0;
+	my $htm  = _html( _user_url( $uid, $isau ));
+	return $isau ? _extract_author( $htm ) : _extract_user( $htm );
 }
-
 
 
 
@@ -674,7 +686,7 @@ sub greadusergp
 	my $pfn    = $args{ on_progress }  // sub{};
 	
 	# Just one page:
-	return _extract_user_groups( $rh, $gfn, $pfn, _html( _user_groups_url( $uid ) ) );
+	return _extract_user_groups( $rh, $gfn, $pfn, _html( _user_groups_url( $uid )));
 }
 
 
@@ -715,7 +727,7 @@ sub greadshelf
 	for my $s (@$ra_shv)
 	{
 		my $pag = 1;
-		while( _extract_books( \%books, $bfn, $pfn, _html( _shelf_url( $uid, $s, $pag++ ) ) ) ) {}
+		while( _extract_books( \%books, $bfn, $pfn, _html( _shelf_url( $uid, $s, $pag++ )))) {}
 	}
 	
 	%$rh = ( %$rh, %books ) if $rh;  # Merge
@@ -802,7 +814,7 @@ sub greadauthorbk
 	my $pfn    = $args{ on_progress }  // sub{};
 	my $pag    = 1;
 	
-	while( _extract_author_books( $rh, \$limit, $bfn, $pfn, _html( _author_books_url( $aid, $pag++ ) ) ) ) {};
+	while( _extract_author_books( $rh, \$limit, $bfn, $pfn, _html( _author_books_url( $aid, $pag++ )))) {};
 }
 
 
@@ -878,7 +890,7 @@ sub greadreviews
 		for my $s (@sortargs)
 		{
 			my $pag = 1;
-			while( _extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, $s, $r, undef, $pag++ ) ) ) ) {};
+			while( _extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, $s, $r, undef, $pag++ )))) {};
 			
 			# "to-read", "added" have to be loaded before the rated/reviews
 			# (undef in both argument-lists first) - otherwise we finish
@@ -903,7 +915,7 @@ sub greadreviews
  	my $stalltime = $rigor * 60;  
 	my $t0        = time;  # Stuff above might already take 60s
 	
-	open( my $fh, '<', $dictpath ) or croak( _errmsg( $_ENO_NODICT, $dictpath ) );
+	open( my $fh, '<', $dictpath ) or croak( _errmsg( $_ENO_NODICT, $dictpath ));
 	chomp( my @dict = <$fh> );
 	close $fh;
 	
@@ -915,7 +927,7 @@ sub greadreviews
 		
 		my $numbefore = scalar keys %revs;
 		
-		_extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, undef, undef, $word ) ) );
+		_extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, undef, undef, $word )));
 		
 		$t0 = time if scalar keys %revs > $numbefore;  # Resets stall-timer
 	}
@@ -966,13 +978,13 @@ sub greadfolls
 	if( $isfol )
 	{
 		$pag = 1; 
-		while( _extract_followees( $rh, $pfn, $isaut, _html( _followees_url( $uid, $pag++ ) ) ) ) {};
+		while( _extract_followees( $rh, $pfn, $isaut, _html( _followees_url( $uid, $pag++ )))) {};
 	}
 	
 	if( $isfrn )
 	{
 		$pag = 1; 
-		while( _extract_friends( $rh, $pfn, $isaut, _html( _friends_url( $uid, $pag++ ) ) ) ) {};
+		while( _extract_friends( $rh, $pfn, $isaut, _html( _friends_url( $uid, $pag++ )))) {};
 	}
 }
 
@@ -1005,7 +1017,7 @@ sub greadsimilaraut
 	my $pfn    = $args{ on_progress } // sub{};
 	
 	# Just 1 page:
-	_extract_similar_authors( $rh, $aid, $pfn, _html( _similar_authors_url( $aid ) ) );
+	_extract_similar_authors( $rh, $aid, $pfn, _html( _similar_authors_url( $aid )));
 }
 
 
@@ -1046,7 +1058,7 @@ sub gsearch
 	my $pag    = 1;
 	my @tmp;
 	
-	while( _extract_search_books( \@tmp, $pfn, _html( _search_url( $q, $pag++ ) ) ) ) {};
+	while( _extract_search_books( \@tmp, $pfn, _html( _search_url( $q, $pag++ )))) {};
 	
 	# Select and sort:
 	@tmp = grep{ $_->{num_ratings}           >= $n } @tmp;
@@ -1427,64 +1439,74 @@ sub _extract_book
 
 
 
-
 =head2 C<L<%user|"%user">> _extract_user( $user_page_html_str )
 
 =cut
 
 sub _extract_user
 {
-	my $htm  = shift or return;
-	my $uid  = $htm =~ /<meta property="og:url" content="https:\/\/www\.goodreads\.com\/user\/show\/(\d+)/ ? $1 : undef;
-	my $auid = $htm =~ /<meta content='https:\/\/www\.goodreads\.com\/author\/show\/(\d+)/                 ? $1 : undef;
+	my $htm = shift or return;
 	my %us;
+	$us{ id } = $htm =~ /<meta property="og:url" content="https:\/\/www\.goodreads\.com\/user\/show\/(\d+)/ ? $1 : undef;
 	
-	$us{ id } = $uid ? $uid : $auid;
+	return _extract_author( $htm ) if !$us{id};  # Might be redirected to author page
 	
-	if( $auid )  # Author page:
-	{
-		$us{ name       } = $htm =~ /<meta content='([^']+)' property='og:title'>/ ? _trim( decode_entities( $1 )) : "";
-		$us{ name_lf    } = $us{name};   # TODO
-		$us{ img_url    } = $htm =~ /<meta content='([^']+)' property='og:image'>/ ? $1 : $_NOUSERIMGURL;
-		$us{ is_staff   } = $htm =~ /<h3 class="right goodreadsAuthor">/           ? 1  : 0;
-		$us{ is_private } = 0;
-		$us{ is_female  } = undef;  # TODO
-		$us{ works_url  } = _author_books_url( $auid );
-		$us{ residence  } = undef;
-		$us{ num_books  } = $htm =~ /=reviews">(\d+)[,.]?(\d*)[,.]?(\d*) ratings</ ? $1.$2.$3 : 0; # Closest we can get
-	}
-	else  # Normal users:
-	{
-		my $fname   = $htm =~ /<meta property="profile:first_name" content="([^"]+)/ ? decode_entities( "$1 "  ) : "";
-		my $lname   = $htm =~ /<meta property="profile:last_name" content="([^"]+)/  ? decode_entities( "$1 "  ) : "";
-		my $uname   = $htm =~ /<meta property="profile:username" content="([^"]+)/   ? decode_entities( "($1)" ) : "";
-		$us{ name       } = _trim( $fname.$lname.$uname );
-		$us{ name_lf    } = $us{name};  # TODO
-		$us{ num_books  } = $htm =~ /<meta content='[^']+ has (\d+)[,.]?(\d*)[,.]?(\d*) books/ ? $1.$2.$3 : 0;
-		$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/               ? $1 : 0;
-		$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/                  ? 1  : 0;
-		$us{ is_private } = $htm =~ /<div id="privateProfile"/                                 ? 1  : 0;
-		$us{ is_staff   } = $htm =~ /Goodreads employee/                                       ? 1  : 0;
-		$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/               ? $1 : $_NOUSERIMGURL;
-		$us{ works_url  } = undef;
-		
-		# Details string doesn't include Firstname/Middlename/Lastname, no Zip-Code
-		my $r = $htm =~ /Details<\/div>\s*<div class="infoBoxRowItem">([^<]+)/ ? decode_entities( $1 ) : "";
-		   $r =~ s/Age \d+,?//;        # remove optional Age part
-		   $r =~ s/(Male|Female),?//;  # remove optional gender; TODO custom genders (neglectable atm)
-		   $r =~ s/^\s+|\s+$//g;       # trim both ends
-		   $r =~ s/\s*,\s*/, /g;       # "City , State" -> "City, State" (some consistency)
-		$us{ residence } = ($r =~ m/any details yet/) ? '' : $r;  # remaining string is the residence (City, State)
-	}
+	my $fname = $htm =~ /<meta property="profile:first_name" content="([^"]+)/ ? decode_entities( "$1 "  ) : "";
+	my $lname = $htm =~ /<meta property="profile:last_name" content="([^"]+)/  ? decode_entities( "$1 "  ) : "";
+	my $uname = $htm =~ /<meta property="profile:username" content="([^"]+)/   ? decode_entities( "($1)" ) : "";
+	$us{ name       } = _trim( $fname.$lname.$uname );
+	$us{ name_lf    } = $us{name};  # TODO
+	$us{ num_books  } = $htm =~ /<meta content='[^']+ has (\d+)[,.]?(\d*)[,.]?(\d*) books/ ? $1.$2.$3 : 0;
+	$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/               ? $1 : 0;
+	$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/                  ? 1  : 0;
+	$us{ is_private } = $htm =~ /<div id="privateProfile"/                                 ? 1  : 0;
+	$us{ is_staff   } = $htm =~ /Goodreads employee/                                       ? 1  : 0;
+	$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/               ? $1 : $_NOUSERIMGURL;
+	$us{ works_url  } = undef;
+	$us{ is_friend  } = undef;
+	$us{ is_author  } = 0;
+	$us{ url        } = _user_url( $us{id}, $us{is_author} );
+	$us{ _seen      } = 1;
 	
-	$us{ is_friend } = undef;
-	$us{ is_author } = $auid ? 1 : 0;
-	$us{ url       } = _user_url( $us{id}, $us{is_author} );
-	$us{ _seen     } = 1;
+	# Details string doesn't include Firstname/Middlename/Lastname, no Zip-Code
+	# Also depedent on viewer's login status
+	my $r = $htm =~ /Details<\/div>\s*<div class="infoBoxRowItem">([^<]+)/ ? decode_entities( $1 ) : "";
+	   $r =~ s/Age \d+,?//;        # remove optional Age part
+	   $r =~ s/(Male|Female),?//;  # remove optional gender; TODO custom genders (neglectable atm)
+	   $r =~ s/^\s+|\s+$//g;       # trim both ends
+	   $r =~ s/\s*,\s*/, /g;       # "City , State" -> "City, State" (some consistency)
+	$us{ residence } = ($r =~ m/any details yet/) ? '' : $r;  # remaining string is the residence (City, State)
 	
 	return %us;
 }
 
+
+
+=head2 C<L<%user|"%user">> _extract_author( $user_page_html_str )
+
+=cut
+
+sub _extract_author
+{
+	my $htm = shift or return;
+	my %us;
+	$us{ id         } = $htm =~ /<meta content='https:\/\/www\.goodreads\.com\/author\/show\/(\d+)/ ? $1 : undef;
+	$us{ name       } = $htm =~ /<meta content='([^']+)' property='og:title'>/ ? _trim( decode_entities( $1 )) : "";
+	$us{ name_lf    } = $us{name};   # TODO
+	$us{ img_url    } = $htm =~ /<meta content='([^']+)' property='og:image'>/ ? $1 : $_NOUSERIMGURL;
+	$us{ is_staff   } = $htm =~ /<h3 class="right goodreadsAuthor">/           ? 1  : 0;
+	$us{ is_private } = 0;
+	$us{ is_female  } = undef;  # TODO
+	$us{ works_url  } = _author_books_url( $us{id} );
+	$us{ residence  } = undef;
+	$us{ num_books  } = $htm =~ /=reviews">(\d+)[,.]?(\d*)[,.]?(\d*) ratings</ ? $1.$2.$3 : 0; # Closest we can get
+	$us{ is_friend  } = undef;
+	$us{ is_author  } = 1;
+	$us{ url        } = _user_url( $us{id}, $us{is_author} );
+	$us{ _seen      } = 1;
+	
+	return %us;
+}
 
 
 
@@ -1872,7 +1894,7 @@ sub _extract_similar_authors
 	# 
 	while( $htm =~ /<div data-react-class="ReactComponents.SimilarAuthorsList" data-react-props="([^"]*)/gs )
 	{	
-		my $json = _conv_uni_codepoints( decode_entities( $1 ) );
+		my $json = _conv_uni_codepoints( decode_entities( $1 ));
 		
 		while( $json =~ /\{"author":\{"id":([^,]+),"name":"([^"]+)",[^\{]*"profileImage":"([^"]+)/gs )
 		{

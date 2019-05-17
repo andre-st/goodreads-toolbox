@@ -332,7 +332,19 @@ https://github.com/andre-st/
 
 =head2 C<L<%book|"%book">> greadbook( $book_id )
 
-=head2 C<L<%user|"%user">> greaduser( $user_id )
+=head2 C<L<%user|"%user">> greaduser( $user_id, $prefer_author = 0 )
+
+=over
+
+=item * there can be a different user and author with the same ID 
+        (2456: Joana vs Chuck Palahniuk); 
+        if there's no user but an author, Goodreads would redirect 
+        to the author page with the same ID and this function
+        would return the author
+
+=item * if ambiguous you can set the I<$prefer_author> flag
+
+=back
 
 =head2 C<void> greadusergp(I<{ ... }>)
 
@@ -629,6 +641,8 @@ https://github.com/andre-st/
 =head2 C<L<%book|"%book">> _extract_book( $book_page_html_str )
 
 =head2 C<L<%user|"%user">> _extract_user( $user_page_html_str )
+
+=head2 C<L<%user|"%user">> _extract_author( $user_page_html_str )
 
 =head2 C<bool> _extract_books( I<$rh_books, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
 
