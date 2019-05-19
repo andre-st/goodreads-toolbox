@@ -1,4 +1,4 @@
-# :books: Andre's Goodreads Toolbox, v1.18
+# :books: Andre's Goodreads Toolbox, v1.18.1
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
@@ -92,7 +92,7 @@ $ sudo make             # Gets required Perl modules from CPAN (details see Make
 
 ... try scripts and finally ...
 
-$ sudo make uninstall   # Removes files in system directories (details see Makefile)
+$ sudo make uninstall   # Removes generated files from sys-dirs (cache, logs, ..., see Makefile)
 ```
 
 _Microsoft Windows_ is not officially supported.
