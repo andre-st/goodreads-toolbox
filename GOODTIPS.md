@@ -52,7 +52,7 @@
 
 - **Batch edit** shelf feature ([tutorial](https://www.soobsessedwith.com/2014/01/get-organized-on-goodreads.html))
 
-- **Filter reviews by language** by selecting a book edition in your language and "Filter: this edition" ([described here](https://www.goodreads.com/topic/show/19528032#comment_184069651))
+- **Filter reviews by language** °~~by selecting a book edition in your language and "Filter: this edition" ([described here](https://www.goodreads.com/topic/show/19528032#comment_184069651))~~ see [new filter by language feature](https://www.goodreads.com/topic/show/19545889-filter-reviews-using-language#comment_192500388))
 
 - **Become a Goodreads librarian** by applying 
   [there](https://www.goodreads.com/about/apply_librarian). Quickly
