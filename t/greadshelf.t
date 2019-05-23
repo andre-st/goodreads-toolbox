@@ -66,6 +66,7 @@ like( $b->{review_id},   qr/^\d+$/,                                             
 ok  ( $b->{user_rating}           > 2,     'User rating'                );
 ok  ( $b->{user_read_count}       > 0,     'User read count'            );
 ok  ( $b->{user_date_added}->year > 2006,  'User addition-date > 2006'  );  # GR was founded in 2007
+is  ( $b->{user_num_owned},       0,       'Number of user-owned books' ); 
 
 is  ( $b->{rh_author}->{id},         '2546',                                                 'Book has author ID'          );
 is  ( $b->{rh_author}->{name_lf},    'Palahniuk, Chuck',                                     'Book has author name'        );
@@ -84,7 +85,6 @@ is  ( $b->{rh_author}->{is_female},        undef,  'N/A: Author gender'         
 is  ( $b->{rh_author}->{is_friend},        undef,  'N/A: Author friend status'    );
 is  ( $b->{rh_author}->{num_books},        undef,  'N/A: Number of author books'  );
 is  ( $b->{num_reviews},                   undef,  'N/A: Number of book reviews'  );
-is  ( $b->{user_num_owned},                undef,  'N/A: Number user-owned books' );  # TODO
-is  ( $b->{user_date_read},                undef,  'N/A: User reading-date'       );  # TODO
+#is  ( $b->{user_date_read},                undef,  'N/A: User reading-date'       );  # TODO
 is  ( scalar( @{$b->{ra_user_shelves}} ),  0,      'N/A: User shelves for book'   );
 
