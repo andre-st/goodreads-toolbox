@@ -6,6 +6,7 @@
 #
 
 readonly MAILFROM="adminuser@gmail.com"
+readonly PASSWORD=""
 readonly SCRIPT="/path/to/recentrated.pl"
 readonly DB_DIR="/var/db/good"
 readonly MAILERS=(
@@ -32,6 +33,11 @@ done
 
 
 
+# Wait for Internet connection:
+# TODO
+
+
+
 chk()
 {
 	  gooduser="${1}" 
@@ -55,8 +61,13 @@ chk()
 			cp --preserve --force "${csvpath}" "${csvbakpath}" || exit 1
 		fi
 	fi
-	( "${SCRIPT}" ${opts} "${gooduser}" "${goodshelf}" "${mailto}" "${MAILFROM}" | ${mailer} ) \
-		&& [ "$mailerid" != "9" ]     \
+	( "${SCRIPT}" ${opts}                      \
+	              "--userid=${gooduser}"       \
+	              "--shelf=${goodshelf}"       \
+	              "--to=${mailto}"             \
+	              "${MAILFROM}"                \
+	              "${PASSWORD}" | ${mailer} )  \
+		&& [ "$mailerid" != "9" ]             \
 		&& rm --force "${csvbakpath}"
 }
 
@@ -68,7 +79,7 @@ chk()
 chk  12345678  "%E3%85%A1watch-ratings"  "${MAILFROM}"           0             # me                            123
 chk    345678  "watch-ratings"           example1@gmail.com      0             # Example 1           18/01/12    3
 chk   2345678  "de-mooisten"             example2@gmx.net        0             # Example 2           18/11/14   23
-chk      5678  "wishlist-to-buy"         example3@yahoo.com      0       -t    # Example 3           18/06/11  123
+chk      5678  "wishlist-to-buy"         example3@yahoo.com      0       -q    # Example 3           18/06/11  123
 
 
 
