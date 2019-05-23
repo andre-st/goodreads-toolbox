@@ -106,16 +106,17 @@ Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.
 
 #### Reporting bugs / Feature requests: 
 
-- check [existing issues](https://github.com/andre-st/goodreads/issues) before adding a new one
-- alternative [contact options](AUTHORS.md)
+- please check the [existing issues](https://github.com/andre-st/goodreads/issues) 
+  before adding [a new one](https://github.com/andre-st/goodreads/issues/new) via Github's issue tracker
+- [alternative contact options](AUTHORS.md)
 
 #### Writing your own scripts: 
 
 - see the [tests directory](./t/) for examples on how to use the toolbox library
-- the library is [documented here](./lib/Goodscrapes.pod).
-- a user script should contain its man page, take the existing user scripts as an example
-- there may be [less complex issues](https://github.com/andre-st/goodreads/labels/beginner)
-which would be good first issues to work on for users who want to contribute to this project
+- see the [toolbox library documentation](./lib/Goodscrapes.pod).
+- user scripts should contain a man page, take the existing user scripts as an example
+- the [less complex issues](https://github.com/andre-st/goodreads/labels/beginner)
+  would be good first issues to work on for users who want to contribute to this project
 
 
 
