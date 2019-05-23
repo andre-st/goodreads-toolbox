@@ -82,6 +82,7 @@ and I hope Goodreads will eventually make those scripts obsolete
 by offering own solutions to the Goodreads community.
 
 
+
 ## Getting started
 
 GNU/Linux terminal:
@@ -98,6 +99,18 @@ $ sudo make uninstall   # Removes generated files from sys-dirs (cache, logs, ..
 _Microsoft Windows_ is not officially supported.
 A user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).
 Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/) and run a [Linux image](https://www.osboxes.org/virtualbox-images/).
+
+
+
+## Contributing
+
+Reporting bugs / feature requests: 
+Either use Github's [Issue Tracker](https://github.com/andre-st/goodreads/issues)
+or contact the author [by e-mail](AUTHORS.md).
+
+Writing your own scripts: 
+See the [tests directory](./t/) for examples on how to use the toolbox library.
+Every user script should contain its man page, see existing scripts for examples.
 
 
 
