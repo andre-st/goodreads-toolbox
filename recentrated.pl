@@ -285,12 +285,12 @@ for my $id (@oldest_ids)
 
 
 # Help user to help himself:
-#print "\n\n\nToo many ratings?"
-#    . ">> Create a separate shelf \"watch\" on Goodreads.com with 50-150 "
-#    . "special but lesser-known books, and fine-tune this mail by dropping "
-#    . "books from that shelf over time. "
-#    . "Reply \"shelf new-shelf-name\" when ready.\n"
-#	if $MAILFROM && $num_hits > 20;
+print "\n\n\nToo many ratings?"
+    . ">> Use a separate shelf \"watch\" on Goodreads.com with 50-150 "
+    . "special but lesser-known books, and fine-tune this mail by dropping "
+    . "some books from that shelf over time. "
+    . "Reply \"shelf new-shelf-name\" when ready."
+	if $MAILFROM && $num_hits > 40;
 
 
 # Without a hint, the user doesn't know whether there are simply no 
