@@ -34,8 +34,8 @@ greadsimilaraut( author_id   => '2546',
                  rh_into     => \%authors,
                  on_progress => gmeter( 'similar' ));
 
-
 print( "\n" );
+
 
 ok( scalar( keys( %authors )) > 10, 'At least 10 similar authors' );
 		  
@@ -56,7 +56,7 @@ is  ( $a->{is_private}, 0,                                                      
 
 # Not available or scraped yet, otherwise one of the following
 # tests will fail and remind me of implementing a correct test:
-is  ( $a->{name_lf},    $a->{name}, 'N/A: author name != name_lf' );  # "Chuck Palahniuk"
+is  ( $a->{name_lf},    $a->{name}, 'N/A: author name != name_lf' );  # "Dick, Philip K."
 is  ( $a->{residence},  undef,      'N/A: author residence'       );
 is  ( $a->{age},        undef,      'N/A: author age'             );
 is  ( $a->{num_books},  undef,      'N/A: number of author books' );
