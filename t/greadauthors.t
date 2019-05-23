@@ -56,3 +56,17 @@ is  ( $a->{is_author},  1,                                                      
 is  ( $a->{is_private}, 0,                                                      'Author not private'     );
 
 
+# Not available or scraped yet, otherwise one of the following
+# tests will fail and remind me of implementing a correct test:
+is  ( $a->{name},       $a->{name_lf}, 'N/A: author name != name_lf' );  # "Chuck Palahniuk"
+is  ( $a->{residence},  undef,         'N/A: author residence'       );
+is  ( $a->{img_url},    undef,         'N/A: author image URL'       );
+is  ( $a->{age},        undef,         'N/A: author age'             );
+is  ( $a->{num_books},  undef,         'N/A: number of author books' );
+is  ( $a->{is_friend},  undef,         'N/A: author friend status'   );
+is  ( $a->{is_female},  undef,         'N/A: author gender status'   );
+is  ( $a->{is_staff},   undef,         'N/A: is Goodreads author'    );
+
+
+
+

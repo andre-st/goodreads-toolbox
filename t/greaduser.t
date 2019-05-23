@@ -43,7 +43,8 @@ is  ( $u{url},        'https://www.goodreads.com/user/show/2',    'User has URL'
 like( $u{img_url},    qr/^https:\/\/[a-z0-9]+\.gr-assets\.com\//, 'User has image URL'  );
 is  ( $u{works_url},  undef,           'User has no works URL (not an author) '         );
 
-# Not available or not scraped yet:
+# Not available or scraped yet, otherwise one of the following
+# tests will fail and remind me of implementing a correct test:
 is  ( $u{is_friend},  undef, 'Not avail: user friend status' );
 
 
@@ -62,10 +63,11 @@ is  ( $au{is_private}, 0,                                                      '
 is  ( $au{is_staff},   1,                                                      'Goodreads author'       );
 ok  ( $au{num_books}   > 10,                                                   'Author > 10 books'      );
 
-# Not available or not scraped yet:
-is  ( $au{is_friend},  undef, 'Not avail: author friend status' );
-is  ( $au{is_female},  undef, 'Not avail: author gender status' );
-is  ( $au{residence},  undef, 'Not avail: author residence'     );
+# Not available or scraped yet, otherwise one of the following
+# tests will fail and remind me of implementing a correct test:
+is  ( $au{is_friend},  undef, 'N/A: author friend status' );
+is  ( $au{is_female},  undef, 'N/A: author gender status' );
+is  ( $au{residence},  undef, 'N/A: author residence'     );
 
 
 #use Data::Dumper;

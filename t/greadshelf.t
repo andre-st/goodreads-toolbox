@@ -48,6 +48,7 @@ ok( exists( $books{5759} ), 'Expected book found via hash-key = Goodreads book I
 my $b = $books{5759};
 
 isa_ok( $b, 'HASH', 'Book datatype' );
+
 is  ( $b->{id},          '5759',           'Book has Goodreads ID'      );
 is  ( $b->{year},        1996,             'Book has pub-year'          );
 is  ( $b->{year_edit},   2005,             'Book edition has pub-year'  );
@@ -59,8 +60,13 @@ ok  ( $b->{num_ratings}  > 190000,         'Book has number of ratings' );
 is  ( $b->{format},      'Paperback',      'Book has format'            );
 is  ( $b->{title},       'Fight Club',     'Book has title'             );
 ok  ( $b->{stars}        > 2,              'Book has stars rating'      );
-is  ( $b->{img_url},     'https://images.gr-assets.com/books/1357128997s/5759.jpg', 'Book has image URL' );
-is  ( $b->{url},         'https://www.goodreads.com/book/show/5759',                'Book has URL'       );
+is  ( $b->{img_url},     'https://images.gr-assets.com/books/1357128997s/5759.jpg', 'Book has image URL'      );
+is  ( $b->{url},         'https://www.goodreads.com/book/show/5759',                'Book has URL'            );
+like( $b->{review_id},   qr/^\d+$/,                                                 'Book has user review ID' );
+ok  ( $b->{user_rating}           > 2,     'User rating'                );
+ok  ( $b->{user_read_count}       > 0,     'User read count'            );
+ok  ( $b->{user_date_added}->year > 2006,  'User addition-date > 2006'  );  # GR was founded in 2007
+
 is  ( $b->{rh_author}->{id},         '2546',                                                 'Book has author ID'          );
 is  ( $b->{rh_author}->{name_lf},    'Palahniuk, Chuck',                                     'Book has author name'        );
 is  ( $b->{rh_author}->{url},        'https://www.goodreads.com/author/show/2546',           'Book has author URL'         );
@@ -68,12 +74,17 @@ like( $b->{rh_author}->{works_url},  qr/^https:\/\/www\.goodreads\.com\/author\/
 is  ( $b->{rh_author}->{is_author},  1,                                                      'Book author has author flag' );
 is  ( $b->{rh_author}->{is_private}, 0,                                                      'Book author not private'     );
 
-# Not available or scraped:
-#   user_xxx
-#   ra_user_shelves
-#   num_reviews
-#   review_id
-#   rh_author->name_lf
-#   rh_author->residence
-#   rh_author->img_url
+
+# Not available or scraped yet, otherwise one of the following
+# tests will fail and remind me of implementing a correct test:
+is  ( $b->{rh_author}->{residence},        undef,  'N/A: Author residence'        );
+is  ( $b->{rh_author}->{img_url},          undef,  'N/A: Author image URL'        );
+is  ( $b->{rh_author}->{is_staff},         undef,  'N/A: Is Goodreads author'     );
+is  ( $b->{rh_author}->{is_female},        undef,  'N/A: Author gender'           );
+is  ( $b->{rh_author}->{is_friend},        undef,  'N/A: Author friend status'    );
+is  ( $b->{rh_author}->{num_books},        undef,  'N/A: Number of author books'  );
+is  ( $b->{num_reviews},                   undef,  'N/A: Number of book reviews'  );
+is  ( $b->{user_num_owned},                undef,  'N/A: Number user-owned books' );  # TODO
+is  ( $b->{user_date_read},                undef,  'N/A: User reading-date'       );  # TODO
+is  ( scalar( @{$b->{ra_user_shelves}} ),  0,      'N/A: User shelves for book'   );
 

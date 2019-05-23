@@ -48,7 +48,8 @@ is( $b{img_url},     'https://i.gr-assets.com/images/S/compressed.photo.goodread
 is( $b{url},         'https://www.goodreads.com/book/show/5759', 'Book has URL' );
 ok( $b{num_reviews}  > 12000,          'Book has number of reviews' );
 
-# Not available or scraped:
+# Not available or scraped yet, otherwise one of the following
+# tests will fail and remind me of implementing a correct test:
 #   is( $b{isbn},        '0393327345',     'Book has ISBN'              );
 #   is( $b{year},        1996,             'Book has pub-year'          );
 #   is( $b{year_edit},   2005,             'Book edition has pub-year'  );
@@ -60,9 +61,14 @@ ok( $b{num_reviews}  > 12000,          'Book has number of reviews' );
 #   is  ( $b{rh_author}->{name_lf},    'Palahniuk, Chuck',                                    'Book has author name'  );
 #   is  ( $b{rh_author}->{url},        'https://www.goodreads.com/author/show/2546',          'Book has author URL'         );
 #   like( $b{rh_author}->{works_url},  qr/https:\/\/www.goodreads.com\/author\/list\/2546.*/, 'Book has author works URL'   );
+#   is  ( $b{rh_author}->{residence},
+#   is  ( $b{rh_author}->{num_books},
+#   is  ( $b{rh_author}->{age},
 #   is  ( $b{rh_author}->{is_author},  1,                                                     'Book author has author flag' );
 #   is  ( $b{rh_author}->{is_private}, 0,                                                     'Book author not private'     );
-
+#   is  ( $b{rh_author}->{is_staff},
+#   is  ( $b{rh_author}->{is_female},
+#   is  ( $b{rh_author}->{is_friend},
 
 
 
