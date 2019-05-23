@@ -191,8 +191,8 @@ our $_RETRYDELAY_SECS = 60*3;  # Total retry time: 15 minutes
 
 
 # Misc module message strings:
-our $_MSG_RETRYING_FOREVER = "[NOTE ] Retrying in 3 minutes... Press CTRL-C to exit\n";
-our $_MSG_RETRYING_NTIMES  = "[NOTE ] Retrying in 3 minutes (%d times before skipping this one)... Press CTRL-C to exit\n";  # retriesleft
+our $_MSG_RETRYING_FOREVER = "[NOTE ] Retrying in 3 minutes... Press CTRL-C to exit (pid=$$)\n";
+our $_MSG_RETRYING_NTIMES  = "[NOTE ] Retrying in 3 minutes (%d times before skipping this one)... Press CTRL-C to exit (pid=$$)\n";  # retriesleft
 
 our %_ERRMSG = 
 (
@@ -873,7 +873,7 @@ sub greadreviews
 	
 	# Allow user to interrupt search with CTRL-C:
 	my $gotsigint   = 0;
-	local $SIG{INT} = sub{ $gotsigint = 1; };  
+	#local $SIG{INT} = sub{ $gotsigint = 1; };  	
 	
 	
 	# Goodreads reviews filters get us dissimilar(!) subsets which are merged

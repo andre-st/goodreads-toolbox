@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-05-17
+=item * Updated: 2019-05-23
 
 =item * Since: 2014-11-05
 
@@ -782,7 +782,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<void> _setcurlopts(I< $curl_ref >)
+=head2 C<void> _setcurlopts(I< $curl_ref >, I< $url_str >)
 
 =over
 
