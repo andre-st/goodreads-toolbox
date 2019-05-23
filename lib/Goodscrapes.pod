@@ -630,7 +630,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<string> _user_groups_url( I<$user_id> )
+=head2 C<string> _user_groups_url( I<$user_id>, I<$page_number = 1> )
 
 =head2 C<string> _group_url( I<$group_id> )
 

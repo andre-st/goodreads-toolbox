@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.39';  # X.XX version format required by Perl
+our $VERSION = '1.40';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -684,9 +684,10 @@ sub greadusergp
 	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
 	my $gfn    = $args{ on_group    }  // sub{};
 	my $pfn    = $args{ on_progress }  // sub{};
+	my $pag    = 1;
 	
 	# Just one page:
-	return _extract_user_groups( $rh, $gfn, $pfn, _html( _user_groups_url( $uid )));
+	while( _extract_user_groups( $rh, $gfn, $pfn, _html( _user_groups_url( $uid, $pag++ )))) {};
 }
 
 
@@ -1374,14 +1375,15 @@ sub _search_url
 
 
 
-=head2 C<string> _user_groups_url( I<$user_id> )
+=head2 C<string> _user_groups_url( I<$user_id>, I<$page_number = 1> )
 
 =cut
 
 sub _user_groups_url
 {
 	my $uid = shift;
-	return "https://www.goodreads.com/group/list/${uid}?sort=title";
+	my $pag = shift // 1;
+	return "https://www.goodreads.com/group/list/${uid}?sort=title&page=${pag}";
 }
 
 
