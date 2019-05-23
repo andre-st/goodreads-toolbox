@@ -2183,7 +2183,7 @@ sub _cookie2hash  # @TODO: ugly
 
 
 
-=head2 C<void> _setcurlopts(I< $curl_ref >)
+=head2 C<void> _setcurlopts(I< $curl_ref >, I< $url_str >)
 
 =over
 
@@ -2195,7 +2195,8 @@ sub _cookie2hash  # @TODO: ugly
 
 sub _setcurlopts
 {
-	my $curl = shift;
+	my $curl = shift;	
+	my $url  = shift // '';
 	
 	# Misc:
 	$curl->setopt( $curl->CURLOPT_FOLLOWLOCATION, 1           );
@@ -2208,7 +2209,6 @@ sub _setcurlopts
 		_updcookie( $chunk =~ /Set-Cookie:(.*)/i ? $1 : undef );  # for CSRF-Token
 		return length( $chunk );
 	});
-	
 	
 	# Performance options:
 	# - don't hang too long, better disconnect and retry
@@ -2226,6 +2226,10 @@ sub _setcurlopts
 	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  ); };
 	eval{ $curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   ); };
 	eval{ $curl->setopt( $curl->CURLOPT_MAXREDIRS,      5   ); };
+	
+	# Hacks:
+	$curl->setopt( $curl->CURLOPT_COOKIE, 0 )  # "No HTML body" otherwise
+		if index( $url, '/book/reviews/' ) != -1;
 }
 
 
@@ -2265,7 +2269,7 @@ DOWNLOAD:
 	my    $errno;
 	
 	$curl = WWW::Curl::Easy->new if !$curl;
-	_setcurlopts( $curl );
+	_setcurlopts( $curl, $url );
 	$curl->setopt( $curl->CURLOPT_URL,       $url  );
 	$curl->setopt( $curl->CURLOPT_REFERER,   $url  );  # https://www.goodreads.com/...  [F5]
 	$curl->setopt( $curl->CURLOPT_HTTPGET,   1     );
