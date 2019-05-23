@@ -2227,9 +2227,12 @@ sub _setcurlopts
 	eval{ $curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   ); };
 	eval{ $curl->setopt( $curl->CURLOPT_MAXREDIRS,      5   ); };
 	
-	# Hacks:
-	$curl->setopt( $curl->CURLOPT_COOKIE, 0 )  # "No HTML body" otherwise
-		if index( $url, '/book/reviews/' ) != -1;
+	# Tweaks:
+	if( index( $url, '/book/reviews/' ) != -1 )  # "No HTML body" error sometimes
+	{
+		$curl->setopt( $curl->CURLOPT_COOKIE,         undef );  # Cookie triggers error
+		$curl->setopt( $curl->CURLOPT_HEADERFUNCTION, undef );  # No cookie updates
+	}
 }
 
 
