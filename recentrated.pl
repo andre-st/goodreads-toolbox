@@ -11,29 +11,16 @@ recentrated - know when people rate or write reviews about a book
 
 =head1 SYNOPSIS
 
-B<recentrated.pl> [-t] I<GOODUSERNUMBER> [I<SHELFNAME>] [I<MAILTO>] [I<MAILFROM>]
-
-You find your GOODUSERNUMBER by looking at your shelf URLs.
+B<recentrated.pl> [B<-q>] [B<-t> F<mailaddr>] [B<-u> F<string>] 
+[B<-s> F<shelfname>] [I<goodloginmail>] [F<goodloginpass>]
 
 
 =head1 OPTIONS
 
 =over 4
 
-=item I<SHELFNAME>
 
-name of the shelf with a selecton of books to be checked, 
-default is "#ALL#".
-
-
-=item I<MAILTO>
-
-prepend an email header.
-This tool does not send mails by its own.
-You would have to pipe its output into a C<sendmail> programm.
-
-
-=item I<MAILFROM>
+=item I<goodloginmail>
 
 add an unsubscribe email header and a contact address for
 administrative issues to the programm output.
@@ -44,7 +31,35 @@ Less books means shorter program runtimes for each receiver
 (GitHub #23).
 
 
-=item B<-t, --textonly>
+=item I<goodloginpass>
+
+the password that is required for the Goodreads website login
+
+
+=item B<-t, --to>=F<emailaddr>
+
+prepend an email header.
+This tool does not send mails by its own.
+You would have to pipe its output into a C<sendmail> programm.
+
+
+=item B<-u, --userid>=F<string>
+
+check another member instead of the one identified by the login-mail 
+and password arguments. You find the ID by looking at the shelf URLs.
+
+
+=item B<-s, --shelf>=F<shelfname>
+
+name of the shelf with a selection of books, default is "#ALL#". 
+If the name contains special characters use an URL-encoded name.
+You can use this parameter multiple times if there is more than 1 shelf to
+include (boolean OR operation), see the examples section of this man page.
+Use B<--shelf>=shelf1,shelf2,shelf3 to intersect shelves (Intersection
+requires password).
+
+
+=item B<-q, --textonly>
 
 output links to text reviews only, this drops all non-text 
 ratings (stars only). This option is useful if you have many 
@@ -52,16 +67,24 @@ books which get many ratings every day. But it shifts the use
 case from finding new people to mere reading new ideas about 
 a book.
 
+
+=item B<-?, --help>
+
+show full man page
+
+
 =back
 
 
 =head1 EXAMPLES
 
-$ ./recentrated.pl 55554444
+$ ./recentrated.pl my@mail.com
 
-$ ./recentrated.pl 55554444 read my@mail.com
+$ ./recentrated.pl --shelf=read my@mail.com
 
-$ ./recentrated.pl 55554444 read friend@mail.com admin@mail.com
+$ ./recentrated.pl --userid=55554444 --shelf=read --to=my@mail.com
+
+$ ./recentrated.pl -u 55554444 -s read -t friend@mail.com admin@mail.com
 
 
 =head1 FILES
@@ -91,7 +114,7 @@ More info in recentrated.md
 
 =head1 VERSION
 
-2019-04-16 (Since 2018-01-09)
+2019-05-23 (Since 2018-01-09)
 
 =cut
 
@@ -126,15 +149,32 @@ pod2usage( -verbose => 2 ) if $#ARGV < 0;
 setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
 
 our $TEXTONLY = 0;
+our @SHELVES;
+our $MAILTO;
+our $USERID;
 
-GetOptions( 'textonly|t' => \$TEXTONLY,
+GetOptions( 'userid|u=s' => \$USERID,
+            'shelf|s=s'  => \@SHELVES,
+            'to|t=s'     => \$MAILTO,
+            'textonly|q' => \$TEXTONLY,
             'help|?'     => sub{ pod2usage( -verbose => 2 ) });
 
-our $USERID   = gverifyuser ( $ARGV[0] );
-our $SHELF    = gverifyshelf( $ARGV[1] );
-our $MAILTO   = $ARGV[2];
-our $MAILFROM = $ARGV[3];
-our $DBPATH   = "/var/db/good/${USERID}-${SHELF}.csv";
+our $MAILFROM = $ARGV[0];
+our $PASSWORD = $ARGV[1];
+    $MAILTO   = $MAILFROM if !$MAILTO;
+
+glogin( usermail => $MAILFROM,  # Login required for reading private members
+        userpass => $PASSWORD,  # Asks pw if omitted
+        r_userid => \$USERID )
+	if $MAILFROM && $PASSWORD;
+
+
+say( "[CRIT ] Missing --userid option or goodloginmail argument." )
+	if !$USERID;
+
+
+# Path to the database files which contain last check states
+our $DBPATH = sprintf( "/var/db/good/%s-%s.csv", $USERID, join( '-', @SHELVES ));
 
 # The more URLs, the longer and untempting the mail.
 # If number exceeded, we link to the book page with *all* reviews.
@@ -164,7 +204,7 @@ my %books;
 
 
 greadshelf( from_user_id    => $USERID,
-            ra_from_shelves => [ $SHELF ],
+            ra_from_shelves => \@SHELVES,
             rh_into         => \%books );
 
 
@@ -207,12 +247,12 @@ for my $id (@oldest_ids)
 	# E-Mail header and first body line:
 	if( $MAILTO && $num_hits == 1 )
 	{
-		print( "To: ${MAILTO}\n"                           );
-		print( "From: ${MAILFROM}\n"                       ) if $MAILFROM;
-		print( "List-Unsubscribe: <mailto:${MAILFROM}>\n"  ) if $MAILFROM;
-		print( "Content-Type: text/plain; charset=utf-8\n" );
-		print( "Subject: New ratings on Goodreads.com\n\n" );  # 2x \n hdr end
-		print( "Recently rated books in your \"${SHELF}\" shelf:\n" );
+		print ( "To: ${MAILTO}\n"                           );
+		print ( "From: ${MAILFROM}\n"                       ) if $MAILFROM;
+		print ( "List-Unsubscribe: <mailto:${MAILFROM}>\n"  ) if $MAILFROM;
+		print ( "Content-Type: text/plain; charset=utf-8\n" );
+		print ( "Subject: New ratings on Goodreads.com\n\n" );  # 2x \n hdr end
+		printf( "Recently rated books in your \"%s\" shelf:\n", join( '" and "', @SHELVES ));
 	}
 	
 	
@@ -275,22 +315,20 @@ print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
 	if( $MAILFROM && $num_hits > 0 );
 
 
+
 # Add new books:
 $db->{$_} = { 'id'          => $_, 
               'num_ratings' => $books{$_}->{num_ratings}, 
               'checked'     => time } for( @added );
 
-
 # Cronjob audits:
 $_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s"', 
-               $num_hits, scalar keys %books, $USERID, $SHELF );
-
+              $num_hits, scalar keys %books, $USERID, join( '" and "', @SHELVES ));
 
 # Update database:
 my @lines = values %{$db};
 csv( in      => \@lines, 
      out     => $DBPATH, 
      headers => [qw( id num_ratings checked )] );
-
 
 # Done.
