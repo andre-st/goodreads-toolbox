@@ -1972,25 +1972,26 @@ sub _extract_search_books
 		my %au;
 		my %bk;
 		
-		$au{ id          } = $row =~ /\/author\/show\/([0-9]+)/  ? $1 : undef;
-		$au{ name        } = $row =~ /<a class="authorName" [^>]+><span itemprop="name">([^<]+)/  ? _trim( decode_entities( $1 )) : '';
-		$au{ name_lf     } = $au{name};  # TODO
-		$au{ url         } = _user_url        ( $au{id}, 1 );
-		$au{ works_url   } = _author_books_url( $au{id}    );
-		$au{ img_url     } = $_NOUSERIMGURL;
-		$au{ is_author   } = 1;
-		$au{ is_private  } = 0;
-		$au{ _seen       } = 1;
+		$au{ id              } = $row =~ /\/author\/show\/([0-9]+)/  ? $1 : undef;
+		$au{ name            } = $row =~ /<a class="authorName" [^>]+><span itemprop="name">([^<]+)/  ? _trim( decode_entities( $1 )) : '';
+		$au{ name_lf         } = $au{name};  # TODO
+		$au{ url             } = _user_url        ( $au{id}, 1 );
+		$au{ works_url       } = _author_books_url( $au{id}    );
+		$au{ img_url         } = $_NOUSERIMGURL;
+		$au{ is_author       } = 1;
+		$au{ is_private      } = 0;
+		$au{ _seen           } = 1;
 		
-		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/               ? $1       : undef;
-		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/   ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
-		$bk{ avg_rating  } = $row =~ /([0-9.,]+) avg rating/              ? $1       : 0;  # 3.8
-		$bk{ year        } = $row =~ /published\s+(\d+)/                  ? $1       : 0;  # 2018
-		$bk{ img_url     } = $row =~ /src="([^"]+)/                       ? $1       : $_NOBOOKIMGURL;
-		$bk{ title       } = $row =~ /<span itemprop='name'[^>]*>([^<]+)/ ? _trim( decode_entities( $1 )) : '';
-		$bk{ url         } = _book_url( $bk{id} );
-		$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
-		$bk{ rh_author   } = \%au;
+		$bk{ id              } = $row =~ /book\/show\/([0-9]+)/               ? $1       : undef;
+		$bk{ num_ratings     } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/   ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ avg_rating      } = $row =~ /([0-9.,]+) avg rating/              ? $1       : 0;  # 3.8
+		$bk{ year            } = $row =~ /published\s+(\d+)/                  ? $1       : 0;  # 2018
+		$bk{ img_url         } = $row =~ /src="([^"]+)/                       ? $1       : $_NOBOOKIMGURL;
+		$bk{ title           } = $row =~ /<span itemprop='name'[^>]*>([^<]+)/ ? _trim( decode_entities( $1 )) : '';
+		$bk{ url             } = _book_url( $bk{id} );
+		$bk{ stars           } = int( $bk{ avg_rating } + 0.5 );
+		$bk{ rh_author       } = \%au;
+		$bk{ ra_user_shelves } = [];
 		
 		push( @$ra, \%bk );
 		$ret++;  # There are no duplicates, no extra checks
