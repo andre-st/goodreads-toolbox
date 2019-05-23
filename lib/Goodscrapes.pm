@@ -2286,7 +2286,7 @@ DOWNLOAD:
 	{
 		warn( $errno >= $_ENO_CRIT 
 				? $_MSG_RETRYING_FOREVER
-				: sprintf( $_MSG_RETRYING_NTIMES, $retry ));
+				: sprintf( $_MSG_RETRYING_NTIMES, $retry + 1 ));
 		
 		$curl = undef;  # disconnect
 		sleep( $_RETRYDELAY_SECS );
