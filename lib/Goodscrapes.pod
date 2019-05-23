@@ -686,6 +686,8 @@ https://github.com/andre-st/
 
 =back
 
+=head2 C<string> _dec_entities( I<$string> )
+
 =head2 C<string> _trim( I<$string> )
 
 =head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str> )
