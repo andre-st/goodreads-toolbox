@@ -104,12 +104,12 @@ Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.
 
 ## Contributing
 
-Reporting bugs / feature requests: 
-Either use Github's [Issue Tracker](https://github.com/andre-st/goodreads/issues)
+#### Reporting bugs / Feature requests: 
+either use Github's [issue tracker](https://github.com/andre-st/goodreads/issues)
 or contact the author [by e-mail](AUTHORS.md).
 
-Writing your own scripts: 
-See the [tests directory](./t/) for examples on how to use the toolbox library.
+#### Writing your own scripts: 
+see the [tests directory](./t/) for examples on how to use the toolbox library.
 Every user script should contain its man page, see existing scripts for examples.
 
 There may be [less complex issues](https://github.com/andre-st/goodreads/labels/beginner)
