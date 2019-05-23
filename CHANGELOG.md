@@ -4,11 +4,19 @@ All notable changes to this project will be documented in this file.
 
 
 
-## [1.18.1] - 2019-05-14
+## [1.19.0] - 2019-05-23
 ### Fixed
 
 - search.pl: Titles were missing in the generated HTML file due to changes
   in the source markup
+
+### Added
+
+- recentrated.pl: allows login and can be run against non-public member accounts
+
+### Changed
+
+- recentrated.pl: all option names and positional parameters changed (see --help)
 
 
 
