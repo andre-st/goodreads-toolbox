@@ -6,8 +6,8 @@
 ## Download all reviews for a book, e.g., for sentiment analysis
 
 From the _Goodreads Developers_ forum, 
-[Breslin (2018)](https://www.goodreads.com/topic/show/19484417-increase-the-visible-number-of-ratings-of-a-book)
-or [Giulia (2018)](https://www.goodreads.com/topic/show/19477061-how-can-i-extract-all-reviews-full-text-for-a-specific-book):
+[Breslin (2018)](https://web.archive.org/web/20190525014427/https://www.goodreads.com/topic/show/19484417-increase-the-visible-number-of-ratings-of-a-book)
+or [Giulia (2018)](https://web.archive.org/web/20190525014339/https://www.goodreads.com/topic/show/19477061-how-can-i-extract-all-reviews-full-text-for-a-specific-book):
 
 > I simply need to obtain all (or as many) reviews for two books, namely
 > Woolf's To the Lighthouse and Mrs Dalloway, so that i can then analyse
