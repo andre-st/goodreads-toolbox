@@ -108,6 +108,7 @@ Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.
   - please check the [existing issues](https://github.com/andre-st/goodreads/issues) 
     before adding [a new one](https://github.com/andre-st/goodreads/issues/new) via Github's issue tracker
   - [alternative contact options](AUTHORS.md)
+  - thank you all who wrote me mails in the past or otherwise reported bugs :thumbsup:
 - Writing your own scripts
   - see the [tests directory](./t/) for examples on how to use the toolbox library
   - see the [toolbox library documentation](./lib/Goodscrapes.pod)
