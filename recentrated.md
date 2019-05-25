@@ -6,12 +6,12 @@
 ## Know when people rate or write reviews about a book
 
 From the _Goodreads Feedback_ forum, 
-[Scribble (2010)](https://www.goodreads.com/topic/show/440170-follow-user-reviews----follow-the-book)
-or [Jimmy (2011)](https://www.goodreads.com/topic/show/563115-follow-a-book)
-or [PetraX (2014)](https://www.goodreads.com/topic/show/2136206-following-books)
-or [Lucas (2018)](https://www.goodreads.com/topic/show/19212816-follow-all-reviews-of-a-book)
-or [Jason (2018)](https://www.goodreads.com/topic/show/19540183-subscribe-to-book-reviews-of-certain-books)
-or [Elizabeth (2016):](https://www.goodreads.com/topic/show/18060629-follow-book)
+[Scribble (2010)](https://web.archive.org/web/20190525012742/https://www.goodreads.com/topic/show/440170-follow-user-reviews----follow-the-book)
+or [Jimmy (2011)](https://web.archive.org/web/20190525012635/https://www.goodreads.com/topic/show/563115-follow-a-book)
+or [PetraX (2014)](https://web.archive.org/web/20190525012443/https://www.goodreads.com/topic/show/2136206-following-books)
+or [Lucas (2018)](https://web.archive.org/web/20190525012344/https://www.goodreads.com/topic/show/19212816-follow-all-reviews-of-a-book)
+or [Jason (2018)](https://web.archive.org/web/20190525012148/https://www.goodreads.com/topic/show/19540183-subscribe-to-book-reviews-of-certain-books)
+or [Elizabeth (2016):](https://web.archive.org/web/20190525012253/https://www.goodreads.com/topic/show/18060629-follow-book)
 > I know this has been requested before, but I'd really like the opportunity to
 > follow a book. I'd like to know when people rate or write reviews about a
 > book and to be notified of such. I have some favorites that are not
