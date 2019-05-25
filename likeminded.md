@@ -6,15 +6,15 @@
 ## Finding people based on the books they've read
 
 From the _Goodreads Feedback_ forum, 
-[Linda (2010)](https://www.goodreads.com/topic/show/298531-is-there-an-option-to-do-a-general-search-for-people-with-similar-readin)
-or [Michael (2013)](https://www.goodreads.com/topic/show/1619830-finding-friends-using-compare-books)
-or [Wren (2014)](https://www.goodreads.com/topic/show/1790589-what-if-there-was-a-recommended-friends-feature) 
-or [Kara (2015)](https://www.goodreads.com/topic/show/17019858-compare-books-suggestion)
-or [Samantha (2016)](https://www.goodreads.com/topic/show/18167287-users-like-you-feature-suggestion)
-or [Jacob (2017)](https://www.goodreads.com/topic/show/18433578-find-me-a-friend-with-same-taste-for-books)
-or [Superbunny (2018)](https://www.goodreads.com/topic/show/19361289-searching-others-with-similar-taste-to-mine)
-or [Marc (2018)](https://www.goodreads.com/topic/show/19252693-new-suggestion-to-find-like-minded-people)
-or [Mehran (2018)](https://www.goodreads.com/topic/show/19397936-finding-people-based-on-the-books-they-ve-read):
+[Linda (2010)](https://web.archive.org/web/20170427072407/http://www.goodreads.com/topic/show/298531-is-there-an-option-to-do-a-general-search-for-people-with-similar-readin)
+or [Michael (2013)](https://web.archive.org/web/20190525014022/https://www.goodreads.com/topic/show/1619830-finding-friends-using-compare-books)
+or [Wren (2014)](https://web.archive.org/web/20190525013926/https://www.goodreads.com/topic/show/1790589-what-if-there-was-a-recommended-friends-feature) 
+or [Kara (2015)](https://web.archive.org/web/20190525013835/https://www.goodreads.com/topic/show/17019858-compare-books-suggestion)
+or [Samantha (2016)](https://web.archive.org/web/20190525013741/https://www.goodreads.com/topic/show/18167287-users-like-you-feature-suggestion)
+or [Jacob (2017)](https://web.archive.org/web/20190525013655/https://www.goodreads.com/topic/show/18433578-find-me-a-friend-with-same-taste-for-books)
+or [Superbunny (2018)](https://web.archive.org/web/20190525013600/https://www.goodreads.com/topic/show/19361289-searching-others-with-similar-taste-to-mine)
+or [Marc (2018)](https://web.archive.org/web/20190525013501/https://www.goodreads.com/topic/show/19252693-new-suggestion-to-find-like-minded-people)
+or [Mehran (2018)](https://web.archive.org/web/20190525013406/https://www.goodreads.com/topic/show/19397936-finding-people-based-on-the-books-they-ve-read):
 > Is there a way to search for people who have read books X, Y, and Z? Or maybe
 > a way for you to find people who have many books in common with you, without
 > going through people manually? If such features don't exist, Goodreads should
