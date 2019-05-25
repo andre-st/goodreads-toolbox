@@ -6,7 +6,7 @@
 ## Finding all similar authors
 
 From the _Goodreads Feedback_ forum, 
-[Anne (2018)](https://www.goodreads.com/topic/show/19438988-finding-similar-authors):
+[Anne (2018)](https://web.archive.org/web/20190525014222/https://www.goodreads.com/topic/show/19438988-finding-similar-authors):
 > I like Laura Kinsale and Loretta Chase. If I do some digging, I discover that
 > I might like Judith Ivory too, because she is on the similar authors list of
 > both authors. And if I like Judith Ivory, too, I certainly should try Sherry
