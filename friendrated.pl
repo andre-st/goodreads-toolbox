@@ -262,11 +262,11 @@ for my $mid (keys %members)
 	my $hitcount = 0;
 	
 	my $trackfavsfn = sub{
-		return if defined $MINRATED && $_[0]->{user_rating} < $MINRATED;
-		return if defined $MAXRATED && $_[0]->{user_rating} > $MAXRATED;
 		return if defined $MAXRATS  && $_[0]->{num_ratings} > $MAXRATS;
 		return if defined $MAXYEAR  && $_[0]->{year}        > $MAXYEAR;
 		return if defined $MINYEAR  && $_[0]->{year}        < $MINYEAR;
+		return if                      $_[0]->{user_rating} < $MINRATED;
+		return if                      $_[0]->{user_rating} > $MAXRATED;
 		
 		$hitcount++;
 		$bkfaved_for{ $_[0]->{id}                   }{ $mid } = 1;
