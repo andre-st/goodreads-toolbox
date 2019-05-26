@@ -11,9 +11,10 @@ friendrated - books and authors common among the members you follow
 
 =head1 SYNOPSIS
 
-B<friendrated.pl> [B<-f> F<number>] [B<-r> F<number>] [B<-c> F<numdays>] 
-[B<-m> F<number>] [B<-y> F<number>] [B<-e> F<number>] [B<-o> F<filename>] 
-[B<-u> F<string>] [B<-t>] F<goodloginmail> [F<goodloginpass>]
+B<friendrated.pl> [B<-f> F<number>] [B<-r> F<number>] [B<-z> F<number>]
+[B<-c> F<numdays>] [B<-m> F<number>] [B<-y> F<number>] [B<-e> F<number>] 
+[B<-o> F<filename>] [B<-u> F<string>] [B<-t>] [B<-h>]
+F<goodloginmail> [F<goodloginpass>]
 
 
 =head1 OPTIONS
