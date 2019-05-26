@@ -75,6 +75,12 @@ of that person (depends on your login).
 - female GR members mainly read fiction, tend to give 4 and 5 stars pretty generously, 
   and their networks are female
   - start with harsh program settings: min rating of 5 and rated by min 5 followees
+- "common authors" tables can be misleading, at the moment:
+  it just counts the frequency of a name but does not take into account
+  the aggregated ratings of a member for a specific author;
+  so 20 members might hate 10 books and love 1 book of an author, 
+  the program would count 20x a love relationship for this author,
+  although the books of the author are more often hated
 
 
 ## Feedback
