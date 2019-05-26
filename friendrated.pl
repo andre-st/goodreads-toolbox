@@ -24,14 +24,27 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =item B<-f, --favorers>=F<number>
 
-only add books to the resulting report which were rated by at least 
+only add books to the final report which were rated by at least 
 n friends or followees, default is 3
 
 
-=item B<-r, --rated>=F<number>
+=item B<-r, --minrated>=F<number>
 
 only consider books rated at least n stars,
-0 includes no rating, maximum is 5; default is 4
+0 includes no rating, maximum is 5; see also B<--maxrated>; default is 4
+
+
+=item B<-z, --maxrated>=F<number>
+
+only consider books rated lower or equal n stars,
+0 includes no rating, maximum is 5; see also B<--minrated>; default is 5
+
+
+=item B<-h, --hate>
+
+shortcut for B<--minrated>=F<1> and B<--maxrated>=F<2>;
+the final report will be about the most hated books among the 
+members you follow
 
 
 =item B<-m, --maxratings>=F<number>
@@ -94,7 +107,9 @@ F</tmp/FileCache/>
 
 $ ./friendrated.pl login@gmail.com MyPASSword
 
-$ ./friendrated.pl --rated=4 --favorers=5  login@gmail.com
+$ ./friendrated.pl --hate login@gmail.com
+
+$ ./friendrated.pl --minrated=4 --favorers=5  login@gmail.com
 
 $ ./friendrated.pl --minyear=1950 --maxyear=1980 --maxratings=1000 login@gmail.com
 
@@ -123,7 +138,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2019-05-10 (Since 2018-05-10)
+2019-05-26 (Since 2018-05-10)
 
 =cut
 
@@ -158,32 +173,38 @@ STDOUT->autoflush( 1 );
 our $TSTART      = time();
 our $MINFAVORERS = 3;
 our $MINRATED    = 4;
+our $MAXRATED    = 5;
 our $FRIENDSHELF = "read";
 our $ISTOREAD    = 0;
 our $CACHEDAYS   = 31;
 our $MAXRATS;
-our $MINYEAR;
-our $MAXYEAR;
+our $MINYEAR;    # No default, some books lack year-pub, others < 0 B.C.
+our $MAXYEAR;    # "  "
 our $OUTPATH;
 our $USERID;
 
 GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
-            'rated|r=i'      => \$MINRATED,
+            'minrated|r=i'   => \$MINRATED,
+            'maxrated|z=i'   => \$MAXRATED,
             'maxratings|m=i' => \$MAXRATS,
             'minyear|y=i'    => \$MINYEAR,
             'maxyear|e=i'    => \$MAXYEAR,
             'userid|u=s'     => \$USERID,
+            'hate|h'         => sub{ $MAXRATED    = 2;         $MINRATED = 1; },
             'toread|t'       => sub{ $FRIENDSHELF = "to-read"; $MINRATED = 0; },
             'help|?'         => sub{ pod2usage( -verbose => 2 );              },
             'outfile|o=s'    => \$OUTPATH,
             'cache|c=i'      => \$CACHEDAYS )
              or pod2usage( 1 );
 
+die( "[ERROR] Invalid argument: --minrated=$MINRATED higher than --maxrated=$MAXRATED" )
+	if $MINRATED > $MAXRATED;
+
 die( "[ERROR] Invalid argument: --minyear=$MINYEAR higher than --maxyear=$MAXYEAR" )
 	if defined $MINYEAR 
 	&& defined $MAXYEAR 
 	&& $MINYEAR > $MAXYEAR;
-
+	
 pod2usage( 1 ) if !$ARGV[0];
 pod2usage( -exitval   => "NOEXIT", 
            -sections  => [ "REPORTING BUGS" ], 
@@ -241,6 +262,7 @@ for my $mid (keys %members)
 	
 	my $trackfavsfn = sub{
 		return if defined $MINRATED && $_[0]->{user_rating} < $MINRATED;
+		return if defined $MAXRATED && $_[0]->{user_rating} > $MAXRATED;
 		return if defined $MAXRATS  && $_[0]->{num_ratings} > $MAXRATS;
 		return if defined $MAXYEAR  && $_[0]->{year}        > $MAXYEAR;
 		return if defined $MINYEAR  && $_[0]->{year}        < $MINYEAR;
@@ -278,7 +300,7 @@ $capt .= sprintf( " published %s-%s,", $MINYEAR//"*", $MAXYEAR//"*" )
 $capt .= " with max $MAXRATS ratings," 
 	if defined $MAXRATS;
 
-$capt .= " rated $MINRATED stars or better";
+$capt .= " rated $MINRATED-$MAXRATED stars";
 $capt .= " by $MINFAVORERS+ friends or followees";
 $capt .= " of member $USERID, on $now";
 
