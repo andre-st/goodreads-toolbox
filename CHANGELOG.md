@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 
 
-## [1.19.0] - 2019-05-23
+## [1.19.2] - 2019-05-26
 ### Fixed
 
 - search.pl: Titles were missing in the generated HTML file due to changes
@@ -12,10 +12,13 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
+- friendrated.pl: `--hate` option to list most hated books among the members you follow
+  ([#24](https://github.com/andre-st/goodreads/issues/24))
 - recentrated.pl: allows login and can be run against non-public member accounts
 
 ### Changed
 
+- friendrated.pl: `--rated` option changed to `--minrated`
 - recentrated.pl: all option names and positional parameters changed (see --help)
 
 

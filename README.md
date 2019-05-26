@@ -1,4 +1,4 @@
-# :books: Andre's Goodreads Toolbox, v1.19
+# :books: Andre's Goodreads Toolbox, v1.19.2
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
@@ -19,7 +19,8 @@ It implements the "follow book" feature that was requested in the Goodreads foru
 
 Prints all books rated 4 or 5 stars by 3 or more persons you follow (including friends). 
 It implements the "books common among the people I follow" feature that was requested 
-in the Goodreads forums. It also lists the most read authors and the most wished-for books.
+in the Goodreads forums. It also lists the most read authors, the most wished-for 
+and hated books.
 [Learn more](friendrated.md)
 
 
