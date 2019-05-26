@@ -198,10 +198,10 @@ GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
             'cache|c=i'      => \$CACHEDAYS )
              or pod2usage( 1 );
 
-die( "[ERROR] Invalid argument: --minrated=$MINRATED higher than --maxrated=$MAXRATED" )
+die( "[CRIT ] Invalid argument: --minrated=$MINRATED higher than --maxrated=$MAXRATED" )
 	if $MINRATED > $MAXRATED;
 
-die( "[ERROR] Invalid argument: --minyear=$MINYEAR higher than --maxyear=$MAXYEAR" )
+die( "[CRIT ] Invalid argument: --minyear=$MINYEAR higher than --maxyear=$MAXYEAR" )
 	if defined $MINYEAR 
 	&& defined $MAXYEAR 
 	&& $MINYEAR > $MAXYEAR;
