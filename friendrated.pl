@@ -281,7 +281,9 @@ for my $mid (keys %members)
 	printf( "\t%4d hits\t%6.2fs\n", $hitcount, time()-$t0 );
 }
 
-say "\nPerfect! Got favourites of ${memdone} users.";
+printf( "\nPerfect! Got %s of %d users.\n", 
+        ($MAXRATED > 2 ? "favorites" : "least favorites"), 
+        $memdone );
 
 
 
@@ -329,8 +331,8 @@ print $fh qq{
 		<th style="width: 13em">Title</th>
 		<th>Num GR Ratings</th>
 		<th>Year Published</th>
-		<th>Faved</th>
-		<th>Faved by</th>
+		<th>Added</th>
+		<th>Added by</th>
 		</tr>
 		};
 
@@ -379,8 +381,8 @@ print $fh qq{
 		<tr>
 		<th>#</th>
 		<th>Author</th>
-		<th>Faved</th>
-		<th>Faved by</th>
+		<th>Added</th>
+		<th>Added by</th>
 		</tr>
 		};
 
