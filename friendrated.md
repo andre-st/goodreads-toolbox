@@ -62,14 +62,18 @@ Goodreads.com is very time consuming.  The script internally uses a
 "0 read 0 hits" is either an empty shelf or a shelf accessible only to friends
 of that person (depends on your login).
 
-By using the `--toread` option you can generate an alternative list about the 
-most _wished-for_ books among the members you follow.
+
+## Alternative reports
+
+- most _wished-for_ books among the members you follow: use `--toread` option
+- most _hated_ books among the members you follow: use `--hate` option
 
 
 ## Observations and limitations
 
 - books in the upper value range are usually well-known titles, fiction, classics, no surprises
-- female GR members mainly read fiction, tend to give 4 and 5 stars pretty generously, and their networks are female
+- female GR members mainly read fiction, tend to give 4 and 5 stars pretty generously, 
+  and their networks are female
   - start with harsh program settings: min rating of 5 and rated by min 5 followees
 
 
