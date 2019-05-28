@@ -88,7 +88,7 @@ More info in savreviews.md
 
 =head1 VERSION
 
-2019-02-16 (Since 2018-08-13)
+2019-05-29 (Since 2018-08-13)
 
 =cut
 
@@ -128,9 +128,9 @@ our $RIGOR      = 10;
 our $DICTPATH   = './dict/default.lst';
 our $OUTDIR     = '.';
 our $OUTNAMEFMT = 'savreviews-book%s-stars%d.txt';
-our $OUTDATEFMT = "%Y/%m/%d\n\n";  # man strptime
-our $BARWIDTH   = 40;   # Histogram
-our $BARCHAR    = '#';  # Histogram
+our $OUTDATEFMT = "%Y/%m/%d";  # man strptime
+our $BARWIDTH   = 40;          # Histogram
+our $BARCHAR    = '#';         # Histogram
 our $BOOKID;
 our $REVIEWSEPARATOR = "\n\n".( '-' x 79 )."\n";  # long line
 
@@ -202,7 +202,8 @@ for my $n (0..$MAXPOSSIBLESTARS)
 
 
 print {$files[$_->{rating}]} 
-		$_->{date}->strftime( $OUTDATEFMT ) .
+		$_->{date}->strftime( $OUTDATEFMT ) . " #" .
+		$_->{id  } . "\n\n" .
 		$_->{text} .
 		$REVIEWSEPARATOR 
 	for (values %reviews);
