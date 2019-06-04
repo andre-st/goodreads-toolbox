@@ -86,16 +86,17 @@ The program is designed to run unattended, outwaits connection issues etc.
 
 #### Latest version:
 - loading data could take a month given too many books
-- prefer loading from a separate _"best-of"_ shelf via `--shelf` parameter, avoid _"All"_ or _"Read"_ 
-	- use _100_ good but rare books (&lt;5000 ratings)
+- prefer loading from a separate _"best-of"_ shelf:
+	- use the program's `--shelf` parameter, avoid _"All"_ or _"Read"_ shelves
+	- add _100_ good but rare books (&lt;5000 ratings)
 	- the more popular your literature, the longer the program's runtime
 	- the more popular your lit, the more generic the results (500 million sales of Harry Potter)
 	- the more popular your lit, the less likely we detect reoccuring members (we cannot see all readers)
-	- quickly add books via Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
-	- alternatively load from N smaller shelves via multiple `--shelf` arguments
+	- you can add books to your shelf more quickly in Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
+	- alternatively load from multiple smaller shelves by using multiple `--shelf` arguments
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`: 
 	- my last test run with 356 books filled 11 GB in ~24 hours (many small files)
-- there's no way to get _all_ readers of a book
+- there's no way to get _all_ readers of a book:
 	- the program tries different things to get as many as possible
 	- you can tune this with the `--rigor` parameter (increases runtime)
 	- there is a number of readers not considered in our statistics
@@ -103,7 +104,7 @@ The program is designed to run unattended, outwaits connection issues etc.
 	- although, we don't get _all_ readers (for books with ten of thousand readers), 
 	  the final report still contains _enough_ members who read the same N authors
 - does _not_ list members with private accounts anymore
-- slow but good enough since you run it 4x a year
+- slow but good enough; you won't run it more often than 4x a year
 - _"...most number of shared books would be a list of children's books"_—`likeminded.pl` 
   has a `--shelf` parameter
 
