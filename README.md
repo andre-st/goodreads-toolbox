@@ -91,10 +91,10 @@ GNU/Linux terminal:
 $ git clone https://github.com/andre-st/goodreads.git
 $ cd goodreads
 $ sudo make             # Gets required Perl modules from CPAN (details see Makefile)
-
-... try scripts and finally ...
-
-$ sudo make uninstall   # Removes generated files from sys-dirs (cache, logs, ..., see Makefile)
+$ ./example-script.pl --help
+$ ...
+$ ...
+$ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs (see Makefile)
 ```
 
 _Microsoft Windows_ is not officially supported.
