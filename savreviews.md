@@ -18,7 +18,7 @@ or [Giulia (2018)](https://web.archive.org/web/20190525014339/https://www.goodre
 ## Output format
 ```console
 $ cat savreviews-book12345-stars2.txt
-2018/12/29
+2018/12/29 #1234567
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -30,13 +30,13 @@ dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 -------------------------------------------------------------------------------
-2018/10/21
+2018/10/21 #7654321
 
 Ut enim ad minim veniam, quis nostrud <b>exercitation</b> ullamco laboris nisi 
 ut aliquip ex ea commodo consequat: <a href="https://example.com">example.com</a>
 
 -------------------------------------------------------------------------------
-2018/04/01
+2018/04/01 #918273
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
@@ -45,7 +45,7 @@ minim veniam, quis nostrud exercitation ullamco laboris nisi
 
 **Note:**
 
-The generated files (one per star-rating) contain review-texts and dates only. 
+The generated files (one per star-rating) contain review-texts, dates and the review-ID only. 
 They do not contain any other information, e.g., user names.
 If there is interest in these details or other output formats, just contact 
 me or add an [issue](https://github.com/andre-st/goodreads/issues).
