@@ -101,12 +101,12 @@
   - [top books on Reddit](http://booksreddit.com/)
   - [RedditFavorites.com](https://redditfavorites.com/books)
 - search [books.google.com](https://www.google.com/search?tbm=bks&q=specific+interest) for "specific interest"; try Google's [Talk to Books](https://books.google.com/talktobooks/) (since April 2018)
+- search Google scholar for `label:MY_AREA_OF_INTEREST` and check profile names against Amazon's book search
 - [Google Alerts](https://www.google.com/alerts): "new book" + "specific interest"
 - follow [Goodreads users](https://www.goodreads.com/user/18418712-andr/following) with interesting libraries
   - find Goodreads members [with similar taste](https://github.com/andre-st/goodreads/blob/master/likeminded.md) _(my GR toolbox)_
 - investigate a list of [authors similar to the authors in your shelves](https://github.com/andre-st/goodreads/blob/master/similarauth.md) on Goodreads _(my GR toolbox)_
 - inspect Goodreads books [common among members you follow](https://github.com/andre-st/goodreads/blob/master/friendrated.md) _(my GR toolbox)_
-- search Google scholar for `label:MY_AREA_OF_INTEREST` and check profile names against Amazon's book search
 - check the Amazon profiles of users who comment good books
 - follow small or specialized publishers through a [Twitter list](https://twitter.com/voidyll/lists/books), RSS-feed or newsletter (works so lala)
 - reddit, quora, ...
