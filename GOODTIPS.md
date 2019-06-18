@@ -101,7 +101,7 @@
   - [top books on Reddit](http://booksreddit.com/)
   - [RedditFavorites.com](https://redditfavorites.com/books)
 - search [books.google.com](https://www.google.com/search?tbm=bks&q=specific+interest) for "specific interest"; try Google's [Talk to Books](https://books.google.com/talktobooks/) (since April 2018)
-- search Google scholar for `label:MY_AREA_OF_INTEREST` and check profile names against Amazon's book search
+- search [Google scholar profiles](https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors=label%3A&btnG=) for `label:MY_AREA_OF_INTEREST` and check profile names against Amazon's book search
 - [Google Alerts](https://www.google.com/alerts): "new book" + "specific interest"
 - follow [Goodreads users](https://www.goodreads.com/user/18418712-andr/following) with interesting libraries
   - find Goodreads members [with similar taste](https://github.com/andre-st/goodreads/blob/master/likeminded.md) _(my GR toolbox)_
