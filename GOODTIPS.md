@@ -64,7 +64,7 @@
 
 - **Check out users who rate good books**. 
   [This service](https://andre-st.github.io/goodreads/) notifies you of new ratings for specific books.
-  Be picky, create a special-purpose shelf with good but rare books, don't submit your whole _"read"_ shelf.
+  Be picky, create a special-purpose shelf with good but rare books, don't submit your whole _"read"_ shelf to this service.
 
 - **Force view settings**, e.g., unify the quasi-random view settings when browsing (other people's)
   shelves, by rewriting Goodreads URLs via Einar Egilsson's 
