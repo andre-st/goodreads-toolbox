@@ -113,6 +113,7 @@
 - the better book sites:
   - [NewBooksNetwork.com](http://newbooksnetwork.com/)
   - [perlentaucher.de](https://www.perlentaucher.de/teaserliste/2_Buecher.html) (German)
+  - [Hotlist](https://www.hotlist-online.com/) (German)
 - recommendation engines hardly work for me: Goodreads never, Amazon sometimes
 - [Bookstragram](https://www.instagram.com/explore/tags/bookstagram/) does not work for me
 - [BookTube](https://en.wikipedia.org/wiki/BookTube) does not work for me, girls club & primarily fiction
