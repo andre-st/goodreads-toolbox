@@ -219,10 +219,14 @@ gsetcache( $CACHEDAYS );
 
 
 #-----------------------------------------------------------------------------
+# Primary data structures:
+# 
 my %members;
-my %books;       # bookid   => %book
-my %bkfaved_for; # {bookid}{favorerid}, favorers hash-type because of uniqueness;
-my %aufaved_for; # {auname}{favorerid}
+my %books;        # bookid   => %book
+my %bkfaved_for;  # {bookid}{favorerid}, favorers hash-type because of uniqueness;
+my %aufaved_for;  # {auname}{favorerid}
+
+
 
 
 

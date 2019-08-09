@@ -152,6 +152,8 @@ gsetcache( $CACHEDAYS );
 
 
 # ----------------------------------------------------------------------------
+# Primary data structures:
+# 
 our %auknown;  # {$auid => %author}
 our %aufound;  # {$auid => %author}
 

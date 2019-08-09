@@ -202,6 +202,8 @@ gsetcache( $CACHEDAYS );
 
 
 # ----------------------------------------------------------------------------
+# Primary data structures:
+# 
 my %authors;          # {$auid   => %author}
 my %authors_read_by;  # {$userid}->{$auid => 1}
 my %readers;          # {$userid => %user}

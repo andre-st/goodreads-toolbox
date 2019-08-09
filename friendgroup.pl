@@ -136,6 +136,8 @@ gsetcache( $CACHEDAYS );
 
 
 #-----------------------------------------------------------------------------
+# Primary data structures:
+#
 my %members;  # {user_id}
 my %joins;    # {group_id}{user_id}
 my %groups;   # {group_id}
