@@ -42,7 +42,7 @@ mailtxt()
 	# Signature:
 	echo
 	echo
-	echo "--"
+	echo "-- "
 	echo "  This is an automatically generated email."
 	echo "  Just reply 'unsubscribe' to unsubscribe."
 	echo "  Add new books to your shelf at any time."
@@ -52,7 +52,7 @@ mailtxt()
 
 
 #=========================================================================================
-#         USER       MAILTO                   MAILER           REALNAME       ADD-DATE
+#         USER          MAILTO                    MAILER     REALNAME         ADD-DATE
 #=========================================================================================
 mailtxt   GOODUSERID1   USERMAIL1@EXAMPLE.COM   | ${MAILER}  # me             2017/01/12
 mailtxt   GOODUSERID2   USERMAIL2@EXAMPLE.COM   | ${MAILER}  # user name 2    2018/02/15
