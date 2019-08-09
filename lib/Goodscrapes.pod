@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-05-23
+=item * Updated: 2019-08-07
 
 =item * Since: 2014-11-05
 
@@ -276,14 +276,12 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<$value> _require_arg( I<$name, $value> )
-
 =head2 C<bool> gisbaduser( I<$user_or_author_id> )
 
 =over
 
 =item * returns true if the given user or author is blacklisted 
-        and slows down any analysis
+        and would slow down any analysis
 
 =back
 
@@ -322,9 +320,9 @@ https://github.com/andre-st/
 =item * scraping Goodreads.com is a very slow process
 
 =item * scraped documents can be cached if you don't need them "fresh"
-        during development time,
-        during long running sessions (cheap recovery on crash, power blackout or pauses),
-        when experimenting with parameters
+        during development time
+        or long running sessions (cheap recovery on crash, power blackout or pauses),
+	   or when experimenting with parameters
 
 =item * unit can be C<"minutes">, C<"hours">, C<"days">
 
@@ -455,17 +453,49 @@ https://github.com/andre-st/
 
 =item * queries Goodreads.com for the friends and followees list of the given user
 
-=item * C<rh_into        =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
+=item * C<rh_into           =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
 
-=item * C<from_user_id   =E<gt> string>
+=item * C<from_user_id      =E<gt> string>
 
-=item * C<on_progress    =E<gt> sub> see C<gmeter()> [optional]
+=item * C<on_user           =E<gt> sub( %user )> return false to exclude user from $rh_into [optional]
 
-=item * C<incl_authors   =E<gt> bool> [optional, default 1]
+=item * C<on_progress       =E<gt> sub> see C<gmeter()> [optional]
 
-=item * C<incl_friends   =E<gt> bool> [optional, default 1]
+=item * C<none_if_count_gt> =E<gt> number> don't add anything to $rh_into if number of folls exceeds limit [optional]
 
-=item * C<incl_followees =E<gt> bool> [optional, default 1]
+=item * C<incl_authors      =E<gt> bool> [optional, default 1]
+
+=item * C<incl_friends      =E<gt> bool> [optional, default 1]
+
+=item * C<incl_followees    =E<gt> bool> [optional, default 1]
+
+=item * Precondition: glogin()
+
+=back
+
+=head2 C<void> gsocialnet(I<{ ... }>)
+
+=over
+
+=item * C<from_user_id    =E<gt> string>
+
+=item * C<rh_into_nodes   =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
+
+=item * C<ra_into_edges   =E<gt> array reference ({from =E<gt> id, to =E<gt> id},...)>
+
+=item * C<ignore_nhood_gt =E<gt> int> ignore users with with a neighbourhood > N [optional, default 1000]
+
+=item * C<depth           =E<gt> int>  [optional, default 1]
+
+=item * C<incl_authors    =E<gt> bool> [optional, default 0]
+
+=item * C<incl_friends    =E<gt> bool> [optional, default 1]
+
+=item * C<incl_followees  =E<gt> bool> [optional, default 1]
+
+=item * C<on_progress     =E<gt> sub({ done =E<gt> int, count =E<gt> int, perc =E<gt> int, depth =E<gt> int })>  [optional]
+
+=item * C<on_user         =E<gt> sub( %user )> return false to exclude user [optional]
 
 =item * Precondition: glogin()
 
@@ -515,6 +545,20 @@ https://github.com/andre-st/
 =item * HTML body of an Amazon article page
 
 =back
+
+=head2 C<string> ghtmlhead( I<$title, $ra_cols > )
+
+=over
+
+=item * returns a string with HTML boiler plate code for a table-based report
+
+=item * $title: HTML title, Table caption
+
+=item * $ra_cols: [ "Normal", ">Sort ASC", "<Sort DESC", "!Not sortable/searchable", "Right-Aligned:", ">Sort ASC, right-aligned:", ":Centered:" ]
+
+=back
+
+=head2 C<string> ghtmlfoot()
 
 =head1 PRIVATE URL-GENERATION ROUTINES
 
@@ -688,6 +732,8 @@ https://github.com/andre-st/
 
 =head2 C<string> _dec_entities( I<$string> )
 
+=head2 C<$value> _require_arg( I<$name, $value> )
+
 =head2 C<string> _trim( I<$string> )
 
 =head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str> )
@@ -733,7 +779,7 @@ https://github.com/andre-st/
 
 
 
-=head2 C<int> _check_page( $any_html_str> )
+=head2 C<int> _check_page( I<$any_html_str> )
 
 =over
 
@@ -746,8 +792,7 @@ https://github.com/andre-st/
 =item * warn if "page not found" 
 
 =item * error if page unavailable: "An unexpected error occurred. 
-        We will investigate this problem as soon as possible — please 
-        check back soon!"
+	We will investigate this problem as soon as possible"
 
 =item * error if over capacity (TODO UNTESTED):
         "<?>Goodreads is over capacity.</?> 

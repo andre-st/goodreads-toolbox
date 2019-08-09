@@ -1564,8 +1564,8 @@ sub _extract_books
 		
 		$bk{ rh_author       } = \%au;
 		$bk{ id              } = $row =~ /data-resource-id="([0-9]+)"/                                                ? $1 : undef;
-		$bk{ year            } = $row =~         />date pub<\/label><div class="value">\s*[^<]*(\d{4})\s*</s          ? $1 : 0;  # "2017" and "Feb 01, 2017"
-		$bk{ year_edit       } = $row =~ />date pub edition<\/label><div class="value">\s*[^<]*(\d{4})\s*</s          ? $1 : 0;  # "2017" and "Feb 01, 2017"
+		$bk{ year            } = $row =~         />date pub<\/label><div class="value">.*?(-?\d+)\s*</s               ? $1 : 0;  # "2017" and "Feb 01, 2017" and "-50" (BC) and "177"
+		$bk{ year_edit       } = $row =~ />date pub edition<\/label><div class="value">.*?(-?\d+)\s*</s               ? $1 : 0;  # "2017" and "Feb 01, 2017" and "-50" (BC) and "177"
 		$bk{ isbn            } = $row =~             />isbn<\/label><div class="value">\s*([0-9X\-]*)/                ? $1 : '';
 		$bk{ isbn13          } = $row =~           />isbn13<\/label><div class="value">\s*([0-9X\-]*)/                ? $1 : '';
 		$bk{ avg_rating      } = $row =~       />avg rating<\/label><div class="value">\s*([0-9\.]*)/                 ? $1 : 0;
@@ -1998,7 +1998,7 @@ sub _extract_search_books
 		$bk{ id              } = $row =~ /book\/show\/([0-9]+)/               ? $1       : undef;
 		$bk{ num_ratings     } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/   ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
 		$bk{ avg_rating      } = $row =~ /([0-9.,]+) avg rating/              ? $1       : 0;  # 3.8
-		$bk{ year            } = $row =~ /published\s+(\d+)/                  ? $1       : 0;  # 2018
+		$bk{ year            } = $row =~ /published\s+(-?\d+)/                ? $1       : 0;  # "2018", "-50" (BC)
 		$bk{ img_url         } = $row =~ /src="([^"]+)/                       ? $1       : $_NOBOOKIMGURL;
 		$bk{ title           } = $row =~ /<span itemprop='name'[^>]*>([^<]+)/ ? _dec_entities( $1 ) : '';
 		$bk{ url             } = _book_url( $bk{id} );
