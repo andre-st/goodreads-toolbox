@@ -200,7 +200,6 @@ gsetcache( $CACHEDAYS );
 
 
 
-
 # ----------------------------------------------------------------------------
 # Primary data structures:
 # 
@@ -212,7 +211,7 @@ my %books;            # {$bookid => %book}, just check 1 book if 2 authors
 
 
 # ----------------------------------------------------------------------------
-# Load authors present in the user's shelves:
+# Query authors from the user's shelves:
 #
 printf( "Loading authors from \"%s\"...", join( '" and "', @SHELVES ));
 
@@ -236,7 +235,10 @@ printf( "\nLoading books of %d authors:\n", $aucount );
 for my $auid (keys %authors)
 {
 	my $t0 = time();
-	printf( "[%3d%%] %-25s #%-8s\t", ++$audone/$aucount*100, $authors{$auid}->{name}, $auid );
+	printf( "[%3d%%] %-25s #%-8s\t", 
+			++$audone/$aucount*100, 
+			$authors{$auid}->{name}, 
+			$auid );
 	
 	my $imgurlupdatefn = sub{ $authors{$auid} = $_[0]->{rh_author} };  # TODO ugly
 	
@@ -263,7 +265,10 @@ printf( "Loading readers of %d author books:\n", $bocount );
 
 for my $b (values %books)
 {
-	printf( "[%3d%%] %-40s  #%-8s\t", ++$bodone/$bocount*100, substr( $b->{title}, 0, 40 ), $b->{id} );
+	printf( "[%3d%%] %-40s  #%-8s\t", 
+			++$bodone/$bocount*100, 
+			substr( $b->{title}, 0, 40 ), 
+			$b->{id} );
 
 	my $t0 = time();
 	my %revs;
@@ -275,7 +280,7 @@ for my $b (values %books)
 	              on_progress => gmeter( 'memb' ));
 	
 	$authors_read_by{ $_->{rh_user}->{id} }{ $b->{rh_author}->{id} } = 1 
-			foreach( values %revs );
+		foreach( values %revs );
 	
 	printf( "\t%6.2fs\n", time()-$t0 );
 }
@@ -300,6 +305,7 @@ say "Done.";
 printf( "Dropping who read less than %d%% of your authors... ", $MINCOMMON );
 
 my $bycount0 = scalar keys %authors_read_by;
+
 for my $userid (keys %authors_read_by)
 {
 	my $aucommon     = scalar keys %{$authors_read_by{$userid}};
@@ -308,8 +314,12 @@ for my $userid (keys %authors_read_by)
 	delete $authors_read_by{$userid}
 		if $aucommonperc < $MINCOMMON || $userid eq $USERID;  # Drops ~99%
 }
+
 my $bycount1 = scalar keys %authors_read_by;
-printf( "-%d memb (%3.3fs%%)\n", $bycount0-$bycount1, 100-($bycount1/$bycount0*100) );
+
+printf( "-%d memb (%3.3fs%%)\n", 
+		$bycount0-$bycount1, 
+		100-($bycount1/$bycount0*100) );
 
 
 
@@ -320,13 +330,18 @@ printf( "Loading profiles of the remaining %d members:\n", $ucount );
 
 for my $userid (keys %authors_read_by)
 {
-	printf( "[%3d%%] goodreads.com/user/show/%-8s", ++$udone/$ucount*100, $userid );
+	printf( "[%3d%%] goodreads.com/user/show/%-8s", 
+			++$udone/$ucount*100, 
+			$userid );
 	
 	my $t0 = time();
 	my %u  = greaduser( $userid );
 	
 	printf( "\t%6.2fs", time()-$t0 );
-	print ( "\tprivate account\n" ) and next if $u{num_books} == 0 || $u{is_private};
+	
+	print ( "\tprivate account\n" ) and next 
+		if $u{num_books} == 0 || $u{is_private};
+	
 	
 	$u{ aucommon }    = scalar keys %{$authors_read_by{$userid}};	
 	$u{ match    }    = int( $u{aucommon}/$u{num_books}*1000 + 0.5 ); # Watch div by zero!
@@ -334,6 +349,7 @@ for my $userid (keys %authors_read_by)
 	
 	print( "\t".( "*" x ($u{match}/10) )."\n" );
 }
+
 say "Done.";
 
 

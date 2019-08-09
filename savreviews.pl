@@ -132,7 +132,8 @@ our $OUTDATEFMT = "%Y/%m/%d";  # man strptime
 our $BARWIDTH   = 40;          # Histogram
 our $BARCHAR    = '#';         # Histogram
 our $BOOKID;
-our $REVIEWSEPARATOR = "\n\n".( '-' x 79 )."\n";  # long line
+our $REVIEWSEPARATOR  = "\n\n".( '-' x 79 )."\n";  # long line
+our $MAXPOSSIBLESTARS = 5;
 
 GetOptions( 'rigor|x=i'  => \$RIGOR,
             'dict|d=s'   => \$DICTPATH,
@@ -185,7 +186,7 @@ my @files;
 
 for my $n (0..$MAXPOSSIBLESTARS)
 {
-	my $fpath = File::Spec->catfile( $OUTDIR, sprintf( $OUTNAMEFMT, $BOOKID, $n ) );
+	my $fpath = File::Spec->catfile( $OUTDIR, sprintf( $OUTNAMEFMT, $BOOKID, $n ));
 	
 	print( "\n$fpath" );
 	

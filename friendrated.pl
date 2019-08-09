@@ -168,20 +168,21 @@ use Goodscrapes;
 # ----------------------------------------------------------------------------
 # Program configuration:
 # 
-setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
+setlocale( LC_CTYPE, 'en_US' );  # GR dates all en_US
 STDOUT->autoflush( 1 );
 
-our $TSTART      = time();
-our $MINFAVORERS = 3;
-our $MINRATED    = 4;
-our $MAXRATED    = 5;
-our $FRIENDSHELF = "read";
-our $ISTOREAD    = 0;
-our $CACHEDAYS   = 31;
+our $TSTART       = time();
+our $MINFAVORERS  = 3;
+our $MINRATED     = 4;
+our $MAXRATED     = 5;
+our $FRIENDSHELF  = 'read';
+our $OUTDIR       = './';
+our $ISTOREAD     = 0;
+our $CACHEDAYS    = 31;
+our $EXCLMYBOOKS  = 1;
 our $MAXRATS;
-our $MINYEAR;    # No default, some books lack year-pub, others < 0 B.C.
-our $MAXYEAR;    # "  "
-our $OUTPATH;
+our $MINYEAR;     # No default, some books lack year-pub, others < 0 B.C.
+our $MAXYEAR;     # "  "
 our $USERID;
 
 GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
@@ -283,7 +284,7 @@ for my $mid (keys %members)
 }
 
 printf( "\nPerfect! Got %s of %d users.\n", 
-        ($MAXRATED > 2 ? "favorites" : "least favorites"), 
+        ($MAXRATED > 2 ? 'favorites' : 'least favorites'), 
         $memdone );
 
 
@@ -389,8 +390,7 @@ printf( "(%d authors)", $num_aufinds );
 
 
 
-printf( "%d books/%d authors\n", $num_bkfinds, $num_aufinds );
-printf( "Total time: %.0f minutes\n", (time()-$TSTART)/60 );
+printf( "\n\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
 
 
 

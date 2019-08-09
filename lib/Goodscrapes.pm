@@ -1882,6 +1882,22 @@ sub _dec_entities
 
 
 
+
+=head2 C<$value> _require_arg( I<$name, $value> )
+
+=cut
+
+sub _require_arg
+{
+	my $nam = shift;
+	my $val = shift;
+	croak( _errmsg( $_ENO_BADARG, $nam )) if !defined $val;
+	return $val;
+}
+
+
+
+
 =head2 C<string> _trim( I<$string> )
 
 =cut
