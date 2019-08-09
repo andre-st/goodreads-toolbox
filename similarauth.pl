@@ -139,10 +139,6 @@ GetOptions( 'help|?'      => sub{ pod2usage( -verbose => 2 ) },
              or pod2usage( 1 );
 
 pod2usage( 1 ) if !$ARGV[0];
-pod2usage( -exitval   => "NOEXIT", 
-           -sections  => [ "REPORTING BUGS" ], 
-           -verbose   => 99,
-           -noperldoc => 1 );
 
 glogin( usermail => $ARGV[0],  # Login not really required at the moment
         userpass => $ARGV[1],  # Asks pw if omitted

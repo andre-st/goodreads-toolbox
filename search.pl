@@ -153,14 +153,11 @@ $ordercsv   =~ s/\s+//g;  # Mistakenly added spaces
 
 gsetcache( $CACHEDAYS );
 
-pod2usage( -exitval   => "NOEXIT", 
-           -sections  => [ "REPORTING BUGS" ], 
-           -verbose   => 99,
-           -noperldoc => 1 );
-
 
 
 # ----------------------------------------------------------------------------
+# Primary data structures:
+# 
 my @books;
 
 

@@ -144,13 +144,6 @@ GetOptions( 'rigor|x=i'  => \$RIGOR,
 $BOOKID = $ARGV[0] or pod2usage( 1 );
 gsetcache( $CACHEDAYS );
 
-pod2usage( -exitval   => 'NOEXIT', 
-           -sections  => [ 'REPORTING BUGS' ], 
-           -verbose   => 99,
-           -noperldoc => 1 );
-
-our $MAXPOSSIBLESTARS = 5;
-
 
 
 # ----------------------------------------------------------------------------
