@@ -148,15 +148,16 @@ our @EXPORT = qw(
 
 # Perl core:
 use Time::Piece;
-use Carp qw( croak );
-use List::Util qw(sum);
+use Carp             qw( croak );
+use List::Util       qw( sum );
 # Third party:
+use List::MoreUtils  qw( any );
+use Cache::Cache     qw( $EXPIRES_NEVER $EXPIRES_NOW );
+use Cache::FileCache;
 use IO::Prompter;
 use URI::Escape;
 use HTML::Entities;
 use WWW::Curl::Easy;
-use Cache::Cache qw( $EXPIRES_NEVER $EXPIRES_NOW );
-use Cache::FileCache;
 
 
 # Non-module message strings to be used in programs:
@@ -450,27 +451,12 @@ sub gverifyshelf
 
 
 
-=head2 C<$value> _require_arg( I<$name, $value> )
-
-=cut
-
-sub _require_arg
-{
-	my $nam = shift;
-	my $val = shift;
-	croak( _errmsg( $_ENO_BADARG, $nam )) if !defined $val;
-	return $val;
-}
-
-
-
-
 =head2 C<bool> gisbaduser( I<$user_or_author_id> )
 
 =over
 
 =item * returns true if the given user or author is blacklisted 
-        and slows down any analysis
+        and would slow down any analysis
 
 =back
 
@@ -479,7 +465,7 @@ sub _require_arg
 sub gisbaduser
 {
 	my $uid = shift or return 1;
-	return grep{ $_ eq $uid } @_BADPROFILES;
+	return any{ $_ eq $uid } @_BADPROFILES;
 }
 
 
@@ -600,9 +586,9 @@ sub glogin
 =item * scraping Goodreads.com is a very slow process
 
 =item * scraped documents can be cached if you don't need them "fresh"
-        during development time,
-        during long running sessions (cheap recovery on crash, power blackout or pauses),
-        when experimenting with parameters
+        during development time
+        or long running sessions (cheap recovery on crash, power blackout or pauses),
+	   or when experimenting with parameters
 
 =item * unit can be C<"minutes">, C<"hours">, C<"days">
 
@@ -947,17 +933,21 @@ DONE:
 
 =item * queries Goodreads.com for the friends and followees list of the given user
 
-=item * C<rh_into        =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
+=item * C<rh_into           =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
 
-=item * C<from_user_id   =E<gt> string>
+=item * C<from_user_id      =E<gt> string>
 
-=item * C<on_progress    =E<gt> sub> see C<gmeter()> [optional]
+=item * C<on_user           =E<gt> sub( %user )> return false to exclude user from $rh_into [optional]
 
-=item * C<incl_authors   =E<gt> bool> [optional, default 1]
+=item * C<on_progress       =E<gt> sub> see C<gmeter()> [optional]
 
-=item * C<incl_friends   =E<gt> bool> [optional, default 1]
+=item * C<none_if_count_gt> =E<gt> number> don't add anything to $rh_into if number of folls exceeds limit [optional]
 
-=item * C<incl_followees =E<gt> bool> [optional, default 1]
+=item * C<incl_authors      =E<gt> bool> [optional, default 1]
+
+=item * C<incl_friends      =E<gt> bool> [optional, default 1]
+
+=item * C<incl_followees    =E<gt> bool> [optional, default 1]
 
 =item * Precondition: glogin()
 
@@ -2175,7 +2165,7 @@ sub _extract_csrftok
 
 
 
-=head2 C<int> _check_page( $any_html_str> )
+=head2 C<int> _check_page( I<$any_html_str> )
 
 =over
 
@@ -2188,8 +2178,7 @@ sub _extract_csrftok
 =item * warn if "page not found" 
 
 =item * error if page unavailable: "An unexpected error occurred. 
-        We will investigate this problem as soon as possible — please 
-        check back soon!"
+	We will investigate this problem as soon as possible"
 
 =item * error if over capacity (TODO UNTESTED):
         "<?>Goodreads is over capacity.</?> 
