@@ -131,12 +131,12 @@ use FindBin;
 use lib "$FindBin::Bin/lib/";
 use POSIX      qw( locale_h );
 use List::Util qw( max );
-use Log::Any  '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
-use Text::CSV  qw( csv );
 use Time::Piece;
 use Getopt::Long;
 use Pod::Usage;
-# Third part:
+# Third party:
+use Log::Any  '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
+use Text::CSV  qw( csv );
 # Ours:
 use Goodscrapes;
 
@@ -285,12 +285,12 @@ for my $id (@oldest_ids)
 
 
 # Help user to help himself:
-print "\n\n\nToo many ratings?"
+print "\n\n\nToo many ratings?\n"
     . ">> Use a separate shelf \"watch\" on Goodreads.com with 50-150 "
     . "special but lesser-known books, and fine-tune this mail by dropping "
     . "some books from that shelf over time. "
     . "Reply \"shelf new-shelf-name\" when ready."
-	if $MAILFROM && $num_hits > 40;
+	if $MAILFROM && $num_hits > 25;
 
 
 # Without a hint, the user doesn't know whether there are simply no 
