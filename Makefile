@@ -25,7 +25,7 @@ ifndef LIBCURLDEV
 endif
 	perl -MCPAN -e 'install List::MoreUtils, HTML::Entities, URI::Escape, Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any, IO::Prompter, Test::More, Test::Exception'
 	chmod +x *.pl
-	ln -sf words-en-xl.lst            ./dict/default.lst
+	ln -sf word-en-l.lst              ./dict/default.lst
 	ln -sf ../../git-hooks/pre-commit ./.git/hooks/pre-commit
 	mkdir -p "${RR_DB_DIR}"
 	touch "${RR_LOGFILE}"
