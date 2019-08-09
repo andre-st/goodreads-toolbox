@@ -208,51 +208,27 @@ printf( "Writing authors (N=%d) to \"%s\"... ", scalar keys %aufound, $OUTPATH )
 my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 
-print $fh qq{
-		<!DOCTYPE html>
-		<html>
-		<head>
-		<title> Similar Goodreads Authors </title>
-		<link rel="stylesheet" property="stylesheet" type="text/css" 
-		    media="all" href="report.css">
-		</head>
-		<body class="similarauth">
-		<table border="1" width="100%" cellpadding="6">
-		<caption>
-		  Similar Authors, $now
-		</caption>
-		<tr>
-		<th>#</th>  
-		<th>Author</th>  
-		<th>Seen</th>  
-		</tr>
-		};
+print $fh ghtmlhead( "Similar Authors, $now", [ 'Author', '>Seen:' ]);
 
 my $line;
-for my $auid (sort{ $aufound{$b}->{_seen} <=> $aufound{$a}->{_seen} } keys %aufound)
+for my $auid (keys %aufound)
 {
 	next if exists $auknown{$auid};
 	
 	$line++;
 	print $fh qq{
 			<tr>
-			<td>$line</td>
 			<td>
 			<a  href="$aufound{$auid}->{works_url}" target="_blank">
 			<img src="$aufound{$auid}->{img_url}" height="80" />
 			          $aufound{$auid}->{name}
 			</a></td>
-			<td>$aufound{$auid}->{_seen}x</td>
+			<td>$aufound{$auid}->{_seen}</td>
 			</tr> 
 			};
 }
 
-print $fh qq{
-		</table>
-		</body>
-		</html> 
-		};
-
+print $fh ghtmlfoot();
 undef $fh;
 
 printf( "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );

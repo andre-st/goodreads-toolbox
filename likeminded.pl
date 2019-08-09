@@ -351,27 +351,8 @@ my $shv = sprintf( "%s <q>%s</q>",
                    (scalar @SHELVES > 1 ? 'shelves' : 'shelf'), 
                    join( '</q> and <q>', @SHELVES ) );
 
-print $fh qq{
-		<!DOCTYPE html>
-		<html>
-		<head>
-		<title> Goodreads members with similar taste </title>
-		<link rel="stylesheet" property="stylesheet" type="text/css" 
-		    media="all" href="report.css">
-		</head>
-		<body class="likeminded">
-		<table border="1" width="100%" cellpadding="6">
-		<caption>
-		  Members who read at least 
-		  ${MINCOMMON}% of the authors in 
-		  ${USERID}'s ${shv}, on $now
-		</caption>
-		<tr>
-		<th>Rank</th>  
-		<th>Match</th>  
-		<th>Common Authors</th>  
-		</tr>
-		};
+print $fh ghtmlhead( "Members who read at least ${MINCOMMON}% of the authors in ${USERID}'s ${shv}, on $now",
+		[ '<Rank:', 'Match', '!Common Authors' ]);
 
 my $line;
 for my $userid (sort{ $readers{$b}->{match} <=> 
@@ -404,15 +385,14 @@ for my $userid (sort{ $readers{$b}->{match} <=>
 			};
 }
 
-print $fh qq{
-		</table>
-		</body>
-		</html> 
-		};
-
+print $fh ghtmlfoot();
 undef $fh;
 
+
+
+# ----------------------------------------------------------------------------
 printf( "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
 
 
+# Done.
 

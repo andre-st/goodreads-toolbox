@@ -289,145 +289,104 @@ printf( "\nPerfect! Got %s of %d users.\n",
 
 
 #-----------------------------------------------------------------------------
-# Write results to HTML file:
+# Write results to HTML files:
 # 
-print( "Writing results to \"$OUTPATH\"... " );
-
-my $fh   = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
-my $now  = strftime( '%a %b %e %H:%M:%S %Y', localtime );
-my $capt = "Books from the \"${FRIENDSHELF}\" shelves, ";
-
-$capt .= sprintf( " published %s-%s,", $MINYEAR//"*", $MAXYEAR//"*" ) 
-	if defined $MINYEAR || defined $MAXYEAR;
-
-$capt .= " with max $MAXRATS ratings," 
-	if defined $MAXRATS;
-
-$capt .= " rated $MINRATED-$MAXRATED stars";
-$capt .= " by $MINFAVORERS+ friends or followees";
-$capt .= " of member $USERID, on $now";
-
-
-print $fh qq{
-		<!DOCTYPE html>
-		<html>
-		<head>
-		<title> Books common among friends and followees </title>
-		<link rel="stylesheet" property="stylesheet" type="text/css" 
-		    media="all" href="report.css">
-		</head>
-		<body class="friendrated">
-		<nav>
-		  Tables in this document:
-		  <ul>
-		  <li><a href="#commonbooks"  >Common Books</a></li>
-		  <li><a href="#commonauthors">Common Authors</a></li>
-		  </ul>
-		</nav>
-		<table border="1" width="100%" cellpadding="6" id="commonbooks">
-		<caption>$capt</caption>
-		<tr>
-		<th>#</th>
-		<th>Cover</th>
-		<th style="width: 13em">Title</th>
-		<th>Num GR Ratings</th>
-		<th>Year Published</th>
-		<th>Added</th>
-		<th>Added by</th>
-		</tr>
-		};
-
+my $now         = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 my $num_bkfinds = 0;
-for my $bid (sort { scalar keys %{$bkfaved_for{$b}} <=> 
-                    scalar keys %{$bkfaved_for{$a}} } keys %bkfaved_for)
+my $num_aufinds = 0;
+
+my 
+$title  = "Books from the \"$FRIENDSHELF\" shelves, ";
+$title .= sprintf( " published %s-%s,", $MINYEAR//"*", $MAXYEAR//"*" ) if defined $MINYEAR || defined $MAXYEAR;
+$title .= " with max $MAXRATS ratings,"                                if defined $MAXRATS;
+$title .= " rated $MINRATED-$MAXRATED stars";
+$title .= " by $MINFAVORERS+ friends or followees";
+$title .= " of member $USERID, on $now";
+
+
+print( "Writing results to: \n$OUTPATH_BK\t" );
+
+print $bkfile ghtmlhead( $title, ['>Rank:', ':!Cover:', 'Title', 'Num GR Ratings:', 'Year Published:', 'Commonness:', '!Added by']);
+
+for my $bid (keys %bkfaved_for)
 {
 	my @favorer_ids  = keys %{$bkfaved_for{$bid}};
 	my $num_favorers = scalar @favorer_ids;
-	
 	next if $num_favorers < $MINFAVORERS;
-	
+	my $rank = sprintf( '%0.5f', $num_favorers > 0 ? 1/($books{$bid}->{num_ratings}/$num_favorers) : 0 );
 	$num_bkfinds++;
-	
-	print $fh qq{
+		
+	# Don't add chars if TD is to be sorted numerically!
+	print $bkfile qq{
 			<tr>
-			<td          >$num_bkfinds</td>
+			<td          >$rank</td>
 			<td><img src="$books{$bid}->{img_url}"></td>
 			<td><a  href="$books{$bid}->{url}" target="_blank"
 			             >$books{$bid}->{title}</a></td>
 			<td          >$books{$bid}->{num_ratings}</td>
 			<td          >$books{$bid}->{year}</td>
-			<td          >${num_favorers}x</td>
+			<td          >${num_favorers}</td>
 			<td>
 			};
 	
-	print $fh qq{
+	print $bkfile qq{
 			<a  href="$members{$_}->{url}" target="_blank">
 			<img src="$members{$_}->{img_url}" 
 			   title="$members{$_}->{name}">
 			</a>
 			} foreach (@favorer_ids);
 	
-	print $fh qq{
+	print $bkfile qq{
 			</td>
 			</tr> 
 			};
 }
 
+print $bkfile ghtmlfoot();
+undef $bkfile;
 
-# Common authors table:
-print $fh qq{
-		</table>
-		<table border="1" width="100%" cellpadding="6" id="commonauthors">
-		<caption>Common Authors From The Previous Books Set</caption>
-		<tr>
-		<th>#</th>
-		<th>Author</th>
-		<th>Added</th>
-		<th>Added by</th>
-		</tr>
-		};
+printf( "(%d books)", $num_bkfinds );
 
-my $num_aufinds = 0;
-for my $auname (sort { scalar keys %{$aufaved_for{$b}} <=> 
-                       scalar keys %{$aufaved_for{$a}} } keys %aufaved_for)
+
+
+# ------ Common authors table: ------
+print( "\n$OUTPATH_AU\t" );
+
+print $aufile ghtmlhead( 'Authors common among friends and followees', ['>Commonness:', 'Author', '!Added by']);
+
+for my $auname (keys %aufaved_for)
 {
 	my @favorer_ids  = keys %{$aufaved_for{$auname}};
 	my $num_favorers = scalar @favorer_ids;
-	
 	next if $num_favorers < $MINFAVORERS;  # Just cut away the huge bulge of 1x
-	
 	$num_aufinds++;
 	
-	print $fh qq{
+	print $aufile qq{
 			<tr>
-			<td>$num_aufinds</td>
+			<td>${num_favorers}</td>
 			<td>$auname</td>
-			<td>${num_favorers}x</td>
-			<td>
+			<td><div class="horzscroll">
 			};
 	
-	print $fh qq{
+	print $aufile qq{
 			<a  href="$members{$_}->{url}" target="_blank">
 			<img src="$members{$_}->{img_url}" 
 			   title="$members{$_}->{name}">
 			</a>
 			} foreach (@favorer_ids);
 	
-	print $fh qq{
+	print $aufile qq{
+			</div>
 			</td>
 			</tr> 
 			};
 }
 
+print $aufile ghtmlfoot();
+undef $aufile;
 
-# End of file
-print $fh qq{
-		</table>
-		</body>
-		</html> 
-		};
+printf( "(%d authors)", $num_aufinds );
 
-undef $fh;
 
 
 printf( "%d books/%d authors\n", $num_bkfinds, $num_aufinds );

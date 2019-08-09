@@ -196,31 +196,11 @@ print "Writing results to \"$OUTPATH\"... ";
 my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 
-print $fh qq{
-		<!DOCTYPE html>
-		<html>
-		<head>
-		<title> Groups common among friends and followees </title>
-		<link rel="stylesheet" property="stylesheet" type="text/css" 
-		    media="all" href="report.css">
-		</head>
-		<body class="friendgroup">
-		<table border="1" width="100%" cellpadding="6">
-		<caption>
-		  Groups joined by friends or followees of member $USERID, on $now
-		</caption>
-		<tr>
-		<th>#</th> 
-		<th>Group</th>
-		<th>Members</th>
-		<th>Joined</th>
-		<th>Joined by</th>
-		</tr>
-		};
+print $fh ghtmlhead( "Groups joined by friends or followees of member $USERID, on $now",
+		[ 'Group', 'Members', '>Joined:', '!Joined by' ]);
 
 my $num_finds = 0;
-for my $gid (sort { scalar keys %{$joins{$b}} <=> 
-                    scalar keys %{$joins{$a}} } keys %joins)
+for my $gid (keys %joins)
 {
 	my @joiner_ids  = keys %{$joins{$gid}};
 	my $num_joiners = scalar @joiner_ids;
@@ -229,14 +209,13 @@ for my $gid (sort { scalar keys %{$joins{$b}} <=>
 	
 	print $fh qq{
 			<tr>
-			<td>$num_finds</td>
 			<td>
 			  <a  href="$groups{$gid}->{url}" target="_blank">
 			  <img src="$groups{$gid}->{img_url}" align="left">
 			            $groups{$gid}->{name}</a>
 			</td>
 			<td>$groups{$gid}->{num_members}</td>
-			<td>${num_joiners}x</td>
+			<td>${num_joiners}</td>
 			<td>
 			};
 	
@@ -253,12 +232,7 @@ for my $gid (sort { scalar keys %{$joins{$b}} <=>
 			};
 }
 
-print $fh qq{
-		</table>
-		</body>
-		</html> 
-		};
-
+print $fh ghtmlfoot();
 undef $fh;
 
 

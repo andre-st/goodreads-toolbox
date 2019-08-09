@@ -1095,6 +1095,101 @@ sub amz_book_html
 
 
 ###############################################################################
+=head1 PUBLIC REPORT-GENERATION HELPERS
+
+
+
+=head2 C<string> ghtmlhead( I<$title, $ra_cols > )
+
+=over
+
+=item * returns a string with HTML boiler plate code for a table-based report
+
+=item * $title: HTML title, Table caption
+
+=item * $ra_cols: [ "Normal", ">Sort ASC", "<Sort DESC", "!Not sortable/searchable", "Right-Aligned:", ">Sort ASC, right-aligned:", ":Centered:" ]
+
+=back
+
+=cut
+
+sub ghtmlhead
+{
+	my $title   = shift;  
+	my $ra_cols = shift;
+	my $jsorder = '';
+	my $jscols  = '';
+	my $th      = '';
+	
+	for my $i (0 .. $#{$ra_cols})
+	{
+		$jscols  .= "{ 'targets': $i, 'orderable': false, 'searchable': false }, " if $ra_cols->[$i] =~ /!/;
+		$jscols  .= "{ 'targets': $i, 'className': 'dt-body-right'  }, "           if $ra_cols->[$i] =~ /^[^:].*:/;
+		$jscols  .= "{ 'targets': $i, 'className': 'dt-body-center' }, "           if $ra_cols->[$i] =~ /:.*:/;
+		$jsorder .= "[ $i, 'desc' ], "                                             if $ra_cols->[$i] =~ />/;
+		$jsorder .= "[ $i, 'asc'  ], "                                             if $ra_cols->[$i] =~ /</;
+		$th      .= '<th>' . ( $ra_cols->[$i] =~ /^[^a-zA-Z]*(.*?)[^a-zA-Z]*$/ ? $1 : '' ) . '</th>';  # Title w/o codes
+	}
+	
+	return qq{
+		<!DOCTYPE html>
+		<html lang="en">
+		<head>
+		<meta charset="utf-8">
+		<title>$title</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+		<link rel="stylesheet" property="stylesheet" type="text/css" media="all" 
+				href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+		<script>
+		\$( document ).ready( function()
+		{ 
+			\$( 'table' ).DataTable(
+			{
+				"lengthMenu": [[ 7, 20, 50, 100, 250, 500, -1    ],   // Values
+				               [ 7, 20, 50, 100, 250, 500, "All" ]],  // Labels
+				"pageLength": 7,
+				"autoWidth" : false,             // Adjust "Added by" col-width on re-ordering
+				"pagingType": "full_numbers",
+				"order"     : [ $jsorder ],
+				"columnDefs": [ $jscols  ]
+			});
+		});
+		</script>
+		<style>
+			table th { border: 1px solid #ccc; }
+		</style>
+		</head>
+		<body class="friendrated">
+		<table class="hover row-border order-column" style="width:100%">
+		<caption>Table: $title</caption>
+		<thead> <tr> $th </tr> </thead>
+		<tbody>
+		};
+}
+
+
+
+
+=head2 C<string> ghtmlfoot()
+
+=cut
+
+sub ghtmlfoot
+{
+	return qq{
+		</tbody>
+		</table>
+		</body>
+		</html>
+		};
+}
+
+
+
+
+
+###############################################################################
 
 =head1 PRIVATE URL-GENERATION ROUTINES
 

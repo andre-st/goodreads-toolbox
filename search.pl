@@ -188,28 +188,7 @@ printf( "\n\nWriting search result (N=%d) to \"%s\"... ", scalar @books, $OUTPAT
 my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 
-print $fh qq{
-		<!DOCTYPE html>
-		<html>
-		<head>
-		<title>Goodreads search result</title>
-		<link rel="stylesheet" property="stylesheet" type="text/css" 
-		    media="all" href="report.css">
-		</head>
-		<body class="search">
-		<table border="1" width="100%" cellpadding="6">
-		<caption>
-		  Query: "$PHRASE", $now
-		</caption>
-		<tr>
-		<th>#</th>
-		<th>Title</th>  
-		<th>Author</th>
-		<th>$ORDER[0]</th>
-		<th>$ORDER[1]</th>
-		<th>$ORDER[2]</th>
-		</tr>
-		};
+print $fh ghtmlhead( "Query: \"$PHRASE\", $now", [ 'Title', 'Author', ">$ORDER[0]:", "$ORDER[1]:", "$ORDER[2]:" ]);
 
 my $line;
 for my $b (@books)
@@ -217,7 +196,6 @@ for my $b (@books)
 	$line++;
 	print $fh qq{
 			<tr>
-			<td>$line</td>
 			<td>
 				<a  href="$b->{url    }" target="_blank">
 				<img src="$b->{img_url}" height="80" />
@@ -234,12 +212,7 @@ for my $b (@books)
 			};
 }
 
-print $fh qq{
-		</table>
-		</body>
-		</html> 
-		};
-
+print $fh ghtmlfoot();
 undef $fh;
 
 printf( "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
