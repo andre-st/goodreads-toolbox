@@ -19,6 +19,6 @@ use lib "$FindBin::Bin/../lib/";
 use_ok( 'Goodscrapes' );
 
 diag( "Tests TODO" );
-ok( 1 );
+
 
 

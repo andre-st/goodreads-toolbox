@@ -60,9 +60,9 @@ ok  ( $b->{num_ratings}  > 190000,         'Book has number of ratings' );
 is  ( $b->{format},      'Paperback',      'Book has format'            );
 is  ( $b->{title},       'Fight Club',     'Book has title'             );
 ok  ( $b->{stars}        > 2,              'Book has stars rating'      );
-is  ( $b->{img_url},     'https://images.gr-assets.com/books/1357128997s/5759.jpg', 'Book has image URL'      );
-is  ( $b->{url},         'https://www.goodreads.com/book/show/5759',                'Book has URL'            );
-like( $b->{review_id},   qr/^\d+$/,                                                 'Book has user review ID' );
+is  ( $b->{url},         'https://www.goodreads.com/book/show/5759',    'Book has URL'            );
+like( $b->{img_url},     qr/^https:.*\.jpg$/,                           'Book has image URL'      );
+like( $b->{review_id},   qr/^\d+$/,                                     'Book has user review ID' );
 ok  ( $b->{user_rating}           > 2,     'User rating'                );
 ok  ( $b->{user_read_count}       > 0,     'User read count'            );
 ok  ( $b->{user_date_added}->year > 2006,  'User addition-date > 2006'  );  # GR was founded in 2007
