@@ -568,12 +568,16 @@ sub glogin
 	$curl->setopt( $curl->CURLOPT_WRITEDATA,  \$htm       );
 	$curl->perform();   # Saves login data to $_cookie (set by _setcurlopts)
 	
+	# Don't leave password in memory:
+	# This f'ups $curl->perform() although noted afterwards, concurrent?
+	#$pass     = '#' x length( $pass     );
+	#$formdata = '#' x length( $formdata );
 	
 	# Get user ID if needed:
 	if( defined $ruid && !$$ruid )
 	{
 		$htm   = _html( $_HOMEURL, $_ENO_ERROR, 0 );  # Also POST 302 target
-		$$ruid = $htm =~ /setTargeting\("uid", "([^"]+)/ ? $1 : undef;
+		$$ruid = $htm =~ /index_rss\/(\d+)/ ? $1 : undef;
 		croak( _errmsg( $_ENO_BADLOGIN )) unless $$ruid;
 	}
 }
