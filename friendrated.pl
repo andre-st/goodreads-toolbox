@@ -41,7 +41,7 @@ only consider books rated lower or equal n stars,
 0 includes no rating, maximum is 5; see also B<--minrated>; default is 5
 
 
-=item B<-h, --hate>
+=item B<-h, --hated>
 
 shortcut for B<--minrated>=F<1> and B<--maxrated>=F<2>;
 the final report will be about the most hated books among the 
@@ -116,7 +116,7 @@ F</tmp/FileCache/>
 
 $ ./friendrated.pl login@gmail.com MyPASSword
 
-$ ./friendrated.pl --hate login@gmail.com
+$ ./friendrated.pl --hated login@gmail.com
 
 $ ./friendrated.pl --minrated=4 --favorers=5  login@gmail.com
 
@@ -200,8 +200,8 @@ GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
             'minyear|y=i'    => \$MINYEAR,
             'maxyear|e=i'    => \$MAXYEAR,
             'userid|u=s'     => \$USERID,
-            'hate|h'         => sub{ $MAXRATED    = 2;         $MINRATED = 1; },
-            'toread|t'       => sub{ $FRIENDSHELF = "to-read"; $MINRATED = 0; },
+            'hated|h'        => sub{ $MAXRATED    = 2;         $MINRATED = 1; },
+            'toread|t'       => sub{ $FRIENDSHELF = 'to-read'; $MINRATED = 0; },
             'help|?'         => sub{ pod2usage( -verbose => 2 );              },
             'outdir|o=s'     => \$OUTDIR,
             'cache|c=i'      => \$CACHEDAYS )
