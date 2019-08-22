@@ -1862,6 +1862,7 @@ sub _extract_friends
 
 
 
+
 =head2 C<string> _conv_uni_codepoints( I<$string> )
 
 =over
@@ -1879,6 +1880,7 @@ sub _conv_uni_codepoints
 	$str    =~ s/\\u(....)/ pack 'U*', hex($1) /eg; 
 	return $str;
 }
+
 
 
 
@@ -1922,6 +1924,7 @@ sub _trim
 
 
 
+
 =head2 C<bool> _extract_revs( I<$rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str> )
 
 =over
@@ -1939,7 +1942,6 @@ sub _extract_revs
 	my $ffn          = shift;
 	my $since_tpiece = shift;
 	my $htm          = shift or return 0;  # < is \u003c, > is \u003e,  " is \" literally
-#	my $bid          = $htm =~ /%2Fbook%2Fshow%2F([0-9]+)/  ? $1 : undef;
 	my $bid          = $htm =~ /\/book\/reviews\/([0-9]+)/  ? $1 : undef;
 	my $ret          = 0;
 	
