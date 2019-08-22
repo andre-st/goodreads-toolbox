@@ -164,6 +164,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( strftime locale_h );
+use File::Spec; # Platform indep. directory separator
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
