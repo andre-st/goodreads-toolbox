@@ -11,7 +11,7 @@
 *.cookie
 *.sh
 *.xcf
-t/test.conf
+t/config.pl
 .build
 .obsolete
 test*
