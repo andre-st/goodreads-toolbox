@@ -218,7 +218,7 @@ our %_ERRMSG =
 	$_ENO_BADARG     => "\n[FATAL] Argument \"%s\" expected.",             # name
 	$_ENO_BADLOGIN   => "\n[FATAL] Incorrect login."
 );
-sub _errmsg{ my $eno = shift; return sprintf( $_ERRMSG{$eno}, @_ ); }
+sub _errmsg { no warnings 'redundant'; my $eno = shift; return sprintf( $_ERRMSG{$eno}, @_ ); }
 
 
 # Misc module constants:
