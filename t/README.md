@@ -5,7 +5,7 @@
 The main reason for testing is the early detection of changes to the
 Goodreads.com website that would cause our toolbox to read no or incorrect data.
 
-A _design_ goal in this project is to have very little code in the user scripts 
+A _design_ goal of this project is to have very little code in the user scripts 
 by moving as much code as possible into the libraries (down the stack).
 Covering only the libraries should cover the most critical code.
 That's _good enough_ to gain confidence.
@@ -17,6 +17,13 @@ reducing the chance of distributing buggy releases.
 
 Tests can also serve as tutorial for the Goodscrapes library and reduce 
 errors caused by incorrect use.
+
+
+## Setup
+
+Rename `config.pl-example` to `config.pl` and edit the file. 
+Replace the email, pass, user-id values.
+
 
 ## Running all tests
 
