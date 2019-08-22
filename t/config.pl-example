@@ -1,0 +1,9 @@
+use 5.18.0;
+use warnings;
+
+sub get_gooduser_mail { return 'yourgoodreadslogin@gmail.com'; }
+sub get_gooduser_pass { return 'YOUR-GOODREADS-PASSWORD'; }
+sub get_gooduser_id   { return '123456789'; }  # Use number in your shelf-URLs
+
+1;
+

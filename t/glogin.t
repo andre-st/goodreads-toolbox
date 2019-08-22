@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 # Test cases realized:
-#   [x] 
+#   [x] login and get correct user-id
 #   [ ] 
 #   [ ] 
 #   [ ] 
@@ -18,7 +18,15 @@ use lib "$FindBin::Bin/../lib/";
 
 use_ok( 'Goodscrapes' );
 
-diag( "Tests TODO" );
+require( 'config.pl' );
 
+my $userid_extracted;
+my $userid_expected = get_gooduser_id();
+
+glogin( usermail => get_gooduser_mail(),
+        userpass => get_gooduser_pass(),
+        r_userid => \$userid_extracted );
+
+is( $userid_extracted, $userid_expected, 'Got correct user ID after login' );
 
 
