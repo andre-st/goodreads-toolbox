@@ -169,8 +169,8 @@ greadreviews( rh_for_book => \%book,
 print( "\n\nNumber of reviews per year:" );
 
 my %ycount;
-$ycount{$_} = 0                         for (2007 .. (localtime)[5]);  # Years not in reviews
-$ycount{$_->{date}->strftime( '%Y' )}++ for (values %reviews);
+$ycount{$_} = 0             for (2007 .. (localtime)[5]);  # Years not in reviews
+$ycount{$_->{date}->year}++ for (values %reviews);         # year >= 2007 (GR founded)
 
 my $maxycount = max( values %ycount );
 
