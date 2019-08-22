@@ -1167,6 +1167,12 @@ sub ghtmlhead
 
 =head2 C<string> ghtmlfoot()
 
+=over
+
+=item * returns a string with HTML boiler plate code for a table-based report
+
+=back
+
 =cut
 
 sub ghtmlfoot
