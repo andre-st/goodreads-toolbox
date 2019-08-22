@@ -544,12 +544,10 @@ sub glogin
 	                -out    => *STDOUT,
 	                -in     => *STDIN ) while !$pass;
 	
-	
 	# Scrape current security tokens:
 	my $htm   = _html( $_SIGNINURL, $_ENO_ERROR, 0 );
 	my $tok   = $htm =~ /name="authenticity_token" value="([^"]+)/ ? $1 : undef;
 	my $nonce = $htm =~ /name='n' type='hidden' value='([^']+)/    ? $1 : undef;
-	
 	
 	# Send login form:
 	my $formdata = 'sign_in=1'
