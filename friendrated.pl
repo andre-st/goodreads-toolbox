@@ -86,10 +86,10 @@ or pause, and when experimenting with parameters. Loading data from Goodreads
 is a very time consuming process.
 
 
-=item B<-o, --outfile>=F<filename>
+=item B<-o, --outdir>=F<path>
 
-name of the HTML file where we write results to, default is
-"./friendrated-F<goodusernumber>-F<shelfname>.html"
+directory path where the final reports will be saved,
+default is the working directory
 
 
 =item B<-?, --help>
@@ -100,6 +100,14 @@ show full man page
 
 
 =head1 FILES
+
+F<./friendrated-*-read.html>
+
+F<./friendrated-*-toread.html>
+
+F<./friendrated-*-read-authors.html>
+
+F<./friendrated-*-toread-authors.html>
 
 F</tmp/FileCache/>
 
@@ -114,7 +122,7 @@ $ ./friendrated.pl --minrated=4 --favorers=5  login@gmail.com
 
 $ ./friendrated.pl --minyear=1950 --maxyear=1980 --maxratings=1000 login@gmail.com
 
-$ ./friendrated.pl --outfile=./sub/myfile.html  login@gmail.com
+$ ./friendrated.pl --outdir=./sub/directory  login@gmail.com
 
 $ ./friendrated.pl -c 31 -r 4 -f 3 -o myfile.html  login@gmail.com
 
@@ -195,7 +203,7 @@ GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
             'hate|h'         => sub{ $MAXRATED    = 2;         $MINRATED = 1; },
             'toread|t'       => sub{ $FRIENDSHELF = "to-read"; $MINRATED = 0; },
             'help|?'         => sub{ pod2usage( -verbose => 2 );              },
-            'outfile|o=s'    => \$OUTPATH,
+            'outdir|o=s'     => \$OUTDIR,
             'cache|c=i'      => \$CACHEDAYS )
              or pod2usage( 1 );
 
@@ -213,7 +221,8 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend list/some shelv
         userpass => $ARGV[1],  # Asks pw if omitted
         r_userid => \$USERID );
 
-$OUTPATH = "friendrated-${USERID}-${FRIENDSHELF}.html" if !$OUTPATH;
+our $OUTPATH_BK = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF.html"         );
+our $OUTPATH_AU = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF-authors.html" );
 
 gsetcache( $CACHEDAYS );
 
@@ -292,6 +301,8 @@ printf( "\nPerfect! Got %s of %d users.\n",
 #-----------------------------------------------------------------------------
 # Write results to HTML files:
 # 
+my $bkfile      = IO::File->new( $OUTPATH_BK, 'w' ) or die( "[FATAL] Cannot write to $OUTPATH_BK ($!)" );
+my $aufile      = IO::File->new( $OUTPATH_AU, 'w' ) or die( "[FATAL] Cannot write to $OUTPATH_AU ($!)" );
 my $now         = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 my $num_bkfinds = 0;
 my $num_aufinds = 0;
