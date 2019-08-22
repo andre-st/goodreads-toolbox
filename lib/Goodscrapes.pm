@@ -142,7 +142,9 @@ our @EXPORT = qw(
 	greadreviews
 	greadfolls 
 	
-	amz_book_html 
+	amz_book_html
+	ghtmlhead
+	ghtmlfoot
 	);
 
 

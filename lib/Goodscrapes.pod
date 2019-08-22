@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-08-07
+=item * Updated: 2019-08-22
 
 =item * Since: 2014-11-05
 
@@ -546,6 +546,10 @@ https://github.com/andre-st/
 
 =back
 
+=head1 PUBLIC REPORT-GENERATION HELPERS
+
+
+
 =head2 C<string> ghtmlhead( I<$title, $ra_cols > )
 
 =over
@@ -559,6 +563,12 @@ https://github.com/andre-st/
 =back
 
 =head2 C<string> ghtmlfoot()
+
+=over
+
+=item * returns a string with HTML boiler plate code for a table-based report
+
+=back
 
 =head1 PRIVATE URL-GENERATION ROUTINES
 
