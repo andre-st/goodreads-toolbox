@@ -14,11 +14,11 @@ use Test::More qw( no_plan );
 use List::MoreUtils qw( any firstval );
 use FindBin;
 use lib "$FindBin::Bin/../lib/";
-
+use lib "$FindBin::Bin/../t/";
 
 use_ok( 'Goodscrapes' );
-
 require( 'config.pl' );
+
 
 my $userid_extracted;
 my $userid_expected = get_gooduser_id();
