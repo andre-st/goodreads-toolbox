@@ -76,6 +76,12 @@ don't check the "read" but "to-read" shelves of the members.
 This option also overrides the B<--rated> option with value 0.
 The final report will be about the most wished-for books among 
 the members you follow.
+=item B<-x, --excludemy>=F<shelfname>
+
+don't add books from the given shelf to the final report, e.g., books
+I already read ("read"); 
+you can use this option multiple times;
+by default no books will be excluded
 
 
 =item B<-c, --cache>=F<numdays>
@@ -118,6 +124,7 @@ $ ./friendrated.pl login@gmail.com MyPASSword
 
 $ ./friendrated.pl --hated login@gmail.com
 
+$ ./friendrated.pl --minrated=5 --excludemy=read  login@gmail.com
 $ ./friendrated.pl --minrated=4 --favorers=5  login@gmail.com
 
 $ ./friendrated.pl --minyear=1950 --maxyear=1980 --maxratings=1000 login@gmail.com
@@ -180,15 +187,15 @@ use Goodscrapes;
 setlocale( LC_CTYPE, 'en_US' );  # GR dates all en_US
 STDOUT->autoflush( 1 );
 
-our $TSTART       = time();
-our $MINFAVORERS  = 3;
-our $MINRATED     = 4;
-our $MAXRATED     = 5;
-our $FRIENDSHELF  = 'read';
-our $OUTDIR       = './';
-our $ISTOREAD     = 0;
-our $CACHEDAYS    = 31;
-our $EXCLMYBOOKS  = 1;
+our $TSTART        = time();
+our $MINFAVORERS   = 3;
+our $MINRATED      = 4;
+our $MAXRATED      = 5;
+our $FRIENDSHELF   = 'read';
+our $OUTDIR        = './';
+our $ISTOREAD      = 0;
+our $CACHEDAYS     = 31;
+our @EXCLMYSHELVES;
 our $MAXRATS;
 our $MINYEAR;     # No default, some books lack year-pub, others < 0 B.C.
 our $MAXYEAR;     # "  "
@@ -200,6 +207,7 @@ GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
             'maxratings|m=i' => \$MAXRATS,
             'minyear|y=i'    => \$MINYEAR,
             'maxyear|e=i'    => \$MAXYEAR,
+            'excludemy|x=s'  => \@EXCLMYSHELVES,
             'userid|u=s'     => \$USERID,
             'hated|h'        => sub{ $MAXRATED    = 2;         $MINRATED = 1; },
             'toread|t'       => sub{ $FRIENDSHELF = 'to-read'; $MINRATED = 0; },
@@ -233,20 +241,37 @@ gsetcache( $CACHEDAYS );
 # Primary data structures:
 # 
 my %members;
+my %mybooks;      # bookid   => %book
 my %books;        # bookid   => %book
 my %bkfaved_for;  # {bookid}{favorerid}, favorers hash-type because of uniqueness;
 my %aufaved_for;  # {auname}{favorerid}
 
 
 
+#-----------------------------------------------------------------------------
+# Load books read by user for later exclusion:
+#
+if( @EXCLMYSHELVES )
+{
+	my $t0 = time();
+	printf( "Loading #${USERID}'s books from \"%s\" for exclusion...", join( '" and "', @EXCLMYSHELVES ));
+	
+	greadshelf( from_user_id    => $USERID,
+	            ra_from_shelves => \@EXCLMYSHELVES,
+	            rh_into         => \%mybooks,
+	            on_progress     => gmeter( 'books' ));
+	
+	printf( " (%.2fs)\n", time()-$t0 );
+}
+
 
 
 #-----------------------------------------------------------------------------
 # Collect friends and followees data. Include normal users only (no authors):
 #
-print( "Getting list of members known to #${USERID}..." );
-
 my $t0 = time();
+print( "Loading list of members known to #${USERID}..." );
+
 greadfolls( from_user_id => $USERID,
             rh_into      => \%members, 
             incl_authors => 0,
@@ -273,12 +298,15 @@ for my $mid (keys %members)
 	my $hitcount = 0;
 	
 	my $trackfavsfn = sub{
+		# Filter:
+		return if exists( $mybooks{$_[0]->{id}} );
 		return if defined $MAXRATS  && $_[0]->{num_ratings} > $MAXRATS;
 		return if defined $MAXYEAR  && $_[0]->{year}        > $MAXYEAR;
 		return if defined $MINYEAR  && $_[0]->{year}        < $MINYEAR;
 		return if                      $_[0]->{user_rating} < $MINRATED;
 		return if                      $_[0]->{user_rating} > $MAXRATED;
 		
+		# Count:
 		$hitcount++;
 		$bkfaved_for{ $_[0]->{id}                   }{ $mid } = 1;
 		$aufaved_for{ $_[0]->{rh_author}->{name_lf} }{ $mid } = 1;
