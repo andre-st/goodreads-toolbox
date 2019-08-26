@@ -120,8 +120,7 @@ because it reuses already loaded data (file-cache).
 
 
 _HTML-tables_ are the output-format of most of these programs, 
-so you need a web-browser such as Firefox or Chrome
-(or textmode web-browsers such as Lynx or Links) to view the results.
+so you need a modern web-browser such as Firefox or Chrome to view the results.
 
 
 
