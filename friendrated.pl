@@ -45,37 +45,44 @@ only consider books rated lower or equal n stars,
 
 shortcut for B<--minrated>=F<1> and B<--maxrated>=F<2>;
 the final report will be about the most hated books among the 
-members you follow
+members you follow; default is most liked
 
 
 =item B<-m, --maxratings>=F<number>
 
 exclude books with more than say 1000 ratings by the Goodreads community,
-e.g., well known bestsellers (Harry Potter)
+e.g., well known bestsellers (Harry Potter); 
+by default there is no upper limit
 
 
 =item B<-y, --minyear>=F<number>
 
-exclude books published before say 1950
+exclude books published before say 1950;
+by default there is no limit
 
 
 =item B<-e, --maxyear>=F<number>
 
-exclude books published after say 1980
+exclude books published after say 1980;
+by default there is no limit
 
 
-=item B<-u, --userid>=F<string>
+=item B<-u, --userid>=F<number>
 
 check another member instead of the one identified by the login-mail 
 and password arguments. You find the ID by looking at the shelf URLs.
+You still need to login with your credentials because authenticated 
+members only can access the member-lists of other members.
 
 
 =item B<-t, --toread>
 
 don't check the "read" but "to-read" shelves of the members.
-This option also overrides the B<--rated> option with value 0.
+This option also overrides the B<--minrated> option with value 0.
 The final report will be about the most wished-for books among 
-the members you follow.
+the members you follow, not about the most liked or hated books.
+
+
 =item B<-x, --excludemy>=F<shelfname>
 
 don't add books from the given shelf to the final report, e.g., books
@@ -120,11 +127,12 @@ F</tmp/FileCache/>
 
 =head1 EXAMPLES
 
-$ ./friendrated.pl login@gmail.com MyPASSword
+$ ./friendrated.pl login@gmail.com
 
 $ ./friendrated.pl --hated login@gmail.com
 
 $ ./friendrated.pl --minrated=5 --excludemy=read  login@gmail.com
+
 $ ./friendrated.pl --minrated=4 --favorers=5  login@gmail.com
 
 $ ./friendrated.pl --minyear=1950 --maxyear=1980 --maxratings=1000 login@gmail.com
@@ -154,7 +162,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2019-05-26 (Since 2018-05-10)
+2019-08-26 (Since 2018-05-10)
 
 =cut
 
@@ -223,7 +231,7 @@ die( "[CRIT ] Invalid argument: --minyear=$MINYEAR higher than --maxyear=$MAXYEA
 	if defined $MINYEAR 
 	&& defined $MAXYEAR 
 	&& $MINYEAR > $MAXYEAR;
-	
+
 pod2usage( 1 ) if !$ARGV[0];
 
 glogin( usermail => $ARGV[0],  # Login required: Followee/friend list/some shelves are private
