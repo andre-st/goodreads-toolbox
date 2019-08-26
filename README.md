@@ -119,11 +119,6 @@ You can break any program and continue later
 because it reuses already loaded data (file-cache).
 
 
-_HTML-tables_ are the output-format of most of these programs, 
-so you need a modern web-browser such as Firefox or Chrome to view the results.
-
-
-
 ## Contributing
 
 - Reporting bugs / Feature requests
