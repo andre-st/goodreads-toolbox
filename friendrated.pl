@@ -347,7 +347,7 @@ $title .= " of member $USERID, on $now";
 
 print( "Writing results to: \n$OUTPATH_BK\t" );
 
-print $bkfile ghtmlhead( $title, ['>Rank:', ':!Cover:', 'Title', 'Num GR Ratings:', 'Year Published:', 'Commonness:', '!Added by']);
+print $bkfile ghtmlhead( $title, ['>Rank:', ':!Cover:', 'Title', 'Author', 'Num GR Ratings:', 'Year Published:', 'Commonness:', '!Added by']);
 
 for my $bid (keys %bkfaved_for)
 {
@@ -364,6 +364,7 @@ for my $bid (keys %bkfaved_for)
 			<td><img src="$books{$bid}->{img_url}"></td>
 			<td><a  href="$books{$bid}->{url}" target="_blank"
 			             >$books{$bid}->{title}</a></td>
+			<td          >$books{$bid}->{rh_author}->{name}</td>
 			<td          >$books{$bid}->{num_ratings}</td>
 			<td          >$books{$bid}->{year}</td>
 			<td          >${num_favorers}</td>
