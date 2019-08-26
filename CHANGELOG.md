@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.20] - 2019-08-26
+### Fixed
+
+- login problems due to changed GR source markup
+- year numbers < 1000 (including negative B.C.) were extracted as `0`
+
+### Added
+
+- new program: friendnet.pl - saves your social network to CSV files for
+  further processing with social network analysis tools
+  ([#27](https://github.com/andre-st/goodreads/issues/27))
+- friendrated.pl:
+	- new option `--excludemy=read` to exclude books which you've already read
+	  ([#28](https://github.com/andre-st/goodreads/issues/28))
+	- new column `Rank` in final books table
+	  ([#29](https://github.com/andre-st/goodreads/issues/29))
+	- new column 'Author' in final books table
+- table columns in HTML output are sortable in the web-browser, now
+
+### Changed
+
+- moved all program documentation to the new `doc`-directory
+- friendrated.pl:
+	- renamed option `--hate` to `--hated`
+	- books-table and authors-table are no longer in the same report file: each has its own file now
+	- option `--outfile` changed to `--outdir`
+
+### Removed
+
+- report.css was removed in favor of datatables.net libs (loaded from CDN)
+
+
 
 ## [1.19.2] - 2019-05-26
 ### Fixed
@@ -72,12 +104,14 @@ All notable changes to this project will be documented in this file.
 ## [1.16.0] - 2019-02-16
 ### Fixed
 
-- "Undefined subroutine &WWW::Curl::Easy::CURLOPT_TCP_KEEPALIVE" ([#20](https://github.com/andre-st/goodreads/issues/20))
+- "Undefined subroutine &WWW::Curl::Easy::CURLOPT_TCP_KEEPALIVE" 
+  ([#20](https://github.com/andre-st/goodreads/issues/20))
 
 ### Changed
 
 - savreviews: 
-	- writes multiple files at once, with one file per star-rating ([#14](https://github.com/andre-st/goodreads/issues/14))
+	- writes multiple files at once, with one file per star-rating 
+	  ([#14](https://github.com/andre-st/goodreads/issues/14))
 	- reviews contain review date too
 	- `--outfile` option changed to `--outdir`
 
@@ -110,7 +144,8 @@ All notable changes to this project will be documented in this file.
 - likeminded: new option `--maxauthorbooks` to limit the amount of books per author
   since some authors list more than 2000 books; default is 600 most popular books
 - friendrated: more filters, e.g., _"books with less than 1000 ratings 
-  and published between 1950 to 1980 and ..."_ ([#16](https://github.com/andre-st/goodreads/issues/16))
+  and published between 1950 to 1980 and ..."_ 
+  ([#16](https://github.com/andre-st/goodreads/issues/16))
 
 ### Changed
 
@@ -156,7 +191,8 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - new program: savreviews.pl
-- multiple `--shelf` options: `--shelf=music --shelf=science` ([#10](https://github.com/andre-st/goodreads/issues/10))
+- multiple `--shelf` options: `--shelf=music --shelf=science` 
+  ([#10](https://github.com/andre-st/goodreads/issues/10))
 - `--dict` options for custom dictionaries
 - added words-based dictionaries to `./dict/` folder (perform better than Ngram dicts)
 
@@ -176,7 +212,8 @@ All notable changes to this project will be documented in this file.
 ## [1.6.0] - 2018-07-21
 ### Added
 
-- likeminded: dictionary-based reviews-search (builtin Ngrams dict) ([#9](https://github.com/andre-st/goodreads/issues/9))
+- likeminded: dictionary-based reviews-search (builtin Ngrams dict) 
+  ([#9](https://github.com/andre-st/goodreads/issues/9))
     
 
 
@@ -212,7 +249,7 @@ All notable changes to this project will be documented in this file.
 
 - recentrated:
 	- removed reviewer names from mail (noise)
-	- indicates text reviews with [TTTT ] vs [**** ]
+	- indicates text reviews with `[TTTT ]` vs `[**** ]`
 	- shorter URLs (mail clients recognize URLs without protocol too)
 
 

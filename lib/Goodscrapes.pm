@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-05-23
+=item * Updated: 2019-08-26
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.40';  # X.XX version format required by Perl
+our $VERSION = '1.53';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API

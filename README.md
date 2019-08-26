@@ -1,76 +1,84 @@
-# :books: Andre's Goodreads Toolbox, v1.19.2
+# :books: Andre's Goodreads Toolbox, v1.20
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
-8 Perl-scripts for Goodreads.com—the world largest book (cataloging) community. [What's new?](CHANGELOG.md)
+9 Perl-scripts for Goodreads.com—the world largest book (cataloging) community. [What's new?](CHANGELOG.md)
 
 
-## [recentrated.pl](recentrated.md)
+## [recentrated.pl](./doc/recentrated.md)
 
 Checks all the books in your shelf for new ratings and notifies you
 via periodical e-mail. It helps discover new criticisms and users with interesting 
 libraries. You can [try this online](https://andre-st.github.io/goodreads/) if you 
 don't want to install anything.
 It implements the "follow book" feature that was requested in the Goodreads forums. 
-[Learn more](recentrated.md)
+[Learn more](./doc/recentrated.md)
 
 
-## [friendrated.pl](friendrated.md)
+## [friendrated.pl](./doc/friendrated.md)
 
 Prints all books rated 4 or 5 stars by 3 or more persons you follow (including friends). 
 It implements the "books common among the people I follow" feature that was requested 
 in the Goodreads forums. It also lists the most read authors, the most wished-for 
 and hated books.
-[Learn more](friendrated.md)
+[Learn more](./doc/friendrated.md)
 
 
-## [friendgroup.pl](friendgroup.md)
+## [friendnet.pl](./doc/friendnet.md)
+
+Spiders your social network and creates files with edges and nodes which can be
+easily processed with social network analysis software. It answers questions
+like: Which members are popular among your friends?
+[Learn more](./doc/friendnet.md)
+
+
+## [friendgroup.pl](./doc/friendgroup.md)
 
 Prints discussion groups common among the persons you follow (including friends).
 Searching groups on Goodreads is a PITA, and sometimes you don't know what you can have 
-and wouldn't search for it. [Learn more](friendgroup.md)
+and wouldn't search for it. [Learn more](./doc/friendgroup.md)
 
 
-## [likeminded.pl](likeminded.md)
+## [likeminded.pl](./doc/likeminded.md)
 
 Prints Goodreads members who are interested in the same books as you.
 It implements the "Finding people based on the books they've read"
 feature that was requested in the Goodreads forums.
-[Learn more](likeminded.md)
+[Learn more](./doc/likeminded.md)
 
 
-## [similarauth.pl](similarauth.md)
+## [similarauth.pl](./doc/similarauth.md)
 
 Prints authors who Goodreads thinks are similar to all the authors you're reading.
 It implements the "Finding [all] similar authors" feature that was requested in the 
 Goodreads forums.
-[Learn more](similarauth.md)
+[Learn more](./doc/similarauth.md)
 
 
-## [search.pl](search.md)
+## [search.pl](./doc/search.md)
 
 Prints a books search result, ordered by average rating and number of ratings 
 (most popular books), or date published, optionally with exact title matches. 
 The Goodreads website doesn't offer it for some reason.
 It implements the "Sort search results by rating" feature that was requested 
 in the Goodreads forums.
-[Learn more](search.md)
+[Learn more](./doc/search.md)
 
 
-## [savreviews.pl](savreviews.md)
+## [savreviews.pl](./doc/savreviews.md)
 
 Saves text-reviews for a book to a text-file. It implements the "Extract all 
 reviews for a specific book" feature that was requested in the Goodreads forums.
-[Learn more](savreviews.md)
+[Learn more](./doc/savreviews.md)
 
 
-## ~~[amz-tradein.pl](amz-tradein.md)~~
+## ~~[amz-tradein.pl](./doc/amz-tradein.md)~~
 
 This script fetched Amazon Trade-In prices for all books in a Goodreads.com
 shelf ("resales" or "donations"). It automated regular manual bid-checking for 
 hundreds of books, discovering sales opportunities. Amazon stopped its buyback 
 program in 2015.
-[Learn more](amz-tradein.md)
+[Learn more](./doc/amz-tradein.md)
 
 
 ## www/
@@ -98,16 +106,29 @@ $ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs (see Make
 ```
 
 _Microsoft Windows_ is not officially supported.
-A user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).
-Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/) and run a [Linux image](https://www.osboxes.org/virtualbox-images/).
+A user wrote me that he ran the toolbox on the 
+[Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).
+Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/) 
+and run a [Linux image](https://www.osboxes.org/virtualbox-images/).
+
+
+_The usual runtime_ of the programs will be long,
+because Goodreads slows down all requests and we have to load a lot of data. 
+You should start one program and do other things in the meantime.
+You can break any program and continue later 
+because it reuses already loaded data (file-cache).
+
+
+_HTML-tables_ are the output-format of most of these programs, 
+so you need a web-browser such as Firefox or Chrome
+(or textmode web-browsers such as Lynx or Links) to view the results.
 
 
 
 ## Contributing
 
 - Reporting bugs / Feature requests
-  - please check the [existing issues](https://github.com/andre-st/goodreads/issues) 
-    before adding [a new one](https://github.com/andre-st/goodreads/issues/new) via Github's issue tracker
+  - add a new issue via [Github's issue tracker](https://github.com/andre-st/goodreads/issues/new)
   - [alternative contact options](AUTHORS.md)
   - thank you all who wrote me mails in the past or otherwise reported bugs and ideas :thumbsup:
 - Writing your own scripts
@@ -140,4 +161,4 @@ Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.
   - Data: thousands of books and authors (not GR) https://openlibrary.org/developers/dumps
 - Personal
   - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
-  - [André at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
+  - [Andre at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
