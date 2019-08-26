@@ -141,6 +141,7 @@ our @EXPORT = qw(
 	greadsimilaraut
 	greadreviews
 	greadfolls 
+	gsocialnet
 	
 	amz_book_html
 	ghtmlhead
@@ -939,21 +940,22 @@ DONE:
 
 =item * queries Goodreads.com for the friends and followees list of the given user
 
-=item * C<rh_into           =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
+=item * C<rh_into            =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
 
-=item * C<from_user_id      =E<gt> string>
+=item * C<from_user_id       =E<gt> string>
 
-=item * C<on_user           =E<gt> sub( %user )> return false to exclude user from $rh_into [optional]
+=item * C<on_user            =E<gt> sub( %user )> return false to exclude user from $rh_into [optional]
 
-=item * C<on_progress       =E<gt> sub> see C<gmeter()> [optional]
+=item * C<on_progress        =E<gt> sub> see C<gmeter()> [optional]
 
-=item * C<none_if_count_gt> =E<gt> number> don't add anything to $rh_into if number of folls exceeds limit [optional]
+=item * C<discard_threshold> =E<gt> number> don't add anything to $rh_into if number of folls exceeds limit [optional];
+                                    use this to drop degenerated accounts which would just add noise to the data
 
-=item * C<incl_authors      =E<gt> bool> [optional, default 1]
+=item * C<incl_authors       =E<gt> bool> [optional, default 1]
 
-=item * C<incl_friends      =E<gt> bool> [optional, default 1]
+=item * C<incl_friends       =E<gt> bool> [optional, default 1]
 
-=item * C<incl_followees    =E<gt> bool> [optional, default 1]
+=item * C<incl_followees     =E<gt> bool> [optional, default 1]
 
 =item * Precondition: glogin()
 
@@ -963,25 +965,117 @@ DONE:
 
 sub greadfolls
 {
-	my (%args) = @_;
-	my $rh     =_require_arg( 'rh_into', $args{ rh_into });
-	my $uid    = gverifyuser( $args{ from_user_id });
-	my $isaut  = $args{ incl_authors   }  // 1;
-	my $isfrn  = $args{ incl_friends   }  // 1;
-	my $isfol  = $args{ incl_followees }  // 1;
-	my $pfn    = $args{ on_progress    }  // sub{};
+	my (%args)  = @_;
+	my $rh      =_require_arg( 'rh_into', $args{ rh_into });
+	my $uid     = gverifyuser( $args{ from_user_id });
+	my $isaut   = $args{ incl_authors      } // 1;
+	my $isfrn   = $args{ incl_friends      } // 1;
+	my $isfol   = $args{ incl_followees    } // 1;
+	my $dishold = $args{ discard_threshold } // 9999999;
+	my $ufn     = $args{ on_user           } // sub{ 1 };   # TODO
+	my $pfn     = $args{ on_progress       } // sub{   };   # TODO
 	my $pag;
 	
 	if( $isfol )
 	{
 		$pag = 1; 
-		while( _extract_followees( $rh, $pfn, $isaut, _html( _followees_url( $uid, $pag++ )))) {};
+		while( _extract_followees( $rh, $pfn, $isaut, $dishold, _html( _followees_url( $uid, $pag++ )))) {};
 	}
 	
 	if( $isfrn )
 	{
 		$pag = 1; 
-		while( _extract_friends( $rh, $pfn, $isaut, _html( _friends_url( $uid, $pag++ )))) {};
+		while( _extract_friends( $rh, $pfn, $isaut, $dishold, _html( _friends_url( $uid, $pag++ )))) {};
+	}
+	
+}
+
+
+
+
+=head2 C<void> gsocialnet(I<{ ... }>)
+
+=over
+
+=item * C<from_user_id    =E<gt> string>
+
+=item * C<rh_into_nodes   =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
+
+=item * C<ra_into_edges   =E<gt> array reference ({from =E<gt> id, to =E<gt> id},...)>
+
+=item * C<ignore_nhood_gt =E<gt> int> ignore users with with a neighbourhood > N [optional, default 1000];
+                                      such users just add noise to the data and waste computing time
+
+=item * C<depth           =E<gt> int>  [optional, default 1]
+
+=item * C<incl_authors    =E<gt> bool> [optional, default 0]
+
+=item * C<incl_friends    =E<gt> bool> [optional, default 1]
+
+=item * C<incl_followees  =E<gt> bool> [optional, default 1]
+
+=item * C<on_progress     =E<gt> sub({ done =E<gt> int, count =E<gt> int, perc =E<gt> int, depth =E<gt> int })>  [optional]
+
+=item * C<on_user         =E<gt> sub( %user )> return false to exclude user [optional]
+
+=item * Precondition: glogin()
+
+=back
+
+=cut
+
+sub gsocialnet
+{
+	my (%args) = @_;
+	my $uid    =_require_arg( 'from_user_id',  $args{ from_user_id  });
+	my $rh_n   =_require_arg( 'rh_into_nodes', $args{ rh_into_nodes });
+	my $ra_e   =_require_arg( 'ra_into_edges', $args{ ra_into_edges });
+	
+	$args{ depth           } //= 2;
+	$args{ on_user         } //= sub{ 1 };
+	$args{ on_progress     } //= sub{   };
+	$args{ ignore_nhood_gt } //= 1000;
+	$args{ incl_friends    } //= 1;
+	$args{ incl_followees  } //= 1;
+	$args{ incl_authors    } //= 0;
+	
+	return if $args{ depth } == 0;               # Stop recursion or if nonsense arg
+	return if any{ $_->{from} eq $uid } @$ra_e;  # Avoid loops
+	
+	my %nhood;
+	greadfolls( rh_into           => \%nhood,
+	            from_user_id      => $args{ from_user_id    },
+	            on_user           => $args{ on_user         },
+	            discard_threshold => $args{ ignore_nhood_gt },
+	            incl_authors      => $args{ incl_authors    },
+	            incl_followees    => $args{ incl_followees  },
+	            incl_friends      => $args{ incl_friends    });
+	
+	   %$rh_n       = ( %$rh_n, %nhood );
+	my $nhood_count = scalar( keys %nhood );
+	my $nhood_done  = 0;
+	
+	for my $nhood_uid (keys %nhood)
+	{
+		$args{ on_progress }->( done    =>   $nhood_done,
+		                        count   =>   $nhood_count,
+		                        perc    => ++$nhood_done / $nhood_count * 100,
+		                        depth   =>   $args{depth},
+		                        from_id =>   $uid,
+		                        to_id   =>   $nhood_uid );
+		
+		push( @$ra_e, { from => $uid, to => $nhood_uid });
+		
+		gsocialnet( from_user_id    => $nhood_uid,
+		            rh_into_nodes   => $rh_n,
+		            ra_into_edges   => $ra_e,
+		            depth           => $args{ depth           } - 1,  # !!
+		            on_user         => $args{ on_user         },
+		            on_progress     => $args{ on_progress     },
+		            ignore_nhood_gt => $args{ ignore_nhood_gt },
+		            incl_friends    => $args{ incl_friends    },	
+		            incl_followees  => $args{ incl_followees  },
+		            incl_authors    => $args{ incl_authors    })  # Recursion not very deep
 	}
 }
 
@@ -1767,7 +1861,7 @@ sub _extract_author_books
 
 
 
-=head2 C<bool> _extract_followees( I<$rh_users, $on_progress_fn, $incl_authors, $following_page_html_str> )
+=head2 C<bool> _extract_followees( I<$rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $following_page_html_str> )
 
 =over
 
@@ -1779,11 +1873,16 @@ sub _extract_author_books
 
 sub _extract_followees
 {
-	my $rh  = shift;
-	my $pfn = shift;
-	my $iau = shift;
-	my $htm = shift or return 0;
-	my $ret = 0;
+	my $rh      = shift;
+	my $pfn     = shift;
+	my $iau     = shift;
+	my $dishold = shift;
+	my $htm     = shift or return 0;
+	my $ret     = 0;
+	my $pgcount = $htm =~ />(\d+)<\/a> <a class="next_page"/ ? $1 : 1;
+	my $total   = $pgcount * 30;  # Items per page
+	
+	return 0 if $total > $dishold;
 	
 	while( $htm =~ /<div class='followingItem elementList'>(.*?)<\/a>/gs )
 	{
@@ -1803,7 +1902,7 @@ sub _extract_followees
 		$us{ _seen     } = 1;
 		$us{ residence } = undef;  # TODO?
 		$us{ num_books } = undef;  # TODO?
-			
+		
 		next if !$iau && $us{is_author};
 		$ret++;
 		$rh->{ $us{id} } = \%us;
@@ -1816,7 +1915,7 @@ sub _extract_followees
 
 
 
-=head2 C<bool> _extract_friends( I<$rh_users, $on_progress_fn, $incl_authors, $friends_page_html_str> )
+=head2 C<bool> _extract_friends( I<$rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $friends_page_html_str> )
 
 =over
 
@@ -1828,11 +1927,15 @@ sub _extract_followees
 
 sub _extract_friends
 {
-	my $rh  = shift;
-	my $pfn = shift;
-	my $iau = shift;
-	my $htm = shift or return 0;
-	my $ret = 0;
+	my $rh      = shift;
+	my $pfn     = shift;
+	my $iau     = shift;
+	my $dishold = shift;
+	my $htm     = shift or return 0;
+	my $ret     = 0;
+	my $total   = $htm =~ /Showing \d+-\d+ of (\d+)/ ? $1 : -1;
+	
+	return 0 if $total > $dishold;
 	
 	while( $htm =~ /<tr>\s*<td width="1%">(.*?)<\/td>/gs )
 	{

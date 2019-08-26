@@ -453,21 +453,22 @@ https://github.com/andre-st/
 
 =item * queries Goodreads.com for the friends and followees list of the given user
 
-=item * C<rh_into           =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
+=item * C<rh_into            =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)>
 
-=item * C<from_user_id      =E<gt> string>
+=item * C<from_user_id       =E<gt> string>
 
-=item * C<on_user           =E<gt> sub( %user )> return false to exclude user from $rh_into [optional]
+=item * C<on_user            =E<gt> sub( %user )> return false to exclude user from $rh_into [optional]
 
-=item * C<on_progress       =E<gt> sub> see C<gmeter()> [optional]
+=item * C<on_progress        =E<gt> sub> see C<gmeter()> [optional]
 
-=item * C<none_if_count_gt> =E<gt> number> don't add anything to $rh_into if number of folls exceeds limit [optional]
+=item * C<discard_threshold> =E<gt> number> don't add anything to $rh_into if number of folls exceeds limit [optional];
+                                    use this to drop degenerated accounts which would just add noise to the data
 
-=item * C<incl_authors      =E<gt> bool> [optional, default 1]
+=item * C<incl_authors       =E<gt> bool> [optional, default 1]
 
-=item * C<incl_friends      =E<gt> bool> [optional, default 1]
+=item * C<incl_friends       =E<gt> bool> [optional, default 1]
 
-=item * C<incl_followees    =E<gt> bool> [optional, default 1]
+=item * C<incl_followees     =E<gt> bool> [optional, default 1]
 
 =item * Precondition: glogin()
 
@@ -483,7 +484,8 @@ https://github.com/andre-st/
 
 =item * C<ra_into_edges   =E<gt> array reference ({from =E<gt> id, to =E<gt> id},...)>
 
-=item * C<ignore_nhood_gt =E<gt> int> ignore users with with a neighbourhood > N [optional, default 1000]
+=item * C<ignore_nhood_gt =E<gt> int> ignore users with with a neighbourhood > N [optional, default 1000];
+                                      such users just add noise to the data and waste computing time
 
 =item * C<depth           =E<gt> int>  [optional, default 1]
 
@@ -716,7 +718,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<bool> _extract_followees( I<$rh_users, $on_progress_fn, $incl_authors, $following_page_html_str> )
+=head2 C<bool> _extract_followees( I<$rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $following_page_html_str> )
 
 =over
 
@@ -724,7 +726,7 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<bool> _extract_friends( I<$rh_users, $on_progress_fn, $incl_authors, $friends_page_html_str> )
+=head2 C<bool> _extract_friends( I<$rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $friends_page_html_str> )
 
 =over
 

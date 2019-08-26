@@ -3,9 +3,10 @@
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
 
-## Your social network on Goodreads.com
+## Analyze your Goodreads.com social network
 
-...
+Spiders your social network and creates files with edges and nodes which can be
+easily processed with social network analysis software.
 
 
 ## Output
@@ -27,8 +28,10 @@ from,to
 15413712,9348911
 ```
 
-CSV-files can be easily processed with any social network analysis (SNA) 
-software such as `R` with the `iraph` package.
+Comma-separated values (CSV) files can be easily processed with any social network 
+analysis (SNA) software such as `R` with the `igraph` package or similar.
+You can ran other statistics software or query languages against CSV-files too, 
+e.g. `q` is SQL for CSV.
 
 
 ## Social network analysis (SNA)
@@ -45,11 +48,19 @@ Network type:
 
 
 ```R
-some examples with R and igraph
+TODO: R/igraph-examples:
+- direct influence on neighbours (degree centrality)
+- brokerage or gatekeeping potential (betweeness centrality)
+- influence entire network most quickly or: who hears news first (closeness centrality)
+- influence over whole network, not just neighbours (eigen centrality)
+- probability that any message will arrive (page rank)
+- linked by many nodes that are linking many other nodes (Kleinberg authority score)
+- community detection
+- ...
 ```
 
 ```console
-some examples with q
+TODO: q-example "Members popular among your friends"
 ```
 
 
@@ -62,13 +73,13 @@ $ sudo make        # Required Perl modules from CPAN
 $ ./friendnet.pl --help
 $ ./friendnet.pl goodlogin@example.com
 
-Traversing #18418712's social network (depth=2)...
+Traversing #18418712's social network (depth=3)...
 Covered: [100%, 100%] 
 Writing network data to: 
 ./friendnet-18418712-nodes.csv  (N=22678)
 ./friendnet-18418712-edges.csv  (N=24899)
 
-Total time: 47 minutes
+Total time: 22 hours
 ```
 
 **Note:**
