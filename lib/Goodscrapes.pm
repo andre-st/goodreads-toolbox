@@ -540,7 +540,7 @@ sub glogin
 	# 
 	$pass = prompt( -prompt => "Enter GR password for $mail:", 
 	                -echo   => '*',
-	                -return => "\nSigning in to Goodreads...\n",
+	                -return => "\nSigning in to Goodreads... ",
 	                -out    => *STDOUT,
 	                -in     => *STDIN ) while !$pass;
 	
@@ -574,8 +574,10 @@ sub glogin
 	# Get user ID if needed:
 	if( defined $ruid && !$$ruid )
 	{
-		$htm   = _html( $_HOMEURL, $_ENO_ERROR, 0 );  # Also POST 302 target
+		$htm   = _html( $_HOMEURL, $_ENO_ERROR, 0 );       # Also POST 302 target
 		$$ruid = $htm =~ /index_rss\/(\d+)/ ? $1 : undef;
+		
+		print( "OK!\n" ) if $$ruid && !$args{ userpass };  # Only if prompt before
 		croak( _errmsg( $_ENO_BADLOGIN )) unless $$ruid;
 	}
 }
