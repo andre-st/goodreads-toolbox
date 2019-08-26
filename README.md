@@ -149,7 +149,7 @@ so you need a web-browser such as Firefox or Chrome
   - [GR on Crunchbase](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
   - [GR members stats](https://www.statista.com/search/?q=goodreads&qKat=search) or [here](https://qz.com/1106341/most-women-reading-self-help-books-are-getting-advice-from-men/) or [here](https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.23733)+[Sci-Hub](https://twitter.com/scihub_love) or [here](https://book.pressbooks.com/chapter/goodreads-otis-chandler) – source probably [Goodreads](https://www.goodreads.com/about/us)
   - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors, see also [Author Feedback Group](https://www.goodreads.com/group/show/31471) 
-  - [GR subreddit](https://www.reddit.com/r/goodreads/)
+  - [GR subreddit](https://www.reddit.com/r/goodreads/) with my [comments](https://redditcommentsearch.com/?query=goodreads&user=andre-st&go=true)
 - Further software 
   - I leave statistics about your own reading habits to the following tools; my toolbox, in contrast, focuses on the social periphery, with Goodreads providing the largest user base
   - Paul Klinger's [Bookstats](https://github.com/PaulKlinger/Bookstats) or [here](https://almoturg.com/bookstats/)
