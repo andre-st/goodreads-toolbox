@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-08-26
+=item * Updated: 2019-08-27
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.53';  # X.XX version format required by Perl
+our $VERSION = '1.54';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -1233,6 +1233,9 @@ sub ghtmlhead
 		<link rel="stylesheet" property="stylesheet" type="text/css" media="all" 
 				href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
 		<script>
+		/* Any HTML other than a table should be added via JS, so we have nothing but a plain
+		   HTML table in the body which can be easily opened in office programs (Excel etc) */
+		
 		\$( document ).ready( function()
 		{ 
 			\$( 'table' ).DataTable(
@@ -1245,10 +1248,27 @@ sub ghtmlhead
 				"order"     : [ $jsorder ],
 				"columnDefs": [ $jscols  ]
 			});
+			
+			/* Only available with DataTable: */
+			\$( 'body' ).append( '<p><strong>Order by multiple columns at the same time:</strong>'
+					+ '<br>Use <kbd>Shift</kbd> and click on a column '
+					+ '(added the clicked column as a secondary, tertiary etc ordering column)</p>' );
 		});
 		</script>
 		<style>
+			body { font-family: sans-serif; }
 			table th { border: 1px solid #ccc; }
+			kbd { 
+				border-radius: 3px;
+				border: 1px solid #b4b4b4;
+				box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
+				display: inline-block;
+				font-size: .85em;
+				font-weight: 700;
+				line-height: 1;
+				padding: 2px 4px;
+				white-space: nowrap; 
+			}
 		</style>
 		</head>
 		<body class="friendrated">
