@@ -198,7 +198,7 @@ my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPAT
 my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 
 print $fh ghtmlhead( "Groups joined by friends or followees of member $USERID, on $now",
-		[ 'Group', 'Members', '>Joined:', '!Joined by' ]);
+		[ '!Logo', 'Group', 'Members', '>Joined:', '!Joined by' ]);
 
 my $num_finds = 0;
 for my $gid (keys %joins)
@@ -210,11 +210,9 @@ for my $gid (keys %joins)
 	
 	print $fh qq{
 			<tr>
-			<td>
-			  <a  href="$groups{$gid}->{url}" target="_blank">
-			  <img src="$groups{$gid}->{img_url}" align="left">
-			            $groups{$gid}->{name}</a>
-			</td>
+			<td><img src="$groups{$gid}->{img_url}"></td>
+			<td><a  href="$groups{$gid}->{url}" target="_blank">
+			              $groups{$gid}->{name}</a></td>
 			<td>$groups{$gid}->{num_members}</td>
 			<td>${num_joiners}</td>
 			<td>
