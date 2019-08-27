@@ -40,7 +40,7 @@ $ ./likeminded.pl --help
 $ ./likeminded.pl goodlogin@example.com
 
 Enter GR password for goodlogin@example.com: ******************
-Signing in to Goodreads...
+Signing in to Goodreads... OK
 Loading authors from "ALL" may take a while... 95 authors
 Loading books of 95 authors:
 [  1%] Schuberth, Richard         #2793763    6 books    1.03s

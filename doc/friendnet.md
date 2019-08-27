@@ -73,6 +73,8 @@ $ sudo make        # Required Perl modules from CPAN
 $ ./friendnet.pl --help
 $ ./friendnet.pl goodlogin@example.com
 
+Enter GR password for goodlogin@example.com: ******************
+Signing in to Goodreads... OK
 Traversing #18418712's social network (depth=3)...
 Covered: [100%, 100%] 
 Writing network data to: 
