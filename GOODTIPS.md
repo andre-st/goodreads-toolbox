@@ -107,7 +107,8 @@
   - find Goodreads members [with similar taste](doc/likeminded.md) _(my GR toolbox)_
 - investigate a list of [authors similar to the authors in your shelves](doc/similarauth.md) on Goodreads _(my GR toolbox)_
 - inspect Goodreads books [common among members you follow](doc/friendrated.md) _(my GR toolbox)_
-- check the Amazon profiles of users who comment good books
+- check the Amazon and Goodreads profiles of users who comment good books
+  - [get notified](https://andre-st.github.io/goodreads/) of new reviewers for your favourite books _(my GR toolbox)_
 - follow small or specialized publishers through a [Twitter list](https://twitter.com/voidyll/lists/books), RSS-feed or newsletter (works so lala)
 - reddit, quora, ...
 - the better book sites:

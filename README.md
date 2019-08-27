@@ -138,21 +138,39 @@ because it reuses already loaded data (file-cache).
 
 - About Goodreads
   - [GR developers group](https://www.goodreads.com/group/show/8095-goodreads-developers)
-  - [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) or [here](https://www.glasswaves.co/selected_projects.txt) or [here](https://builtwith.com/goodreads.com) or [DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/)
-  - [GR workplace reviews](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), anonymously about being acquired by Amazon, bureaucracy etc.
-  - [GR on Crunchbase](https://www.crunchbase.com/organization/goodreads), people, recent news & activity 
-  - [GR members stats](https://www.statista.com/search/?q=goodreads&qKat=search) or [here](https://qz.com/1106341/most-women-reading-self-help-books-are-getting-advice-from-men/) or [here](https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.23733)+[Sci-Hub](https://twitter.com/scihub_love) or [here](https://book.pressbooks.com/chapter/goodreads-otis-chandler) – source probably [Goodreads](https://www.goodreads.com/about/us)
-  - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), presenting GR book marketing to authors, see also [Author Feedback Group](https://www.goodreads.com/group/show/31471) 
-  - [GR subreddit](https://www.reddit.com/r/goodreads/) with my [comments](https://redditcommentsearch.com/?query=goodreads&user=andre-st&go=true)
+  - [GR technology stack](https://www.goodreads.com/jobs?id=597248#openPositions) 
+		or [here](https://www.glasswaves.co/selected_projects.txt) 
+		or [here](https://builtwith.com/goodreads.com) 
+		or [DynamoDB+S3+Athena](https://aws.amazon.com/blogs/big-data/how-goodreads-offloads-amazon-dynamodb-tables-to-amazon-s3-and-queries-them-using-amazon-athena/)
+  - [GR workplace reviews](https://www.glassdoor.com/Reviews/Goodreads-Reviews-E684833.htm), 
+		anonymously about being acquired by Amazon, bureaucracy etc.
+  - [GR on Crunchbase](https://www.crunchbase.com/organization/goodreads), 
+		people, recent news & activity 
+  - [GR members stats](https://www.statista.com/search/?q=goodreads&qKat=search) 
+		or [here](https://qz.com/1106341/most-women-reading-self-help-books-are-getting-advice-from-men/) 
+		or [here](https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.23733)+[Sci-Hub](https://twitter.com/scihub_love) 
+		or [here](https://book.pressbooks.com/chapter/goodreads-otis-chandler) -- source probably [Goodreads](https://www.goodreads.com/about/us)
+  - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), 
+		presenting GR book marketing to authors, see also [Author Feedback Group](https://www.goodreads.com/group/show/31471) 
+  - [GR subreddit](https://www.reddit.com/r/goodreads/) 
+		with my [comments](https://redditcommentsearch.com/?query=goodreads&user=andre-st&go=true)
 - Further software 
-  - I leave statistics about your own reading habits to the following tools; my toolbox, in contrast, focuses on the social periphery, with Goodreads providing the largest user base
+  - I leave statistics about your own reading habits to the following tools; 
+		my toolbox, in contrast, focuses on the social periphery, with Goodreads providing the largest user base
   - Paul Klinger's [Bookstats](https://github.com/PaulKlinger/Bookstats) or [here](https://almoturg.com/bookstats/)
   - untested: John Smith's [GoodreadsAnalysis](https://github.com/JohnSmithDev/GoodreadsAnalysis/blob/master/REPORTS.md)
-  - untested: Petr's [CompareBooks](https://github.com/vatioz/GoodreadsUserCompare) browser [extension](https://chrome.google.com/webstore/detail/goodreads-compare-books/jcbnjaifalpejkcgfbpjbcmkfdildgpi) which adds "compare" info next to usernames ([GR forum](https://www.goodreads.com/topic/show/1259264?comment=182399130#comment_182399130))
-  - untested: Andrea Samorini's [SamoGoodreadsUtility](https://github.com/asamorini/goodreads.utility) which adds language filters to GR ([GR forum](https://www.goodreads.com/topic/show/19375556?comment=188383878#comment_188383878))
+  - untested: Petr's [CompareBooks](https://github.com/vatioz/GoodreadsUserCompare) 
+		browser [extension](https://chrome.google.com/webstore/detail/goodreads-compare-books/jcbnjaifalpejkcgfbpjbcmkfdildgpi) 
+		adds "compare" info next to usernames
+  - untested: Andrea Samorini's [SamoGoodreadsUtility](https://github.com/asamorini/goodreads.utility) 
+		adds language filters to GR 
+  - untested: Danish Prakash's [goodreadsh](https://github.com/danishprakash/goodreadsh) 
+		is a command line interface for Goodreads (off. API)
   - untested: [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
 - Other
   - Data: thousands of books and authors (not GR) https://openlibrary.org/developers/dumps
 - Personal
   - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
   - [Andre at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
+
+
