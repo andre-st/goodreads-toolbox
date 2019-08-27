@@ -11,8 +11,12 @@ search - Search a book and sort result by popularity
 
 =head1 SYNOPSIS
 
-B<search.pl> [B<-r> F<number>] [B<-s> F<number>] [B<-c> F<numdays>] 
-[B<-o> F<filename>] F<keyword>...
+B<search.pl> 
+[B<-z> F<columns>] 
+[B<-r> F<number>] 
+[B<-c> F<numdays>] 
+[B<-o> F<filename>] 
+F<keyword>...
 
 Use quotes if you want exact matches (see examples section)
 
@@ -95,7 +99,7 @@ More info in search.md
 
 =head1 VERSION
 
-2019-01-27 (Since 2018-07-29)
+2019-08-27 (Since 2018-07-29)
 
 =cut
 
@@ -210,5 +214,10 @@ for my $b (@books)
 print $fh ghtmlfoot();
 undef $fh;
 
+
+
+# ----------------------------------------------------------------------------
+# Done:
+#
 printf( "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
 

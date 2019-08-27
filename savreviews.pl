@@ -11,8 +11,12 @@ savreviews - Download reviews for a book
 
 =head1 SYNOPSIS
 
-B<savreviews.pl> [B<-x> F<numlevel>] [B<-c> F<numdays>] [B<-d> F<filename>] 
-[B<-o> F<dirname>] F<goodbookid>
+B<savreviews.pl> 
+[B<-x> F<numlevel>] 
+[B<-d> F<filename>] 
+[B<-c> F<numdays>] 
+[B<-o> F<dirname>] 
+F<goodbookid>
 
 You find the F<goodbookid> by looking at the book URL.
 
@@ -88,7 +92,7 @@ More info in savreviews.md
 
 =head1 VERSION
 
-2019-05-29 (Since 2018-08-13)
+2019-08-27 (Since 2018-08-13)
 
 =cut
 
@@ -204,7 +208,7 @@ print {$files[$_->{rating}]}
 
 
 
-
+# ----------------------------------------------------------------------------
 printf( "\n\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
 
 

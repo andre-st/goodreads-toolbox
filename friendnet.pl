@@ -11,8 +11,12 @@ friendnet - Spiders one's social network and saves vertices/edges to CSV-files
 
 =head1 SYNOPSIS
 
-B<friennet.pl> [B<-u> F<string>] [B<-d> F<number>] [B<-c> F<numdays>] 
-[B<-o> F<dirpath>] F<goodloginmail> [F<goodloginpass>]
+B<friennet.pl> 
+[B<-u> F<number>] 
+[B<-d> F<number>] 
+[B<-c> F<numdays>] 
+[B<-o> F<dirpath>] 
+F<goodloginmail> [F<goodloginpass>]
 
 
 =head1 OPTIONS
@@ -108,7 +112,7 @@ More info in friendnet.md
 
 =head1 VERSION
 
-2019-08-26 (Since 2019-06-14)
+2019-08-27 (Since 2019-06-14)
 
 =cut
 
@@ -227,7 +231,7 @@ csv( in      => \@edges,
 
 
 #-----------------------------------------------------------------------------
-printf( "\n\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
-
-# Done.
+# Done:
+# 
+printf( "\n\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 
 

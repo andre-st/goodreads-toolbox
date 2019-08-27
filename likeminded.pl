@@ -11,9 +11,16 @@ likeminded - finding people on Goodreads.com based on the books they've read
 
 =head1 SYNOPSIS
 
-B<likeminded.pl> [B<-m> F<number>] [B<-a> F<number>] [B<-x> F<number>] 
-[B<-d> F<filename>] [B<-c> F<numdays>] [B<-u> F<string>] [B<-o> F<filename>] 
-[B<-s> F<shelfname> ...] F<goodloginmail> [F<goodloginpass>]
+B<likeminded.pl> 
+[B<-m> F<number>] 
+[B<-a> F<number>] 
+[B<-x> F<number>] 
+[B<-d> F<filename>] 
+[B<-u> F<number>] 
+[B<-c> F<numdays>] 
+[B<-o> F<filename>] 
+[B<-s> F<shelfname> ...] 
+F<goodloginmail> [F<goodloginpass>]
 
 
 =head1 OPTIONS
@@ -59,7 +66,7 @@ and 2+ (dict-search) has a bad cost/benefit ratio given hundreds of books.
 default is F<./dict/default.lst>
 
 
-=item B<-u, --userid>=F<string>
+=item B<-u, --userid>=F<number>
 
 check another member instead of the one identified by the login-mail 
 and password arguments. You find the ID by looking at the shelf URLs.
@@ -134,7 +141,7 @@ More info in likeminded.md
 
 =head1 VERSION
 
-2019-03-24 (Since 2018-06-22)
+2019-08-27 (Since 2018-06-22)
 
 =cut
 
@@ -405,8 +412,8 @@ undef $fh;
 
 
 # ----------------------------------------------------------------------------
+# Done:
+# 
 printf( "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
 
-
-# Done.
 

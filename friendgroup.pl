@@ -11,7 +11,10 @@ friendgroup - groups common among the members I follow
 
 =head1 SYNOPSIS
 
-B<friendgroup.pl> [B<-c> F<numdays>] [B<-o> F<filename>] [B<-u> F<string>]
+B<friendgroup.pl> 
+[B<-c> F<numdays>] 
+[B<-o> F<filename>] 
+[B<-u> F<number>]
 F<goodloginmail> [F<goodloginpass>]
 
 
@@ -29,7 +32,7 @@ or pause, and when experimenting with parameters. Loading data from Goodreads
 is a very time consuming process.
 
 
-=item B<-u, --userid>=F<string>
+=item B<-u, --userid>=F<number>
 
 check another member instead of the one identified by the login-mail 
 and password arguments. You find the ID by looking at the shelf URLs.
@@ -80,7 +83,7 @@ More info in friendgroup.md
 
 =head1 VERSION
 
-2019-03-25 (Since 2018-09-26)
+2019-08-27 (Since 2018-09-26)
 
 =cut
 
@@ -233,10 +236,13 @@ for my $gid (keys %joins)
 print $fh ghtmlfoot();
 undef $fh;
 
-
 printf "%d groups\n", $num_finds;
+
+
+
+#-----------------------------------------------------------------------------
+# Done:
+#
 printf "Total time: %.0f minutes\n", (time()-$TSTART)/60;
-
-
 
 

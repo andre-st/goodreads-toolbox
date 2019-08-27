@@ -11,8 +11,13 @@ recentrated - know when people rate or write reviews about a book
 
 =head1 SYNOPSIS
 
-B<recentrated.pl> [B<-q>] [B<-t> F<mailaddr>] [B<-u> F<string>] 
-[B<-s> F<shelfname>] [I<goodloginmail>] [F<goodloginpass>]
+B<recentrated.pl> 
+[B<-t> F<mailaddr>] 
+[B<-u> F<number>] 
+[B<-s> F<shelfname>] 
+[B<-q>] 
+[I<goodloginmail>] 
+[F<goodloginpass>]
 
 
 =head1 OPTIONS
@@ -43,7 +48,7 @@ This tool does not send mails by its own.
 You would have to pipe its output into a C<sendmail> programm.
 
 
-=item B<-u, --userid>=F<string>
+=item B<-u, --userid>=F<number>
 
 check another member instead of the one identified by the login-mail 
 and password arguments. You find the ID by looking at the shelf URLs.
@@ -114,7 +119,7 @@ More info in recentrated.md
 
 =head1 VERSION
 
-2019-05-23 (Since 2018-01-09)
+2019-08-27 (Since 2018-01-09)
 
 =cut
 

@@ -11,9 +11,19 @@ friendrated - books and authors common among the members you follow
 
 =head1 SYNOPSIS
 
-B<friendrated.pl> [B<-f> F<number>] [B<-r> F<number>] [B<-z> F<number>]
-[B<-c> F<numdays>] [B<-m> F<number>] [B<-y> F<number>] [B<-e> F<number>] 
-[B<-o> F<filename>] [B<-u> F<string>] [B<-t>] [B<-h>]
+B<friendrated.pl> 
+[B<-f> F<number>] 
+[B<-r> F<number>] 
+[B<-z> F<number>] 
+[B<-h>] 
+[B<-m> F<number>] 
+[B<-y> F<number>] 
+[B<-e> F<number>] 
+[B<-u> F<number>] 
+[B<-t>] 
+[B<-x> F<shelfname> ...] 
+[B<-c> F<numdays>] 
+[B<-o> F<filename>] 
 F<goodloginmail> [F<goodloginpass>]
 
 
@@ -162,7 +172,7 @@ More info in friendrated.md
 
 =head1 VERSION
 
-2019-08-26 (Since 2018-05-10)
+2019-08-27 (Since 2018-05-10)
 
 =cut
 
@@ -439,8 +449,9 @@ printf( "(%d authors)", $num_aufinds );
 
 
 
+#-----------------------------------------------------------------------------
+# Done:
+#
 printf( "\n\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
-
-
 
 

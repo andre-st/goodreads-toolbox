@@ -11,8 +11,12 @@ similarauth - Finding all similar authors
 
 =head1 SYNOPSIS
 
-B<similarauth.pl> [B<-u> F<string>] [B<-c> F<numdays>] [B<-o> F<filename>]
-[B<-s> F<shelfname> ...] F<goodloginmail> [F<goodloginpass>]
+B<similarauth.pl> 
+[B<-u> F<number>] 
+[B<-c> F<numdays>] 
+[B<-o> F<filename>]
+[B<-s> F<shelfname> ...] 
+F<goodloginmail> [F<goodloginpass>]
 
 
 =head1 OPTIONS
@@ -21,7 +25,7 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =over 4
 
-=item B<-u, --userid>=F<string>
+=item B<-u, --userid>=F<number>
 
 check another member instead of the one identified by the login-mail 
 and password arguments. You find the ID by looking at the shelf URLs.
@@ -95,7 +99,7 @@ More info in similarauth.md
 
 =head1 VERSION
 
-2019-03-24 (Since 2018-07-05)
+2019-07-28 (Since 2018-07-05)
 
 =cut
 
@@ -229,5 +233,9 @@ for my $auid (keys %aufound)
 print $fh ghtmlfoot();
 undef $fh;
 
+
+# ----------------------------------------------------------------------------
+# Done:
+#
 printf( "\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
 
