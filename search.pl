@@ -185,7 +185,7 @@ printf( "\n\nWriting search result (N=%d) to \"%s\"... ", scalar @books, $OUTPAT
 my $fh  = IO::File->new( $OUTPATH, 'w' ) or die "[FATAL] Cannot write to $OUTPATH ($!)";
 my $now = strftime( '%a %b %e %H:%M:%S %Y', localtime );
 
-print $fh ghtmlhead( "Query: \"$PHRASE\", $now", [ 'Title', 'Author', ">$ORDER[0]:", "$ORDER[1]:", "$ORDER[2]:" ]);
+print $fh ghtmlhead( "Query: \"$PHRASE\", $now", [ '!Cover', 'Title', 'Author', ">$ORDER[0]:", "$ORDER[1]:", "$ORDER[2]:" ]);
 
 my $line;
 for my $b (@books)
@@ -193,11 +193,9 @@ for my $b (@books)
 	$line++;
 	print $fh qq{
 			<tr>
-			<td>
-				<a  href="$b->{url    }" target="_blank">
-				<img src="$b->{img_url}" height="80" />
-				          $b->{title  }</a>
-			</td>
+			<td><img src="$b->{img_url}" height="80" /></td>
+			<td><a  href="$b->{url    }" target="_blank">
+			              $b->{title  }</a></td>
 			<td>
 				<a href="$b->{rh_author}->{url }" target="_blank">
 				         $b->{rh_author}->{name}</a>
