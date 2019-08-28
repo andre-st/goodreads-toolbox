@@ -412,7 +412,7 @@ printf( "(%d books)", $num_bkfinds );
 # ------ Common authors table: ------
 print( "\n$OUTPATH_AU\t" );
 
-print $aufile ghtmlhead( 'Authors common among friends and followees', ['>Commonness:', 'Author', '!Added by']);
+print $aufile ghtmlhead( 'Authors of the ' . $title, ['>Commonness:', 'Author', '!Added by']);
 
 for my $auname (keys %aufaved_for)
 {
