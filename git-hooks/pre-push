@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Run tests before making changes public
+prove
+
+

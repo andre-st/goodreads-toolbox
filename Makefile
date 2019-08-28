@@ -27,6 +27,7 @@ endif
 	chmod +x *.pl
 	ln -sf word-en-l.lst              ./dict/default.lst
 	ln -sf ../../git-hooks/pre-commit ./.git/hooks/pre-commit
+	ln -sf ../../git-hooks/pre-push   ./.git/hooks/pre-push
 	mkdir -p "${RR_DB_DIR}"
 	touch "${RR_LOGFILE}"
 	chown --reference=recentrated.pl "${RR_DB_DIR}" "${RR_LOGFILE}"
