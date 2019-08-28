@@ -384,6 +384,7 @@ for my $bid (keys %bkfaved_for)
 			             >$books{$bid}->{title}</a></td>
 			<td          >$books{$bid}->{rh_author}->{name}</td>
 			<td          >$books{$bid}->{num_ratings}</td>
+			<td          >$books{$bid}->{avg_rating}</td>
 			<td          >$books{$bid}->{year}</td>
 			<td          >${num_favorers}</td>
 			<td>
