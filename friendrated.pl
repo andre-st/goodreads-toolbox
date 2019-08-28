@@ -124,13 +124,17 @@ show full man page
 
 =head1 FILES
 
-F<./friendrated-*-read.html>
+F<./friendrated-$USERID-$SHELF-$FLAGS.html>
 
-F<./friendrated-*-toread.html>
+F<./friendrated-$USERID-$SHELF-$FLAGS-authors.html>
 
-F<./friendrated-*-read-authors.html>
+F<./friendrated-1234567-read-45by3.html>
 
-F<./friendrated-*-toread-authors.html>
+F<./friendrated-1234567-read-45by3-authors.html>
+
+F<./friendrated-7654321-to-read-05by3.html>
+
+F<./friendrated-7654321-to-read-05by3-authors.html>
 
 F</tmp/FileCache/>
 
@@ -248,8 +252,8 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend list/some shelv
         userpass => $ARGV[1],  # Asks pw if omitted
         r_userid => \$USERID );
 
-our $OUTPATH_BK = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF.html"         );
-our $OUTPATH_AU = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF-authors.html" );
+our $OUTPATH_BK = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF-$MINRATED${MAXRATED}by$MINFAVORERS.html"         );
+our $OUTPATH_AU = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF-$MINRATED${MAXRATED}by$MINFAVORERS-authors.html" );
 
 gsetcache( $CACHEDAYS );
 
