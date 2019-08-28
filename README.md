@@ -5,80 +5,80 @@
 9 Perl-scripts for Goodreads.com—the world largest book (cataloging) community. [What's new?](CHANGELOG.md)
 
 
-## [recentrated.pl](./doc/recentrated.md)
+## [recentrated.pl](./help/recentrated.md)
 
 Checks all the books in your shelf for new ratings and notifies you
 via periodical e-mail. It helps discover new criticisms and users with interesting 
 libraries. You can [try this online](https://andre-st.github.io/goodreads/) if you 
 don't want to install anything.
 It implements the "follow book" feature that was requested in the Goodreads forums. 
-[Learn more](./doc/recentrated.md)
+[Learn more](./help/recentrated.md)
 
 
-## [friendrated.pl](./doc/friendrated.md)
+## [friendrated.pl](./help/friendrated.md)
 
 Prints all books rated 4 or 5 stars by 3 or more persons you follow (including friends). 
 It implements the "books common among the people I follow" feature that was requested 
 in the Goodreads forums. It also lists the most read authors, the most wished-for 
 and hated books.
-[Learn more](./doc/friendrated.md)
+[Learn more](./help/friendrated.md)
 
 
-## [friendnet.pl](./doc/friendnet.md)
+## [friendnet.pl](./help/friendnet.md)
 
 Spiders your social network and creates files with edges and nodes which can be
 easily processed with social network analysis software. It answers questions
 like: Which members are popular among your friends?
-[Learn more](./doc/friendnet.md)
+[Learn more](./help/friendnet.md)
 
 
-## [friendgroup.pl](./doc/friendgroup.md)
+## [friendgroup.pl](./help/friendgroup.md)
 
 Prints discussion groups common among the persons you follow (including friends).
 Searching groups on Goodreads is a PITA, and sometimes you don't know what you can have 
-and wouldn't search for it. [Learn more](./doc/friendgroup.md)
+and wouldn't search for it. [Learn more](./help/friendgroup.md)
 
 
-## [likeminded.pl](./doc/likeminded.md)
+## [likeminded.pl](./help/likeminded.md)
 
 Prints Goodreads members who are interested in the same books as you.
 It implements the "Finding people based on the books they've read"
 feature that was requested in the Goodreads forums.
-[Learn more](./doc/likeminded.md)
+[Learn more](./help/likeminded.md)
 
 
-## [similarauth.pl](./doc/similarauth.md)
+## [similarauth.pl](./help/similarauth.md)
 
 Prints authors who Goodreads thinks are similar to all the authors you're reading.
 It implements the "Finding [all] similar authors" feature that was requested in the 
 Goodreads forums.
-[Learn more](./doc/similarauth.md)
+[Learn more](./help/similarauth.md)
 
 
-## [search.pl](./doc/search.md)
+## [search.pl](./help/search.md)
 
 Prints a books search result, ordered by average rating and number of ratings 
 (most popular books), or date published, optionally with exact title matches. 
 The Goodreads website doesn't offer it for some reason.
 It implements the "Sort search results by rating" feature that was requested 
 in the Goodreads forums.
-[Learn more](./doc/search.md)
+[Learn more](./help/search.md)
 
 
-## [savreviews.pl](./doc/savreviews.md)
+## [savreviews.pl](./help/savreviews.md)
 
 Saves text-reviews for a book to a text-file. It implements the "Extract all 
 reviews for a specific book" feature that was requested in the Goodreads forums.
-[Learn more](./doc/savreviews.md)
+[Learn more](./help/savreviews.md)
 
 
-## ~~[amz-tradein.pl](./doc/amz-tradein.md)~~
+## ~~[amz-tradein.pl](./help/amz-tradein.md)~~
 
 This script fetched Amazon Trade-In prices for all books in a Goodreads.com
 shelf ("resales" or "donations"). It automated regular manual bid-checking for 
 hundreds of books, discovering sales opportunities. Amazon stopped its buyback 
 program in 2015.
-[Learn more](./doc/amz-tradein.md)
+[Learn more](./help/amz-tradein.md)
 
 
 ## www/
@@ -121,7 +121,7 @@ because it reuses already loaded data (file-cache).
 
 ## Contributing
 
-- Reporting bugs / Feature requests
+- Reporting bugs / feature requests
   - add a new issue via [Github's issue tracker](https://github.com/andre-st/goodreads/issues/new)
   - [alternative contact options](AUTHORS.md)
   - thank you all who wrote me mails in the past or otherwise reported bugs and ideas :thumbsup:
@@ -149,7 +149,9 @@ because it reuses already loaded data (file-cache).
   - [GR members stats](https://www.statista.com/search/?q=goodreads&qKat=search) 
 		or [here](https://qz.com/1106341/most-women-reading-self-help-books-are-getting-advice-from-men/) 
 		or [here](https://onlinelibrary.wiley.com/doi/abs/10.1002/asi.23733)+[Sci-Hub](https://twitter.com/scihub_love) 
-		or [here](https://book.pressbooks.com/chapter/goodreads-otis-chandler) -- source probably [Goodreads](https://www.goodreads.com/about/us)
+		or [here](https://book.pressbooks.com/chapter/goodreads-otis-chandler) 
+		or [here](https://www.buzzfeednews.com/article/annanorth/what-amazon-is-getting-from-goodreads),
+		source probably [Goodreads](https://www.goodreads.com/about/us)
   - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), 
 		presenting GR book marketing to authors, see also [Author Feedback Group](https://www.goodreads.com/group/show/31471) 
   - [GR subreddit](https://www.reddit.com/r/goodreads/) 
@@ -170,7 +172,7 @@ because it reuses already loaded data (file-cache).
 - Other
   - Data: thousands of books and authors (not GR) https://openlibrary.org/developers/dumps
 - Personal
-  - [a list of things](GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
+  - [a list of things](./help/GOODTIPS.md) that improved my Goodreads experience: settings, browser extensions etc.
   - [Andre at Goodreads](https://www.goodreads.com/user/show/18418712-andr)
 
 

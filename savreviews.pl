@@ -87,12 +87,12 @@ There is NO WARRANTY, to the extent permitted by law.
 
 =head1 SEE ALSO
 
-More info in savreviews.md
+More info in ./help/savreviews.md
 
 
 =head1 VERSION
 
-2019-08-27 (Since 2018-08-13)
+2019-08-28 (Since 2018-08-13)
 
 =cut
 

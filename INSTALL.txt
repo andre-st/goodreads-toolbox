@@ -21,7 +21,7 @@ $ sudo make       # Gets required Perl modules from CPAN etc (see Makefile)
 
 
   Each script has its own documentation, 
-  e.g., ./doc/recentrated.md for recentrated.pl.
+  e.g., ./help/recentrated.md for recentrated.pl.
   You should read them as they detail limitations
   and perhaps additional installation steps.
 

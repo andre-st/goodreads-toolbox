@@ -94,12 +94,12 @@ There is NO WARRANTY, to the extent permitted by law.
 
 =head1 SEE ALSO
 
-More info in similarauth.md
+More info in ./help/similarauth.md
 
 
 =head1 VERSION
 
-2019-07-28 (Since 2018-07-05)
+2019-08-28 (Since 2018-07-05)
 
 =cut
 

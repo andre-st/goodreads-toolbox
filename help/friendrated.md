@@ -8,7 +8,7 @@
 From the _Goodreads Feedback_ forum, 
 [Sophie (2013)](https://web.archive.org/web/20190525013028/https://www.goodreads.com/topic/show/1573755-most-popular-books-among-friends) or 
 [Madharper (2019)](https://help.goodreads.com/s/question/0D51H00004RMzDLSA1/is-there-any-way-to-list-all-the-books-that-my-friends-have-given-five-star-ratings-to?t=1566829298278) or
-[Anne (2018)](https://web.archive.org/web/20190525012925/https://www.goodreads.com/topic/show/19320371-recommendations)
+[Anne (2018)](https://web.archive.org/web/20190525012925/https://www.goodreads.com/topic/show/19320371-recommendations):
 > I often choose a book to read if many of the people I follow have read it
 > (and rated it high). Anyway, to find these kind of books isn't always easy
 > especially if they are published many years ago and do not pop up in my news

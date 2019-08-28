@@ -107,12 +107,12 @@ There is NO WARRANTY, to the extent permitted by law.
 
 =head1 SEE ALSO
 
-More info in friendnet.md
+More info in ./help/friendnet.md
 
 
 =head1 VERSION
 
-2019-08-27 (Since 2019-06-14)
+2019-08-28 (Since 2019-06-14)
 
 =cut
 

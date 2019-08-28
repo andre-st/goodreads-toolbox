@@ -15,17 +15,17 @@ easily processed with social network analysis software.
 $ head friendnet-nodes.csv friendnet-edges.csv
 ==> friendnet-nodes.csv <==
 id,name,img_url
-50963461,"Peter Hesel",https://images.gr-assets.com/users/1514444137p2/50911111.jpg
-15234617,"Carole Orsifault",https://images.gr-assets.com/users/139552226262/15222217.jpg
-41346336,"Jordan Tenner",https://images.gr-assets.com/users/1427180778p2/41444336.jpg
-4113463,Tim,https://images.gr-assets.com/users/1432411115p2/4114553.jpg
+50965461,"Peter Hesar",https://images.gr-assets.com/users/1514444137p2/50911111.jpg
+15232357,"Carole Arsifeult",https://images.gr-assets.com/users/139552226262/15222217.jpg
+41256336,"Jordan Teller",https://images.gr-assets.com/users/1427180778p2/41444336.jpg
+4112343,Tim,https://images.gr-assets.com/users/1432411115p2/4114553.jpg
 
 ==> friendnet-edges.csv <==
 from,to
-15413712,18523418
-15413712,8252516
-15413712,13162689
-15413712,9348911
+15234712,18525218
+15234712,8251216
+15234712,13152689
+15234712,9362611
 ```
 
 Comma-separated values (CSV) files can be easily processed with any social network 

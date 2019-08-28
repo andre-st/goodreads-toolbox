@@ -136,12 +136,12 @@ There is NO WARRANTY, to the extent permitted by law.
 
 =head1 SEE ALSO
 
-More info in likeminded.md
+More info in ./help/likeminded.md
 
 
 =head1 VERSION
 
-2019-08-27 (Since 2018-06-22)
+2019-08-28 (Since 2018-06-22)
 
 =cut
 
