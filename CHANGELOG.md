@@ -6,9 +6,8 @@ All notable changes to this project will be documented in this file.
 ## [1.20.2] - 2019-08-31
 ### Fixed
 
-- friendnet.pl: 
-	- Fix missing ");" at the end (syntax error)
-	- poor table-caption in authors-report file
+- friendnet.pl: missing ");" at the end (syntax error)
+- friendrated.pl: poor table-caption in authors-report file
 
 ### Added
 
