@@ -176,7 +176,7 @@ More info in ./help/friendrated.md
 
 =head1 VERSION
 
-2019-08-28 (Since 2018-05-10)
+2019-08-31 (Since 2018-05-10)
 
 =cut
 
@@ -209,14 +209,14 @@ use Goodscrapes;
 setlocale( LC_CTYPE, 'en_US' );  # GR dates all en_US
 STDOUT->autoflush( 1 );
 
-our $TSTART        = time();
-our $MINFAVORERS   = 3;
-our $MINRATED      = 4;
-our $MAXRATED      = 5;
-our $FRIENDSHELF   = 'read';
-our $OUTDIR        = './';
-our $ISTOREAD      = 0;
-our $CACHEDAYS     = 31;
+our $TSTART      = time();
+our $MINFAVORERS = 3;
+our $MINRATED    = 4;
+our $MAXRATED    = 5;
+our $FRIENDSHELF = 'read';
+our $OUTDIR      = './';
+our $ISTOREAD    = 0;
+our $CACHEDAYS   = 31;
 our @EXCLMYSHELVES;
 our $MAXRATS;
 our $MINYEAR;     # No default, some books lack year-pub, others < 0 B.C.
