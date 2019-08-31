@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.20.2] - 2019-08-31
+### Fixed
+
+- friendnet.pl: 
+	- Fix missing ");" at the end (syntax error)
+	- poor table-caption in authors-report file
+
+### Added
+
+- friendrated.pl: new column 'GR Avg' with average rating by the Goodreads community
+- git-hooks (developers): automatically check syntax of user-scripts and run library unit-tests before pushing changes to GitHub
+
+### Changed
+
+- friendrated.pl: output-filenames include stars-range and number of favorers
+- covers and titles are not in the same column any more; each its own
+- renamed "doc" folder to "help"
+
+
+
 ## [1.20] - 2019-08-26
 ### Fixed
 
@@ -17,7 +37,7 @@ All notable changes to this project will be documented in this file.
 - friendrated.pl:
 	- new option `--excludemy=read` to exclude books which you've already read
 	  ([#28](https://github.com/andre-st/goodreads/issues/28))
-	- new column `Rank` in final books table
+	- new column 'Rank' in final books table
 	  ([#29](https://github.com/andre-st/goodreads/issues/29))
 	- new column 'Author' in final books table
 - table columns in HTML output are sortable in the web-browser, now
