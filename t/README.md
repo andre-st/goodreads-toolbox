@@ -7,13 +7,15 @@ Goodreads.com website that would cause our toolbox to read no or incorrect data.
 
 A _design_ goal of this project is to have very little code in the user scripts 
 by moving as much code as possible into the libraries (down the stack).
-Covering only the libraries should cover the most critical code.
-That's _good enough_ to gain confidence.
+Covering only the libraries in the 'lib'-directory should cover most fallible code.
+This is _good enough_ to gain confidence. 
 
-Currently, this only tests `lib/Goodscrapes.pm` which is the heart of the toolbox.
+User-facing scripts are checked manually or on a static level.
 
-I run all tests before pushing local changes to the Github repository, 
-reducing the chance of distributing buggy releases (see [../git-hooks/pre-push]).
+All unit-tests and user-script syntax-checks run automatically
+when I push local changes to the Github repository, 
+reducing the chance of distributing buggy releases 
+(see [../git-hooks/pre-push](../git-hooks/pre-push)).
 
 Tests can also serve as tutorial for the Goodscrapes library and reduce 
 errors caused by incorrect use.
