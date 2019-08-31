@@ -1,4 +1,4 @@
-# :books: Andre's Goodreads Toolbox, v1.20
+# :books: Andre's Goodreads Toolbox, v1.20.2
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
