@@ -112,7 +112,7 @@ More info in ./help/friendnet.md
 
 =head1 VERSION
 
-2019-08-28 (Since 2019-06-14)
+2019-08-31 (Since 2019-06-14)
 
 =cut
 
@@ -233,5 +233,7 @@ csv( in      => \@edges,
 #-----------------------------------------------------------------------------
 # Done:
 # 
-printf( "\n\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 
+printf( "\n\nTotal time: %.0f minutes\n", (time()-$TSTART)/60 );
+
+
 
