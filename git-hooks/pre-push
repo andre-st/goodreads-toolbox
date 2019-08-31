@@ -1,6 +1,14 @@
 #!/bin/sh
 
-# Run tests before making changes public
+# Check syntax of user-scripts
+shopt -s nullglob
+for filename in *.pl
+do
+	perl -c "${filename}"
+done
+
+
+# Unit-test the libraries
 prove
 
 
