@@ -72,6 +72,7 @@ or see the [AUTHORS.md](AUTHORS.md) file.
 ## See also
 
 - [friendrated.pl](friendrated.md) - Books common among the people you follow
+- [friendnet.pl](friendnet.md)     - Social network analysis
 - [likeminded.pl](likeminded.md)   - Find Goodreads members with similar book taste
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [similarauth.pl](similarauth.md) - Find all similar authors

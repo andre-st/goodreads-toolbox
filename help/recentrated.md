@@ -137,6 +137,7 @@ or see the [AUTHORS.md](AUTHORS.md) file.
 
 - [likeminded.pl](likeminded.md)   - Find Goodreads members with similar book taste
 - [friendrated.pl](friendrated.md) - Books common among the people you follow
+- [friendnet.pl](friendnet.md)     - Social network analysis
 - [friendgroup.pl](friendgroup.md) - Groups common among the people you follow
 - [similarauth.pl](similarauth.md) - Find all similar authors
 - [search.pl](search.md)           - Sort books-search results by popularity or date published
