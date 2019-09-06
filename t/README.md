@@ -1,23 +1,26 @@
 # Unit Tests
 
-## Objectives, Strategy, Coverage
+## Testing Objectives, Strategy, Coverage
 
-The main reason for testing is the early detection of changes to the
+1. Our main reason for testing is the early detection of changes to the
 Goodreads.com website that would cause our toolbox to read no or incorrect data.
+The GR website is a moving target and should be considered a long-term failure.
 
-A _design_ goal of this project is to have very little code in the user scripts 
+2. A _design_ goal of this project is to have very little code in the user scripts 
 by moving as much code as possible into the libraries (down the stack).
-Covering only the libraries in the 'lib'-directory should cover most fallible code.
-This is _good enough_ to gain confidence. 
+So covering the libraries in the 'lib'-directory only should cover most fallible code.
+This is _good enough_ to gain confidence.
 
-User-facing scripts are checked manually or on a static level.
+3. User-facing scripts are checked manually when I change them.
+If I forget the testing after small changes, at least a static 
+check will _automatically_ take place before each commit
+(see [../git-hooks/pre-commit](../git-hooks/pre-commit)).
 
-All unit-tests and user-script syntax-checks run automatically
-when I push local changes to the Github repository, 
-reducing the chance of distributing buggy releases 
+4. All unit-tests _automatically_ run before changes are pushed to the Github repository, 
+reducing the chance of distributing a buggy release 
 (see [../git-hooks/pre-push](../git-hooks/pre-push)).
 
-Tests can also serve as tutorial for the Goodscrapes library and reduce 
+5. Tests can serve as tutorial for the Goodscrapes library and reduce 
 errors caused by incorrect use.
 
 
