@@ -60,7 +60,8 @@
   combine stray book editions (take over reviews etc.)
 
 - [Goodreads Ratings for Amazon](https://chrome.google.com/webstore/detail/goodreads-ratings-for-ama/fkkcefhhadenobhjnngfdahhlodolkjg) – a Chrome-browser extension by Rubén Martínez; 
-  also reminds you of GR reviews when you're shopping on Amazon 
+  also reminds you of GR reviews when you're shopping on Amazon (alternatively, try my
+  [Tiny JS Injector](https://github.com/andre-st/chrome-injectjs))
 
 - **Check out users who rate good books**. 
   [This service](https://andre-st.github.io/goodreads/) notifies you of new ratings for specific books.
@@ -122,7 +123,7 @@
 - Parakweet's BookVibe closed in 2016, they sent you a list of books that your friends are talking about on Twitter
 - ...
 - get your keywords right: you have to know the right technical terms before learning about them; try "science books" or "textbook" over "nonfiction", all not necessarily scienctific or even academic but nonfiction is very broad; check non-english books too if you speak another language (no-brainer but st. I forgot)
-- bookmark interesting titles now and inspect them later, books must arouse interest also after one month; I use multiple Amazon wishlists, which also show current 2nd hand prices, my comments and priorization; I have a separate "(lost interest)" wishlist as an alternative to deletion
+- bookmark interesting titles now and inspect them later, books must arouse interest also after one month; I use multiple Amazon wishlists, which also show current 2nd hand prices, my comments and priorization; I have a separate "(lost interest)" wishlist as an alternative to deletion; my [Amazon Wishlist-Exporter](https://github.com/andre-st/amazon-wishlist) helps keep the overview by filtering ~60 wishlists by price and priority.
 
 
 ## Feedback
