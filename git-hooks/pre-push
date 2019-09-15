@@ -1,5 +1,10 @@
 #!/bin/sh
 
+
+# Exit on first error
+set -e
+
+
 # Unit-tests the libraries.
 # (Static checks took already place during commits)
 # 
