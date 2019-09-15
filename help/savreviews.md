@@ -95,7 +95,7 @@ Total time: 36 minutes
 - long runtime: Goodreads slows down all requests and we have to load a lot of data
 - there's no way to load _all_ reviews of a book, but the program 
   tries different things to get as many fulltext reviews as 
-  possible -- this can take very long (see `--rigor` parameter and [this](dict/))
+  possible -- this can take very long (see `--rigor` parameter and [this](../dict/))
 - needs data cleansing on your side
 - review text might include user-entered (broken) HTML code and URLs
 - review text can be in any language, e.g., German or Russian
