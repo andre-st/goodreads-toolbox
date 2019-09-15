@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-08-27
+=item * Updated: 2019-08-31
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.54';  # X.XX version format required by Perl
+our $VERSION = '1.55';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -572,15 +572,14 @@ sub glogin
 	#$pass     = '#' x length( $pass     );
 	#$formdata = '#' x length( $formdata );
 	
-	# Get user ID if needed:
-	if( defined $ruid && !$$ruid )
-	{
-		$htm   = _html( $_HOMEURL, $_ENO_ERROR, 0 );       # Also POST 302 target
-		$$ruid = $htm =~ /index_rss\/(\d+)/ ? $1 : undef;
-		
-		print( "OK!\n" ) if $$ruid && !$args{ userpass };  # Only if prompt before
-		croak( _errmsg( $_ENO_BADLOGIN )) unless $$ruid;
-	}
+	# Check success:
+	$htm    = _html( $_HOMEURL, $_ENO_ERROR, 0 );
+	my $uid = $htm =~ /index_rss\/(\d+)/ ? $1 : undef;
+	
+	print( "OK!\n" ) if $uid && !$args{ userpass };  # Only out if prompt before
+	croak( _errmsg( $_ENO_BADLOGIN )) unless $uid;
+	
+	$$ruid = $uid if defined $ruid && !$$ruid;       # Update userid if needed
 }
 
 
