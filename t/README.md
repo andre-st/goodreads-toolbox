@@ -1,6 +1,6 @@
-# Unit Tests
+# Unit tests
 
-## Testing Objectives, Strategy, Coverage
+## Testing objectives, strategy, coverage
 
 1. Our main reason for testing is the early detection of changes to the
 Goodreads.com website that would cause our toolbox to read no or incorrect data.
