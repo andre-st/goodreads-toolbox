@@ -1,14 +1,15 @@
 #!/bin/sh
 
-# Check syntax of user-scripts
-shopt -s nullglob
-for filename in *.pl
-do
-	perl -c "${filename}"
-done
+# Unit-tests the libraries.
+# (Static checks took already place during commits)
+# 
+# Don't run if there are just changes to the documentation
+# 
+if git diff --stat --cached origin/master | grep -E "(\.pm|\.t)"
+then
+	prove
+fi
 
 
-# Unit-test the libraries
-prove
 
 
