@@ -1,6 +1,19 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-if git status --porcelain ./lib/Goodscrapes.pm | grep "^M"
+
+# Exit on first error
+set -e
+
+
+# Static code checks:
+for f in `git ls-files --modified *.pl`
+do
+	perl -c "${f}"
+done
+
+
+# Generate documentation:
+if git ls-files --modified ./lib/Goodscrapes.pm
 then
 	echo "Generating documentation: Goodscrapes.pod"
 	podselect ./lib/Goodscrapes.pm > ./lib/Goodscrapes.pod \

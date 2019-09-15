@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-08-26
+=item * Updated: 2019-08-31
 
 =item * Since: 2014-11-05
 
