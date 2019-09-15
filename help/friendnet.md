@@ -31,12 +31,13 @@ from,to
 Comma-separated values (CSV) files can be easily processed with any social network 
 analysis (SNA) software such as `R` with the `igraph` package or similar.
 You can ran other statistics software or query languages against CSV-files too, 
-e.g. `q` is SQL for CSV.
+e.g. `q` is SQL for CSV. 
+A user sent me a screenshot with Excel processing these data, which looked good too.
 
 
 ## Social network analysis (SNA)
 
-Network type: 
+Generated network type: 
 - Egocentric (not sociocentric/complete), 
 - Directed   (not undirected), 
 - Binary     (not valued), 
@@ -75,13 +76,13 @@ $ ./friendnet.pl goodlogin@example.com
 
 Enter GR password for goodlogin@example.com: ******************
 Signing in to Goodreads... OK
-Traversing #18418712's social network (depth=3)...
-Covered: [100%, 100%] 
+Traversing #18418712's social network (depth=2)...
+Covered: [100%]
 Writing network data to: 
-./friendnet-18418712-nodes.csv  (N=22678)
-./friendnet-18418712-edges.csv  (N=24899)
+./friendnet-5685856-nodes.csv  (N=76622)
+./friendnet-5685856-edges.csv  (N=106974)
 
-Total time: 22 hours
+Total time: 195 minutes
 ```
 
 **Note:**
@@ -109,6 +110,7 @@ or see the [AUTHORS.md](AUTHORS.md) file.
 ## See also
 
 - [friendrated.pl](friendrated.md) - Books common among the people you follow
+- [friendgroup.pl](friendgroup.md) - Groups common among the people you follow
 - [likeminded.pl](likeminded.md)   - Find Goodreads members with similar book taste
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [similarauth.pl](similarauth.md) - Find all similar authors
