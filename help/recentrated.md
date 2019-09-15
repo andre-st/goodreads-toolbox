@@ -130,7 +130,7 @@ Recently rated books in your "watch-ratings" shelf:
 
 If you like this project, you can "star" it on GitHub.
 Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads/issues) 
-or see the [AUTHORS.md](AUTHORS.md) file.
+or see the [AUTHORS.md](../AUTHORS.md) file.
 
 
 ## See also
