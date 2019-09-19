@@ -160,6 +160,7 @@ because it reuses already loaded data (file-cache).
   - untested: Danish Prakash's [goodreadsh](https://github.com/danishprakash/goodreadsh) 
 		is a command line interface for Goodreads (off. API)
   - untested: [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
+  - untested: the [Bookar Android app](https://github.com/intmainreturn00/Bookar) visualizes your books in augmented reality
   - Amazon: [export and filter wishlists](https://github.com/andre-st/amazon-wishlist) by price and priority
 - Other
   - Data: thousands of books and authors (not GR) https://openlibrary.org/developers/dumps
