@@ -123,7 +123,7 @@
 - Parakweet's BookVibe closed in 2016, they sent you a list of books that your friends are talking about on Twitter
 - ...
 - get your keywords right: you have to know the right technical terms before learning about them; try "science books" or "textbook" over "nonfiction", all not necessarily scienctific or even academic but nonfiction is very broad; check non-english books too if you speak another language (no-brainer but st. I forgot)
-- bookmark interesting titles now and inspect them later, books must arouse interest also after one month; I use multiple Amazon wishlists, which also show current 2nd hand prices, my comments and priorization; I have a separate "(lost interest)" wishlist as an alternative to deletion; my [Amazon Wishlist-Exporter](https://github.com/andre-st/amazon-wishlist) helps keep the overview by filtering ~60 wishlists by price and priority.
+- bookmark interesting titles now and inspect them later, books must arouse interest also after one month; I use multiple Amazon wishlists, which also show current 2nd hand prices, my comments and priorization; I have a separate "(lost interest)" wishlist as an alternative to deletion; my [Amazon Wishlist-Exporter](https://github.com/andre-st/amazon-wishless) helps keep the overview by filtering ~60 wishlists by price and priority.
 
 
 ## Feedback
