@@ -29,7 +29,7 @@ The report also includes a table with the most liked authors among the friends a
 ## How to generate this on a GNU/Linux operating system
 
 ```console
-$ git clone https://github.com/andre-st/goodreads.git
+$ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads
 $ sudo make        # Required Perl modules from CPAN
 $ ./friendrated.pl --help
@@ -96,7 +96,7 @@ of that person (depends on your login).
 ## Feedback
 
 If you like this project, give it a star on GitHub.
-Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads/issues) 
+Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads-toolbox/issues) 
 or see the [AUTHORS.md](../AUTHORS.md) file.
 
 

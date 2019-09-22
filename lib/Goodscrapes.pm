@@ -2466,7 +2466,7 @@ sub _setcurlopts
 	# - reduce SSL overhead
 	# 
 	# The module works without any of these options, but probably slower.
-	# All `eval` due to https://github.com/andre-st/goodreads/issues/20
+	# All `eval` due to https://github.com/andre-st/goodreads-toolbox/issues/20
 	eval{ $curl->setopt( $curl->CURLOPT_TIMEOUT,        60  ); };
 	eval{ $curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 60  ); };
 	eval{ $curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0   ); };  # CURL default

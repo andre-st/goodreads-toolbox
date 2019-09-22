@@ -128,4 +128,4 @@
 
 ## Feedback
 
-Use [GitHub](https://github.com/andre-st/goodreads/issues) or see [AUTHORS.md](AUTHORS.md) file
+Use [GitHub](https://github.com/andre-st/goodreads-toolbox/issues) or see [AUTHORS.md](AUTHORS.md) file

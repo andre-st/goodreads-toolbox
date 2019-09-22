@@ -33,7 +33,7 @@ or [Mehran](https://web.archive.org/web/20190525013406/https://www.goodreads.com
 ## How to generate this on a GNU/Linux operating system
 
 ```console
-$ git clone https://github.com/andre-st/goodreads.git
+$ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads
 $ sudo make       # Required Perl modules from CPAN
 $ ./likeminded.pl --help
@@ -144,7 +144,7 @@ The program is designed to run unattended, outwaits connection issues etc.
 ## Feedback
 
 If you like this project, give it a star on GitHub.
-Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads/issues) 
+Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads-toolbox/issues) 
 or see the [AUTHORS.md](../AUTHORS.md) file.
 
 

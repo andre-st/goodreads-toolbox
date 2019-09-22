@@ -1,6 +1,10 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+
+## [Unreleased]
 
 
 ## [1.20.2] - 2019-08-31
@@ -32,12 +36,12 @@ All notable changes to this project will be documented in this file.
 
 - new program: friendnet.pl - saves your social network to CSV files for
   further processing with social network analysis tools
-  ([#27](https://github.com/andre-st/goodreads/issues/27))
+  ([#27](https://github.com/andre-st/goodreads-toolbox/issues/27))
 - friendrated.pl:
 	- new option `--excludemy=read` to exclude books which you've already read
-	  ([#28](https://github.com/andre-st/goodreads/issues/28))
+	  ([#28](https://github.com/andre-st/goodreads-toolbox/issues/28))
 	- new column 'Rank' in final books table
-	  ([#29](https://github.com/andre-st/goodreads/issues/29))
+	  ([#29](https://github.com/andre-st/goodreads-toolbox/issues/29))
 	- new column 'Author' in final books table
 - table columns in HTML output are sortable in the web-browser, now
 
@@ -64,7 +68,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - friendrated.pl: `--hate` option to list most hated books among the members you follow
-  ([#24](https://github.com/andre-st/goodreads/issues/24))
+  ([#24](https://github.com/andre-st/goodreads-toolbox/issues/24))
 - recentrated.pl: allows login and can be run against non-public member accounts
 
 ### Changed
@@ -115,7 +119,7 @@ All notable changes to this project will be documented in this file.
   Programs which require a cookie can obtain it themselves now, 
   given the user's login email address and password.
   This should render the toolbox more accessible to its users
-  ([#25](https://github.com/andre-st/goodreads/issues/25))
+  ([#25](https://github.com/andre-st/goodreads-toolbox/issues/25))
 - recentrated: `--textonly` option to skip ratings without text
   
 
@@ -124,13 +128,13 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - "Undefined subroutine &WWW::Curl::Easy::CURLOPT_TCP_KEEPALIVE" 
-  ([#20](https://github.com/andre-st/goodreads/issues/20))
+  ([#20](https://github.com/andre-st/goodreads-toolbox/issues/20))
 
 ### Changed
 
 - savreviews: 
 	- writes multiple files at once, with one file per star-rating 
-	  ([#14](https://github.com/andre-st/goodreads/issues/14))
+	  ([#14](https://github.com/andre-st/goodreads-toolbox/issues/14))
 	- reviews contain review date too
 	- `--outfile` option changed to `--outdir`
 
@@ -147,7 +151,7 @@ All notable changes to this project will be documented in this file.
 - likeminded: 
 	- `--similar` option was renamed to `--common`
 	- final report does not rank members by the number of common authors only but
-	  includes library-sizes ([#18](https://github.com/andre-st/goodreads/issues/18))
+	  includes library-sizes ([#18](https://github.com/andre-st/goodreads-toolbox/issues/18))
 	- final report does not list private accounts anymore
 - generated HTML-reports now include `report.css` for styling
 
@@ -164,7 +168,7 @@ All notable changes to this project will be documented in this file.
   since some authors list more than 2000 books; default is 600 most popular books
 - friendrated: more filters, e.g., _"books with less than 1000 ratings 
   and published between 1950 to 1980 and ..."_ 
-  ([#16](https://github.com/andre-st/goodreads/issues/16))
+  ([#16](https://github.com/andre-st/goodreads-toolbox/issues/16))
 
 ### Changed
 
@@ -187,7 +191,7 @@ All notable changes to this project will be documented in this file.
 ## [1.10.0] - 2018-09-27
 ### Added
 
-- new program: friendgroup.pl ([#6](https://github.com/andre-st/goodreads/issues/6))
+- new program: friendgroup.pl ([#6](https://github.com/andre-st/goodreads-toolbox/issues/6))
 - cookie validity is tested against Goodreads at the start of a program (using cookies)
 
 
@@ -211,7 +215,7 @@ All notable changes to this project will be documented in this file.
 
 - new program: savreviews.pl
 - multiple `--shelf` options: `--shelf=music --shelf=science` 
-  ([#10](https://github.com/andre-st/goodreads/issues/10))
+  ([#10](https://github.com/andre-st/goodreads-toolbox/issues/10))
 - `--dict` options for custom dictionaries
 - added words-based dictionaries to `./dict/` folder (perform better than Ngram dicts)
 
@@ -232,7 +236,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 
 - likeminded: dictionary-based reviews-search (builtin Ngrams dict) 
-  ([#9](https://github.com/andre-st/goodreads/issues/9))
+  ([#9](https://github.com/andre-st/goodreads-toolbox/issues/9))
     
 
 

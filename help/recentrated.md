@@ -78,7 +78,7 @@ Recently rated books in your "watch-ratings" shelf:
 
 1. open a GNU/Linux terminal and install the Goodreads Toolbox:
 	```console
-	$ git clone https://github.com/andre-st/goodreads.git
+	$ git clone https://github.com/andre-st/goodreads-toolbox.git
 	$ cd goodreads
 	$ sudo make     # Required Perl modules from CPAN etc.
 	```
@@ -129,7 +129,7 @@ Recently rated books in your "watch-ratings" shelf:
 ## Feedback
 
 If you like this project, you can "star" it on GitHub.
-Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads/issues) 
+Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads-toolbox/issues) 
 or see the [AUTHORS.md](../AUTHORS.md) file.
 
 

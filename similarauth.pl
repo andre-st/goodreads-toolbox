@@ -82,7 +82,7 @@ $ ./similarauth.pl -c 31 -s science -s music -o myfile.html  login@gmail.com
 =head1 REPORTING BUGS
 
 Report bugs to <datakadabra@gmail.com> or use Github's issue tracker
-L<https://github.com/andre-st/goodreads/issues>
+L<https://github.com/andre-st/goodreads-toolbox/issues>
 
 
 =head1 COPYRIGHT

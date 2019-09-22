@@ -45,7 +45,7 @@ or [Ian (2016)](https://web.archive.org/web/20190525015312/https://www.goodreads
 ## How to generate this on a GNU/Linux operating system
 
 ```console
-$ git clone https://github.com/andre-st/goodreads.git
+$ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads
 $ sudo make   # Required Perl modules from CPAN
 $ ./search.pl --help
@@ -73,7 +73,7 @@ Total time: 3 minutes
 ## Feedback
 
 If you like this project, give it a star on GitHub.
-Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads/issues) 
+Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads-toolbox/issues) 
 or see the [AUTHORS.md](../AUTHORS.md) file.
 
 

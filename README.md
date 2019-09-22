@@ -86,7 +86,7 @@ program in 2015.
 
 GNU/Linux terminal:
 ```console
-$ git clone https://github.com/andre-st/goodreads.git
+$ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads
 $ sudo make             # Gets required Perl modules from CPAN (details see Makefile)
 $ ./example-script.pl --help
@@ -113,14 +113,14 @@ because it reuses already loaded data (file-cache).
 ## Contributing
 
 - Reporting bugs / feature requests
-  - add a new issue via [Github's issue tracker](https://github.com/andre-st/goodreads/issues/new)
+  - add a new issue via [Github's issue tracker](https://github.com/andre-st/goodreads-toolbox/issues/new)
   - [alternative contact options](AUTHORS.md)
   - thank you all who wrote me mails in the past or otherwise reported bugs and ideas :thumbsup:
 - Writing your own scripts
   - see the [tests directory](./t/) for examples on how to use the toolbox library
   - see the [toolbox library documentation](./lib/Goodscrapes.pod)
   - user scripts should contain a man page, take the existing user scripts as an example
-  - the [less complex issues](https://github.com/andre-st/goodreads/labels/beginner)
+  - the [less complex issues](https://github.com/andre-st/goodreads-toolbox/labels/beginner)
     would be good first issues to work on for users who want to contribute to this project
 
 

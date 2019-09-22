@@ -102,7 +102,7 @@ Database stored in C</var/db/good/>
 =head1 REPORTING BUGS
 
 Report bugs to <datakadabra@gmail.com> or use Github's issue tracker
-<https://github.com/andre-st/goodreads/issues>
+<https://github.com/andre-st/goodreads-toolbox/issues>
 
 
 =head1 COPYRIGHT

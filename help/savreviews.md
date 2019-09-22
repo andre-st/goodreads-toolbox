@@ -48,14 +48,14 @@ minim veniam, quis nostrud exercitation ullamco laboris nisi
 The generated files (one per star-rating) contain review-texts, dates and the review-ID only. 
 They do not contain any other information, e.g., user names.
 If there is interest in these details or other output formats, just contact 
-me or [add an issue](https://github.com/andre-st/goodreads/issues).
+me or [add an issue](https://github.com/andre-st/goodreads-toolbox/issues).
 
 
 
 ## How to generate this on a GNU/Linux operating system
 
 ```console
-$ git clone https://github.com/andre-st/goodreads.git
+$ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads
 $ sudo make       # Required Perl modules from CPAN
 $ ./savreviews.pl --help
@@ -107,7 +107,7 @@ Total time: 36 minutes
 ## Feedback
 
 If you like this project, give it a star on GitHub.
-Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads/issues) 
+Report bugs or suggestions [via GitHub](https://github.com/andre-st/goodreads-toolbox/issues) 
 or see the [AUTHORS.md](../AUTHORS.md) file.
 
 
