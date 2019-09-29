@@ -5,16 +5,17 @@
 
 | Goal                                         | Rationale
 |----------------------------------------------|-------------------------------------
-| Costs__LowTCO                                | Solo-developer side-project; everything should be able to run on a single personal computer (time > money)
+| Costs__LowTCO                                | Solo-developer non-commerical side-project; everything should be able to run on a single personal computer (time > money)
 | Functionality__Correctness                   | Garbage in, garbage out
 | Functionality__Robustness                    | Loading data can take hours: consider Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates
-| Functionality__Robustness__Resumability      | Loading data can take hours: consider intentional pauses, program or computer crashes, power issues -- we don't want to start from the beginning
+| Reliability__Resumability                    | Loading data can take hours: consider intentional pauses, program or computer crashes, power issues -- we don't want to start from the beginning
 | Usability                                    | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
 | Usability__Learnability                      | Program usage and outputs, library usage (devs)
 | Usability__ConsistencyAndFamiliarity         | Typical CLI programs, consistent option names accross all programs, consistent look & feel (reports, help files etc)
 | Usability__RunUnattended                     | Loading data can take hours: consider people leaving the computer/process or running it on a remote computer/server
 | Maintainability__Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts, we cannot know in advance when and where changes will occur (long-term failure), so throughout testing is required; GR, however, rarely changes or removes something on their website (desktop)
-| Maintainability__RepairTurnaroundTime(RTAT)  | Loading data can take hours: shouldn't impact regular debugging too much
+| Maintainability__RepairTurnaroundTime        | Loading data can take hours: shouldn't impact regular debugging too much
+| Security__Sanitization                       | Users on GR might try to abuse our programs or other programs using our outputs by saving rogue strings in reviews or usernames etc 
 
 
 
@@ -48,6 +49,7 @@
 | Run Unattended        | none | none | none | none | none | none | ++   | none  | none | none
 | Testability           | ++   | ++   | none | none | ++   | ++   | none | none  | none | none
 | RepairTurnaroundTime  | ++   | ++   | none | none | ++   | ++   | none | none  | none | +   
+| Security              | none | none | none | none | none | none | none | none  | none | none
 
 
 Values: ++, +, -, none (does not address this goal)
