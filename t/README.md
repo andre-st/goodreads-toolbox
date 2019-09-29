@@ -9,45 +9,45 @@
 | Functionality__Correctness                   | Garbage in, garbage out
 | Functionality__Robustness                    | Loading data can take hours: consider Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates
 | Functionality__Robustness__Resumability      | Loading data can take hours: consider intentional pauses, program or computer crashes, power issues -- we don't want to start from the beginning
-| Usability                                    | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it heavily reduces potential user base besides me
+| Usability                                    | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
 | Usability__Learnability                      | program usage and outputs, library usage (devs)
-| Usability__ConsistencyAndFamiliarity         | CLI programs, consistent option names, consistent look & feel (reports, help files etc)
+| Usability__ConsistencyAndFamiliarity         | typical CLI programs, consistent option names accross all programs, consistent look & feel (reports, help files etc)
 | Usability__RunUnattended                     | Loading data can take hours: consider people leaving the computer/process or running it on a remote computer/server
 | Maintainability__Testability                 | We scrape data from the Goodreads website and cannot know changes in advance; we have to consider it a long-term failure and need to probe it regularly; GR, however, rarely changes or removes something on their website (desktop)
-| Maintainability__RepairTurnaroundTime(RTAT)  | Loading data can take hours: shouldn't impact debugging too much
+| Maintainability__RepairTurnaroundTime(RTAT)  | Loading data can take hours: shouldn't impact regular debugging too much
 
 
 
 ## QA activities
 
-| Activity                 | Coverage/Frequency                                 | Notes
-|--------------------------|----------------------------------------------------|-------------------------------------------
-| UT Unit testing          | libraries' public functions                        | always online-testing, primary goal is the early detection of changes to the Goodreads.com website that would break our scraper
-| RT Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing chance of distributing a buggy release
-| MT Manual testing        | user-scripts, when logical lines of code changed   | 
-| SA Static analysis       | user-scripts, before each commit                   | automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but might break things too
-| PL_PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repitition in user-scripts, centralized changes
-| CA Persistent caching    | all scraped source data (not results)              | eases debugging, program resumability, experimenting with parameters
-| IO Outwait I/O issues    | libraries                                          | wait, retry n times, skip less important
-| TT Test as a tutorial    | libraries, emergent                                | reduce errors caused by incorrect use or assumptions
-| MA Inline man pages      | user-scripts, program parameters, examples         | Man-page POD-header in each script: more likely to be up-to-date, can be extracted and displayed on incorrect program use; correct use supports correctness goal
-| HL Help files            | user-scripts, everything but program parameters    | Markdown-file in help-directory, with screenshot, motivation, install instructions, lessons learned etc; correct use/expectation management supports correctness goal
-| FR Field failure reports | ask for reports, contact opts in scripts / help    | 
-| IS Issue tracking        | all                                                | GitHub Issue Tracker; feedback (feature requests, usage problems); troubleshooting history
-| VC Version control       | all                                                | Git, GitHub, reverting code/source history, releasing, sync between computers
+| Activity                   | Coverage/Frequency                                 | Notes
+|----------------------------|----------------------------------------------------|-------------------------------------------
+| `UT` Unit testing          | libraries' public functions                        | always online-testing, primary objective is the early detection of changes to the Goodreads.com website that would break our scraper
+| `RT` Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing chance of distributing a buggy release
+| `MT` Manual testing        | user-scripts, when logical lines of code changed   | 
+| `SA` Static analysis       | user-scripts, before each commit                   | automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but might break things too
+| `PL`-PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repitition in user-scripts, centralized changes
+| `CA` Persistent caching    | all scraped source data (not results)              | eases debugging, program resumability, experimenting with parameters
+| `IO` Outwait I/O issues    | libraries                                          | wait, retry n times, skip less important
+| `TT` Test as a tutorial    | libraries, emergent                                | reduce errors caused by incorrect use or assumptions
+| `MA` Inline man pages      | user-scripts, program parameters, examples         | Man-page POD-header in each script: more likely to be up-to-date, can be extracted and displayed on incorrect program use; correct use supports correctness goal
+| `HL` Help files            | user-scripts, everything but program parameters    | Markdown-file in help-directory, with screenshot, motivation, install instructions, lessons learned etc; correct use/expectation management supports correctness goal
+| `FR` Field failure reports | ask for reports, contact opts in scripts / help    | 
+| `IS` Issue tracking        | all                                                | GitHub Issue Tracker; feedback (feature requests, usage problems); troubleshooting history
+| `VC` Version control       | all                                                | Git, GitHub, reverting code/source history, releasing, sync between computers
 
 
 
 ## QA activities evaluation
 
-| Goal                  | UT   | RT   | MT   | SA   | PL   | CA   | IO   | MA/HL | VC   | IS
+| Goal                  | UT   | RT   | MT   | SA   | PL   | CA   | IO   | MA/HL | IS   | VC
 |-----------------------|------|------|------|------|------|------|------|-------|------|------
-| Correctness           | ++   | ++   | ++   | ++   | ++   | none | none | +     | none | +
+| Correctness           | ++   | ++   | ++   | ++   | ++   | none | none | +     | +    | none
 | Robustness            | none | none | none | none | none | ++   | ++   | none  | none | none
 | Learnability          | ++   | none | none | none | none | none | none | ++    | none | none
 | Run Unattended        | none | none | none | none | none | none | ++   | none  | none | none
 | Testability           | ++   | ++   | none | none | ++   | ++   | none | none  | none | none
-| RepairTurnaroundTime  | ++   | ++   | none | none | ++   | ++   | none | none  | +    | none
+| RepairTurnaroundTime  | ++   | ++   | none | none | ++   | ++   | none | none  | none | +   
 
 
 Values: ++, +, -, none (does not address this goal)
