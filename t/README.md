@@ -10,8 +10,8 @@
 | Functionality__Robustness                    | Loading data can take hours: consider Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates
 | Reliability__Resumability                    | Loading data can take hours: consider intentional pauses, program or computer crashes, power issues -- we don't want to start from the beginning
 | Usability                                    | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
-| Usability__Learnability                      | program usage, libraries usage (devs)
-| Usability__Unattendability                   | Loading data can take hours: consider people leaving the computer/process or running it on a remote computer/server
+| Usability__Learnability                      | You can install everything, but not remember everything; program usage, library usage (devs)
+| Usability__Unattendability                   | Loading data can take hours: consider people leaving the computer/process or running the toolbox on a remote computer/server
 | Maintainability__Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts, we cannot know in advance when and where changes will occur (long-term failure), so throughout testing is required; GR, however, rarely changes or removes something on their website (desktop)
 | Maintainability__RepairTurnaroundTime        | Loading data can take hours: shouldn't impact regular debugging too much
 | Security__Integrity                          | Users on GR might try to abuse our programs or other programs reading our outputs by saving rogue strings in reviews or usernames etc 
