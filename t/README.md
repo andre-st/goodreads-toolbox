@@ -7,7 +7,7 @@
 |----------------------------------|-------------------------------------
 | Low costs (TCO)                                | Solo-developer non-profit side-project; Out of scope: distributed scraping with unique IP addresses (request throttling); we can easily wait for results
 | Correctness                   | Worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
-| Fault-Tolerance                    | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates
+| Fault-tolerance                    | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates
 | Resumability                    | Scraping can take hours: allow intentional breaks, expect program or computer crashes, power issues -- we don't want to start from the beginning
 | Ease of use                                   | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
 | Learnability                      | Many program options and functions (libs), you cannot remember everything
@@ -43,7 +43,7 @@
 | Goal                  | Unit | Regr | ManT | Synt | Down | Cache| Wait | Help  | Issue| VC  
 |-----------------------|------|------|------|------|------|------|------|-------|------|------
 | Correctness           | ++   | ++   | ++   | ++   | ++   | none | none | +     | +    | none
-| Robustness            | none | none | none | none | none | none | ++   | none  | none | none
+| Fault-tolerance       | none | none | none | none | none | none | ++   | none  | none | none
 | Resumability          | none | none | none | none | none | ++   | +    | none  | none | none
 | Learnability          | ++   | none | none | none | none | none | none | ++    | none | none
 | Unattendability       | none | none | none | none | none | none | ++   | none  | none | none
