@@ -7,13 +7,13 @@
 |-----------|-----------------------------------|-------------------------------------
 | **Costs** | LowTCO                                | Solo-developer non-profit side-project; Out of scope: distributed scraping with unique IP addresses (request throttling); we can easily wait for results
 | **Functionality** | Correctness                   | Worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
-|  | Robustness                    | Loading data can take hours: expect Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates
-| **Reliability** | Resumability                    | Loading data can take hours: allow intentional pauses, expect program or computer crashes, power issues -- we don't want to start from the beginning
+|  | Robustness                    | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates
+| **Reliability** | Resumability                    | Scraping can take hours: allow intentional pauses, expect program or computer crashes, power issues -- we don't want to start from the beginning
 | **Usability** |                                   | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
 |  | Learnability                      | Many program options and functions (libs), you cannot remember everything
-|  | Unattendability                   | Loading data can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
+|  | Unattendability                   | Scraping can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
 | **Maintainability** | Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts and we cannot know in advance when and where changes will occur (long-term failure). So regular and throughout (i.e., automated) testing is needed.
-|  | RepairTurnaroundTime        | Loading data can take hours: shouldn't impact regular debugging too much
+|  | RepairTurnaroundTime        | Scraping can take hours: shouldn't impact regular debugging too much
 | **Security** | Integrity                          | Users on GR might try to abuse our programs or other programs reading our outputs by saving rogue strings in reviews, usernames etc
 
 
