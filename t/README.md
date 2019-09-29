@@ -20,27 +20,27 @@
 
 ## QA activities
 
-| Activity                     | Coverage/Frequency                                 | Notes
-|------------------------------|----------------------------------------------------|-------------------------------------------
-| `(UT)` Unit testing          | libraries' public functions                        | 
-| `(RT)` Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing chance of distributing a buggy release
-| `(MT)` Manual testing        | user-scripts, when logical lines of code changed   | 
-| `(SA)` Static analysis       | user-scripts, before each commit                   | automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but might break things too
-| `(PL)`-PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repitition in user-scripts, centralized changes
-| `(CA)` Persistent caching    | all scraped source data (not results)              | 
-| `(IO)` Outwait I/O issues    | libraries                                          | wait, retry n times, skip less important
-| `(TT)` Test as a tutorial    | libraries, emergent                                | reduce errors caused by incorrect use or assumptions; no need to write (outdated) tutorials
-| `(MA)` Inline man pages      | user-scripts, program parameters, examples         | Man-page POD-header in each script: more likely to be up-to-date, can be extracted and displayed on incorrect program use; correct use supports correctness goal
-| `(HL)` Help files            | user-scripts, everything but program parameters    | Markdown-file in help-directory, with screenshot, motivation, install instructions, lessons learned etc; correct use/expectation management supports correctness goal
-| `(FR)` Field failure reports | ask for reports, contact opts in scripts / help    | 
-| `(IS)` Issue tracking        | all                                                | GitHub Issue Tracker; feedback (feature requests, usage problems); troubleshooting history
-| `(VC)` Version control       | all                                                | Git, GitHub, reverting code/source history, releasing, sync between computers
+| Activity              | Coverage/Frequency                                 | Notes
+|-----------------------|----------------------------------------------------|-------------------------------------------
+| Unit testing          | libraries' public functions                        | 
+| Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing chance of distributing a buggy release
+| Manual testing        | user-scripts, when logical lines of code changed   | 
+| Static analysis       | user-scripts, before each commit                   | automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but might break things too
+| PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repitition in user-scripts, centralized changes
+| Persistent caching    | all scraped source data (not results)              | 
+| Outwait I/O issues    | libraries                                          | wait, retry n times, skip less important
+| Test as a tutorial    | libraries, emergent                                | reduce errors caused by incorrect use or assumptions; no need to write (outdated) tutorials
+| Inline man pages      | user-scripts, program parameters, examples         | Man-page POD-header in each script: more likely to be up-to-date, can be extracted and displayed on incorrect program use; correct use supports correctness goal
+| Help files            | user-scripts, everything but program parameters    | Markdown-file in help-directory, with screenshot, motivation, install instructions, lessons learned etc; correct use/expectation management supports correctness goal
+| Field failure reports | ask for reports, contact opts in scripts / help    | 
+| Issue tracking        | all                                                | GitHub Issue Tracker; feedback (feature requests, usage problems); troubleshooting history
+| Version control       | all                                                | Git, GitHub, reverting code/source history, releasing, sync between computers
 
 
 
 ## QA activities evaluation
 
-| Goal                  | UT   | RT   | MT   | SA   | PL   | CA   | IO   | MA/HL | IS   | VC
+| Goal                  | Unit | Regr | ManT | Stat | Down | Cache| Wait | Help  | Issue| VC  
 |-----------------------|------|------|------|------|------|------|------|-------|------|------
 | Correctness           | ++   | ++   | ++   | ++   | ++   | none | none | +     | +    | none
 | Robustness            | none | none | none | none | none | ++   | ++   | none  | none | none
