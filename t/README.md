@@ -6,13 +6,13 @@
 | Goal                                         | Rationale
 |----------------------------------------------|-------------------------------------
 | Costs__LowTCO                                | Solo-developer non-profit side-project; Out of scope: distributed scraping with unique IP addresses (request throttling); we can easily wait for results
-| Functionality__Correctness                   | worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
+| Functionality__Correctness                   | Worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
 | Functionality__Robustness                    | Loading data can take hours: expect Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates
 | Reliability__Resumability                    | Loading data can take hours: allow intentional pauses, expect program or computer crashes, power issues -- we don't want to start from the beginning
 | Usability                                    | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
 | Usability__Learnability                      | Many program options and functions (libs), you cannot remember everything
 | Usability__Unattendability                   | Loading data can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
-| Maintainability__Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts and we cannot know in advance when and where changes will occur (long-term failure). So throughout testing is needed.
+| Maintainability__Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts and we cannot know in advance when and where changes will occur (long-term failure). So regular and throughout (i.e., automated) testing is needed.
 | Maintainability__RepairTurnaroundTime        | Loading data can take hours: shouldn't impact regular debugging too much
 | Security__Integrity                          | Users on GR might try to abuse our programs or other programs reading our outputs by saving rogue strings in reviews, usernames etc
 
@@ -26,7 +26,7 @@
 | Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing chance of distributing a buggy release
 | Manual testing        | user-scripts, when logical lines of code changed   | 
 | Static analysis       | user-scripts, before each commit                   | automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but might break things too
-| PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repitition in user-scripts, centralized changes
+| PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repetition in user-scripts, centralized changes
 | Persistent caching    | all scraped source data (not results)              | 
 | Outwait I/O issues    | libraries                                          | wait, retry n times, skip less important
 | Test as a tutorial    | libraries, emergent                                | reduce errors caused by incorrect use or assumptions; no need to write (outdated) tutorials
