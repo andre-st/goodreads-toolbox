@@ -14,7 +14,7 @@
 |  | Unattendability                   | Scraping can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
 | **Maintainability** | Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts and we cannot know in advance when and where changes will occur (long-term failure). So regular and throughout (i.e., automated) testing is needed.
 |  | RepairTurnaroundTime        | Scraping can take hours: shouldn't impact regular debugging too much
-| **Security** | Integrity                          | Users on GR might try to abuse our programs or other programs reading our outputs by saving rogue strings in reviews, usernames etc
+| **Security** | Integrity                          | Users on GR might try to abuse our programs or other programs (reading our outputs) by saving rogue strings in reviews, usernames etc
 
 
 
