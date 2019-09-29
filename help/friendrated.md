@@ -103,6 +103,7 @@ or see the [AUTHORS.md](../AUTHORS.md) file.
 ## See also
 
 - ~~[Popular books](https://www.goodreads.com/friend/popular_books) among my friends _this month_ (Goodreads feature)~~
+- [Most read by pub-year](https://www.goodreads.com/book/popular_by_date/1919/) on all of Goodreads
 - [likeminded.pl](likeminded.md)   - Find Goodreads members with similar book taste
 - [recentrated.pl](recentrated.md) - Know when people rate or write reviews about a book
 - [friendnet.pl](friendnet.md)     - Social network analysis
