@@ -43,10 +43,11 @@
 | Goal                  | Unit | Regr | ManT | Stat | Down | Cache| Wait | Help  | Issue| VC  
 |-----------------------|------|------|------|------|------|------|------|-------|------|------
 | Correctness           | ++   | ++   | ++   | ++   | ++   | none | none | +     | +    | none
-| Robustness            | none | none | none | none | none | ++   | ++   | none  | none | none
+| Robustness            | none | none | none | none | none | none | ++   | none  | none | none
+| Resumability          | none | none | none | none | none | ++   | +    | none  | none | none
 | Learnability          | ++   | none | none | none | none | none | none | ++    | none | none
 | Unattendability       | none | none | none | none | none | none | ++   | none  | none | none
-| Testability           | ++   | ++   | none | none | ++   | ++   | none | none  | none | none
+| Testability           | ++   | ++   | none | none | ++   | +    | none | none  | none | none
 | RepairTurnaroundTime  | ++   | ++   | none | none | ++   | ++   | none | none  | none | +   
 | Integrity             | none | none | none | none | none | none | none | none  | none | none
 
