@@ -15,7 +15,7 @@
 | Usability__RunUnattended                     | Loading data can take hours: consider people leaving the computer/process or running it on a remote computer/server
 | Maintainability__Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts, we cannot know in advance when and where changes will occur (long-term failure), so throughout testing is required; GR, however, rarely changes or removes something on their website (desktop)
 | Maintainability__RepairTurnaroundTime        | Loading data can take hours: shouldn't impact regular debugging too much
-| Security__Sanitization                       | Users on GR might try to abuse our programs or other programs using our outputs by saving rogue strings in reviews or usernames etc 
+| Security__Integrity                          | Users on GR might try to abuse our programs or other programs reading our outputs by saving rogue strings in reviews or usernames etc 
 
 
 
@@ -49,7 +49,7 @@
 | Run Unattended        | none | none | none | none | none | none | ++   | none  | none | none
 | Testability           | ++   | ++   | none | none | ++   | ++   | none | none  | none | none
 | RepairTurnaroundTime  | ++   | ++   | none | none | ++   | ++   | none | none  | none | +   
-| Security              | none | none | none | none | none | none | none | none  | none | none
+| Integrity             | none | none | none | none | none | none | none | none  | none | none
 
 
 Values: ++, +, -, none (does not address this goal)
