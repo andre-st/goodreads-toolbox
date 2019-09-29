@@ -23,8 +23,8 @@
 | Activity              | Coverage/Frequency                                 | Notes
 |-----------------------|----------------------------------------------------|-------------------------------------------
 | Unit testing          | libraries' public functions                        | 
-| Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing chance of distributing a buggy release
-| Manual testing        | user-scripts, when logical line of code changed    | 
+| Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing the chance of distributing a buggy release
+| Manual testing        | user-scripts, when sth. significant changed        | automated UI tests are not worth the effort
 | Syntactic check       | user-scripts, before each commit                   | automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but might break things too
 | PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repetition in user-scripts, centralized changes
 | Persistent caching    | all scraped source data (not results)              | 
