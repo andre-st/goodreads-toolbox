@@ -29,7 +29,7 @@
 | `(PL)`-PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repitition in user-scripts, centralized changes
 | `(CA)` Persistent caching    | all scraped source data (not results)              | 
 | `(IO)` Outwait I/O issues    | libraries                                          | wait, retry n times, skip less important
-| `(TT)` Test as a tutorial    | libraries, emergent                                | reduce errors caused by incorrect use or assumptions
+| `(TT)` Test as a tutorial    | libraries, emergent                                | reduce errors caused by incorrect use or assumptions; no need to write (outdated) tutorials
 | `(MA)` Inline man pages      | user-scripts, program parameters, examples         | Man-page POD-header in each script: more likely to be up-to-date, can be extracted and displayed on incorrect program use; correct use supports correctness goal
 | `(HL)` Help files            | user-scripts, everything but program parameters    | Markdown-file in help-directory, with screenshot, motivation, install instructions, lessons learned etc; correct use/expectation management supports correctness goal
 | `(FR)` Field failure reports | ask for reports, contact opts in scripts / help    | 
