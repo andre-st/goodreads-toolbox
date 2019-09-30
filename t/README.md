@@ -3,7 +3,7 @@
 
 ## Quality goals
 
-| Goal                                 | Rationale
+| Goal                                 | Why
 |----------------------------------|-------------------------------------
 | Low costs (TCO)                                | Solo-developer non-profit side-project; Out of scope: distributed scraping with unique IP addresses (request throttling); we can easily wait for results
 | Correctness                   | Worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
