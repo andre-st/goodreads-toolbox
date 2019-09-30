@@ -39,19 +39,22 @@
 
 ## QA activities evaluation
 
-| Goal                  | Unit | Regr | ManT | Synt | Down | Cache| Wait | Help  | Issue| VC   | Overall
-|-----------------------|------|------|------|------|------|------|------|-------|------|------|------|
-| Correctness           | +++  | +++  | +++  | ++   | +++  | none | none | +     | ++   | none | strong
-| Fault-tolerance       | none | none | +    | none | none | none | +++  | none  | none | none | strong
-| Resumability          | none | none | none | none | none | +++  | +    | none  | none | none | strong
-| Learnability          | ++   | none | none | none | none | none | none | +++   | none | none | strong
-| Unattendability       | none | none | none | none | none | none | +++  | none  | none | none | strong
-| Testability           | +++  | +++  | none | none | +++  | +    | none | none  | none | none | strong
-| RepairTurnaroundTime  | +++  | +++  | none | none | ++   | +++  | none | none  | none | +    | strong
-| Integrity             | none | none | none | none | none | none | none | none  | none | none | at-risk
+| Goal                  | Unit | Regr | ManT | Synt | Down | Cache| Wait | ManPg| Help | Issue| VC   | Overall
+|-----------------------|------|------|------|------|------|------|------|------|------|------|------|------|
+| Correctness           | +++  | +++  | +++  | ++   | +++  | none | none | +    | +    | ++   | none | strong
+| Fault-tolerance       | none | none | +    | none | none | none | +++  | none | none | none | none | weak
+| Resumability          | none | none | none | none | none | +++  | +    | none | none | none | none | strong
+| Learnability          | ++   | none | none | none | none | none | none | +++  | +++  | none | none | strong
+| Unattendability       | none | none | none | none | none | none | +++  | none | none | none | none | weak
+| Testability           | +++  | +++  | none | none | +++  | +    | none | none | none | none | none | strong
+| RepairTurnaroundTime  | +++  | +++  | none | none | ++   | +++  | none | none | none | none | +    | strong
+| Integrity             | none | none | none | none | none | none | none | none | none | none | none | at-risk
 
 Values: +++, ++, +, none (does not address this goal)  
 Overall assurance: strong, weak, at-risk
+
+Note: As a rule of thumb, it takes at least two "+++" activities and one "++" to give a "strong" overall rating. 
+Likewise, it takes at least two "++" and one "+" activities to rate a "weak" overall rating.
 
 
 ## Setup
