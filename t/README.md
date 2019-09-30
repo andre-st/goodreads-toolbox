@@ -1,5 +1,11 @@
 # QA Plan
 
+## Observations and limitations
+
+- some unit-tests need 3-5 minutes due to request throttling (and we need to test online to detect website changes): gsearch, greadreviews; 
+	running unit-tests before each commit would be too annoying and would motivate circumvention. So we only test before each push. I use a cache-age < 24h for some tests, though, so that debugging tests doesn't become a PITA.
+- users might download a release that breaks because GR changed things quite after the tested release; I run some programs daily but not all the tests
+
 
 ## Quality goals
 
@@ -40,28 +46,19 @@
 
 ## QA activities evaluation
 
-| Goal                  | Unit | Regr | ManT | Synt | Down | Cache| Wait | Help  | Issue| VC  
-|-----------------------|------|------|------|------|------|------|------|-------|------|------
-| Correctness           | ++   | ++   | ++   | ++   | ++   | none | none | +     | +    | none
-| Fault-tolerance       | none | none | +    | none | none | none | ++   | none  | none | none
-| Resumability          | none | none | none | none | none | ++   | +    | none  | none | none
-| Learnability          | ++   | none | none | none | none | none | none | ++    | none | none
-| Unattendability       | none | none | none | none | none | none | ++   | none  | none | none
-| Testability           | ++   | ++   | none | none | ++   | +    | none | none  | none | none
-| RepairTurnaroundTime  | ++   | ++   | none | none | ++   | ++   | none | none  | none | +   
-| Integrity             | none | none | none | none | none | none | none | none  | none | none
+| Goal                  | Unit | Regr | ManT | Synt | Down | Cache| Wait | Help  | Issue| VC   | Overall
+|-----------------------|------|------|------|------|------|------|------|-------|------|------|------|
+| Correctness           | ++   | ++   | ++   | ++   | ++   | none | none | +     | +    | none | strong
+| Fault-tolerance       | none | none | +    | none | none | none | ++   | none  | none | none | strong
+| Resumability          | none | none | none | none | none | ++   | +    | none  | none | none | strong
+| Learnability          | ++   | none | none | none | none | none | none | ++    | none | none | strong
+| Unattendability       | none | none | none | none | none | none | ++   | none  | none | none | strong
+| Testability           | ++   | ++   | none | none | ++   | +    | none | none  | none | none | strong
+| RepairTurnaroundTime  | ++   | ++   | none | none | ++   | ++   | none | none  | none | +    | strong
+| Integrity             | none | none | none | none | none | none | none | none  | none | none | at-risk
 
-
-Values: ++, +, -, none (does not address this goal)
-
-
-
-## Observations and limitations
-
-- some unit-tests need 3-5 minutes due to request throttling (and we need to test online to detect website changes): gsearch, greadreviews; 
-	running unit-tests before each commit would be too annoying and would motivate circumvention. So we only test before each push. I use a cache-age < 24h for some tests, though, so that debugging tests doesn't become a PITA.
-- users might download a release that breaks because GR changed things quite after the tested release; I run some programs daily but not all the tests
-
+Values: ++, +, -, none (does not address this goal)  
+Overall assurance: strong, weak, at-risk
 
 
 ## Setup
