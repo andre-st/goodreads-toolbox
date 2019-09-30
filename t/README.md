@@ -7,9 +7,9 @@
 |----------------------------------|-------------------------------------
 | Monetary costs &#8815; PC+Internet | Solo-developer non-profit side-project; Out of scope: distributed scraping with unique IP addresses (request throttling); we can easily wait for results
 | Correctness                   | Worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
-| Fault-tolerance                    | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates, ... (FT is not high availability)
-| Resumability                   | Scraping can take hours: allow intentional breaks, expect program or computer crashes, power issues -- we don't want to start from the beginning
 | Unattendability                   | Scraping can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
+| Fault-tolerance                    | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions and is sometimes over capacity or in maintenance mode, invalid dates, ...; supports unattendability goal (FT is not high availability)
+| Resumability                   | Scraping can take hours: allow intentional breaks, expect program or computer crashes, power issues -- we don't want to start from the beginning
 | Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts and we cannot know in advance when and where changes will occur (long-term failure). So regular and throughout (i.e., automated) testing is needed.
 | Repair Turnaround Time        | Scraping can take hours: shouldn't impact regular debugging too much
 | Ease of use on UNIX systems                                  | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
