@@ -43,7 +43,7 @@
 | Goal                  | Unit | Regr | ManT | Synt | Down | Cache| Wait | Help  | Issue| VC  
 |-----------------------|------|------|------|------|------|------|------|-------|------|------
 | Correctness           | ++   | ++   | ++   | ++   | ++   | none | none | +     | +    | none
-| Fault-tolerance       | none | none | none | none | none | none | ++   | none  | none | none
+| Fault-tolerance       | none | none | +    | none | none | none | ++   | none  | none | none
 | Resumability          | none | none | none | none | none | ++   | +    | none  | none | none
 | Learnability          | ++   | none | none | none | none | none | none | ++    | none | none
 | Unattendability       | none | none | none | none | none | none | ++   | none  | none | none
