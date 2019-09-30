@@ -39,7 +39,7 @@
 
 ## QA activities evaluation
 
-| Goal                  | Unit | Regr | ManT | Synt | Down | Cache| Wait | ManPg| Help | Issue| VC   | Overall
+| Goal                  | Unit | Regr | ManT | Synt | Down | Cach | Wait | ManP | Help | Issu | VC   | Overall
 |-----------------------|------|------|------|------|------|------|------|------|------|------|------|------|
 | Correctness           | +++  | +++  | +++  | ++   | +++  | none | none | +    | +    | ++   | none | strong
 | Fault-tolerance       | none | none | +    | none | none | none | +++  | none | none | none | none | weak
