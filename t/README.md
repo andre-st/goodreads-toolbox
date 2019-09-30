@@ -59,7 +59,7 @@ Values: ++, +, -, none (does not address this goal)
 ## Observations and limitations
 
 - some unit-tests need 3-5 minutes due to request throttling (and we need to test online to detect website changes): gsearch, greadreviews; 
-	running unit-tests before each commit would be too annoying and would motivate circumvention. So we only test before each push.
+	running unit-tests before each commit would be too annoying and would motivate circumvention. So we only test before each push. I use a cache-age < 24h for some tests, though, so that debugging tests doesn't become a PITA.
 - users might download a release that breaks because GR changed things quite after the tested release; I run some programs daily but not all the tests
 
 
