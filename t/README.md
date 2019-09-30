@@ -9,11 +9,11 @@
 | Correctness                   | Worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
 | Fault-tolerance                    | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions, sometimes over capacity, invalid dates
 | Resumability                    | Scraping can take hours: allow intentional breaks, expect program or computer crashes, power issues -- we don't want to start from the beginning
-| Ease of use on UNIX systems                                  | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
-| Learnability                      | Many program options and functions (libs), you cannot remember everything
 | Unattendability                   | Scraping can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
 | Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts and we cannot know in advance when and where changes will occur (long-term failure). So regular and throughout (i.e., automated) testing is needed.
 | Repair Turnaround Time        | Scraping can take hours: shouldn't impact regular debugging too much
+| Ease of use on UNIX systems                                  | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
+| Learnability                      | Many program options and functions (libs), you cannot remember everything
 | Integrity                          | Users on GR might try to abuse our programs or other programs (reading our outputs) by saving rogue strings in reviews, usernames etc
 
 
