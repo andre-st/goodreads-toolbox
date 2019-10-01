@@ -1,5 +1,6 @@
 # Quality Planning
 
+Table of contents:
 - [Quality goals](#quality-goals)
 - [Realization](#realization)
 - [Evaluation](#evaluation)
