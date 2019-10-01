@@ -1,4 +1,4 @@
-# QA Plan
+# Quality Planning
 
 ## Quality goals
 
@@ -17,7 +17,7 @@
 
 
 
-## QA activities
+## Realiziation
 
 | Activity              | Coverage/Frequency                                 | Operational notes
 |-----------------------|----------------------------------------------------|-------------------------------------------
@@ -37,7 +37,7 @@
 
 
 
-## QA activities evaluation
+## Evaluation
 
 | Goal                  | Unit | Regr | ManT | Synt | Down | Cach | Wait | ManP | Help | Issu | VC   | Overall
 |-----------------------|------|------|------|------|------|------|------|------|------|------|------|------|
