@@ -22,6 +22,7 @@ Table of contents:
 | Learnability                      | Many program options and functions (libs), you cannot remember everything
 | Integrity                          | Users on GR might try to abuse our programs or other programs (reading our outputs) by saving rogue strings in reviews, usernames etc
 
+[List of possible goals...](https://en.wikipedia.org/wiki/List_of_system_quality_attributes)
 
 
 ## Realization
