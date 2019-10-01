@@ -1,15 +1,15 @@
 # Quality Planning
 
 Table of contents:
-- [Quality goals](#quality-goals)
+- [Quality Goals](#quality-goals)
 - [Realization](#realization)
 - [Evaluation](#evaluation)
-- [Setup unit tests](#setup-unit-tests)
+- [Setup Unit Tests](#setup-unit-tests)
 
 
-## Quality goals
+## Quality Goals
 
-| Goal                                 | Why
+| Essential Goals                  | Why
 |----------------------------------|-------------------------------------
 | Monetary costs &#8815; PC+Internet | Solo-developer non-profit side-project; Out of scope: distributed scraping with unique IP addresses (request throttling); we can easily wait for results
 | Correctness                   | Worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
@@ -26,7 +26,7 @@ Table of contents:
 
 ## Realization
 
-| Activity              | Coverage/Frequency                                 | Operational notes
+| Activity              | Coverage/Frequency                                 | Operational Notes
 |-----------------------|----------------------------------------------------|-------------------------------------------
 | Unit testing          | libraries' public functions                        | use cache &lt; 24h
 | Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing the chance of distributing a buggy release; per-commit would be annoying because some tests need 3-5 minutes (w/o cache)
@@ -63,7 +63,7 @@ Note: As a rule of thumb, it takes at least two "+++" activities and one "++" to
 Likewise, it takes at least two "++" and one "+" activities to rate a "weak" overall rating.
 
 
-## Setup unit tests
+## Setup Unit Tests
 
 Rename `config.pl-example` to `config.pl` and edit the file. 
 Replace the email, pass, user-id values.
