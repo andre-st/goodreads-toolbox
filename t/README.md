@@ -17,7 +17,7 @@
 
 
 
-## Realiziation
+## Realization
 
 | Activity              | Coverage/Frequency                                 | Operational notes
 |-----------------------|----------------------------------------------------|-------------------------------------------
@@ -34,7 +34,6 @@
 | Field failure reports | ask for reports, contact opts in scripts / help    | 
 | Issue tracking        | all                                                | GitHub Issue Tracker; feedback (feature requests, usage problems); troubleshooting history
 | Version control       | all                                                | Git, GitHub, reverting code/source history, releasing, sync between computers
-
 
 
 ## Evaluation
