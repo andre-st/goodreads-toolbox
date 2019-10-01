@@ -1,5 +1,11 @@
 # Quality Planning
 
+- [Quality goals](#quality-goals)
+- [Realization](#realization)
+- [Evaluation](#evaluation)
+- [Setup unit tests](#setup-unit-tests)
+
+
 ## Quality goals
 
 | Goal                                 | Why
