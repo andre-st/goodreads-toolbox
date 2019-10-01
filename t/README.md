@@ -1,13 +1,13 @@
 # Quality Planning
 
 Table of contents:
-- [Quality Goals](#quality-goals)
+- [Quality goals](#quality-goals)
 - [Realization](#realization)
 - [Evaluation](#evaluation)
-- [Setup Unit Tests](#setup-unit-tests)
+- [Setup unit tests](#setup-unit-tests)
 
 
-## Quality Goals
+## Quality goals
 
 | Essential Goals                  | Why
 |----------------------------------|-------------------------------------
@@ -63,7 +63,7 @@ Note: As a rule of thumb, it takes at least two "+++" activities and one "++" to
 Likewise, it takes at least two "++" and one "+" activities to rate a "weak" overall rating.
 
 
-## Setup Unit Tests
+## Setup unit tests
 
 Rename `config.pl-example` to `config.pl` and edit the file. 
 Replace the email, pass, user-id values.
