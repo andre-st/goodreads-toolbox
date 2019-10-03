@@ -96,7 +96,7 @@ $ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs (see Make
 ```
 
 _Microsoft Windows_ is not officially supported.
-A user wrote me that he ran the toolbox on the 
+A Windows user wrote me that he ran the toolbox on the 
 [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).
 Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/) 
 and run a [Linux image](https://www.osboxes.org/virtualbox-images/).
