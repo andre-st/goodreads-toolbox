@@ -95,11 +95,12 @@ $ ...
 $ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs (see Makefile)
 ```
 
-_Microsoft Windows_ is not officially supported.
-A user wrote me that he ran the toolbox on the 
+_Microsoft Windows_ and _Apple's macOS_ is not officially supported.
+A Windows user, however, wrote me that he ran the toolbox on the 
 [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).
 Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/) 
-and run a [Linux image](https://www.osboxes.org/virtualbox-images/).
+and run a [Linux image](https://www.osboxes.org/virtualbox-images/) in Windows.
+MacOS users _might_ get the toolbox running along with Perl 5 and curl, but no guarantee.
 
 
 _The usual runtime_ of the programs will be long,
