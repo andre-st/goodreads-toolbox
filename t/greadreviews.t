@@ -2,6 +2,7 @@
 
 # Test cases realized:
 #   [x] latest and check attributes (detects changed markup)
+#   [x] text only
 #   [ ] rigor 2, 3, ...
 #   [ ] 
 #   [ ] invalid arguments
@@ -12,7 +13,7 @@ use diagnostics;  # More debugging info
 use warnings;
 use strict;
 use Test::More qw( no_plan );
-use List::MoreUtils qw( any firstval );
+use List::MoreUtils qw( any all firstval );
 use FindBin;
 use lib "$FindBin::Bin/../lib/";
 
@@ -27,15 +28,17 @@ use_ok( 'Goodscrapes' );
 gsetcache( 1 );  # days
 
 
-diag( 'takes ~3 minutes' );
+diag( 'takes ~1 minute' );
 
 print( 'Loading reviews...' );
 
 my %reviews;
+my %reviews_textonly;
+
 my %book;
-$book{id}          = '5759';  # "Fight Club"
-$book{num_ratings} = 190000;
-$book{num_reviews} =  12000;
+$book{id}          = '984394';  # "Hacking the Xbox"
+$book{num_ratings} = 228;       # This value can be obtained using greadbook() or ignored, it helps optimizing
+$book{num_reviews} =  24;       #     "      "
 
 greadreviews( rh_for_book => \%book,
               rigor       => 0,  # 0 = 300 reviews only (latest)
@@ -44,26 +47,39 @@ greadreviews( rh_for_book => \%book,
               text_only   => 0,
               on_progress => gmeter());
 
+greadreviews( rh_for_book => \%book,  # Uses cached values from query above, which is fine for this test
+              rigor       => 0,       # 0 = 300 reviews only (latest)
+              rh_into     => \%reviews_textonly,
+              dict_path   => '../dict/default.lst',
+              text_only   => 1,
+              on_progress => gmeter());
+
 print( "\n" );
 
 
 ok( scalar( keys( %reviews )) > 0, 'Load some reviews' )
 	or BAIL_OUT( "Cannot test review attributes when there are no reviews." );
 
+ok( scalar( keys( %reviews_textonly )) > 0, 'Load some text reviews' )
+	or BAIL_OUT( "Cannot test text reviews when there are no text reviews." );
+
+ok(( !all { $_->{text} } values( %reviews          )), 'Reviews include text and non-text ratings');
+ok((  all { $_->{text} } values( %reviews_textonly )), 'All reviews include text');
+
 
 map {
-	ok  ( $_->{rating} >= 0,           'Review has rating'            );
-	ok  ( $_->{rating_str},            'Review has rating code'       );
-	#ok ( $_->{text},                  'Review has text'              );  # Often no text but just stars
-	ok  ( $_->{date}->year > 2006,     'Review has date > 2006'       );  # GR was founded 2007
-	is  ( $_->{book_id},               $book{id},                                          'Review has Goodreads book ID' );
-	like( $_->{id},                    qr/^\d+$/,                                          'Review has ID'                );
-	like( $_->{url},                   qr/^https:\/\/www\.goodreads\.com\/review\/show\//, 'Review has URL'               );
-	like( $_->{rh_user}->{url},        qr/^https:\/\/www\.goodreads\.com\/user\/show\//,   'Review has author URL'        );
-	like( $_->{rh_user}->{id},         qr/^\d+$/,                                          'Review has author ID'         );
-	like( $_->{rh_user}->{img_url},    qr/^https:\/\/[a-z0-9]+\.gr-assets\.com\//,         'Review has author image URL'  );
-	ok  ( $_->{rh_user}->{name},       'Review has author name'                 );
-	ok  ( $_->{rh_user}->{name_lf},    'Review has author lastname, firstname'  );
+	ok  ( $_->{rating} >= 0,           "Review $_->{id} has rating"            );
+	ok  ( $_->{rating_str},            "Review $_->{id} has rating code"       );
+	#ok ( $_->{text},                  "Review $_->{id} has text"              );  # Often no text but just stars
+	ok  ( $_->{date}->year > 2005,     "Review $_->{id} has date > 2006 (got date: '$_->{date}')" );  # GR was founded 2007, but there are reviews from 2006, e.g., #454926175
+	is  ( $_->{book_id},               $book{id},                                          "Review $_->{id} has Goodreads book ID" );
+	like( $_->{id},                    qr/^\d+$/,                                          "Review $_->{id} has ID"                );
+	like( $_->{url},                   qr/^https:\/\/www\.goodreads\.com\/review\/show\//, "Review $_->{id} has URL"               );
+	like( $_->{rh_user}->{url},        qr/^https:\/\/www\.goodreads\.com\/user\/show\//,   "Review $_->{id} has author URL"        );
+	like( $_->{rh_user}->{id},         qr/^\d+$/,                                          "Review $_->{id} has author ID"         );
+	like( $_->{rh_user}->{img_url},    qr/^https:\/\/[a-z0-9]+\.gr-assets\.com\//,         "Review $_->{id} has author image URL"  );
+	ok  ( $_->{rh_user}->{name},       "Review $_->{id} has author name"                 );
+	ok  ( $_->{rh_user}->{name_lf},    "Review $_->{id} has author lastname, firstname"  );
 	
 	# Not available or scraped yet, otherwise one of the following
 	# tests will fail and remind me of implementing a correct test:
@@ -77,7 +93,5 @@ map {
 	is  ( $_->{rh_user}->{num_books},  undef, 'N/A: Number of books'            );  # Works or books read?
 	is  ( $_->{rh_user}->{works_url},  undef, 'N/A: Works URL if author'        );
 } values( %reviews );
-
-
 
 
