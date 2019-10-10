@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =over
 
-=item * Updated: 2019-08-31
+=item * Updated: 2019-10-10
 
 =item * Since: 2014-11-05
 
@@ -325,6 +325,23 @@ https://github.com/andre-st/
 	   or when experimenting with parameters
 
 =item * unit can be C<"minutes">, C<"hours">, C<"days">
+
+=back
+
+=head2 C<void> gseterr(I<{ ... }>)
+
+=over
+
+=item * change one or multiple error handling parameters
+
+=item * C<retry_on_error =E<gt> bool>
+
+=item * C<retry_on_crit =E<gt> bool>
+
+=item * C<maxretries =E<gt> int> number of retries if ther was an error, 
+        critical issues are retried indefinitely (if retry_on_crit is true)
+
+=item * C<retrydelay_secs =E<gt> int>
 
 =back
 
@@ -644,7 +661,7 @@ https://github.com/andre-st/
 =head2 C<string> _user_url( I<$user_id, $is_author = 0> )
 
 =head2 C<string> _revs_url( I<$book_id, $str_sort_newest_oldest = undef, 
-		$search_text = undef, $rating = undef, $page_number = 1> )
+		$search_text = undef, $rating = undef, $is_text_only = undef, $page_number = 1> )
 
 =over
 
@@ -652,9 +669,11 @@ https://github.com/andre-st/
         some reason (also observable on the Goodreads website), 
         so only use if really needed (&sort=default)
 
-=item * "&search_text=example", max 30 hits, invalidates sort order argument
+=item * "&search_text=example" invalidates sort order argument
 
 =item * "&rating=5"
+
+=item * "&text_only=true" just returns 1 page, you might get more text-reviews without this flag
 
 =item * the maximum of retrievable pages is 10 (300 reviews), see
         https://www.goodreads.com/topic/show/18937232-why-can-t-we-see-past-page-10-of-book-s-reviews?comment=172163745#comment_172163745
