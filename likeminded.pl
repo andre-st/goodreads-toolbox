@@ -20,6 +20,7 @@ B<likeminded.pl>
 [B<-c> F<numdays>] 
 [B<-o> F<filename>] 
 [B<-s> F<shelfname> ...] 
+[B<-i>]
 F<goodloginmail> [F<goodloginpass>]
 
 
@@ -96,6 +97,14 @@ Use B<--shelf>=shelf1,shelf2,shelf3 to intersect shelves (Intersection
 requires password).
 
 
+=item B<-i, --ignore-errors>
+
+Don't retry on errors, just keep going. 
+Sometimes useful if a single Goodreads resource hangs over long periods 
+and you're okay with some values missing in your result.
+This option is not recommended when you run the program unattended.
+
+
 =item B<-?, --help>
 
 show full man page
@@ -141,7 +150,7 @@ More info in ./help/likeminded.md
 
 =head1 VERSION
 
-2019-08-28 (Since 2018-06-22)
+2019-10-10 (Since 2018-06-22)
 
 =cut
 
@@ -179,6 +188,7 @@ our $MAXAUBOOKS = 600;
 our $RIGOR      = 1;
 our $DICTPATH   = './dict/default.lst';
 our $CACHEDAYS  = 31;
+our $ERRIGNORE  = 0;
 our @SHELVES;
 our $OUTPATH;
 our $USERID;
@@ -188,11 +198,12 @@ GetOptions( 'common|m=i'         => \$MINCOMMON,
             'rigor|x=i'          => \$RIGOR,
             'dict|d=s'           => \$DICTPATH,
             'userid|u=s'         => \$USERID,
+            'ignore-errors|i'    => \$ERRIGNORE,
             'help|?'             => sub{ pod2usage( -verbose => 2 ) },
             'outfile|o=s'        => \$OUTPATH,
             'cache|c=i'          => \$CACHEDAYS,
             'shelf|s=s'          => \@SHELVES ) 
-             or pod2usage( 1 );
+	or pod2usage( 1 );
 
 pod2usage( 1 ) if !$ARGV[0];
 
@@ -203,7 +214,9 @@ glogin( usermail => $ARGV[0],  # Login not really required at the moment
 @SHELVES = qw( %23ALL%23 )                                                   if !@SHELVES;
 $OUTPATH = sprintf( "likeminded-%s-%s.html", $USERID, join( '-', @SHELVES )) if !$OUTPATH;
 
-gsetcache( $CACHEDAYS );
+gsetopt( cache_days   => $CACHEDAYS,
+         ignore_error => $ERRIGNORE,
+         ignore_crit  => $ERRIGNORE );
 
 
 

@@ -16,6 +16,7 @@ B<friennet.pl>
 [B<-d> F<number>] 
 [B<-c> F<numdays>] 
 [B<-o> F<dirpath>] 
+[B<-i>]
 F<goodloginmail> [F<goodloginpass>]
 
 
@@ -69,6 +70,14 @@ is a very time consuming process.
 write CSV-files to this directory, default is the current working directory
 
 
+=item B<-i, --ignore-errors>
+
+Don't retry on errors, just keep going. 
+Sometimes useful if a single Goodreads resource hangs over long periods 
+and you're okay with some values missing in your result.
+This option is not recommended when you run the program unattended.
+
+
 =item B<-?, --help>
 
 show full man page
@@ -112,7 +121,7 @@ More info in ./help/friendnet.md
 
 =head1 VERSION
 
-2019-08-31 (Since 2019-06-14)
+2019-10-10 (Since 2019-06-14)
 
 =cut
 
@@ -148,17 +157,19 @@ STDOUT->autoflush( 1 );
 
 our $TSTART    = time();
 our $CACHEDAYS = 31;
+our $ERRIGNORE = 0;
 our $DEPTH     = 2;
 our $MAXNHOOD  = 1000;  # Ignore users with more than N friends
 our $OUTDIR    = './';
 our $USERID;
 
-GetOptions( 'userid|u=s' => \$USERID,
-            'help|?'     => sub{ pod2usage( -verbose => 2 ) },
-            'depth|d=i'  => \$DEPTH,
-            'outdir|o=s' => \$OUTDIR,
-            'cache|c=i'  => \$CACHEDAYS )
-             or pod2usage( 1 );
+GetOptions( 'userid|u=s'      => \$USERID,
+            'help|?'          => sub{ pod2usage( -verbose => 2 ) },
+            'ignore-errors|i' => \$ERRIGNORE,
+            'depth|d=i'       => \$DEPTH,
+            'outdir|o=s'      => \$OUTDIR,
+            'cache|c=i'       => \$CACHEDAYS )
+	or pod2usage( 1 );
 
 pod2usage( 1 ) if !$ARGV[0];
 
@@ -169,7 +180,9 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend list are privat
 our $OUTPATH_EDG = File::Spec->catfile( $OUTDIR, "friendnet-$USERID-edges.csv" );
 our $OUTPATH_NOD = File::Spec->catfile( $OUTDIR, "friendnet-$USERID-nodes.csv" );
 
-gsetcache( $CACHEDAYS );
+gsetopt( cache_days   => $CACHEDAYS,
+         ignore_error => $ERRIGNORE,
+         ignore_crit  => $ERRIGNORE );
 
 
 

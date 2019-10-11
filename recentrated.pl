@@ -119,7 +119,7 @@ More info in ./help/recentrated.md
 
 =head1 VERSION
 
-2019-08-28 (Since 2018-01-09)
+2019-10-10 (Since 2018-01-09)
 
 =cut
 
@@ -190,9 +190,6 @@ our $maxbooks = $MAILFROM && $MAILTO && $MAILFROM ne $MAILTO ? 50 : 999999;
 
 # GR-URLs in mail padded to average length, with "https://" stripped
 sub prettyurl{ return sprintf '%-36s', substr( shift, 8 ); }
-
-# effect in dev/debugging only
-#gsetcache( 4, 'hours' );
 
 
 

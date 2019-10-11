@@ -15,6 +15,7 @@ B<friendgroup.pl>
 [B<-c> F<numdays>] 
 [B<-o> F<filename>] 
 [B<-u> F<number>]
+[B<-i>]
 F<goodloginmail> [F<goodloginpass>]
 
 
@@ -42,6 +43,14 @@ and password arguments. You find the ID by looking at the shelf URLs.
 
 name of the HTML file where we write results to, default is
 "./friendgroup-F<goodusernumber>.html"
+
+
+=item B<-i, --ignore-errors>
+
+Don't retry on errors, just keep going. 
+Sometimes useful if a single Goodreads resource hangs over long periods 
+and you're okay with some values missing in your result.
+This option is not recommended when you run the program unattended.
 
 
 =item B<-?, --help>
@@ -83,7 +92,7 @@ More info in ./help/friendgroup.md
 
 =head1 VERSION
 
-2019-08-28 (Since 2018-09-26)
+2019-10-10 (Since 2018-09-26)
 
 =cut
 
@@ -117,14 +126,16 @@ STDOUT->autoflush( 1 );
 
 our $TSTART    = time();
 our $CACHEDAYS = 31;
+our $ERRIGNORE = 0;
 our $OUTPATH;
 our $USERID;
 
-GetOptions( 'help|?'      => sub{ pod2usage( -verbose => 2 ) },
-            'outfile|o=s' => \$OUTPATH,
-            'userid|u=s'  => \$USERID,
-            'cache|c=i'   => \$CACHEDAYS )
-             or pod2usage( 1 );
+GetOptions( 'help|?'          => sub{ pod2usage( -verbose => 2 ) },
+            'ignore-errors|i' => \$ERRIGNORE,
+            'outfile|o=s'     => \$OUTPATH,
+            'userid|u=s'      => \$USERID,
+            'cache|c=i'       => \$CACHEDAYS )
+	or pod2usage( 1 );
 
 pod2usage( 1 ) if !$ARGV[0];
 
@@ -133,8 +144,10 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend/groups list are
         r_userid => \$USERID );
 
 $OUTPATH = "friendgroup-${USERID}.html" if !$OUTPATH;
-   
-gsetcache( $CACHEDAYS );
+
+gsetopt( cache_days   => $CACHEDAYS,
+         ignore_error => $ERRIGNORE, 
+         ignore_crit  => $ERRIGNORE );
 
 
 

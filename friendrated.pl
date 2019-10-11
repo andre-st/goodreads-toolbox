@@ -24,6 +24,7 @@ B<friendrated.pl>
 [B<-x> F<shelfname> ...] 
 [B<-c> F<numdays>] 
 [B<-o> F<filename>] 
+[B<-i>]
 F<goodloginmail> [F<goodloginpass>]
 
 
@@ -31,7 +32,10 @@ F<goodloginmail> [F<goodloginpass>]
 
 Mandatory arguments to long options are mandatory for short options too.
 
+Keep in mind that followed _authors_ are excluded.
+
 =over 4
+
 
 =item B<-f, --favorers>=F<number>
 
@@ -115,6 +119,14 @@ directory path where the final reports will be saved,
 default is the working directory
 
 
+=item B<-i, --ignore-errors>
+
+Don't retry on errors, just keep going. 
+Sometimes useful if a single Goodreads resource hangs over long periods 
+and you're okay with some values missing in your result.
+This option is not recommended when you run the program unattended.
+
+
 =item B<-?, --help>
 
 show full man page
@@ -176,7 +188,7 @@ More info in ./help/friendrated.md
 
 =head1 VERSION
 
-2019-08-31 (Since 2018-05-10)
+2019-10-10 (Since 2018-05-10)
 
 =cut
 
@@ -217,26 +229,28 @@ our $FRIENDSHELF = 'read';
 our $OUTDIR      = './';
 our $ISTOREAD    = 0;
 our $CACHEDAYS   = 31;
+our $ERRIGNORE   = 0;
 our @EXCLMYSHELVES;
 our $MAXRATS;
 our $MINYEAR;     # No default, some books lack year-pub, others < 0 B.C.
 our $MAXYEAR;     # "  "
 our $USERID;
 
-GetOptions( 'favorers|f=i'   => \$MINFAVORERS,
-            'minrated|r=i'   => \$MINRATED,
-            'maxrated|z=i'   => \$MAXRATED,
-            'maxratings|m=i' => \$MAXRATS,
-            'minyear|y=i'    => \$MINYEAR,
-            'maxyear|e=i'    => \$MAXYEAR,
-            'excludemy|x=s'  => \@EXCLMYSHELVES,
-            'userid|u=s'     => \$USERID,
-            'hated|h'        => sub{ $MAXRATED    = 2;         $MINRATED = 1; },
-            'toread|t'       => sub{ $FRIENDSHELF = 'to-read'; $MINRATED = 0; },
-            'help|?'         => sub{ pod2usage( -verbose => 2 );              },
-            'outdir|o=s'     => \$OUTDIR,
-            'cache|c=i'      => \$CACHEDAYS )
-             or pod2usage( 1 );
+GetOptions( 'favorers|f=i'    => \$MINFAVORERS,
+            'minrated|r=i'    => \$MINRATED,
+            'maxrated|z=i'    => \$MAXRATED,
+            'maxratings|m=i'  => \$MAXRATS,
+            'minyear|y=i'     => \$MINYEAR,
+            'maxyear|e=i'     => \$MAXYEAR,
+            'excludemy|x=s'   => \@EXCLMYSHELVES,
+            'userid|u=s'      => \$USERID,
+            'hated|h'         => sub{ $MAXRATED    = 2;         $MINRATED = 1; },
+            'toread|t'        => sub{ $FRIENDSHELF = 'to-read'; $MINRATED = 0; },
+            'help|?'          => sub{ pod2usage( -verbose => 2 );              },
+            'ignore-errors|i' => \$ERRIGNORE,
+            'outdir|o=s'      => \$OUTDIR,
+            'cache|c=i'       => \$CACHEDAYS )
+	or pod2usage( 1 );
 
 die( "[CRIT ] Invalid argument: --minrated=$MINRATED higher than --maxrated=$MAXRATED" )
 	if $MINRATED > $MAXRATED;
@@ -255,7 +269,9 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend list/some shelv
 our $OUTPATH_BK = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF-$MINRATED${MAXRATED}by$MINFAVORERS.html"         );
 our $OUTPATH_AU = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF-$MINRATED${MAXRATED}by$MINFAVORERS-authors.html" );
 
-gsetcache( $CACHEDAYS );
+gsetopt( cache_days   => $CACHEDAYS,
+         ignore_error => $ERRIGNORE,
+         ignore_crit  => $ERRIGNORE );
 
 
 

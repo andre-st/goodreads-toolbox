@@ -16,6 +16,7 @@ B<similarauth.pl>
 [B<-c> F<numdays>] 
 [B<-o> F<filename>]
 [B<-s> F<shelfname> ...] 
+[B<-i>]
 F<goodloginmail> [F<goodloginpass>]
 
 
@@ -55,6 +56,14 @@ Use B<--shelf>=shelf1,shelf2,shelf3 to intersect shelves (Intersection
 requires password).
 
 
+=item B<-i, --ignore-errors>
+
+Don't retry on errors, just keep going. 
+Sometimes useful if a single Goodreads resource hangs over long periods 
+and you're okay with some values missing in your result.
+This option is not recommended when you run the program unattended.
+
+
 =item B<-?, --help>
 
 show full man page
@@ -78,7 +87,6 @@ $ ./similarauth.pl --shelf=read --outfile=./sub/myfile.html  login@gmail.com
 $ ./similarauth.pl -c 31 -s science -s music -o myfile.html  login@gmail.com
 
 
-
 =head1 REPORTING BUGS
 
 Report bugs to <datakadabra@gmail.com> or use Github's issue tracker
@@ -99,7 +107,7 @@ More info in ./help/similarauth.md
 
 =head1 VERSION
 
-2019-08-28 (Since 2018-07-05)
+2019-10-10 (Since 2018-07-05)
 
 =cut
 
@@ -131,16 +139,18 @@ STDOUT->autoflush( 1 );
 
 our $TSTART    = time();
 our $CACHEDAYS = 31;
+our $ERRIGNORE = 0;
 our @SHELVES;
 our $OUTPATH;
 our $USERID;
 
-GetOptions( 'help|?'      => sub{ pod2usage( -verbose => 2 ) },
-            'shelf|s=s'   => \@SHELVES,
-            'userid|u=s'  => \$USERID,
-            'cache|c=i'   => \$CACHEDAYS,
-            'outfile|o=s' => \$OUTPATH ) 
-             or pod2usage( 1 );
+GetOptions( 'help|?'          => sub{ pod2usage( -verbose => 2 ) },
+            'ignore-errors|i' => \$ERRIGNORE,
+            'shelf|s=s'       => \@SHELVES,
+            'userid|u=s'      => \$USERID,
+            'cache|c=i'       => \$CACHEDAYS,
+            'outfile|o=s'     => \$OUTPATH ) 
+	or pod2usage( 1 );
 
 pod2usage( 1 ) if !$ARGV[0];
 
@@ -151,7 +161,9 @@ glogin( usermail => $ARGV[0],  # Login not really required at the moment
 @SHELVES = qw( %23ALL%23 ) if !@SHELVES;
 $OUTPATH = sprintf( "similarauth-%s-%s.html", $USERID, join( '-', @SHELVES ) ) if !$OUTPATH;
 
-gsetcache( $CACHEDAYS );
+gsetopt( cache_days   => $CACHEDAYS,
+         ignore_error => $ERRIGNORE,
+         ignore_crit  => $ERRIGNORE );
 
 
 

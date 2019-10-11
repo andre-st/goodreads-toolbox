@@ -15,7 +15,8 @@ B<savreviews.pl>
 [B<-x> F<numlevel>] 
 [B<-d> F<filename>] 
 [B<-c> F<numdays>] 
-[B<-o> F<dirname>] 
+[B<-o> F<dirname>]
+[B<-i>]
 F<goodbookid>
 
 You find the F<goodbookid> by looking at the book URL.
@@ -51,6 +52,14 @@ Loading data from Goodreads is a time consuming process.
 
 directory path where the final reports will be saved,
 default is the working directory
+
+
+=item B<-i, --ignore-errors>
+
+Don't retry on errors, just keep going. 
+Sometimes useful if a single Goodreads resource hangs over long periods 
+and you're okay with some values missing in your result.
+This option is not recommended when you run the program unattended.
 
 
 =item B<-?, --help>
@@ -92,7 +101,7 @@ More info in ./help/savreviews.md
 
 =head1 VERSION
 
-2019-08-28 (Since 2018-08-13)
+2019-10-11 (Since 2018-08-13)
 
 =cut
 
@@ -128,26 +137,29 @@ STDOUT->autoflush( 1 );
 
 our $TSTART     = time();
 our $CACHEDAYS  = 7;
+our $ERRIGNORE  = 0;
 our $RIGOR      = 10;
 our $DICTPATH   = './dict/default.lst';
 our $OUTDIR     = '.';
 our $OUTNAMEFMT = 'savreviews-book%s-stars%d.txt';
 our $OUTDATEFMT = "%Y/%m/%d";  # man strptime
-our $BARWIDTH   = 40;          # Histogram
-our $BARCHAR    = '#';         # Histogram
 our $BOOKID;
 our $REVIEWSEPARATOR  = "\n\n".( '-' x 79 )."\n";  # long line
 our $MAXPOSSIBLESTARS = 5;
 
-GetOptions( 'rigor|x=i'  => \$RIGOR,
-            'dict|d=s'   => \$DICTPATH,
-            'help|?'     => sub{ pod2usage( -verbose => 2 ) },
-            'outdir|o=s' => \$OUTDIR,
-            'cache|c=i'  => \$CACHEDAYS )
-             or pod2usage( 1 );
+GetOptions( 'rigor|x=i'       => \$RIGOR,
+            'dict|d=s'        => \$DICTPATH,
+            'ignore-errors|i' => \$ERRIGNORE,
+            'help|?'          => sub{ pod2usage( -verbose => 2 ) },
+            'outdir|o=s'      => \$OUTDIR,
+            'cache|c=i'       => \$CACHEDAYS )
+	or pod2usage( 1 );
 
 $BOOKID = $ARGV[0] or pod2usage( 1 );
-gsetcache( $CACHEDAYS );
+
+gsetopt( cache_days   => $CACHEDAYS,
+         ignore_error => $ERRIGNORE,
+         ignore_crit  => $ERRIGNORE );
 
 
 

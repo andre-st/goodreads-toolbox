@@ -16,6 +16,7 @@ B<search.pl>
 [B<-r> F<number>] 
 [B<-c> F<numdays>] 
 [B<-o> F<filename>] 
+[B<-i>]
 F<keyword>...
 
 Use quotes if you want exact matches (see examples section)
@@ -54,6 +55,14 @@ Loading data from Goodreads is a time consuming process.
 
 name of the HTML file where we write results to, default is
 "./search-F<keyword>.html"
+
+
+=item B<-i, --ignore-errors>
+
+Don't retry on errors, just keep going. 
+Sometimes useful if a single Goodreads resource hangs over long periods 
+and you're okay with some values missing in your result.
+This option is not recommended when you run the program unattended.
 
 
 =item B<-?, --help>
@@ -99,7 +108,7 @@ More info in ./help/search.md
 
 =head1 VERSION
 
-2019-08-28 (Since 2018-07-29)
+2019-10-10 (Since 2018-07-29)
 
 =cut
 
@@ -134,6 +143,7 @@ STDOUT->autoflush( 1 );
  
 our $TSTART    = time();
 our $CACHEDAYS = 7;
+our $ERRIGNORE = 0;
 our @ORDER;
 our $NUMRATINGS;
 our $PHRASE;
@@ -141,12 +151,13 @@ our $OUTPATH;
 our $ISEXACT;
 my  $ordercsv = '';
 
-GetOptions( 'ratings|r=i' => \$NUMRATINGS,
-            'order|z=s'   => \$ordercsv,
-            'help|?'      => sub{ pod2usage( -verbose => 2 ) },
-            'cache|c=i'   => \$CACHEDAYS,
-            'outfile|o=s' => \$OUTPATH ) 
-             or pod2usage( 1 );
+GetOptions( 'ratings|r=i'     => \$NUMRATINGS,
+            'order|z=s'       => \$ordercsv,
+            'ignore-errors|i' => \$ERRIGNORE,
+            'help|?'          => sub{ pod2usage( -verbose => 2 ) },
+            'cache|c=i'       => \$CACHEDAYS,
+            'outfile|o=s'     => \$OUTPATH ) 
+	or pod2usage( 1 );
 
 $PHRASE     = join( ' ', @ARGV ) or pod2usage( 1 );
 $OUTPATH    = "search-${PHRASE}.html" if !$OUTPATH;
@@ -155,7 +166,9 @@ $NUMRATINGS = $ISEXACT ? 0 : 5 if !defined $NUMRATINGS;
 $ordercsv   =~ s/\s+//g;  # Mistakenly added spaces
 @ORDER      = uniq(( split( ',', lc $ordercsv ), qw( stars num_ratings year )));  # Adds missing
 
-gsetcache( $CACHEDAYS );
+gsetopt( cache_days   => $CACHEDAYS,
+         ignore_error => $ERRIGNORE,
+         ignore_crit  => $ERRIGNORE );
 
 
 
