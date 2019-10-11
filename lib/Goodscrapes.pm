@@ -13,14 +13,14 @@ use utf8;
 
 =head1 NAME
 
-Goodscrapes - Goodreads.com HTML API
+Goodscrapes - Goodreads.com HTML-API
 
 
 =head1 VERSION
 
 =over
 
-=item * Updated: 2019-08-31
+=item * Updated: 2019-10-11
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML API
 
 =cut
 
-our $VERSION = '1.55';  # X.XX version format required by Perl
+our $VERSION = '1.57';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -671,6 +671,7 @@ sub greaduser
 
 
 
+
 =head2 C<void> greadusergp(I<{ ... }>)
 
 =over
@@ -903,7 +904,7 @@ sub greadreviews
 		for my $s (@sortargs)
 		{
 			my $pag = 1;
-			while( _extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, $s, $r, undef, $pag++ )))) {};
+			while( _extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, $s, $r, undef, undef, $pag++ )))) {};
 			
 			# "to-read", "added" have to be loaded before the rated/reviews
 			# (undef in both argument-lists first) - otherwise we finish
@@ -940,7 +941,8 @@ sub greadreviews
 		
 		my $numbefore = scalar keys %revs;
 		
-		_extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, undef, undef, $word )));
+		my $pag = 1;
+		while( _extract_revs( \%revs, $pfn, $ffn, $since, _html( _revs_url( $bid, undef, undef, $word, undef, $pag++ )))) {};
 		
 		$t0 = time if scalar keys %revs > $numbefore;  # Resets stall-timer
 	}
@@ -1531,7 +1533,7 @@ sub _user_url
 
 
 =head2 C<string> _revs_url( I<$book_id, $str_sort_newest_oldest = undef, 
-		$search_text = undef, $rating = undef, $page_number = 1> )
+		$search_text = undef, $rating = undef, $is_text_only = undef, $page_number = 1> )
 
 =over
 
@@ -1539,9 +1541,11 @@ sub _user_url
         some reason (also observable on the Goodreads website), 
         so only use if really needed (&sort=default)
 
-=item * "&search_text=example", max 30 hits, invalidates sort order argument
+=item * "&search_text=example" invalidates sort order argument
 
 =item * "&rating=5"
+
+=item * "&text_only=true" just returns 1 page, you might get more text-reviews without this flag
 
 =item * the maximum of retrievable pages is 10 (300 reviews), see
         https://www.goodreads.com/topic/show/18937232-why-can-t-we-see-past-page-10-of-book-s-reviews?comment=172163745#comment_172163745
@@ -1557,15 +1561,18 @@ sub _revs_url
 	my $bid  = shift;
 	my $sort = shift;
 	my $rat  = shift;
+	my $q    = shift;
+	   $q    =~ s/\s+/+/g  if $q;
 	my $txt  = shift;
-	   $txt  =~ s/\s+/+/g  if $txt;
 	my $pag  = shift // 1;
+	my $url  =  "https://www.goodreads.com/book/reviews/${bid}?"
+			.( $sort && !$q ? "sort=${sort}&"     : '' )
+			.( $q           ? "search_text=${q}&" : '' )
+			.( $rat         ? "rating=${rat}&"    : '' )
+			.( $txt         ? "text_only=true&"   : '' )
+			. "page=${pag}";
 	
-	return "https://www.goodreads.com/book/reviews/${bid}?"
-		.( $sort && !$txt ? "sort=${sort}&"       : '' )
-		.( $txt           ? "search_text=${txt}&" : '' )
-		.( $rat           ? "rating=${rat}&"      : '' )
-		.( $txt           ? "" : "page=${pag}"         );
+	return $url;
 }
 
 
