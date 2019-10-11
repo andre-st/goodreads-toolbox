@@ -129,7 +129,7 @@ our @EXPORT = qw(
 	gisbaduser
 	gmeter
 	glogin
-	gsetcache
+	gsetopt
 	
 	gsearch
 	greadbook
@@ -191,13 +191,19 @@ our $_ENO_BADUSER     = $_ENO_FATAL + 3;
 our $_ENO_BADARG      = $_ENO_FATAL + 4;
 our $_ENO_BADLOGIN    = $_ENO_FATAL + 5;
 
-our $_MAXRETRIES      = 5;     # 
-our $_RETRYDELAY_SECS = 60*3;  # Total retry time: 15 minutes
+our %_OPTIONS =  # See gseterr() for documentation
+(
+	ignore_error    => 0,
+	ignore_crit     => 0,
+	maxretries      => 5,
+	retrydelay_secs => 60*3  # 15 minutes in total
+);
 
 
 # Misc module message strings:
-our $_MSG_RETRYING_FOREVER = "[NOTE ] Retrying in 3 minutes... Press CTRL-C to exit (pid=$$)\n";
-our $_MSG_RETRYING_NTIMES  = "[NOTE ] Retrying in 3 minutes (%d times before skipping this one)... Press CTRL-C to exit (pid=$$)\n";  # retriesleft
+our $_MSG_ERR_EPILOGUE     = "Press CTRL-C to exit (pid=$$), consider `--ignore-errors` program option";
+our $_MSG_RETRYING_FOREVER = "[NOTE ] Retrying in 3 minutes... $_MSG_ERR_EPILOGUE\n";
+our $_MSG_RETRYING_NTIMES  = "[NOTE ] Retrying in 3 minutes (%d times before skipping this one)... $_MSG_ERR_EPILOGUE\n";  # retriesleft
 
 our %_ERRMSG = 
 (
@@ -242,7 +248,7 @@ our @_BADPROFILES   =     # TODO external config file
 );
 
 our $_cookie    = undef;
-our $_cache_age = $EXPIRES_NOW;  # see gsetcache()
+our $_cache_age = $EXPIRES_NOW;  # see gsetopt()
 our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 
@@ -586,28 +592,41 @@ sub glogin
 
 
 
-=head2 C<void> gsetcache( I<$number, $unit = 'days'> )
+=head2 C<void> gsetopt(I<{ ... }>)
 
 =over
 
-=item * scraping Goodreads.com is a very slow process
+=item * change one or multiple library-scope parameters
 
-=item * scraped documents can be cached if you don't need them "fresh"
+=item * C<ignore_error =E<gt> bool>
+        disables retries with the process just keep going with the next step
+
+=item * C<ignore_crit =E<gt> bool>
+        disables retries with the process just keep going with the next step
+
+=item * C<maxretries =E<gt> int> 
+        sets number of retries when there is an error, 
+        critical issues are retried indefinitely (if ignore_crit is false)
+
+=item * C<retrydelay_secs =E<gt> int>
+
+=item * C<cache_days =E<gt> int>
+        sets the number of days that a resource can be loaded from the local storage.
+        Scraping Goodreads.com is a very slow process;
+        scraped documents can be cached if you don't need them "fresh"
         during development time
         or long running sessions (cheap recovery on crash, power blackout or pauses),
-	   or when experimenting with parameters
-
-=item * unit can be C<"minutes">, C<"hours">, C<"days">
+        or when experimenting with parameters
 
 =back
 
 =cut
 
-sub gsetcache
+sub gsetopt
 {
-	my $num     = shift // 0;
-	my $unit    = shift // 'days';
-	$_cache_age = "${num} ${unit}";
+	my (%args)  = @_;
+	%_OPTIONS   = ( %_OPTIONS, %args );
+	$_cache_age = $args{cache_days}.' days' if $args{cache_days};
 }
 
 
@@ -1776,6 +1795,8 @@ sub _extract_author
 
 =item * I<$rh_books>: C<(id =E<gt> L<%book|"\%book">,...)>
 
+=item * returns 0 if no books, 1 if books, 2 if error
+
 =back
 
 =cut
@@ -1785,7 +1806,7 @@ sub _extract_books
 	my $rh  = shift;
 	my $bfn = shift;
 	my $pfn = shift;
-	my $htm = shift or return 0;
+	my $htm = shift or return 2;
 	my $ret = 0;
 	
 	# TODO verify if shelf is the given one or redirected by GR to #ALL# bc misspelled	
@@ -1863,6 +1884,8 @@ sub _extract_books
 
 =item * I<$r_limit>: is counted to zero
 
+=item * returns 0 if no books, 1 if books, 2 if error
+
 =back
 
 =cut
@@ -1875,7 +1898,7 @@ sub _extract_author_books
 	my $r_limit = shift;
 	my $bfn     = shift;
 	my $pfn     = shift;
-	my $htm     = shift or return 0;
+	my $htm     = shift or return 2;
 	my $auimg   = $htm =~ /(https:\/\/images.gr-assets.com\/authors\/.*?\.jpg)/gs  ? $1 : $_NOUSERIMGURL;
 	my $aid     = $htm =~ /author\/show\/([0-9]+)/                                 ? $1 : undef;
 	my $aunm    = $htm =~ /<h1>Books by ([^<]+)/                                   ? _dec_entities( $1 ) : '';
@@ -1933,6 +1956,8 @@ sub _extract_author_books
 
 =item * I<$rh_users>: C<(user_id =E<gt> L<%user|"\%user">,...)>
 
+=item * returns 0 if no followees, 1 if followees, 2 if error
+
 =back
 
 =cut
@@ -1943,7 +1968,7 @@ sub _extract_followees
 	my $pfn     = shift;
 	my $iau     = shift;
 	my $dishold = shift;
-	my $htm     = shift or return 0;
+	my $htm     = shift or return 2;
 	my $ret     = 0;
 	my $pgcount = $htm =~ />(\d+)<\/a> <a class="next_page"/ ? $1 : 1;
 	my $total   = $pgcount * 30;  # Items per page
@@ -1987,6 +2012,8 @@ sub _extract_followees
 
 =item * I<$rh_users>: C<(user_id =E<gt> L<%user|"\%user">,...)> 
 
+=item * returns 0 if no friends, 1 if friends, 2 if error
+
 =back
 
 =cut
@@ -1997,7 +2024,7 @@ sub _extract_friends
 	my $pfn     = shift;
 	my $iau     = shift;
 	my $dishold = shift;
-	my $htm     = shift or return 0;
+	my $htm     = shift or return 2;
 	my $ret     = 0;
 	my $total   = $htm =~ /Showing \d+-\d+ of (\d+)/ ? $1 : -1;
 	
@@ -2102,6 +2129,8 @@ sub _trim
 
 =item * I<$rh_revs>: C<(review_id =E<gt> L<%review|"\%review">,...)>
 
+=item * returns 0 if no reviews, 1 if reviews, 2 if error
+
 =back
 
 =cut
@@ -2112,12 +2141,13 @@ sub _extract_revs
 	my $pfn          = shift;
 	my $ffn          = shift;
 	my $since_tpiece = shift;
-	my $htm          = shift or return 0;  # < is \u003c, > is \u003e,  " is \" literally
+	my $htm          = shift or return 2;
 	my $bid          = $htm =~ /\/book\/reviews\/([0-9]+)/  ? $1 : undef;
 	my $ret          = 0;
 	
+	# < is \u003c, > is \u003e,  " is \" literally
 	while( $htm =~ /div id=\\"review_\d+(.*?)div class=\\"clear/gs )
-	{		
+	{
 		my $row = $1;
 		
 		# Avoid username "0" eval to false somewhere -> "0" instead of 0
@@ -2177,6 +2207,12 @@ sub _extract_revs
 =head2 C<bool> _extract_similar_authors( I<$rh_into, $author_id_to_skip, 
 			$on_progress_fn, $similar_page_html_str> )
 
+=over
+
+=item * returns 0 if no authors, 1 if authors, 2 if error
+
+=back
+
 =cut
 
 sub _extract_similar_authors
@@ -2184,7 +2220,7 @@ sub _extract_similar_authors
 	my $rh          = shift;
 	my $uid_to_skip = shift;
 	my $pfn         = shift;
-	my $htm         = shift or return 0;
+	my $htm         = shift or return 2;
 	my $ret         = 0;
 	
 	# All nice JSON since 2019-03-25, but as long as it's simple
@@ -2244,6 +2280,8 @@ sub _extract_similar_authors
 
 =item * I<ra_books>: C<(L<%book|"\%book">,...)> 
 
+=item * returns 0 if no books, 1 if books, 2 if error
+
 =back
 
 =cut
@@ -2252,7 +2290,7 @@ sub _extract_search_books
 {
 	my $ra  = shift;
 	my $pfn = shift;
-	my $htm = shift or return 0;
+	my $htm = shift or return 2;
 	my $ret = 0;
 	my $max = $htm =~ /Page \d+ of about (\d+) results/  ? $1 : 0;
 	
@@ -2304,6 +2342,12 @@ sub _extract_search_books
 
 =head2 C<bool> _extract_user_groups( I<$rh_into, $on_group_fn, on_progress_fn, $groups_html_str> )
 
+=over
+
+=item * returns 0 if no groups, 1 if groups, 2 if error
+
+=back
+
 =cut
 
 sub _extract_user_groups
@@ -2311,7 +2355,7 @@ sub _extract_user_groups
 	my $rh  = shift;
 	my $gfn = shift;
 	my $pfn = shift;
-	my $htm = shift or return 0;
+	my $htm = shift or return 2;
 	my $ret = 0;
 	
 	while( $htm =~ /<div class="elementList">(.*?)<div class="clear">/gs )
@@ -2554,7 +2598,7 @@ sub _html
 	my $url       = shift or return '';
 	my $warnlevel = shift // $_ENO_WARN;
 	my $cancache  = shift // 1;
-	my $retry     = $_MAXRETRIES;
+	my $retry     = $_OPTIONS{maxretries};
 	my $htm;
 	
 	$htm = $_cache->get( $url ) 
@@ -2581,15 +2625,15 @@ DOWNLOAD:
 	warn( _errmsg( $errno, $url, $curl->strerror( $curlret ), $curl->errbuf ))
 		if $errno >= $warnlevel;
 	
-	if( $errno >= $_ENO_CRIT 
-	||( $errno >= $_ENO_ERROR && $retry-- > 0 ))
+	if(( $errno >= $_ENO_CRIT  && !$_OPTIONS{ignore_crit }                 )
+	|| ( $errno >= $_ENO_ERROR && !$_OPTIONS{ignore_error} && $retry-- > 0 ))
 	{
 		warn( $errno >= $_ENO_CRIT 
 				? $_MSG_RETRYING_FOREVER
 				: sprintf( $_MSG_RETRYING_NTIMES, $retry + 1 ));
 		
 		$curl = undef;  # disconnect
-		sleep( $_RETRYDELAY_SECS );
+		sleep( $_OPTIONS{retrydelay_secs} );
 		goto DOWNLOAD;
 	}
 	
