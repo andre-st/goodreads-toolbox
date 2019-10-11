@@ -23,7 +23,7 @@ use_ok( 'Goodscrapes' );
 # We need to test against the most up-to-date markup from Goodreads.com
 # Having no cache during development is annoying, tho. 
 # So we leave a small window:
-gsetcache( 1 );  # days
+gsetopt( cache_days => 1 );
 
 
 # Normal user:

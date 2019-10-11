@@ -4,14 +4,14 @@
 
 =head1 NAME
 
-Goodscrapes - Goodreads.com HTML API
+Goodscrapes - Goodreads.com HTML-API
 
 
 =head1 VERSION
 
 =over
 
-=item * Updated: 2019-10-10
+=item * Updated: 2019-10-11
 
 =item * Since: 2014-11-05
 
@@ -313,35 +313,31 @@ https://github.com/andre-st/
 
 =back
 
-=head2 C<void> gsetcache( I<$number, $unit = 'days'> )
+=head2 C<void> gsetopt(I<{ ... }>)
 
 =over
 
-=item * scraping Goodreads.com is a very slow process
+=item * change one or multiple library-scope parameters
 
-=item * scraped documents can be cached if you don't need them "fresh"
-        during development time
-        or long running sessions (cheap recovery on crash, power blackout or pauses),
-	   or when experimenting with parameters
+=item * C<ignore_error =E<gt> bool>
+        disables retries with the process just keep going with the next step
 
-=item * unit can be C<"minutes">, C<"hours">, C<"days">
+=item * C<ignore_crit =E<gt> bool>
+        disables retries with the process just keep going with the next step
 
-=back
-
-=head2 C<void> gseterr(I<{ ... }>)
-
-=over
-
-=item * change one or multiple error handling parameters
-
-=item * C<retry_on_error =E<gt> bool>
-
-=item * C<retry_on_crit =E<gt> bool>
-
-=item * C<maxretries =E<gt> int> number of retries if ther was an error, 
-        critical issues are retried indefinitely (if retry_on_crit is true)
+=item * C<maxretries =E<gt> int> 
+        sets number of retries when there is an error, 
+        critical issues are retried indefinitely (if ignore_crit is false)
 
 =item * C<retrydelay_secs =E<gt> int>
+
+=item * C<cache_days =E<gt> int>
+        sets the number of days that a resource can be loaded from the local storage.
+        Scraping Goodreads.com is a very slow process;
+        scraped documents can be cached if you don't need them "fresh"
+        during development time
+        or long running sessions (cheap recovery on crash, power blackout or pauses),
+        or when experimenting with parameters
 
 =back
 
@@ -589,6 +585,26 @@ https://github.com/andre-st/
 
 =back
 
+=head2 C<void> ghistogram(I<{ ... }>)
+
+=over
+
+=item * prints a year-based histogram for the given hash on the terminal
+
+=item * C<rh_from    =E<gt> hash reference (id =E<gt> %any,...)>
+
+=item * C<date_key   =E<gt> string> name of the Time::Piece component of any hash item [optional, default 'date']
+
+=item * C<start_year =E<gt> int> [optional, default 2007]
+
+=item * C<title      =E<gt> string> [optional, default '...reviews...']
+
+=item * C<bar_width  =E<gt> int> [optional, default 40]
+
+=item * C<bar_char   =E<gt> char> [optional, default '#']
+
+=back
+
 =head1 PRIVATE URL-GENERATION ROUTINES
 
 
@@ -725,6 +741,8 @@ https://github.com/andre-st/
 
 =item * I<$rh_books>: C<(id =E<gt> L<%book|"\%book">,...)>
 
+=item * returns 0 if no books, 1 if books, 2 if error
+
 =back
 
 =head2 C<bool> _extract_author_books( I<$rh_books, $r_limit, $on_book_fn, $on_progress_fn, $html_str> )
@@ -735,6 +753,8 @@ https://github.com/andre-st/
 
 =item * I<$r_limit>: is counted to zero
 
+=item * returns 0 if no books, 1 if books, 2 if error
+
 =back
 
 =head2 C<bool> _extract_followees( I<$rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $following_page_html_str> )
@@ -743,6 +763,8 @@ https://github.com/andre-st/
 
 =item * I<$rh_users>: C<(user_id =E<gt> L<%user|"\%user">,...)>
 
+=item * returns 0 if no followees, 1 if followees, 2 if error
+
 =back
 
 =head2 C<bool> _extract_friends( I<$rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $friends_page_html_str> )
@@ -750,6 +772,8 @@ https://github.com/andre-st/
 =over
 
 =item * I<$rh_users>: C<(user_id =E<gt> L<%user|"\%user">,...)> 
+
+=item * returns 0 if no friends, 1 if friends, 2 if error
 
 =back
 
@@ -773,10 +797,18 @@ https://github.com/andre-st/
 
 =item * I<$rh_revs>: C<(review_id =E<gt> L<%review|"\%review">,...)>
 
+=item * returns 0 if no reviews, 1 if reviews, 2 if error
+
 =back
 
 =head2 C<bool> _extract_similar_authors( I<$rh_into, $author_id_to_skip, 
 			$on_progress_fn, $similar_page_html_str> )
+
+=over
+
+=item * returns 0 if no authors, 1 if authors, 2 if error
+
+=back
 
 =head2 C<bool> _extract_search_books( I<$ra_books, $on_progress_fn, $search_result_html_str>  )
 
@@ -791,9 +823,17 @@ https://github.com/andre-st/
 
 =item * I<ra_books>: C<(L<%book|"\%book">,...)> 
 
+=item * returns 0 if no books, 1 if books, 2 if error
+
 =back
 
 =head2 C<bool> _extract_user_groups( I<$rh_into, $on_group_fn, on_progress_fn, $groups_html_str> )
+
+=over
+
+=item * returns 0 if no groups, 1 if groups, 2 if error
+
+=back
 
 =head2 C<string> _extract_csrftok(I< $html >)
 
