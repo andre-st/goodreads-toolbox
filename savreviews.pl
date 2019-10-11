@@ -167,19 +167,7 @@ greadreviews( rh_for_book => \%book,
               text_only   => 1,
               on_progress => gmeter( "of $book{num_reviews} [\033[38;5msearching\033[0m]" ));
 
-
-
-# ----------------------------------------------------------------------------
-print( "\n\nNumber of reviews per year:" );
-
-my %ycount;
-$ycount{$_} = 0             for (2007 .. (localtime)[5]);  # Years not in reviews
-$ycount{$_->{date}->year}++ for (values %reviews);         # year >= 2007 (GR founded)
-
-my $maxycount = max( values %ycount );
-
-printf( "\n%d %-${BARWIDTH}s %5d", $_, $BARCHAR x ($BARWIDTH/$maxycount*$ycount{$_}), $ycount{$_} )
-	for (sort{ $a <=> $b } keys %ycount);
+ghistogram( rh_from => \%reviews );
 
 
 

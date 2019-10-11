@@ -146,6 +146,7 @@ our @EXPORT = qw(
 	amz_book_html
 	ghtmlhead
 	ghtmlfoot
+	ghistogram
 	);
 
 
@@ -1301,6 +1302,52 @@ sub ghtmlfoot
 		};
 }
 
+
+
+
+=head2 C<void> ghistogram(I<{ ... }>)
+
+=over
+
+=item * prints a year-based histogram for the given hash on the terminal
+
+=item * C<rh_from    =E<gt> hash reference (id =E<gt> %any,...)>
+
+=item * C<date_key   =E<gt> string> name of the Time::Piece component of any hash item [optional, default 'date']
+
+=item * C<start_year =E<gt> int> [optional, default 2007]
+
+=item * C<title      =E<gt> string> [optional, default '...reviews...']
+
+=item * C<bar_width  =E<gt> int> [optional, default 40]
+
+=item * C<bar_char   =E<gt> char> [optional, default '#']
+
+=back
+
+=cut
+
+sub ghistogram
+{
+	my (%args)   = @_;
+	my $rh       =_require_arg( 'rh_from', $args{ rh_from });
+	my $datekey  = $args{'date_key'  }  // 'date';
+	my $ystart   = $args{'start_year'}  // 2007;
+	my $title    = $args{'title'     }  // "\n\nNumber of reviews per year:";
+	my $barwidth = $args{'bar_width' }  // 40;
+	my $barchar  = $args{'bar_char'  }  // '#';
+	my %ycount;
+	
+	print( $title );
+	
+	$ycount{$_} = 0                 for ($ystart .. (localtime)[5]);  # Years not in hash
+	$ycount{$_->{$datekey}->year}++ for (values %{$rh});
+	
+	my $maxycount = max( values %ycount );
+	
+	printf( "\n%d %-${barwidth}s %5d", $_, $barchar x ($barwidth/$maxycount*$ycount{$_}), $ycount{$_} )
+		for (sort{ $a <=> $b } keys %ycount);
+}
 
 
 
