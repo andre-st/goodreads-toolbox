@@ -1820,14 +1820,14 @@ sub _extract_books
 		my $tit = $row =~ />title<\/label><div class="value">\s*<a[^>]+>\s*(.*?)\s*<\/a>/s  ? $1 : '';
 		   $tit =~ s/\<[^\>]+\>//g;          # remove HTML tags "Title <span>(Volume 2)</span>"
 		   $tit =~ s/( {1,}|[\r\n])/ /g;     # reduce spaces
-		   $tit = _dec_entities( $tit );  # &quot -> "
+		   $tit = _dec_entities( $tit );     # &quot -> "
 		
 		my $dadd  = $row =~ />date added<\/label><div class="value">\s*<span title="([^"]*)/ ? $1 : undef;
 		my $dread = $row =~ /<span class="date_read_value">([^<]*)/                          ? $1 : undef;
-		my $tadd  = $dadd  ? Time::Piece->strptime( $dadd,  "%B %d, %Y" ) : $_EARLIEST; # "June 19, 2015"
-		my $tread = $dread ? eval{   Time::Piece->strptime( $dread, "%b %d, %Y" ); } ||         # "Sep 06, 2018"
-		                     eval{   Time::Piece->strptime( $dread, "%b %Y"     ); } ||         # "Sep 2018"
-		                     eval{   Time::Piece->strptime( $dread, "%Y"        ); } ||         # "2018"
+		my $tadd  = $dadd  ? Time::Piece->strptime( $dadd,  "%B %d, %Y" ) : $_EARLIEST;    # "June 19, 2015"
+		my $tread = $dread ? eval{   Time::Piece->strptime( $dread, "%b %d, %Y" );   } ||  # "Sep 06, 2018"
+		                     eval{   Time::Piece->strptime( $dread, "%b %Y"     );   } ||  # "Sep 2018"
+		                     eval{   Time::Piece->strptime( $dread, "%Y"        );   } ||  # "2018"
 		                     $_EARLIEST
 		                   : $_EARLIEST;
 		
