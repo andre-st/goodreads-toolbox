@@ -3,11 +3,37 @@
 All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+Version number 1.MINOR.PATCH, increments:
+- MINOR version when relevant functionality was added, removed, changed
+- PATCH version on bug fixes or small aesthetic changes
+
 
 ## [Unreleased]
 
 
-## [1.20.2] - 2019-08-31
+## [v1.21] - 2019-10-10
+## Fixed
+
+- "Use of uninitialized value $uid in concatenation (.) or string at Goodscrapes.pm" 
+  was caused by "NOT A BOOK" books, which actually have different book IDs but lack 
+  author info etc
+
+## Added
+
+- all programs support the `--ignore-errors` option which disables retries and let
+  a program keep going on despite of errors. This is useful when Goodreads has
+  a bad day with permanent timeouts or other problems which often only affect
+  a few resources while most of them can be obtained without problems.
+  You also can re-run a program without this option, so that missing resources
+  are loaded from the web again (and everything else from your local cache)
+
+## Removed
+
+- developers: function `gsetcache()` was removed in favor of `gsetopt( cache_days => int )`
+
+
+
+## [v1.20.2] - 2019-08-31
 ### Fixed
 
 - friendnet.pl: missing ");" at the end (syntax error)
@@ -16,7 +42,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 - friendrated.pl: new column 'GR Avg' with average rating by the Goodreads community
-- git-hooks (developers): automatically check syntax of user-scripts and run library unit-tests before pushing changes to GitHub
+- git-hooks (developers): automatically check syntax of user-scripts and run library 
+  unit-tests before pushing changes to GitHub
 
 ### Changed
 
@@ -26,7 +53,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.20] - 2019-08-26
+## [v1.20] - 2019-08-26
 ### Fixed
 
 - login problems due to changed GR source markup
@@ -59,7 +86,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.19.2] - 2019-05-26
+## [v1.19.2] - 2019-05-26
 ### Fixed
 
 - search.pl: Titles were missing in the generated HTML file due to changes
@@ -78,7 +105,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.18.0] - 2019-05-10
+## [v1.18.0] - 2019-05-10
 ### Fixed
 
 - "Unescaped left brace in regex is illegal here in regex [...] line 1852" 
@@ -95,7 +122,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.17.0] - 2019-03-24
+## [v1.17.0] - 2019-03-24
 ### Fixed
 
 - similarauth.pl: showed 0 authors all the time because the source markup 
@@ -124,7 +151,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   
 
 
-## [1.16.0] - 2019-02-16
+## [v1.16.0] - 2019-02-16
 ### Fixed
 
 - "Undefined subroutine &WWW::Curl::Easy::CURLOPT_TCP_KEEPALIVE" 
@@ -145,7 +172,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.13.0] - 2019-01-18
+## [v1.13.0] - 2019-01-18
 ### Changed
 
 - likeminded: 
@@ -157,7 +184,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.12.5] - 2019-01-13
+## [v1.12.5] - 2019-01-13
 ### Fixed
 
 - "Experimental keys on scalar is now forbidden" if Perl 5.20+
@@ -178,7 +205,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
  
 
 
-## [1.11.0] - 2018-11-28
+## [v1.11.0] - 2018-11-28
 ### Fixed
 
 - missing results in search.pl and other tools
@@ -188,7 +215,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.10.0] - 2018-09-27
+## [v1.10.0] - 2018-09-27
 ### Added
 
 - new program: friendgroup.pl ([#6](https://github.com/andre-st/goodreads-toolbox/issues/6))
@@ -196,21 +223,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.9.1] - 2018-09-01
+## [v1.9.1] - 2018-09-01
 ### Changed
 
 - one `make` target only for all Toolbox programs (simplifies maintenance and usage)
 
 
 
-## [1.9.0] - 2018-08-24
+## [v1.9.0] - 2018-08-24
 ### Fixed
 
 - wrong value in `num_ratings` or `num_reviews` if N>=1,000,000
 
 
 
-## [1.8.0] - 2018-08-14
+## [v1.8.0] - 2018-08-14
 ### Added
 
 - new program: savreviews.pl
@@ -225,14 +252,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.7.0] - 2018-07-29
+## [v1.7.0] - 2018-07-29
 ### Added
 
 - new program: search.pl
 
 
 
-## [1.6.0] - 2018-07-21
+## [v1.6.0] - 2018-07-21
 ### Added
 
 - likeminded: dictionary-based reviews-search (builtin Ngrams dict) 
@@ -240,14 +267,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
     
 
 
-## [1.5.0] - 2018-07-05
+## [v1.5.0] - 2018-07-05
 ### Added
 
 - new program: similarauth.pl
 
 
 
-## [1.4.0] - 2018-06-24
+## [v1.4.0] - 2018-06-24
 ### Removed
 
 - XML/XSLT support dropped (YAGNI, less dependencies)
@@ -260,14 +287,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.3.0] - 2018-06-22
+## [v1.3.0] - 2018-06-22
 ### Added
 
 - new program: likeminded.pl
 
 
 
-## [1.2.2] - 2018-05-18
+## [v1.2.2] - 2018-05-18
 ### Changed
 
 - recentrated:
@@ -277,21 +304,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
-## [1.2.0] - 2018-05-10
+## [v1.2.0] - 2018-05-10
 ### Added
 
 - new program: friendrated.pl
 
 
 
-## [1.1.0] - 2018-01-09
+## [v1.1.0] - 2018-01-09
 ### Added
 
 - new program: recentrated.pl
 
 
 
-## [1.0.0] - 2014-11-05
+## [v1.0.0] - 2014-11-05
 ### Added
 
 - new program: amz-tradein.pl

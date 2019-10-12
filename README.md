@@ -1,4 +1,4 @@
-# :books: Andre's Goodreads Toolbox, v1.20.2
+# :books: Andre's Goodreads Toolbox, v1.21
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
@@ -146,8 +146,7 @@ because it reuses already loaded data (file-cache).
 		source probably [Goodreads](https://www.goodreads.com/about/us)
   - [GR on Slideshare](https://www.slideshare.net/GoodreadsPresentations/presentations), 
 		presenting GR book marketing to authors, see also [Author Feedback Group](https://www.goodreads.com/group/show/31471) 
-  - [GR subreddit](https://www.reddit.com/r/goodreads/) 
-		with my [comments](https://redditcommentsearch.com/?query=goodreads&user=andre-st&go=true)
+  - [GR subreddit](https://www.reddit.com/r/goodreads/)
 - Further software 
   - I leave statistics about your own reading habits to the following tools; 
 		my toolbox, in contrast, focuses on the social periphery, with Goodreads providing the largest user base
