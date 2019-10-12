@@ -1829,6 +1829,9 @@ sub _extract_books
 		   $tit =~ s/( {1,}|[\r\n])/ /g;     # reduce spaces
 		   $tit = _dec_entities( $tit );     # &quot -> "
 		
+		# There are many "NOT A BOOK" books with different IDs which lack information such as author ID etc
+		next if $tit eq 'NOT A BOOK';
+		
 		my $dadd  = $row =~ />date added<\/label><div class="value">\s*<span title="([^"]*)/ ? $1 : undef;
 		my $dread = $row =~ /<span class="date_read_value">([^<]*)/                          ? $1 : undef;
 		my $tadd  = $dadd  ? Time::Piece->strptime( $dadd,  "%B %d, %Y" ) : $_EARLIEST;    # "June 19, 2015"
@@ -1838,7 +1841,7 @@ sub _extract_books
 		                     $_EARLIEST
 		                   : $_EARLIEST;
 		
-		$au{ id              } = $row =~ /author\/show\/([0-9]+)/       ? $1                            : undef;
+		$au{ id              } = $row =~ /author\/show\/([0-9]+)/       ? $1                  : undef;
 		$au{ name_lf         } = $row =~ /author\/show\/[^>]+>([^<]+)/  ? _dec_entities( $1 ) : '';
 		$au{ name            } = $au{name_lf};  # Shelves already list names with "lastname, firstname"
 		$au{ residence       } = undef;
