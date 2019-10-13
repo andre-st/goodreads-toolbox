@@ -150,7 +150,7 @@ More info in ./help/likeminded.md
 
 =head1 VERSION
 
-2019-10-10 (Since 2018-06-22)
+2019-10-13 (Since 2018-06-22)
 
 =cut
 

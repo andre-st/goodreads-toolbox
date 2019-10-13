@@ -107,7 +107,7 @@ More info in ./help/similarauth.md
 
 =head1 VERSION
 
-2019-10-10 (Since 2018-07-05)
+2019-10-13 (Since 2018-07-05)
 
 =cut
 

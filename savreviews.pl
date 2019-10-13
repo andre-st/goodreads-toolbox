@@ -101,7 +101,7 @@ More info in ./help/savreviews.md
 
 =head1 VERSION
 
-2019-10-11 (Since 2018-08-13)
+2019-10-13 (Since 2018-08-13)
 
 =cut
 

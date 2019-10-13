@@ -108,7 +108,7 @@ More info in ./help/search.md
 
 =head1 VERSION
 
-2019-10-10 (Since 2018-07-29)
+2019-10-13 (Since 2018-07-29)
 
 =cut
 

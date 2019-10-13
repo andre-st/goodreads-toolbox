@@ -188,7 +188,7 @@ More info in ./help/friendrated.md
 
 =head1 VERSION
 
-2019-10-10 (Since 2018-05-10)
+2019-10-13 (Since 2018-05-10)
 
 =cut
 

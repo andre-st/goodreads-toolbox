@@ -92,7 +92,7 @@ More info in ./help/friendgroup.md
 
 =head1 VERSION
 
-2019-10-10 (Since 2018-09-26)
+2019-10-13 (Since 2018-09-26)
 
 =cut
 

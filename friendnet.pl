@@ -121,7 +121,7 @@ More info in ./help/friendnet.md
 
 =head1 VERSION
 
-2019-10-10 (Since 2019-06-14)
+2019-10-13 (Since 2019-06-14)
 
 =cut
 
