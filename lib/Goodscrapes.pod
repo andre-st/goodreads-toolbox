@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2019-10-11
+=item * Updated: 2019-10-13
 
 =item * Since: 2014-11-05
 
@@ -319,15 +319,12 @@ https://github.com/andre-st/
 
 =item * change one or multiple library-scope parameters
 
-=item * C<ignore_error =E<gt> bool>
-        disables retries with the process just keep going with the next step
-
-=item * C<ignore_crit =E<gt> bool>
-        disables retries with the process just keep going with the next step
+=item * C<ignore_errors =E<gt> bool>
+        disables retries for [ERROR] and [CRIT] with the process just keep going with the next step
 
 =item * C<maxretries =E<gt> int> 
         sets number of retries when there is an error, 
-        critical issues are retried indefinitely (if ignore_crit is false)
+        critical issues are retried indefinitely (if ignore_errors is false)
 
 =item * C<retrydelay_secs =E<gt> int>
 

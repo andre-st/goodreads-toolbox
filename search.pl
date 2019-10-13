@@ -140,10 +140,9 @@ use Goodscrapes;
 # 
 setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
 STDOUT->autoflush( 1 );
+gsetopt( cache_days => 7 );
  
-our $TSTART    = time();
-our $CACHEDAYS = 7;
-our $ERRIGNORE = 0;
+our $TSTART = time();
 our @ORDER;
 our $NUMRATINGS;
 our $PHRASE;
@@ -153,10 +152,10 @@ my  $ordercsv = '';
 
 GetOptions( 'ratings|r=i'     => \$NUMRATINGS,
             'order|z=s'       => \$ordercsv,
-            'ignore-errors|i' => \$ERRIGNORE,
-            'help|?'          => sub{ pod2usage( -verbose => 2 ) },
-            'cache|c=i'       => \$CACHEDAYS,
-            'outfile|o=s'     => \$OUTPATH ) 
+            'outfile|o=s'     => \$OUTPATH,
+            'ignore-errors|i' => sub{  gsetopt( ignore_errors => 1 );   },
+            'cache|c=i'       => sub{  gsetopt( cache_days => shift );  },
+            'help|?'          => sub{  pod2usage( -verbose => 2 );      })
 	or pod2usage( 1 );
 
 $PHRASE     = join( ' ', @ARGV ) or pod2usage( 1 );
@@ -165,10 +164,6 @@ $ISEXACT    = index( $ARGV[0], ' ' ) > -1;  # Quoted "aaa bbb" as single argumen
 $NUMRATINGS = $ISEXACT ? 0 : 5 if !defined $NUMRATINGS;
 $ordercsv   =~ s/\s+//g;  # Mistakenly added spaces
 @ORDER      = uniq(( split( ',', lc $ordercsv ), qw( stars num_ratings year )));  # Adds missing
-
-gsetopt( cache_days   => $CACHEDAYS,
-         ignore_error => $ERRIGNORE,
-         ignore_crit  => $ERRIGNORE );
 
 
 

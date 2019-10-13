@@ -193,8 +193,7 @@ our $_ENO_BADLOGIN    = $_ENO_FATAL + 5;
 
 our %_OPTIONS =  # See gseterr() for documentation
 (
-	ignore_error    => 0,
-	ignore_crit     => 0,
+	ignore_errors   => 0,
 	maxretries      => 5,
 	retrydelay_secs => 60*3  # 15 minutes in total
 );
@@ -598,15 +597,12 @@ sub glogin
 
 =item * change one or multiple library-scope parameters
 
-=item * C<ignore_error =E<gt> bool>
-        disables retries with the process just keep going with the next step
-
-=item * C<ignore_crit =E<gt> bool>
-        disables retries with the process just keep going with the next step
+=item * C<ignore_errors =E<gt> bool>
+        disables retries for [ERROR] and [CRIT] with the process just keep going with the next step
 
 =item * C<maxretries =E<gt> int> 
         sets number of retries when there is an error, 
-        critical issues are retried indefinitely (if ignore_crit is false)
+        critical issues are retried indefinitely (if ignore_errors is false)
 
 =item * C<retrydelay_secs =E<gt> int>
 
@@ -2635,8 +2631,8 @@ DOWNLOAD:
 	warn( _errmsg( $errno, $url, $curl->strerror( $curlret ), $curl->errbuf ))
 		if $errno >= $warnlevel;
 	
-	if(( $errno >= $_ENO_CRIT  && !$_OPTIONS{ignore_crit }                 )
-	|| ( $errno >= $_ENO_ERROR && !$_OPTIONS{ignore_error} && $retry-- > 0 ))
+	if(( $errno >= $_ENO_CRIT  && !$_OPTIONS{ignore_errors}                 )
+	|| ( $errno >= $_ENO_ERROR && !$_OPTIONS{ignore_errors} && $retry-- > 0 ))
 	{
 		warn( $errno >= $_ENO_CRIT 
 				? $_MSG_RETRYING_FOREVER

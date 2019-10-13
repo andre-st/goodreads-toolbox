@@ -104,7 +104,7 @@ $ ./friendnet.pl --depth=3 --outdir=/tmp/  login@gmail.com
 =head1 REPORTING BUGS
 
 Send an email to <datakadabra@gmail.com> or use Github's issue tracker
-<https://github.com/andre-st/goodreads/issues>
+<https://github.com/andre-st/goodreads-toolbox/issues>
 
 
 =head1 COPYRIGHT
@@ -154,21 +154,20 @@ use Goodscrapes;
 # 
 setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
 STDOUT->autoflush( 1 );
+gsetopt( cache_days => 31 );
 
-our $TSTART    = time();
-our $CACHEDAYS = 31;
-our $ERRIGNORE = 0;
-our $DEPTH     = 2;
-our $MAXNHOOD  = 1000;  # Ignore users with more than N friends
-our $OUTDIR    = './';
+our $TSTART   = time();
+our $DEPTH    = 2;
+our $MAXNHOOD = 1000;  # Ignore users with more than N friends
+our $OUTDIR   = './';
 our $USERID;
 
 GetOptions( 'userid|u=s'      => \$USERID,
-            'help|?'          => sub{ pod2usage( -verbose => 2 ) },
-            'ignore-errors|i' => \$ERRIGNORE,
             'depth|d=i'       => \$DEPTH,
             'outdir|o=s'      => \$OUTDIR,
-            'cache|c=i'       => \$CACHEDAYS )
+            'ignore-errors|i' => sub{  gsetopt( ignore_errors => 1 );   },
+            'cache|c=i'       => sub{  gsetopt( cache_days => shift );  },
+            'help|?'          => sub{  pod2usage( -verbose => 2 );      })
 	or pod2usage( 1 );
 
 pod2usage( 1 ) if !$ARGV[0];
@@ -179,10 +178,6 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend list are privat
 
 our $OUTPATH_EDG = File::Spec->catfile( $OUTDIR, "friendnet-$USERID-edges.csv" );
 our $OUTPATH_NOD = File::Spec->catfile( $OUTDIR, "friendnet-$USERID-nodes.csv" );
-
-gsetopt( cache_days   => $CACHEDAYS,
-         ignore_error => $ERRIGNORE,
-         ignore_crit  => $ERRIGNORE );
 
 
 
@@ -214,6 +209,18 @@ my $progress_indicator_fn = sub
 	print ( ",\t  0%" x ($dr-2)  );  # Fill empty columns with "0%"
 	print ( ']' );
 };
+
+
+# Displays sth. like:
+# [  1%] #1234567
+# [  1%] #76543
+# ...
+# [100%] #432123
+my $progress_indicator_fn2 = sub
+{
+	
+};
+
 
 gsocialnet( from_user_id    => $USERID,
             rh_into_nodes   => \%nodes,

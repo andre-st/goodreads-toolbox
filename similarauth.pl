@@ -136,20 +136,19 @@ use Goodscrapes;
 # Program configuration:
 # 
 STDOUT->autoflush( 1 );
+gsetopt( cache_days => 31 );
 
-our $TSTART    = time();
-our $CACHEDAYS = 31;
-our $ERRIGNORE = 0;
+our $TSTART = time();
 our @SHELVES;
 our $OUTPATH;
 our $USERID;
 
-GetOptions( 'help|?'          => sub{ pod2usage( -verbose => 2 ) },
-            'ignore-errors|i' => \$ERRIGNORE,
-            'shelf|s=s'       => \@SHELVES,
+GetOptions( 'shelf|s=s'       => \@SHELVES,
             'userid|u=s'      => \$USERID,
-            'cache|c=i'       => \$CACHEDAYS,
-            'outfile|o=s'     => \$OUTPATH ) 
+            'outfile|o=s'     => \$OUTPATH,
+            'cache|c=i'       => sub{  gsetopt( cache_days => shift );  },
+            'ignore-errors|i' => sub{  gsetopt( ignore_errors => 1  );  },
+            'help|?'          => sub{  pod2usage( -verbose => 2 );      })
 	or pod2usage( 1 );
 
 pod2usage( 1 ) if !$ARGV[0];
@@ -160,10 +159,6 @@ glogin( usermail => $ARGV[0],  # Login not really required at the moment
 
 @SHELVES = qw( %23ALL%23 ) if !@SHELVES;
 $OUTPATH = sprintf( "similarauth-%s-%s.html", $USERID, join( '-', @SHELVES ) ) if !$OUTPATH;
-
-gsetopt( cache_days   => $CACHEDAYS,
-         ignore_error => $ERRIGNORE,
-         ignore_crit  => $ERRIGNORE );
 
 
 

@@ -220,6 +220,7 @@ use Goodscrapes;
 # 
 setlocale( LC_CTYPE, 'en_US' );  # GR dates all en_US
 STDOUT->autoflush( 1 );
+gsetopt( cache_days => 31 );
 
 our $TSTART      = time();
 our $MINFAVORERS = 3;
@@ -228,8 +229,6 @@ our $MAXRATED    = 5;
 our $FRIENDSHELF = 'read';
 our $OUTDIR      = './';
 our $ISTOREAD    = 0;
-our $CACHEDAYS   = 31;
-our $ERRIGNORE   = 0;
 our @EXCLMYSHELVES;
 our $MAXRATS;
 our $MINYEAR;     # No default, some books lack year-pub, others < 0 B.C.
@@ -244,12 +243,12 @@ GetOptions( 'favorers|f=i'    => \$MINFAVORERS,
             'maxyear|e=i'     => \$MAXYEAR,
             'excludemy|x=s'   => \@EXCLMYSHELVES,
             'userid|u=s'      => \$USERID,
+            'outdir|o=s'      => \$OUTDIR,
             'hated|h'         => sub{ $MAXRATED    = 2;         $MINRATED = 1; },
             'toread|t'        => sub{ $FRIENDSHELF = 'to-read'; $MINRATED = 0; },
-            'help|?'          => sub{ pod2usage( -verbose => 2 );              },
-            'ignore-errors|i' => \$ERRIGNORE,
-            'outdir|o=s'      => \$OUTDIR,
-            'cache|c=i'       => \$CACHEDAYS )
+            'ignore-errors|i' => sub{ gsetopt( ignore_errors => 1 );           },
+            'cache|c=i'       => sub{ gsetopt( cache_days => shift );          },
+            'help|?'          => sub{ pod2usage( -verbose => 2 );              })
 	or pod2usage( 1 );
 
 die( "[CRIT ] Invalid argument: --minrated=$MINRATED higher than --maxrated=$MAXRATED" )
@@ -268,10 +267,6 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend list/some shelv
 
 our $OUTPATH_BK = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF-$MINRATED${MAXRATED}by$MINFAVORERS.html"         );
 our $OUTPATH_AU = File::Spec->catfile( $OUTDIR, "friendrated-$USERID-$FRIENDSHELF-$MINRATED${MAXRATED}by$MINFAVORERS-authors.html" );
-
-gsetopt( cache_days   => $CACHEDAYS,
-         ignore_error => $ERRIGNORE,
-         ignore_crit  => $ERRIGNORE );
 
 
 

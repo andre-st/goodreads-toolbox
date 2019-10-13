@@ -181,14 +181,13 @@ use Goodscrapes;
 # 
 setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
 STDOUT->autoflush( 1 );
+gsetopt( cache_days => 31 );
 
 our $TSTART     = time();
 our $MINCOMMON  = 5;
 our $MAXAUBOOKS = 600;
 our $RIGOR      = 1;
 our $DICTPATH   = './dict/default.lst';
-our $CACHEDAYS  = 31;
-our $ERRIGNORE  = 0;
 our @SHELVES;
 our $OUTPATH;
 our $USERID;
@@ -198,11 +197,11 @@ GetOptions( 'common|m=i'         => \$MINCOMMON,
             'rigor|x=i'          => \$RIGOR,
             'dict|d=s'           => \$DICTPATH,
             'userid|u=s'         => \$USERID,
-            'ignore-errors|i'    => \$ERRIGNORE,
-            'help|?'             => sub{ pod2usage( -verbose => 2 ) },
             'outfile|o=s'        => \$OUTPATH,
-            'cache|c=i'          => \$CACHEDAYS,
-            'shelf|s=s'          => \@SHELVES ) 
+            'shelf|s=s'          => \@SHELVES,
+            'ignore-errors|i'    => sub{  gsetopt( ignore_errors => 1 );   },
+            'cache|c=i'          => sub{  gsetopt( cache_days => shift );  },
+            'help|?'             => sub{  pod2usage( -verbose => 2 );      }) 
 	or pod2usage( 1 );
 
 pod2usage( 1 ) if !$ARGV[0];
@@ -213,10 +212,6 @@ glogin( usermail => $ARGV[0],  # Login not really required at the moment
 
 @SHELVES = qw( %23ALL%23 )                                                   if !@SHELVES;
 $OUTPATH = sprintf( "likeminded-%s-%s.html", $USERID, join( '-', @SHELVES )) if !$OUTPATH;
-
-gsetopt( cache_days   => $CACHEDAYS,
-         ignore_error => $ERRIGNORE,
-         ignore_crit  => $ERRIGNORE );
 
 
 

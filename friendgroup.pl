@@ -123,18 +123,17 @@ use Goodscrapes;
 # 
 setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
 STDOUT->autoflush( 1 );
+gsetopt( cache_days => 31 );
 
-our $TSTART    = time();
-our $CACHEDAYS = 31;
-our $ERRIGNORE = 0;
+our $TSTART = time();
 our $OUTPATH;
 our $USERID;
 
-GetOptions( 'help|?'          => sub{ pod2usage( -verbose => 2 ) },
-            'ignore-errors|i' => \$ERRIGNORE,
-            'outfile|o=s'     => \$OUTPATH,
+GetOptions( 'outfile|o=s'     => \$OUTPATH,
             'userid|u=s'      => \$USERID,
-            'cache|c=i'       => \$CACHEDAYS )
+            'ignore-errors|i' => sub{  gsetopt( ignore_errors => 1 );   },
+            'cache|c=i'       => sub{  gsetopt( cache_days => shift );  },
+            'help|?'          => sub{  pod2usage( -verbose => 2 );      })
 	or pod2usage( 1 );
 
 pod2usage( 1 ) if !$ARGV[0];
@@ -144,10 +143,6 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend/groups list are
         r_userid => \$USERID );
 
 $OUTPATH = "friendgroup-${USERID}.html" if !$OUTPATH;
-
-gsetopt( cache_days   => $CACHEDAYS,
-         ignore_error => $ERRIGNORE, 
-         ignore_crit  => $ERRIGNORE );
 
 
 

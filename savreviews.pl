@@ -134,10 +134,9 @@ use Goodscrapes;
 # 
 setlocale( LC_CTYPE, 'en_US' );  # GR dates all en_US
 STDOUT->autoflush( 1 );
+gsetopt( cache_days => 7 );
 
 our $TSTART     = time();
-our $CACHEDAYS  = 7;
-our $ERRIGNORE  = 0;
 our $RIGOR      = 10;
 our $DICTPATH   = './dict/default.lst';
 our $OUTDIR     = '.';
@@ -149,17 +148,13 @@ our $MAXPOSSIBLESTARS = 5;
 
 GetOptions( 'rigor|x=i'       => \$RIGOR,
             'dict|d=s'        => \$DICTPATH,
-            'ignore-errors|i' => \$ERRIGNORE,
-            'help|?'          => sub{ pod2usage( -verbose => 2 ) },
             'outdir|o=s'      => \$OUTDIR,
-            'cache|c=i'       => \$CACHEDAYS )
+            'ignore-errors|i' => sub{  gsetopt( ignore_errors => 1  );  },
+            'cache|c=i'       => sub{  gsetopt( cache_days => shift );  },
+            'help|?'          => sub{  pod2usage( -verbose => 2 );      }) 
 	or pod2usage( 1 );
 
 $BOOKID = $ARGV[0] or pod2usage( 1 );
-
-gsetopt( cache_days   => $CACHEDAYS,
-         ignore_error => $ERRIGNORE,
-         ignore_crit  => $ERRIGNORE );
 
 
 
