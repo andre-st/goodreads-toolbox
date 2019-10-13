@@ -153,7 +153,7 @@ our @EXPORT = qw(
 # Perl core:
 use Time::Piece;
 use Carp             qw( croak );
-use List::Util       qw( sum );
+use List::Util       qw( sum max );
 # Third party:
 use List::MoreUtils  qw( any );
 use Cache::Cache     qw( $EXPIRES_NEVER $EXPIRES_NOW );
