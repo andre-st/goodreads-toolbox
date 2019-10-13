@@ -10,8 +10,18 @@ Version number 1.MINOR.PATCH, increments:
 
 ## [Unreleased]
 
+- see (GitHub issues labeled "Soon")[https://github.com/andre-st/goodreads-toolbox/issues?q=is%3Aopen+is%3Aissue+label%3Asoon]
 
-## [v1.21] - 2019-10-10
+
+
+## [v1.21.1] - 2019-10-13
+## Fixed
+
+- savreviews.pl: "Undefined subroutine &Goodscrapes::max called at Goodscrapes.pm"
+
+
+
+## [v1.21.0] - 2019-10-10
 ## Fixed
 
 - "Use of uninitialized value $uid in concatenation (.) or string at Goodscrapes.pm" 
@@ -53,7 +63,7 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
-## [v1.20] - 2019-08-26
+## [v1.20.0] - 2019-08-26
 ### Fixed
 
 - login problems due to changed GR source markup
