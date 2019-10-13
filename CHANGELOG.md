@@ -10,7 +10,7 @@ Version number 1.MINOR.PATCH, increments:
 
 ## [Unreleased]
 
-- see (GitHub issues labeled "Soon")[https://github.com/andre-st/goodreads-toolbox/issues?q=is%3Aopen+is%3Aissue+label%3Asoon]
+- see [GitHub issues labeled "Soon"](https://github.com/andre-st/goodreads-toolbox/issues?q=is%3Aopen+is%3Aissue+label%3Asoon)
 
 
 
