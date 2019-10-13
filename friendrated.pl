@@ -247,7 +247,7 @@ GetOptions( 'favorers|f=i'    => \$MINFAVORERS,
             'hated|h'         => sub{ $MAXRATED    = 2;         $MINRATED = 1; },
             'toread|t'        => sub{ $FRIENDSHELF = 'to-read'; $MINRATED = 0; },
             'ignore-errors|i' => sub{ gsetopt( ignore_errors => 1 );           },
-            'cache|c=i'       => sub{ gsetopt( cache_days => shift );          },
+            'cache|c=i'       => sub{ gsetopt( cache_days => $_[1] );          },
             'help|?'          => sub{ pod2usage( -verbose => 2 );              })
 	or pod2usage( 1 );
 

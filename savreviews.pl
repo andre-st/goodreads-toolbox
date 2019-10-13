@@ -149,7 +149,7 @@ GetOptions( 'rigor|x=i'       => \$RIGOR,
             'dict|d=s'        => \$DICTPATH,
             'outdir|o=s'      => \$OUTDIR,
             'ignore-errors|i' => sub{  gsetopt( ignore_errors => 1  );  },
-            'cache|c=i'       => sub{  gsetopt( cache_days => shift );  },
+            'cache|c=i'       => sub{  gsetopt( cache_days => $_[1] );  },
             'help|?'          => sub{  pod2usage( -verbose => 2 );      }) 
 	or pod2usage( 1 );
 
