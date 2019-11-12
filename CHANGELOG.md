@@ -14,6 +14,14 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
+## [v1.21.2] - 2019-11-11
+## Fixed
+
+- prevention of potential cross-site scripting (XSS) through reviews, usernames,
+  book titles etc when generating HTML reports
+
+
+
 ## [v1.21.1] - 2019-10-13
 ## Fixed
 

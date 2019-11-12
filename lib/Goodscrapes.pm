@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2019-10-13
+=item * Updated: 2019-11-12
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =cut
 
-our $VERSION = '1.58';  # X.XX version format required by Perl
+our $VERSION = '1.59';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -146,6 +146,7 @@ our @EXPORT = qw(
 	amz_book_html
 	ghtmlhead
 	ghtmlfoot
+	ghtmlsafe
 	ghistogram
 	);
 
@@ -1317,6 +1318,27 @@ sub ghtmlfoot
 		</body>
 		</html>
 		};
+}
+
+
+
+
+=head2 C<string> ghtmlsafe(I<$string>)
+
+=over
+
+=item * always use this when generating HTML reports in order to prevent 
+        cross site scripting attacks (XSS) through malicious text on the 
+        Goodreads.com website
+
+=back
+
+=cut
+
+sub ghtmlsafe
+{
+	# This function is not just an alias but encapsulates the encoder details.
+	return encode_entities( shift );
 }
 
 

@@ -188,7 +188,7 @@ More info in ./help/friendrated.md
 
 =head1 VERSION
 
-2019-10-13 (Since 2018-05-10)
+2019-11-12 (Since 2018-05-10)
 
 =cut
 
@@ -394,10 +394,10 @@ for my $bid (keys %bkfaved_for)
 	print $bkfile qq{
 			<tr>
 			<td          >$rank</td>
-			<td><img src="$books{$bid}->{img_url}"></td>
-			<td><a  href="$books{$bid}->{url}" target="_blank"
-			             >$books{$bid}->{title}</a></td>
-			<td          >$books{$bid}->{rh_author}->{name}</td>
+			<td><img src="${\ghtmlsafe( $books{$bid}->{img_url}           )}"></td>
+			<td><a  href="${\ghtmlsafe( $books{$bid}->{url}               )}" target="_blank"
+			             >${\ghtmlsafe( $books{$bid}->{title}             )}</a></td>
+			<td          >${\ghtmlsafe( $books{$bid}->{rh_author}->{name} )}</td>
 			<td          >$books{$bid}->{num_ratings}</td>
 			<td          >$books{$bid}->{avg_rating}</td>
 			<td          >$books{$bid}->{year}</td>
@@ -406,9 +406,9 @@ for my $bid (keys %bkfaved_for)
 			};
 	
 	print $bkfile qq{
-			<a  href="$members{$_}->{url}" target="_blank">
-			<img src="$members{$_}->{img_url}" 
-			   title="$members{$_}->{name}">
+			<a  href="${\ghtmlsafe( $members{$_}->{url}     )}" target="_blank">
+			<img src="${\ghtmlsafe( $members{$_}->{img_url} )}" 
+			   title="${\ghtmlsafe( $members{$_}->{name}    )}">
 			</a>
 			} foreach (@favorer_ids);
 	
@@ -440,14 +440,14 @@ for my $auname (keys %aufaved_for)
 	print $aufile qq{
 			<tr>
 			<td>${num_favorers}</td>
-			<td>$auname</td>
+			<td>${\ghtmlsafe( $auname )}</td>
 			<td><div class="horzscroll">
 			};
 	
 	print $aufile qq{
-			<a  href="$members{$_}->{url}" target="_blank">
-			<img src="$members{$_}->{img_url}" 
-			   title="$members{$_}->{name}">
+			<a  href="${\ghtmlsafe( $members{$_}->{url}     )}" target="_blank">
+			<img src="${\ghtmlsafe( $members{$_}->{img_url} )}" 
+			   title="${\ghtmlsafe( $members{$_}->{name}    )}">
 			</a>
 			} foreach (@favorer_ids);
 	

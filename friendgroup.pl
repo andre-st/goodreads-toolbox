@@ -92,7 +92,7 @@ More info in ./help/friendgroup.md
 
 =head1 VERSION
 
-2019-10-13 (Since 2018-09-26)
+2019-11-12 (Since 2018-09-26)
 
 =cut
 
@@ -218,18 +218,18 @@ for my $gid (keys %joins)
 	
 	print $fh qq{
 			<tr>
-			<td><img src="$groups{$gid}->{img_url}"></td>
-			<td><a  href="$groups{$gid}->{url}" target="_blank">
-			              $groups{$gid}->{name}</a></td>
+			<td><img src="${\ghtmlsafe( $groups{$gid}->{img_url} )}"></td>
+			<td><a  href="${\ghtmlsafe( $groups{$gid}->{url}     )}" target="_blank">
+			              ${\ghtmlsafe( $groups{$gid}->{name}    )}</a></td>
 			<td>$groups{$gid}->{num_members}</td>
 			<td>${num_joiners}</td>
 			<td>
 			};
 	
 	print $fh qq{
-			<a  href="$members{$_}->{url}" target="_blank">
-			<img src="$members{$_}->{img_url}" 
-			   title="$members{$_}->{name}">
+			<a  href="${\ghtmlsafe( $members{$_}->{url}     )}" target="_blank">
+			<img src="${\ghtmlsafe( $members{$_}->{img_url} )}" 
+			   title="${\ghtmlsafe( $members{$_}->{name}    )}">
 			</a>
 			} foreach (@joiner_ids);
 	

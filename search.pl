@@ -108,7 +108,7 @@ More info in ./help/search.md
 
 =head1 VERSION
 
-2019-10-13 (Since 2018-07-29)
+2019-11-12 (Since 2018-07-29)
 
 =cut
 
@@ -205,16 +205,16 @@ for my $b (@books)
 	$line++;
 	print $fh qq{
 			<tr>
-			<td><img src="$b->{img_url}" height="80" /></td>
-			<td><a  href="$b->{url    }" target="_blank">
-			              $b->{title  }</a></td>
+			<td><img src="${\ghtmlsafe( $b->{img_url} )}" height="80" /></td>
+			<td><a  href="${\ghtmlsafe( $b->{url    } )}" target="_blank">
+			              ${\ghtmlsafe( $b->{title  } )}</a></td>
 			<td>
-				<a href="$b->{rh_author}->{url }" target="_blank">
-				         $b->{rh_author}->{name}</a>
+				<a href="${\ghtmlsafe( $b->{rh_author}->{url } )}" target="_blank">
+				         ${\ghtmlsafe( $b->{rh_author}->{name} )}</a>
 			</td>
-			<td>$b->{ $ORDER[0] }</td>
-			<td>$b->{ $ORDER[1] }</td>
-			<td>$b->{ $ORDER[2] }</td>
+			<td>${\ghtmlsafe( $b->{$ORDER[0]} )}</td>
+			<td>${\ghtmlsafe( $b->{$ORDER[1]} )}</td>
+			<td>${\ghtmlsafe( $b->{$ORDER[2]} )}</td>
 			</tr>
 			};
 }

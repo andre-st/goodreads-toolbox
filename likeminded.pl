@@ -150,7 +150,7 @@ More info in ./help/likeminded.md
 
 =head1 VERSION
 
-2019-10-13 (Since 2018-06-22)
+2019-11-12 (Since 2018-06-22)
 
 =cut
 
@@ -393,11 +393,12 @@ for my $userid (sort{ $readers{$b}->{match} <=>
 			<td>$line</td>
 			<td>
 			  <a href="https://www.goodreads.com/user/show/${userid}" target="_blank">
-			    <img src="$readers{$userid}->{img_url}">$readers{$userid}->{name}
+			    <img src="${\ghtmlsafe( $readers{$userid}->{img_url} )}"
+			             >${\ghtmlsafe( $readers{$userid}->{name}    )}
 			    <br>
 			    <small>
-			      $readers{$userid}->{aucommon}&nbsp;authors&nbsp;over<br>
-			      $readers{$userid}->{num_books}&nbsp;books
+			      ${\ghtmlsafe( $readers{$userid}->{aucommon}  )}&nbsp;authors&nbsp;over<br>
+			      ${\ghtmlsafe( $readers{$userid}->{num_books} )}&nbsp;books
 			    </small>
 			  </a>
 			</td>
@@ -405,7 +406,8 @@ for my $userid (sort{ $readers{$b}->{match} <=>
 			};
 			
 	print $fh qq{
-			<div><img src="$authors{$_}->{img_url}">$authors{$_}->{name}</div>
+			<div><img src="${\ghtmlsafe( $authors{$_}->{img_url} )}"
+			              >${\ghtmlsafe( $authors{$_}->{name}    )}</div>
 			} foreach (keys %{$authors_read_by{$userid}});
 
 	print $fh qq{

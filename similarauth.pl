@@ -107,7 +107,7 @@ More info in ./help/similarauth.md
 
 =head1 VERSION
 
-2019-10-13 (Since 2018-07-05)
+2019-11-12 (Since 2018-07-05)
 
 =cut
 
@@ -228,9 +228,9 @@ for my $auid (keys %aufound)
 	print $fh qq{
 			<tr>
 			<td>
-			<a  href="$aufound{$auid}->{works_url}" target="_blank">
-			<img src="$aufound{$auid}->{img_url}" height="80" />
-			          $aufound{$auid}->{name}
+			<a  href="${\ghtmlsafe( $aufound{$auid}->{works_url} )}" target="_blank">
+			<img src="${\ghtmlsafe( $aufound{$auid}->{img_url}   )}" height="80" />
+			          ${\ghtmlsafe( $aufound{$auid}->{name}      )}
 			</a></td>
 			<td>$aufound{$auid}->{_seen}</td>
 			</tr> 
