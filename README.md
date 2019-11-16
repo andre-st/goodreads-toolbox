@@ -92,7 +92,7 @@ $ cd goodreads-toolbox
 ```
 
 2. [Docker](https://opensource.com/resources/what-docker)-users can run this app in its own container. 
-	All generated reports can be accessed via web-browser at `localhost:8080`:
+   Generated reports are accessible via web-browser at `localhost:8080`:
 
 ```console
 $ make docker-image
