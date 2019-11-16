@@ -84,42 +84,36 @@ program in 2015.
 
 ## Getting started
 
-1. GNU/Linux terminal:
+1\. GNU/Linux terminal:
 
 ```console
 $ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads-toolbox
 ```
 
-2. [Docker](https://opensource.com/resources/what-docker) users can run this app in its own 
-   container([?](https://www.docker.com/resources/what-container)). 
-   Access generated reports via web-browser at "localhost:8080":
+2\.A  [Docker](https://opensource.com/resources/what-docker) users can run the Toolbox in its own 
+   container([?](https://www.docker.com/resources/what-container)),
+   and view the results via web-browser at _localhost:8080_:
 
 ```console
 $ make docker-image
-$ make docker-run       # Type `make help` to see options
+$ make docker-run             # Type `make help` first to see options
 % ./example-script.pl --help
-% ...
-% ...
 ```
 
-2. Non-Docker users can install this app directly on their systems:
+2\.B  Users without Docker can install the Toolbox directly on their systems:
 
 ```console
-$ sudo make             # Gets required Perl modules from CPAN
+$ sudo make                   # Gets required Perl modules from CPAN
 $ ./example-script.pl --help
-$ ...
-$ ...
-$ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs
 ```
 
-_Microsoft Windows_ and _Apple's macOS_ is not natively supported:
-- a Windows user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL)
-- there is Docker for Windows (LCOW) and Mac, the ./Dockerfile might be sufficient
-- there is [VirtualBox](https://www.virtualbox.org/) for Windows and macOS which can run a [Linux image](https://www.osboxes.org/virtualbox-images/)
-- maybe you get the toolbox installed directly to your macOS, along with Perl 5, curl and some hacks
+Microsoft Windows and Apple's macOS are _not_ natively supported:
+- a Windows user wrote me that he ran the Toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL)
+- there is Docker for Mac and Windows (LCOW), the ./Dockerfile might be sufficient (not tested)
+- there is [VirtualBox](https://www.virtualbox.org/) for Mac and Windows, which can run a [Linux image](https://www.osboxes.org/virtualbox-images/)
 
-_The usual runtime_ of the programs will be long:
+The usual runtime of the programs will be long:
 - Goodreads slows down all requests and we have to load a lot of data
 - start one program and do other things in the meantime
 - you can break any program with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later (reloads from a file-cache)
