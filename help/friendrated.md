@@ -29,6 +29,7 @@ The report also includes a table with the most liked authors among the friends a
 ## How to generate this on a GNU/Linux operating system
 
 1. [Install the toolbox](../README.md#Getting-started)
+2. at the prompt, enter:
 
 ```console
 $ ./friendrated.pl --help
