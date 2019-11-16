@@ -24,7 +24,9 @@ Version number 1.MINOR.PATCH, increments:
 
 - `Dockerfile`: Docker is a popular software that  allows users to run apps
   in an isolated container with all dependencies included/matched; 
-  there are make-targets for Docker, now (see `make help`)
+  there are make-targets for Docker, now, see `make help`.
+  ([#30](https://github.com/andre-st/goodreads-toolbox/issues/30))
+  
 
 ## Changed
 
