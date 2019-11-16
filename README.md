@@ -91,9 +91,9 @@ program in 2015.
 	```
 
 2. Docker-users can run this app in its own container. 
-	Note: This will create a directory called `my-results` in your current 
+	This will create a directory called "my-results" in your current 
 	user's home directory and bindmounts it to the toolbox output-directory 
-	in the container. You can change the name, of course:
+	in the container. Change as you like:
 	```console
 	$ make docker-image
 	$ make docker-run DOCKER_OUTDIR=~/my-results
@@ -111,11 +111,11 @@ program in 2015.
 	$ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs
 	```
 
-_Microsoft Windows_ and _Apple's macOS_ is not natively supported, but:
+_Microsoft Windows_ and _Apple's macOS_ is not natively supported:
 - a Windows user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL)
-- there is Docker for Windows (LCOW) and Mac, the Dockerfile should be sufficient
+- there is Docker for Windows (LCOW) and Mac, the ./Dockerfile might be sufficient
 - there is [VirtualBox](https://www.virtualbox.org/) for Windows and macOS which can run a [Linux image](https://www.osboxes.org/virtualbox-images/)
-- maybe you get it managed to install the toolbox directly to your macOS, along with Perl 5, curl and some hacks
+- maybe you get the toolbox installed directly to your macOS, along with Perl 5, curl and some hacks
 
 _The usual runtime_ of the programs will be long:
 - Goodreads slows down all requests and we have to load a lot of data
