@@ -24,7 +24,7 @@ Version number 1.MINOR.PATCH, increments:
 
 - `Dockerfile`: Docker is a popular software that  allows users to run apps
   in an isolated container with all dependencies included/matched; 
-  there is also `make docker` to build an image, now
+  there are make-targets for Docker, now (see `make help`)
 
 ## Changed
 
