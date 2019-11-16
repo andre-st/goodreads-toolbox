@@ -85,31 +85,31 @@ program in 2015.
 ## Getting started
 
 1. GNU/Linux terminal:
-	```console
-	$ git clone https://github.com/andre-st/goodreads-toolbox.git
-	$ cd goodreads-toolbox
+```console
+$ git clone https://github.com/andre-st/goodreads-toolbox.git
+$ cd goodreads-toolbox
 	```
 
-2. Docker-users can run this app in its own container. 
+2. [Docker](https://opensource.com/resources/what-docker)-users can run this app in its own container. 
 	This will create a directory called "my-results" in your current 
 	user's home directory and bindmounts it to the toolbox output-directory 
 	in the container. Change as you like:
-	```console
-	$ make docker-image
-	$ make docker-run DOCKER_OUTDIR=~/my-results
-	% ./example-script.pl --help
-	% ...
-	% ...
-	```
+```console
+$ make docker-image
+$ make docker-run DOCKER_OUTDIR=~/my-results
+% ./example-script.pl --help
+% ...
+% ...
+```
 
 2. Non-Docker users can install this app directly on their systems:
-	```console
-	$ sudo make             # Gets required Perl modules from CPAN
-	$ ./example-script.pl --help
-	$ ...
-	$ ...
-	$ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs
-	```
+```console
+$ sudo make             # Gets required Perl modules from CPAN
+$ ./example-script.pl --help
+$ ...
+$ ...
+$ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs
+```
 
 _Microsoft Windows_ and _Apple's macOS_ is not natively supported:
 - a Windows user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL)
