@@ -68,6 +68,7 @@ TODO: q-example "Members popular among your friends"
 ## How to generate this on a GNU/Linux operating system
 
 1. [Install the toolbox](../README.md#Getting-started)
+2. at the prompt, enter:
 
 ```console
 $ ./friendnet.pl --help
