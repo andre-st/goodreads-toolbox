@@ -123,7 +123,7 @@ _Microsoft Windows_ and _Apple's macOS_ is not natively supported:
 _The usual runtime_ of the programs will be long:
 - Goodreads slows down all requests and we have to load a lot of data
 - start one program and do other things in the meantime
-- you can break any program and continue later because it reuses already loaded data (file-cache)
+- you can break any program with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later (reloads from a file-cache)
 
 
 
