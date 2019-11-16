@@ -22,9 +22,11 @@ Version number 1.MINOR.PATCH, increments:
 
 ## Added
 
-- `Dockerfile`: Docker is a popular software that  allows users to run apps
+- `Dockerfile`: Docker is a popular software that allows users to run apps
   in an isolated container with all dependencies included/matched; 
   there are make-targets for Docker, now, see `make help`.
+  The container runs a simple web-server so that a host can access 
+  any HTML report generated within the container.
   ([#30](https://github.com/andre-st/goodreads-toolbox/issues/30))
   
 
@@ -33,7 +35,7 @@ Version number 1.MINOR.PATCH, increments:
 - all programs write to the new `list-out` directory by default and 
   not to the main directory any longer.
   This simplifies sharing files between a Docker container and its host 
-  (using Docker volumes).
+  (using Docker volumes or a httpd).
 - the `dict` directory was renamed to `list-in`, 
   `dict/default.lst` was renamed to `list-in/dict.lst`
 
