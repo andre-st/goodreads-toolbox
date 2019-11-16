@@ -1,4 +1,6 @@
-# The final image is around 328 MB
+# The final image is around 328 MB, 
+# Build time is around 10 minutes
+#
 # An Alpine Linux based image would save 60 MB, but not worth the effort, atm (missing deps etc)
 #
 FROM ubuntu:18.04
@@ -9,8 +11,11 @@ FROM ubuntu:18.04
 # Configuring the image:
 
 ENV PROGDIR=/app
+ENV HTPORT=80
+ENV HTDOCS=$PROGDIR/list-out
 ARG BUILD_DATE
 VOLUME /var/db/good /tmp/FileCache
+EXPOSE $HTPORT
 
 # About:
 LABEL org.label-schema.name="Andre's Goodreads Toolbox"
@@ -37,6 +42,7 @@ RUN apt-get update \
 			build-essential        \
 			libcurl4-openssl-dev   \
 			libwww-curl-perl       \
+			webfs                  \
 	&& rm -rf /var/lib/apt/lists/*   \
 	&& rm -rf /usr/share/{man,doc,info,groff}/*
 
@@ -56,6 +62,7 @@ RUN make \
 # Running the container:
 
 # Default command if not given another on the command line, already in WORKDIR:
-CMD ["bash"]
+# CMD service webfs start
+ENTRYPOINT webfsd -p $HTPORT -r $HTDOCS && bash
 
 

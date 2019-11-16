@@ -13,7 +13,7 @@ DOCKER_BUILD_DATE = $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 DOCKER_IMG_VER    = ${PROJECT_VERSION}
 DOCKER_IMG_NAME   = ${PACKAGE}
 DOCKER_CON_NAME   = ${PACKAGE}
-DOCKER_OUTDIR     = ~/my-results
+DOCKER_HTPORT     = 8080
 RELEASE           = $(PACKAGE)-$(PROJECT_VERSION)
 GITDIR            = $(wildcard .git)
 
@@ -74,7 +74,7 @@ check:
 
 # ----------------------------------------------------------------------------
 ## make docker-image :  Build a Docker image
-## make docker-run   :  Run Docker image, make docker-run DOCKER_OUTDIR=~/my-results
+## make docker-run   :  Run Docker image, make docker-run DOCKER_HTPORT=8080
 
 .PHONY: docker-image
 docker-image: Dockerfile
@@ -88,14 +88,14 @@ docker-run:
 	docker container rm ${DOCKER_CON_NAME} || true
 	docker run \
 			--name=${DOCKER_CON_NAME} \
-			--volume ${DOCKER_OUTDIR}:/app/list-out \
+			--publish=${DOCKER_HTPORT}:80 \
 			--interactive \
 			--tty \
 			"${DOCKER_IMG_NAME}:${DOCKER_IMG_VER}" || true
 
 
 # ----------------------------------------------------------------------------
-## make docs         : Update documentation, e.g., make docs PROJECT_VERSION=1.22
+## make docs         :  Update documentation, e.g., make docs PROJECT_VERSION=1.22
 .PHONY: docs
 docs:
 	# vX.X, vX.XX.X, image:X.XX.X

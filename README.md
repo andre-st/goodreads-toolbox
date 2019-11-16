@@ -92,13 +92,11 @@ $ cd goodreads-toolbox
 ```
 
 2. [Docker](https://opensource.com/resources/what-docker)-users can run this app in its own container. 
-	This will create a directory called "my-results" in your current 
-	user's home directory and bindmounts it to the toolbox output-directory 
-	in the container. Change as you like:
+	All generated reports can be accessed via web-browser at `localhost:8080`:
 
 ```console
 $ make docker-image
-$ make docker-run DOCKER_OUTDIR=~/my-results
+$ make docker-run DOCKER_HTPORT=8080
 % ./example-script.pl --help
 % ...
 % ...
