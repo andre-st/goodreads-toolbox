@@ -8,7 +8,6 @@
 *.log
 *.tar.gz
 *.zip
-*.cookie
 *.sh
 *.xcf
 t/config.pl
