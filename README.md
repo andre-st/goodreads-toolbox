@@ -91,12 +91,12 @@ $ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads-toolbox
 ```
 
-2. [Docker](https://opensource.com/resources/what-docker)-users can run this app in its own container. 
+2. [Docker](https://opensource.com/resources/what-docker) users can run this app in its own container. 
    Access generated reports via web-browser at "localhost:8080":
 
 ```console
 $ make docker-image
-$ make docker-run DOCKER_HTPORT=8080
+$ make docker-run       # Type `make help` to see options
 % ./example-script.pl --help
 % ...
 % ...
