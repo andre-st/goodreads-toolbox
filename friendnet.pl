@@ -89,9 +89,9 @@ show full man page
 
 F</tmp/FileCache/>
 
-F<./friendnet-$USERID-edges.csv>
+F<./list-out/friendnet-$USERID-edges.csv>
 
-F<./friendnet-$USERID-nodes.csv>
+F<./list-out/friendnet-$USERID-nodes.csv>
 
 
 =head1 EXAMPLES
@@ -121,7 +121,7 @@ More info in ./help/friendnet.md
 
 =head1 VERSION
 
-2019-10-13 (Since 2019-06-14)
+2019-11-16 (Since 2019-06-14)
 
 =cut
 
@@ -159,7 +159,7 @@ gsetopt( cache_days => 31 );
 our $TSTART   = time();
 our $DEPTH    = 2;
 our $MAXNHOOD = 1000;  # Ignore users with more than N friends
-our $OUTDIR   = './';
+our $OUTDIR   = File::Spec->catfile( $FindBin::Bin, 'list-out' );
 our $USERID;
 
 GetOptions( 'userid|u=s'      => \$USERID,

@@ -64,7 +64,7 @@ and 2+ (dict-search) has a bad cost/benefit ratio given hundreds of books.
 
 =item B<-d, --dict>=F<filename>
 
-default is F<./dict/default.lst>
+default is F<./list-in/dict.lst>
 
 
 =item B<-u, --userid>=F<number>
@@ -114,6 +114,10 @@ show full man page
 
 =head1 FILES
 
+F<./list-in/dict.lst>
+
+F<./list-out/likeminded-$USERID-$SHELF.html>
+
 F</tmp/FileCache/>
 
 
@@ -150,7 +154,7 @@ More info in ./help/likeminded.md
 
 =head1 VERSION
 
-2019-11-12 (Since 2018-06-22)
+2019-11-16 (Since 2018-06-22)
 
 =cut
 
@@ -167,6 +171,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes   qw( time tv_interval );
 use POSIX         qw( strftime floor locale_h );
+use File::Spec; # Platform indep. directory separator
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
@@ -187,9 +192,9 @@ our $TSTART     = time();
 our $MINCOMMON  = 5;
 our $MAXAUBOOKS = 600;
 our $RIGOR      = 1;
-our $DICTPATH   = './dict/default.lst';
-our @SHELVES;
+our $DICTPATH   = File::Spec->catfile( $FindBin::Bin, 'list-in', 'dict.lst' );
 our $OUTPATH;
+our @SHELVES;
 our $USERID;
 
 GetOptions( 'common|m=i'         => \$MINCOMMON,
@@ -210,8 +215,11 @@ glogin( usermail => $ARGV[0],  # Login not really required at the moment
         userpass => $ARGV[1],  # Asks pw if omitted
         r_userid => \$USERID );
 
-@SHELVES = qw( %23ALL%23 )                                                   if !@SHELVES;
-$OUTPATH = sprintf( "likeminded-%s-%s.html", $USERID, join( '-', @SHELVES )) if !$OUTPATH;
+@SHELVES = qw( %23ALL%23 )
+	if !@SHELVES;
+	
+$OUTPATH = File::Spec->catfile( $FindBin::Bin, 'list-out', sprintf( "likeminded-%s-%s.html", $USERID, join( '-', @SHELVES )))
+	if !$OUTPATH;
 
 
 

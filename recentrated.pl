@@ -94,9 +94,9 @@ $ ./recentrated.pl -u 55554444 -s read -t friend@mail.com admin@mail.com
 
 =head1 FILES
 
-Log written to C</var/log/good.log>
+Log written to F</var/log/good.log>
 
-Database stored in C</var/db/good/>
+Database stored in F</var/db/good/>
 
 
 =head1 REPORTING BUGS

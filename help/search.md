@@ -58,7 +58,7 @@ Searching books:
  order by.. stars, num_ratings, year
  progress.. 100%
 
-Writing search result (N=275) to "search-YOURKEYWORD.html"... 
+Writing search result (N=275) to "./list-out/search-YOURKEYWORD.html"... 
 Total time: 3 minutes
 ```
 

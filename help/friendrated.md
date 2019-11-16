@@ -52,8 +52,8 @@ Getting list of members known to #18418712... 164 members (0.18s)
 
 Perfect! Got favourites of 164 users.
 Writing results to:
-./friendrated-1234567-read.html           (271 books)
-./friendrated-1234567-read-authors.htmml  (210 authors)
+./list-out/friendrated-1234567-read.html           (271 books)
+./list-out/friendrated-1234567-read-authors.htmml  (210 authors)
 
 Total time: 18 minutes
 ```

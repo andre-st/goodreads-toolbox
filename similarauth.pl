@@ -73,6 +73,8 @@ show full man page
 
 =head1 FILES
 
+F<./list-out/similarauth-$USER-$SHELF.html>
+
 F</tmp/FileCache/>
 
 
@@ -107,7 +109,7 @@ More info in ./help/similarauth.md
 
 =head1 VERSION
 
-2019-11-12 (Since 2018-07-05)
+2019-11-16 (Since 2018-07-05)
 
 =cut
 
@@ -123,6 +125,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( strftime );
+use File::Spec; # Platform indep. directory separator
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
@@ -157,8 +160,11 @@ glogin( usermail => $ARGV[0],  # Login not really required at the moment
         userpass => $ARGV[1],  # Asks pw if omitted
         r_userid => \$USERID );
 
-@SHELVES = qw( %23ALL%23 ) if !@SHELVES;
-$OUTPATH = sprintf( "similarauth-%s-%s.html", $USERID, join( '-', @SHELVES ) ) if !$OUTPATH;
+@SHELVES = qw( %23ALL%23 ) 
+	if !@SHELVES;
+
+$OUTPATH = File::Spec->catfile( $FindBin::Bin, 'list-out', sprintf( 'similarauth-%s-%s.html', $USERID, join( '-', @SHELVES )))
+	if !$OUTPATH;
 
 
 

@@ -43,7 +43,7 @@ Getting list of members known to #18418712... 141 members (0.18s)
 [100%] David                     #7634567       0 groups     0.01s
 
 Perfect! Got groups of 141 users.
-Writing results to "friendgroup-1234567.html"... 245 groups (0.31s)
+Writing results to "./list-out/friendgroup-1234567.html"... 245 groups (0.31s)
 Total time: 2 minutes
 ```
 

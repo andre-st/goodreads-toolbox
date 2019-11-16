@@ -74,6 +74,8 @@ show full man page
 
 =head1 FILES
 
+F<./list-out/search-$KEYWORD.html>
+
 F</tmp/FileCache/>
 
 
@@ -108,7 +110,7 @@ More info in ./help/search.md
 
 =head1 VERSION
 
-2019-11-12 (Since 2018-07-29)
+2019-11-16 (Since 2018-07-29)
 
 =cut
 
@@ -125,6 +127,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( strftime locale_h );
+use File::Spec; # Platform indep. directory separator
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
@@ -159,7 +162,7 @@ GetOptions( 'ratings|r=i'     => \$NUMRATINGS,
 	or pod2usage( 1 );
 
 $PHRASE     = join( ' ', @ARGV ) or pod2usage( 1 );
-$OUTPATH    = "search-${PHRASE}.html" if !$OUTPATH;
+$OUTPATH    = File::Spec->catfile( $FindBin::Bin, 'list-out', "search-${PHRASE}.html" ) if !$OUTPATH;
 $ISEXACT    = index( $ARGV[0], ' ' ) > -1;  # Quoted "aaa bbb" as single argument, otherwise 2 args
 $NUMRATINGS = $ISEXACT ? 0 : 5 if !defined $NUMRATINGS;
 $ordercsv   =~ s/\s+//g;  # Mistakenly added spaces

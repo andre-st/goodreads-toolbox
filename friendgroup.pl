@@ -62,6 +62,8 @@ show full man page
 
 =head1 FILES
 
+F<./list-out/friendgroup-$USERID.html>
+
 F</tmp/FileCache/>
 
 
@@ -92,7 +94,7 @@ More info in ./help/friendgroup.md
 
 =head1 VERSION
 
-2019-11-12 (Since 2018-09-26)
+2019-11-16 (Since 2018-09-26)
 
 =cut
 
@@ -109,6 +111,7 @@ use FindBin;
 use lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( strftime locale_h );
+use File::Spec; # Platform indep. directory separator
 use IO::File;
 use Getopt::Long;
 use Pod::Usage;
@@ -142,7 +145,8 @@ glogin( usermail => $ARGV[0],  # Login required: Followee/friend/groups list are
         userpass => $ARGV[1],  # Asks pw if omitted
         r_userid => \$USERID );
 
-$OUTPATH = "friendgroup-${USERID}.html" if !$OUTPATH;
+$OUTPATH = File::Spec->catfile( $FindBin::Bin, 'list-out', "friendgroup-${USERID}.html" ) 
+	if !$OUTPATH;
 
 
 

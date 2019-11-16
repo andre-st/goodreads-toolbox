@@ -79,8 +79,8 @@ Signing in to Goodreads... OK
 Traversing #18418712's social network (depth=2)...
 Covered: [100%]
 Writing network data to: 
-./friendnet-5685856-nodes.csv  (N=76622)
-./friendnet-5685856-edges.csv  (N=106974)
+./list-out/friendnet-5685856-nodes.csv  (N=76622)
+./list-out/friendnet-5685856-edges.csv  (N=106974)
 
 Total time: 195 minutes
 ```

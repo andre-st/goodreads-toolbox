@@ -38,7 +38,7 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =item B<-d, --dict>=F<filename>
 
-default is F<./dict/default.lst>
+default is F<./list-in/dict.lst>
 
 
 =item B<-c, --cache>=F<numdays>
@@ -71,9 +71,11 @@ show full man page
 
 =head1 FILES
 
-F</tmp/FileCache/>
+F<./list-in/dict.lst>
 
-F<./savreviews-book*-stars{0..5}.txt>
+F<./list-out/savreviews-book*-stars{0..5}.txt>
+
+F</tmp/FileCache/>
 
 
 =head1 EXAMPLES
@@ -101,7 +103,7 @@ More info in ./help/savreviews.md
 
 =head1 VERSION
 
-2019-10-13 (Since 2018-08-13)
+2019-11-16 (Since 2018-08-13)
 
 =cut
 
@@ -137,8 +139,8 @@ gsetopt( cache_days => 7 );
 
 our $TSTART     = time();
 our $RIGOR      = 10;
-our $DICTPATH   = './dict/default.lst';
-our $OUTDIR     = '.';
+our $DICTPATH   = File::Spec->catfile( $FindBin::Bin, 'list-in', 'dict.lst' );
+our $OUTDIR     = File::Spec->catfile( $FindBin::Bin, 'list-out' );
 our $OUTNAMEFMT = 'savreviews-book%s-stars%d.txt';
 our $OUTDATEFMT = "%Y/%m/%d";  # man strptime
 our $BOOKID;

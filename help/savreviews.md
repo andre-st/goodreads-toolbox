@@ -79,12 +79,12 @@ Number of reviews per year:
 2019 ######                                     111
 
 Writing reviews to:
-./savreviews-book59716-stars0.txt
-./savreviews-book59716-stars1.txt
-./savreviews-book59716-stars2.txt
-./savreviews-book59716-stars3.txt
-./savreviews-book59716-stars4.txt
-./savreviews-book59716-stars5.txt
+./list-out/savreviews-book59716-stars0.txt
+./list-out/savreviews-book59716-stars1.txt
+./list-out/savreviews-book59716-stars2.txt
+./list-out/savreviews-book59716-stars3.txt
+./list-out/savreviews-book59716-stars4.txt
+./list-out/savreviews-book59716-stars5.txt
 
 Total time: 36 minutes
 ```
@@ -95,7 +95,7 @@ Total time: 36 minutes
 - long runtime: Goodreads slows down all requests and we have to load a lot of data
 - there's no way to load _all_ reviews of a book, but the program 
   tries different things to get as many fulltext reviews as 
-  possible -- this can take very long (see `--rigor` parameter and [this](../dict/))
+  possible -- this can take very long (see `--rigor` parameter and [this](../list-in/))
 - needs data cleansing on your side
 - review text might include user-entered (broken) HTML code and URLs
 - review text can be in any language, e.g., German or Russian

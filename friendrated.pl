@@ -136,17 +136,17 @@ show full man page
 
 =head1 FILES
 
-F<./friendrated-$USERID-$SHELF-$FLAGS.html>
+F<./list-out/friendrated-$USERID-$SHELF-$FLAGS.html>
 
-F<./friendrated-$USERID-$SHELF-$FLAGS-authors.html>
+F<./list-out/friendrated-$USERID-$SHELF-$FLAGS-authors.html>
 
-F<./friendrated-1234567-read-45by3.html>
+F<./list-out/friendrated-1234567-read-45by3.html>
 
-F<./friendrated-1234567-read-45by3-authors.html>
+F<./list-out/friendrated-1234567-read-45by3-authors.html>
 
-F<./friendrated-7654321-to-read-05by3.html>
+F<./list-out/friendrated-7654321-to-read-05by3.html>
 
-F<./friendrated-7654321-to-read-05by3-authors.html>
+F<./list-out/friendrated-7654321-to-read-05by3-authors.html>
 
 F</tmp/FileCache/>
 
@@ -188,7 +188,7 @@ More info in ./help/friendrated.md
 
 =head1 VERSION
 
-2019-11-12 (Since 2018-05-10)
+2019-11-16 (Since 2018-05-10)
 
 =cut
 
@@ -227,7 +227,7 @@ our $MINFAVORERS = 3;
 our $MINRATED    = 4;
 our $MAXRATED    = 5;
 our $FRIENDSHELF = 'read';
-our $OUTDIR      = './';
+our $OUTDIR      = File::Spec->catfile( $FindBin::Bin, 'list-out' );
 our $ISTOREAD    = 0;
 our @EXCLMYSHELVES;
 our $MAXRATS;
