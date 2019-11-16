@@ -12,15 +12,15 @@ Table of contents:
 | Essential Goals                  | Why
 |----------------------------------|-------------------------------------
 | Monetary costs &#8815; PC+Internet | Solo-developer non-profit side-project; Out of scope: distributed scraping with unique IP addresses (request throttling); we can easily wait for results
-| Correctness                   | Worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
-| Unattendability                   | Scraping can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
-| Fault-tolerance                    | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions and is sometimes over capacity or in maintenance mode, invalid dates, ...; supports unattendability goal (FT is not high availability)
-| Resumability                   | Scraping can take hours: allow intentional breaks, expect program or computer crashes, power issues -- we don't want to start from the beginning
-| Testability                 | Scraping the Goodreads website expects stable HTML/JS-parts and we cannot know in advance when and where changes will occur (long-term failure). So regular and throughout (i.e., automated) testing is needed.
-| Repair Turnaround Time        | Scraping can take hours: shouldn't impact regular debugging too much
-| Ease of use on UNIX systems                                  | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
-| Learnability                      | Many program options and functions (libs), you cannot remember everything
-| Integrity                          | Users on GR might try to abuse our programs or other programs (reading our outputs) by saving rogue strings in reviews, usernames etc
+| Correctness                      | Worst case: wasted computer time, missed book discovery opportunities, too many annoying/useless emails (recentrated)
+| Unattendability                  | Scraping can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
+| Fault-tolerance                  | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions and is sometimes over capacity or in maintenance mode, invalid dates, ...; supports unattendability goal (FT is not high availability)
+| Resumability                     | Scraping can take hours: allow intentional breaks, expect program or computer crashes, power issues -- we don't want to start from the beginning
+| Testability                      | Scraping the Goodreads website expects stable HTML/JS-parts and we cannot know in advance when and where changes will occur (long-term failure). So regular and throughout (i.e., automated) testing is needed.
+| Repair Turnaround Time           | Scraping can take hours: shouldn't impact regular debugging too much
+| Ease of use on UNIX systems      | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
+| Learnability                     | Many program options and functions (libs), you cannot remember everything
+| Integrity                        | Users on GR might try to abuse our programs or other programs (reading our outputs) by saving rogue strings in reviews, usernames etc (XSS)
 
 [List of possible goals...](https://en.wikipedia.org/wiki/List_of_system_quality_attributes)
 
@@ -32,7 +32,7 @@ Table of contents:
 | Unit testing          | libraries' public functions                        | use cache &lt; 24h
 | Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing the chance of distributing a buggy release; per-commit would be annoying because some tests need 3-5 minutes (w/o cache)
 | Manual testing        | user-scripts, when sth. significant changed        | automated UI tests are not worth the effort; man. fault-injection (disable network)
-| Syntactic check       | user-scripts, before each commit                   | automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but might break things too
+| Syntactic check       | user-scripts, before each commit                   | automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but might break things too; `use strict; use warnings;`
 | PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repetition in user-scripts, centralized changes
 | Persistent caching    | all scraped raw source data (not results)          | 
 | Outwait I/O issues    | libraries                                          | wait, retry n times, skip less important
