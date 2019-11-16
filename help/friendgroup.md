@@ -1,6 +1,6 @@
 # friendgroup.pl
 
-![Maintenance](https://img.shields.io/maintenance/yes/2018.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
 
 
 ## Discussion groups common among the people you follow
@@ -21,6 +21,7 @@ or Faith (ibidem):
 ## How to generate this on a GNU/Linux operating system
 
 1. [Install the toolbox](../README.md#Getting-started)
+2. at the prompt, enter:
 
 ```console
 $ ./friendgroup.pl --help
