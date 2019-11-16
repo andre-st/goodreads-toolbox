@@ -33,7 +33,7 @@ or [Mehran](https://web.archive.org/web/20190525013406/https://www.goodreads.com
 ## How to generate this on a GNU/Linux operating system
 
 1. [Install the toolbox](../README.md#Getting-started)
-
+2. at the prompt, enter:
 ```console
 $ ./likeminded.pl --help
 $ ./likeminded.pl goodlogin@example.com
