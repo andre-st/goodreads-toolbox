@@ -85,6 +85,7 @@ program in 2015.
 ## Getting started
 
 1. GNU/Linux terminal:
+
 ```console
 $ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads-toolbox
@@ -94,6 +95,7 @@ $ cd goodreads-toolbox
 	This will create a directory called "my-results" in your current 
 	user's home directory and bindmounts it to the toolbox output-directory 
 	in the container. Change as you like:
+
 ```console
 $ make docker-image
 $ make docker-run DOCKER_OUTDIR=~/my-results
@@ -103,6 +105,7 @@ $ make docker-run DOCKER_OUTDIR=~/my-results
 ```
 
 2. Non-Docker users can install this app directly on their systems:
+
 ```console
 $ sudo make             # Gets required Perl modules from CPAN
 $ ./example-script.pl --help
