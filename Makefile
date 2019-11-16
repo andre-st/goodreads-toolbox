@@ -66,15 +66,17 @@ endif
 
 
 # ----------------------------------------------------------------------------
-## make check        :  Run unit tests
+## make check        :  Runs unit tests
 .PHONY: check
 check:
 	prove
 
 
 # ----------------------------------------------------------------------------
-## make docker-image :  Build a Docker image
-## make docker-run   :  Run Docker image, make docker-run DOCKER_HTPORT=8080
+## make docker-image :  Builds a Docker image
+## make docker-run   :  Runs Docker image, optionally:
+##                        make docker-run DOCKER_HTPORT=8080
+##                        make docker-run DOCKER_CON_NAME=goodreads-toolbox
 
 .PHONY: docker-image
 docker-image: Dockerfile
@@ -95,7 +97,8 @@ docker-run:
 
 
 # ----------------------------------------------------------------------------
-## make docs         :  Update documentation, e.g., make docs PROJECT_VERSION=1.22
+## make docs         :  Updates documentation, optionally:
+##                        make docs PROJECT_VERSION=1.22
 .PHONY: docs
 docs:
 	# vX.X, vX.XX.X, image:X.XX.X
