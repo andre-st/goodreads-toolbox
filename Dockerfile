@@ -1,4 +1,4 @@
-# The final image is around 328 MB, 
+# The final image is around 348 MB,
 # Build time is around 10 minutes
 #
 # An Alpine Linux based image would save 60 MB, but not worth the effort, atm (missing deps etc)
