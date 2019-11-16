@@ -84,30 +84,43 @@ program in 2015.
 
 ## Getting started
 
-GNU/Linux terminal:
-```console
-$ git clone https://github.com/andre-st/goodreads-toolbox.git
-$ cd goodreads
-$ sudo make             # Gets required Perl modules from CPAN (details see Makefile)
-$ ./example-script.pl --help
-$ ...
-$ ...
-$ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs (see Makefile)
-```
+1. GNU/Linux terminal:
+	```console
+	$ git clone https://github.com/andre-st/goodreads-toolbox.git
+	$ cd goodreads-toolbox
+	```
 
-_Microsoft Windows_ and _Apple's macOS_ is not officially supported.
-A Windows user, however, wrote me that he ran the toolbox on the 
-[Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).
-Otherwise, resort to a virtual machine program such as [VirtualBox](https://www.virtualbox.org/) 
-and run a [Linux image](https://www.osboxes.org/virtualbox-images/) in Windows.
-MacOS users _might_ get the toolbox running along with Perl 5 and curl, but no guarantee.
+2. Docker-users can run this app in its own container. 
+	Note: This will create a directory called `my-results` in your current 
+	user's home directory and bindmounts it to the toolbox output-directory 
+	in the container. You can change the name, of course:
+	```console
+	$ make docker-image
+	$ make docker-run DOCKER_OUTDIR=~/my-results
+	% ./example-script.pl --help
+	% ...
+	% ...
+	```
 
+2. Non-Docker users can install this app directly on their systems:
+	```console
+	$ sudo make             # Gets required Perl modules from CPAN
+	$ ./example-script.pl --help
+	$ ...
+	$ ...
+	$ sudo make uninstall   # Finally remove cache, logs etc from sys-dirs
+	```
 
-_The usual runtime_ of the programs will be long,
-because Goodreads slows down all requests and we have to load a lot of data. 
-You should start one program and do other things in the meantime.
-You can break any program and continue later 
-because it reuses already loaded data (file-cache).
+_Microsoft Windows_ and _Apple's macOS_ is not natively supported, but:
+- a Windows user wrote me that he ran the toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL)
+- there is Docker for Windows (LCOW) and Mac, the Dockerfile should be sufficient
+- there is [VirtualBox](https://www.virtualbox.org/) for Windows and macOS which can run a [Linux image](https://www.osboxes.org/virtualbox-images/)
+- maybe you get it managed to install the toolbox directly to your macOS, along with Perl 5, curl and some hacks
+
+_The usual runtime_ of the programs will be long:
+- Goodreads slows down all requests and we have to load a lot of data
+- start one program and do other things in the meantime
+- you can break any program and continue later because it reuses already loaded data (file-cache)
 
 
 

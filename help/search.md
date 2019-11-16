@@ -44,10 +44,9 @@ or [Ian (2016)](https://web.archive.org/web/20190525015312/https://www.goodreads
 
 ## How to generate this on a GNU/Linux operating system
 
+1. [Install the toolbox](../README.md#Getting-started)
+
 ```console
-$ git clone https://github.com/andre-st/goodreads-toolbox.git
-$ cd goodreads
-$ sudo make   # Required Perl modules from CPAN
 $ ./search.pl --help
 $ ./search.pl YOURKEYWORD
 

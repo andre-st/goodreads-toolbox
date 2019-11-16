@@ -1,35 +1,5 @@
 Installing André's Goodreads Toolbox
 
-
-
-Download latest
----------------
-$ git clone https://github.com/andre-st/goodreads.git
-
-
-
-Requirements
----------------
-Linux, Perl 5.22
-
-
-
-Install
----------------
-$ cd goodreads
-$ sudo make       # Gets required Perl modules from CPAN etc (see Makefile)
-
-
-  Each script has its own documentation, 
-  e.g., ./help/recentrated.md for recentrated.pl.
-  You should read them as they detail limitations
-  and perhaps additional installation steps.
-
-
-
-Uninstall
----------------
-$ sudo make uninstall   # Details see Makefile
-
+see README.md section "Getting started"
 
 

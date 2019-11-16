@@ -28,10 +28,9 @@ The report also includes a table with the most liked authors among the friends a
 
 ## How to generate this on a GNU/Linux operating system
 
+1. [Install the toolbox](../README.md#Getting-started)
+
 ```console
-$ git clone https://github.com/andre-st/goodreads-toolbox.git
-$ cd goodreads
-$ sudo make        # Required Perl modules from CPAN
 $ ./friendrated.pl --help
 $ ./friendrated.pl goodlogin@example.com
 
