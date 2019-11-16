@@ -23,6 +23,7 @@ From the _Goodreads Feedback_ forum,
 ## How to generate this on a GNU/Linux operating system
 
 1. [Install the toolbox](../README.md#Getting-started)
+2. at the prompt, enter:
 
 ```console
 $ ./similarauth.pl --help
