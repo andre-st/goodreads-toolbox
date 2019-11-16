@@ -45,6 +45,7 @@ or [Ian (2016)](https://web.archive.org/web/20190525015312/https://www.goodreads
 ## How to generate this on a GNU/Linux operating system
 
 1. [Install the toolbox](../README.md#Getting-started)
+2. at the prompt, enter:
 
 ```console
 $ ./search.pl --help
