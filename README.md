@@ -89,7 +89,7 @@ program in 2015.
 ```console
 $ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads-toolbox
-	```
+```
 
 2. [Docker](https://opensource.com/resources/what-docker)-users can run this app in its own container. 
 	This will create a directory called "my-results" in your current 
