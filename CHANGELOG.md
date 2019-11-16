@@ -14,11 +14,26 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
-## [v1.21.2] - 2019-11-11
+## [v1.22] - 2019-11-16
 ## Fixed
 
-- prevention of potential cross-site scripting (XSS) through reviews, usernames,
-  book titles etc when generating HTML reports
+- _potential_ cross-site scripting attacks (XSS) against our HTML reports
+  through reviews, usernames, book titles on the Goodreads website
+
+## Added
+
+- `Dockerfile`: Docker is a popular software that  allows users to run apps
+  in an isolated container with all dependencies included/matched; 
+  there is also `make docker` to build an image, now
+
+## Changed
+
+- all programs write to the new `list-out` directory by default and 
+  not to the main directory any longer.
+  This simplifies sharing files between a Docker container and its host 
+  (using Docker volumes).
+- the `dict` directory was renamed to `list-in`, 
+  `dict/default.lst` was renamed to `list-in/dict.lst`
 
 
 
