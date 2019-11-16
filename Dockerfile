@@ -36,12 +36,17 @@ LABEL org.label-schema.url="https://github.com/andre-st/goodreads-toolbox"
 #     Perl's WWW::Curl module is just a Perl extension interface for libcurl(-dev) 
 # "libwww-curl-perl":
 #     Makefile.PL in WWW-Curl-4.17.tar.gz will fail otherwise (WWW::Curl module)
+# "perl-doc":
+#     display ./script.pl --help page correctly
+# "webfs":
+#     allow host to access generated HTML reports
 #
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 			build-essential        \
 			libcurl4-openssl-dev   \
 			libwww-curl-perl       \
+			perl-doc               \
 			webfs                  \
 	&& rm -rf /var/lib/apt/lists/*   \
 	&& rm -rf /usr/share/{man,doc,info,groff}/*
