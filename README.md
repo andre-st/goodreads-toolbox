@@ -106,7 +106,7 @@ $ make docker-run    # Type `make help` first to see options
 $ sudo make          # Gets required Perl modules from CPAN
 ```
 
-3\.  at the prompt, enter something like:
+3\.  at the prompt, try out the Toolbox programs:
 
 ```console
 $ ./example-script.pl --help
