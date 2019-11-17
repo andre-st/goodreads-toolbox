@@ -39,7 +39,7 @@ LABEL org.label-schema.url="https://github.com/andre-st/goodreads-toolbox"
 # "perl-doc":
 #     display ./script.pl --help page correctly
 # "webfs":
-#     allow host to access generated HTML reports
+#     allow host to access generated HTML reports via web-browser (instead of bindmounts)
 #
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
@@ -66,7 +66,7 @@ RUN make \
 # ----------------------------------------------------------------------------
 # Running the container:
 
-# Default command if not given another on the command line, already in WORKDIR:
+# bash already in WORKDIR:
 # CMD service webfs start
 ENTRYPOINT webfsd -p $HTPORT -r $HTDOCS && bash
 
