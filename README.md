@@ -12,7 +12,7 @@ via periodical e-mail. It helps discover new criticisms and users with interesti
 libraries. You can [try this online](https://andre-st.github.io/goodreads/) if you 
 don't want to install anything.
 It implements the "follow book" feature that was requested in the Goodreads forums. 
-[Usage+Schreenshot](./help/recentrated.md)
+[Usage+Screenshot](./help/recentrated.md)
 
 
 ## [friendrated.pl](./help/friendrated.md)
@@ -21,7 +21,7 @@ Prints all books rated 4 or 5 stars by 3 or more persons you follow (including f
 It implements the "books common among the people I follow" feature that was requested 
 in the Goodreads forums. It also lists the most read authors, the most wished-for 
 and hated books.
-[Usage+Schreenshot](./help/friendrated.md)
+[Usage+Screenshot](./help/friendrated.md)
 
 
 ## [friendnet.pl](./help/friendnet.md)
@@ -29,14 +29,14 @@ and hated books.
 Spiders your social network and creates files with edges and nodes which can be
 easily processed with social network analysis software. It answers questions
 like: Which members are popular among your friends?
-[Usage+Schreenshot](./help/friendnet.md)
+[Usage+Screenshot](./help/friendnet.md)
 
 
 ## [friendgroup.pl](./help/friendgroup.md)
 
 Prints discussion groups common among the persons you follow (including friends).
 Searching groups on Goodreads is a PITA, and sometimes you don't know what you can have 
-and wouldn't search for it. [Usage+Schreenshot](./help/friendgroup.md)
+and wouldn't search for it. [Usage+Screenshot](./help/friendgroup.md)
 
 
 ## [likeminded.pl](./help/likeminded.md)
@@ -44,7 +44,7 @@ and wouldn't search for it. [Usage+Schreenshot](./help/friendgroup.md)
 Prints Goodreads members who are interested in the same books as you.
 It implements the "Finding people based on the books they've read"
 feature that was requested in the Goodreads forums.
-[Usage+Schreenshot](./help/likeminded.md)
+[Usage+Screenshot](./help/likeminded.md)
 
 
 ## [similarauth.pl](./help/similarauth.md)
@@ -52,7 +52,7 @@ feature that was requested in the Goodreads forums.
 Prints authors who Goodreads thinks are similar to all the authors you're reading.
 It implements the "Finding [all] similar authors" feature that was requested in the 
 Goodreads forums.
-[Usage+Schreenshot](./help/similarauth.md)
+[Usage+Screenshot](./help/similarauth.md)
 
 
 ## [search.pl](./help/search.md)
@@ -62,14 +62,14 @@ Prints a books search result, ordered by average rating and number of ratings
 The Goodreads website doesn't offer it for some reason.
 It implements the "Sort search results by rating" feature that was requested 
 in the Goodreads forums.
-[Usage+Schreenshot](./help/search.md)
+[Usage+Screenshot](./help/search.md)
 
 
 ## [savreviews.pl](./help/savreviews.md)
 
 Saves text-reviews for a book to a text-file. It implements the "Extract all 
 reviews for a specific book" feature that was requested in the Goodreads forums.
-[Usage+Schreenshot](./help/savreviews.md)
+[Usage+Screenshot](./help/savreviews.md)
 
 
 ## ~~[amz-tradein.pl](./help/amz-tradein.md)~~
@@ -78,7 +78,7 @@ This script fetched Amazon Trade-In prices for all books in a Goodreads.com
 shelf ("resales" or "donations"). It automated regular manual bid-checking for 
 hundreds of books, discovering sales opportunities. Amazon stopped its buyback 
 program in 2015.
-[Usage+Schreenshot](./help/amz-tradein.md)
+[Usage+Screenshot](./help/amz-tradein.md)
 
 
 
