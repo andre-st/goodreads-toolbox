@@ -91,7 +91,7 @@ $ git clone https://github.com/andre-st/goodreads-toolbox.git
 $ cd goodreads-toolbox
 ```
 
-2\.A  [Docker](https://opensource.com/resources/what-docker) users can run the Toolbox in its own 
+2a\.  [Docker](https://opensource.com/resources/what-docker) users can run the Toolbox in its own 
    container([?](https://www.docker.com/resources/what-container)),
    and view the results via web-browser at _localhost:8080_:
 
@@ -101,7 +101,7 @@ $ make docker-run             # Type `make help` first to see options
 % ./example-script.pl --help
 ```
 
-2\.B  Users without Docker can install the Toolbox directly on their systems:
+2b\.  Users without Docker can install the Toolbox directly on their systems:
 
 ```console
 $ sudo make                   # Gets required Perl modules from CPAN
