@@ -97,14 +97,18 @@ $ cd goodreads-toolbox
 
 ```console
 $ make docker-image
-$ make docker-run             # Type `make help` first to see options
-% ./example-script.pl --help
+$ make docker-run    # Type `make help` first to see options
 ```
 
-2b\.  Users without Docker can install the Toolbox directly on their systems:
+2b\.  users without Docker can install the Toolbox directly on their systems:
 
 ```console
-$ sudo make                   # Gets required Perl modules from CPAN
+$ sudo make          # Gets required Perl modules from CPAN
+```
+
+3\.  at the prompt, enter something like:
+
+```console
 $ ./example-script.pl --help
 ```
 
