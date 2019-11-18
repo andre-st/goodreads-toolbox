@@ -114,7 +114,7 @@ $ ./example-script.pl --help
 
 Microsoft Windows and Apple's macOS are _not_ natively supported:
 - a Windows user wrote me that he ran the Toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL)
-- install [Docker for Windows](https://download.docker.com/win/stable/DockerToolbox.exe) (LCOW) or Mac, copy this repository somewhere and run the ./Dockerfile
+- install [Docker for Windows or Mac](https://github.com/docker/toolbox/releases), copy this repository somewhere and run the ./Dockerfile
 - there is [VirtualBox](https://www.virtualbox.org/) for Mac and Windows, which can run a [Linux image](https://www.osboxes.org/virtualbox-images/)
 
 The usual runtime of the programs will be long:
