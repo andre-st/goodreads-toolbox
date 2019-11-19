@@ -61,7 +61,7 @@ Considerable:
 | Unattendability       | none | none | none | none | none | none | +++  | none | none | none | none | none | none | weak
 | Fault-tolerance       | none | none | +    | none | none | none | +++  | none | none | none | none | none | none | weak
 | Resumability          | none | none | none | none | none | +++  | +    | none | none | none | none | none | none | strong
-| Testability           | +++  | +++  | none | none | +++  | +    | none | none | none | none | none | none | none | strong
+| Testability           | +++  | +++  | none | none | +++  | +    | none | none | +    | none | none | none | none | strong
 | RepairTurnaroundTime  | +++  | +++  | none | none | ++   | +++  | none | none | none | none | none | none | +    | strong
 | Ease of Use on UNIX   | none | none | none | none | none | none | none | none | +++  | +++  | +++  | none | none | strong
 | Learnability          | ++   | none | none | none | none | none | none | none | none | +++  | +++  | none | none | strong
