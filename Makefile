@@ -81,14 +81,18 @@ check:
 .PHONY: docker-image
 docker-image: Dockerfile
 	docker build \
-			--build-arg BUILD_DATE="${DOCKER_BUILD_DATE}" \
+			--build-arg BUILD_DATE="${DOCKER_BUILD_DATE}"      \
+			--build-arg PROJECT_VERSION="${PROJECT_VERSION}"   \
 			--tag "${DOCKER_IMG_NAME}:${DOCKER_IMG_VER}" .
+	@echo "[NEXT] You might like to start the new Docker image with 'make docker-run'"
+
 
 .PHONY: docker-run
 docker-run:
 	docker stop         ${DOCKER_CON_NAME} || true
 	docker container rm ${DOCKER_CON_NAME} || true
-	docker run \
+	@echo "[NOTE] Goodreads results are written to 'list-out/', accessible via web-browser at localhost:${DOCKER_HTPORT}"
+	@docker run \
 			--name=${DOCKER_CON_NAME} \
 			--publish=${DOCKER_HTPORT}:80 \
 			--interactive \
