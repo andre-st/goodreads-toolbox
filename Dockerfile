@@ -13,15 +13,20 @@ ENV PROGDIR=/app
 ENV HTPORT=80
 ENV HTDOCS=$PROGDIR/list-out
 ARG BUILD_DATE
+ARG PROJECT_VERSION
 VOLUME /var/db/good /tmp/FileCache
 EXPOSE $HTPORT
 
 # About:
-LABEL org.label-schema.name="Andre's Goodreads Toolbox"
-LABEL org.label-schema.description="9 tools for Goodreads.com, for finding people based on the books they've read, finding books popular among the people you follow, following new book reviews, etc"
-LABEL org.label-schema.maintainer="datakadabra@gmail.com"
-LABEL org.label-schema.build-date=$BUILD_DATE
-LABEL org.label-schema.url="https://github.com/andre-st/goodreads-toolbox"
+# http://label-schema.org/rc1/
+LABEL org.label-schema.schema-version = "1.0"
+LABEL org.label-schema.name           = "Andre's Goodreads Toolbox"
+LABEL org.label-schema.description    = "9 tools for Goodreads.com, for finding people based on the books they've read, finding books popular among the people you follow, following new book reviews, etc"
+LABEL org.label-schema.maintainer     = "datakadabra@gmail.com"
+LABEL org.label-schema.build-date     = $BUILD_DATE
+LABEL org.label-schema.version        = $PROJECT_VERSION
+LABEL org.label-schema.url            = "https://github.com/andre-st/goodreads-toolbox/blob/master/README.md"
+LABEL org.label-schema.vcs-url        = "https://github.com/andre-st/goodreads-toolbox"
 
 
 # ----------------------------------------------------------------------------
