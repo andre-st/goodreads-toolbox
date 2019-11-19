@@ -31,7 +31,7 @@ Table of contents:
 |-----------------------|----------------------------------------------------|-------------------------------------------
 | Unit testing          | libraries' public functions                        | use cache &lt; 24h
 | Regression testing    | run unit-tests before changes are pushed to GitHub | automatically via [a git-hook](../git-hooks/pre-push), reducing the chance of distributing a buggy release; per-commit would be annoying because some tests need 3-5 minutes (w/o cache)
-| Manual testing        | user-scripts, when sth. significant changed        | automated UI tests are not worth the effort; man. fault-injection (disable network)
+| Manual testing        | user-scripts, when sth. significant changed        | automated UI tests are not worth the effort; manual fault-injection (disable network)
 | Syntactic check       | user-scripts, before each commit                   | automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but might break things too; `use strict; use warnings;`
 | PushLogicDownTheStack | user-scripts                                       | have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repetition in user-scripts, centralized changes
 | Persistent caching    | all scraped raw source data (not results)          | 
