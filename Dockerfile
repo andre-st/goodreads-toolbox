@@ -1,10 +1,9 @@
-# The final image is around 348 MB,
+# The final image is around 199 MB,
 # Build time is around 10 minutes
 #
 # An Alpine Linux based image would save 60 MB, but not worth the effort, atm (missing deps etc)
 #
 FROM ubuntu:18.04
-# FROM bitnami/minideb:jessie
 
 
 # ----------------------------------------------------------------------------
@@ -28,7 +27,9 @@ LABEL org.label-schema.url="https://github.com/andre-st/goodreads-toolbox"
 # ----------------------------------------------------------------------------
 # Building the image:
 
-# "build-essential":
+# ubuntu:18.04 [64 MB]:
+#     base image
+# "build-essential" [157 MB]:
 #     gcc : installing some Perl modules includes compiling C code,
 #     make: duplicating the Makefile in this Dockerfile would be error-prone (DRY),
 #     CPAN: online repository for required Perl modules
@@ -40,27 +41,28 @@ LABEL org.label-schema.url="https://github.com/andre-st/goodreads-toolbox"
 #     display ./script.pl --help page correctly
 # "webfs":
 #     allow host to access generated HTML reports via web-browser (instead of bindmounts)
-#
-RUN apt-get update \
-	&& apt-get install -y --no-install-recommends \
+
+COPY . $PROGDIR
+WORKDIR $PROGDIR/
+
+RUN apt-get update   \
+	&& apt-get install -y --no-install-recommends   \
 			build-essential        \
 			libcurl4-openssl-dev   \
 			libwww-curl-perl       \
 			perl-doc               \
 			webfs                  \
-	&& rm -rf /var/lib/apt/lists/*   \
-	&& rm -rf /usr/share/{man,doc,info,groff}/*
-
-COPY . $PROGDIR
-
-WORKDIR $PROGDIR/
-
-RUN make \
-	&& rm -rf \
-			$HOME/.cpan/build/*              \
-			$HOME/.cpan/sources/authors/id   \
-			$HOME/.cpan/cpan_sqlite_log.*    \
+	&& make                          \
+	&& apt-get purge -y --auto-remove build-essential   \
+	&& rm -rf                                     \
+			/var/lib/apt/lists/*                \
+			/usr/share/{man,doc,info,groff}/*   \
+			$HOME/.cpan/build/*                 \
+			$HOME/.cpan/sources/authors/id      \
+			$HOME/.cpan/cpan_sqlite_log.*       \
 			/tmp/cpan_install_*.txt
+
+
 
 
 # ----------------------------------------------------------------------------
