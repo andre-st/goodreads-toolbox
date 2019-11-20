@@ -34,18 +34,24 @@ LABEL org.label-schema.vcs-url        = "https://github.com/andre-st/goodreads-t
 
 # ubuntu:18.04 [64 MB]:
 #     base image
+#
 # "build-essential" [157 MB]:
 #     gcc : installing some Perl modules includes compiling C code,
 #     make: duplicating the Makefile in this Dockerfile would be error-prone (DRY),
 #     CPAN: online repository for required Perl modules
+#
 # "libcurl4-openssl-dev":
 #     Perl's WWW::Curl module is just a Perl extension interface for libcurl(-dev) 
+#
 # "libwww-curl-perl":
 #     Makefile.PL in WWW-Curl-4.17.tar.gz will fail otherwise (WWW::Curl module)
+#
 # "perl-doc":
 #     display ./script.pl --help page correctly
+#
 # "webfs":
 #     allow host to access generated HTML reports via web-browser (instead of bindmounts)
+#
 
 COPY . $PROGDIR
 WORKDIR $PROGDIR/
