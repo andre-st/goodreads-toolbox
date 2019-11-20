@@ -71,27 +71,27 @@ RUN apt-get update   \
 # webfsd:
 # http://svn.apache.org/viewvc/httpd/httpd/trunk/docs/conf/mime.types?view=co
 RUN echo $'\
-application/javascript				js           \n\
-application/json					json         \n\
-application/xml					xml xsl      \n\
-application/xml-dtd					dtd          \n\
-application/vnd.google-earth.kml+xml	kml          \n\
-application/pdf					pdf          \n\
-application/zip					zip          \n\
-application/x-rar-compressed			rar          \n\
-application/x-tar					tar          \n\
-application/x-sh					sh           \n\
-image/jpeg						jpeg jpg jpe \n\
-image/png							png          \n\
-image/gif							gif          \n\
-image/bmp							bmp          \n\
-image/svg+xml						svg svgz     \n\
-text/calendar						ics ifb      \n\
-text/css							css          \n\
-text/csv							csv          \n\
-text/html							html htm     \n\
-text/plain						txt text conf def list log in \n\
-text/x-nfo						nfo          \n\
+application/javascript                  js           \n\
+application/json                        json         \n\
+application/xml                         xml xsl      \n\
+application/xml-dtd                     dtd          \n\
+application/vnd.google-earth.kml+xml    kml          \n\
+application/pdf                         pdf          \n\
+application/zip                         zip          \n\
+application/x-rar-compressed            rar          \n\
+application/x-tar                       tar          \n\
+application/x-sh                        sh           \n\
+image/jpeg                              jpeg jpg jpe \n\
+image/png                               png          \n\
+image/gif                               gif          \n\
+image/bmp                               bmp          \n\
+image/svg+xml                           svg svgz     \n\
+text/calendar                           ics ifb      \n\
+text/css                                css          \n\
+text/csv                                csv          \n\
+text/html                               html htm     \n\
+text/plain                              txt text conf def list log in \n\
+text/x-nfo                              nfo          \n\
 ' > /etc/mime.types
 
 
