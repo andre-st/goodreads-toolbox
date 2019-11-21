@@ -27,7 +27,7 @@ use_ok( 'Goodscrapes' );
 gsetopt( cache_days => 1 );
 
 
-diag( "takes ~3 minutes" );
+diag( "takes ~8 minutes" );
 
 
 print( 'Searching books... ' );
