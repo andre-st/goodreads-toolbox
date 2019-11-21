@@ -71,6 +71,7 @@ or see the [AUTHORS.md](../AUTHORS.md) file.
 
 ## See also
 
+- "[Groups With My Books](https://www.goodreads.com/group/my_books)" - Groups that have added a book in your shelves (Goodreads feature)
 - [friendrated.pl](friendrated.md) - Books common among the people you follow
 - [friendnet.pl](friendnet.md)     - Social network analysis
 - [likeminded.pl](likeminded.md)   - Find Goodreads members with similar book taste
