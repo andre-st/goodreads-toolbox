@@ -17,9 +17,10 @@ Version number 1.MINOR.PATCH, increments:
 ## [v1.22] - 2019-11-16
 ## Fixed
 
-- _potential_ cross-site scripting attacks (XSS) against our HTML reports
-  through reviews, usernames, book titles on the Goodreads website
-
+- possible cross-site scripting attacks (XSS) against our HTML reports
+  by adding Javascript to reviews, usernames, book titles on the Goodreads website.
+  This software is too insignificant to be a real target, but you never know.
+  
 ## Added
 
 - `Dockerfile`: Docker is a popular software that allows users to run apps
