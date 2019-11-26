@@ -120,8 +120,7 @@ A Windows user wrote me that he ran the Toolbox on the
 
 Long program runtimes: Goodreads slows down all requests and we have to load a lot of data.
   Start one program and do other things in the meantime.
-
-You can break any program with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later (reloads from a file-cache).
+  You can break any program with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later (reloads from a file-cache).
 
 
 
