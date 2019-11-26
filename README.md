@@ -97,7 +97,7 @@ $ cd goodreads-toolbox
 
 ```console
 $ make docker-image
-$ make docker-run    # Type `make help` first to see options, or just use defaults
+$ make docker-run    # Type `make help` first to see options, or just go with defaults
 ```
 
 2b\.  users without Docker can install the Toolbox directly on their systems:
@@ -113,16 +113,14 @@ $ ./example-script.pl --help
 ```
 
 
-Microsoft Windows and Apple's macOS is not _natively_ supported:
-- a Windows user wrote me that he ran the Toolbox on the 
-  [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL)
-- try [Docker for Windows or Mac](https://github.com/docker/toolbox/releases), 
+Note:
+- Windows and Mac: a user wrote me that he ran the Toolbox on the 
+  [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL). 
+  Now, you can try [Docker for Windows or Mac](https://github.com/docker/toolbox/releases):
   save and unpack [the project files](https://github.com/andre-st/goodreads-toolbox/archive/master.zip) somewhere, 
   and run the ./Dockerfile
-
-The usual runtime of the programs will be long:
-- Goodreads slows down all requests and we have to load a lot of data
-- start one program and do other things in the meantime
+- long program runtimes: Goodreads slows down all requests and we have to load a lot of data.
+  Start one program and do other things in the meantime
 - you can break any program with <kbd>CTRL</kbd>-<kbd>C</kbd> and continue later (reloads from a file-cache)
 
 
