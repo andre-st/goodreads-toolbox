@@ -115,7 +115,7 @@ $ ./example-script.pl --help
 A Windows user wrote me that he ran the Toolbox on the 
   [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL). 
   Now, you can try [Docker for Windows or Mac](https://github.com/docker/toolbox/releases):
-  unpack [our project files](https://github.com/andre-st/goodreads-toolbox/archive/master.zip) somewhere, 
+  unpack the [project files](https://github.com/andre-st/goodreads-toolbox/archive/master.zip) somewhere, 
   and run the ./Dockerfile
 
 Long program runtimes: Goodreads slows down all requests and we have to load a lot of data.
