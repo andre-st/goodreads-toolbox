@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Things That Improved My Goodreads.com Experience](#things-that-improved-my-goodreadscom-experience)
 - [Discovering Non-Fiction Books](#discovering-non-fiction-books)
+- [Annotating Books](#annotating-books)
 - [Feedback](#feedback)
 
 
@@ -11,13 +12,15 @@
 - **Group shelves** with a prefix, e.g., _"region-usa"_,
   _"region-..."_. Goodreads sorts shelf lists in alphabetical order.
   Related but scattered shelves impair findability.  
-  - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with "z_" or Unicode 0x3161: ㅡ
+  - I moved shelves that are useful to me alone to the _end_ of the list by prefixing them with "z\_" or Unicode 0x3161: ㅡ
   - next to pseudo sub-shelves _"computer-history"_, _"computer-networks"_ 
     and so on I'm using a separate _"computer"_ pseudo super-shelf which 
     contains _all_ books from the sub-shelves 
     (useful for [shelf-intersection](https://www.secondrunreviews.com/2016/03/selecting-multiple-shelves-goodreads.html))
 
-- **Create a "more-urgent" shelf** from unread books
+- **Create a "more-urgent" shelf** from unread books, also create a _"more-tempting"_ shelf with books not urgent but probably more fun,
+  then intesect both shelves ("select multiple") and copy the URL in your Goodreads profile text as _"[Likely next reads]"_
+  (regularly update the shelves)
 
 - **Create an "abandoned" shelf** to compensate the missing reading-status. 
   Have the exclusive-checkbox [activated](https://www.goodreads.com/shelf/edit)
@@ -39,11 +42,15 @@
   and helps others discovering new books more easily. Pick your next book by intersection ∩, e.g.,
   - _"want-to-read" + "non-fiction" + "lang-german"_
   - _"want-to-read" + "fiction" + "politics"_
-  
+
   ![Intersection](https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/Set_intersection.svg/320px-Set_intersection.svg.png)
-  
-- **Negative shelves**, or [non-shelves](https://www.goodreads.com/topic/show/19369665-reverse-results-on-my-shelf#comment_id_181173145): e.g., _"fiction" + "lang-de" + "non-computing"_ would exclude nerd fiction; also useful for friends who are interested in everything but computers; most common negative shelf is _"non-fiction"_; limit to few but big shelves
-  
+
+- **Negative shelves**, or [non-shelves](https://www.goodreads.com/topic/show/19369665-reverse-results-on-my-shelf#comment_id_181173145): 
+  e.g., _"fiction" + "lang-de" + "non-computing"_ would exclude nerd fiction; 
+  also useful for friends who are interested in everything but computers; 
+  most common negative shelf is _"non-fiction"_; 
+  limit to few but big shelves
+
 - **Declutter the library** with cardboxes and GR-shelves labeled
   _"donations"_ and _"resales"_. My city library took 30 books
   after receiving a link to my donations shelf.  Such link may also appear in
@@ -52,7 +59,8 @@
 
 - **Batch edit** shelf feature ([tutorial](https://www.soobsessedwith.com/2014/01/get-organized-on-goodreads.html))
 
-- **Filter reviews by language** °~~by selecting a book edition in your language and "Filter: this edition" ([described here](https://www.goodreads.com/topic/show/19528032#comment_184069651))~~. See [new filter by language feature](https://www.goodreads.com/topic/show/19545889-filter-reviews-using-language#comment_192500388)
+- **Filter reviews by language** °~~by selecting a book edition in your language and "Filter: this edition" ([described here](https://www.goodreads.com/topic/show/19528032#comment_184069651))~~. 
+  See [new filter by language feature](https://www.goodreads.com/topic/show/19545889-filter-reviews-using-language#comment_192500388)
 
 - **Become a Goodreads librarian** by applying 
   [there](https://www.goodreads.com/about/apply_librarian). Quickly
@@ -62,6 +70,18 @@
 - [Goodreads Ratings for Amazon](https://chrome.google.com/webstore/detail/goodreads-ratings-for-ama/fkkcefhhadenobhjnngfdahhlodolkjg) – a Chrome-browser extension by Rubén Martínez; 
   also reminds you of GR reviews when you're shopping on Amazon (alternatively, try my
   [Tiny JS Injector](https://github.com/andre-st/chrome-injectjs))
+
+- **Add "profile" photos to your reviews**: 
+  Add photos to your reviews by uploading them to your Goodreads _profile_
+  photos. So you don't have to rely on external web space, e.g. paid or
+  shady, short-lived, free image hosts.  
+  Such photos can be snapshots of individual book pages to give an
+  impression of the inside of the book, but also diagrams or photos of
+  events and lectures.  
+  Use the caption "for Reviews &gt; BOOK-SHORT-TITLE #PHOTO-NUMBER"
+  so that Goodreads later displays it like "User &gt; Photos &gt; for Reviews &gt; Nice Book #1".  
+  After uploading, simply copy the image URL ("largest") into your
+  review (`<img src="URL">`).
 
 - **Check out users who rate good books**. 
   [This service](https://andre-st.github.io/goodreads/) notifies you of new ratings for specific books.
@@ -87,13 +107,14 @@
   Redirect   : $1?expanded=true&$2&per_page=100
   Type       : Regular Expression
   ```
-  All expressions takes inexact matches like "page" ∈ "per_page", randomly ordered or missing 
+  All expressions takes inexact matches like "page" ∈ "per\_page", randomly ordered or missing 
   parameters and Unicode values into account. Given duplicate query arguments, the last one applies.
 
 
 ## Discovering Non-Fiction Books
+
 - checkout the bibliography section of a good book (best signal-to-noise ratio); I use a separate _"bibliogr-to-check"_ Goodreads shelf to keep track of unchecked books
-- notice books mentioned in the _footnotes_ section of Wikipedia articles
+- notice books mentioned in the _footnotes_ and literature sections of Wikipedia articles
 - notice books mentioned in magazine articles
 - notice names dropped in magazine articles and check them against Amazon
 - scan interesting websites/blogs for books 
@@ -110,8 +131,8 @@
 - inspect Goodreads books [common among members you follow](./friendrated.md) _(my GR toolbox)_
 - check the Amazon and Goodreads profiles of users who comment good books
   - [get notified](https://andre-st.github.io/goodreads/) of new reviewers for your favourite books _(my GR toolbox)_
-- follow small or specialized publishers through a [Twitter list](https://twitter.com/voidyll/lists/books), RSS-feed or newsletter (works so lala)
-- reddit, quora, ...
+- follow small or specialized publishers through a Twitter list, RSS-feed or newsletter (works so lala)
+- reddit ([r/booksuggestions](https://www.reddit.com/r/booksuggestions/), [r/suggestmeabook](https://www.reddit.com/r/suggestmeabook/), ...) , quora, ...
 - the better book sites:
   - [NewBooksNetwork.com](http://newbooksnetwork.com/)
   - [perlentaucher.de](https://www.perlentaucher.de/teaserliste/2_Buecher.html) (German)
@@ -126,6 +147,40 @@
 - bookmark interesting titles now and inspect them later, books must arouse interest also after one month; I use multiple Amazon wishlists, which also show current 2nd hand prices, my comments and priorization; I have a separate "(lost interest)" wishlist as an alternative to deletion; my [Amazon Wishlist-Exporter](https://github.com/andre-st/amazon-wishless) helps keep the overview by filtering ~60 wishlists by price and priority.
 
 
+
+## Annotating Books
+
+I try to develop my system for markings, notes etc in physical books, which is still at its infancy.
+
+### Tools:
+- [Stabilo Boss text marker](https://www.amazon.com/-/de/dp/B01LXOQ1KJ)
+  (primary color: yellow, looks cleaner than other colors)
+- sharp pencil
+- [Mont Marte electric eraser](https://www.amazon.com/Mont-Marte-Electric-Refills-Suitable/dp/B0791BP2PX)
+  (I do not like rubbing around on the book pages with classic erasers 
+  because the notes can get smeared, pages can crease and tear, 
+  or notes remain slightly readable due to caution. 
+  An electic eraser allows much more controlled erasing and brings enough 
+  abrasion power to the sheet with the rotating head, 
+  and that comfortably from any sitting or lying position)
+
+### Symbols:
+- !: important
+- X: strongly disagree, faulty reasoning, ...
+- ?: don't get it, fishy, not backed up well, hard to believe but don't know counter arguments yet
+- 1, 2, 3: restructure text - these blocks are self-contained
+- Ex.: examples
+- circle around words: keywords in this important sentence, emphasis
+
+### Other:
+- use margin to explain unknown words ("prebendalism: ...")
+
+
+
+
+
 ## Feedback
 
 Use [GitHub](https://github.com/andre-st/goodreads-toolbox/issues) or see [AUTHORS.md](AUTHORS.md) file
+
+

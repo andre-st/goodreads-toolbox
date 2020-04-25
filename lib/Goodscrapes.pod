@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2019-11-12
+=item * Updated: 2020-03-31
 
 =item * Since: 2014-11-05
 
@@ -70,7 +70,10 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * for real-world usage examples see Andre's Goodreads Toolbox
+=item * for real-world usage examples see Andre's Goodreads Toolbox.
+        There are unit tests in the "t" directory, too. 
+        Tests are good (up-to-date) tutorials and might help comprehending 
+        the yet terse API documentation.
 
 =item * C<_> prefix means I<private> function or constant (use in module only)
 
@@ -134,21 +137,21 @@ https://github.com/andre-st/
 
 =item * num_ratings     =E<gt> C<int>    103 for example
 
-=item * avg_rating      =E<gt> C<float>  4.36 for example
+=item * avg_rating      =E<gt> C<float>  4.36 for example, 0 if no rating
 
 =item * stars           =E<gt> C<int>    rounded avg_rating, e.g., 4
 
 =item * format          =E<gt> C<string> (binding)
 
-=item * user_rating     =E<gt> C<int>    number of stars 1,2,3,4 or 5
+=item * user_rating     =E<gt> C<int>    number of stars 1,2,3,4 or 5  (program user)
 
-=item * user_read_count =E<gt> C<int>
+=item * user_read_count =E<gt> C<int>    (program user)
 
-=item * user_num_owned  =E<gt> C<int>
+=item * user_num_owned  =E<gt> C<int>    (program user)
 
-=item * user_date_read  =E<gt> C<Time::Piece>
+=item * user_date_read  =E<gt> C<Time::Piece>   (program user)
 
-=item * user_date_added =E<gt> C<Time::Piece>
+=item * user_date_added =E<gt> C<Time::Piece>   (program user)
 
 =item * ra_user_shelves =E<gt> C<string[]> reference
 
@@ -172,35 +175,45 @@ https://github.com/andre-st/
 
 =over
 
-=item * id          =E<gt> C<string>
+=item * id              =E<gt> C<string>
 
-=item * name        =E<gt> C<string>  "Firstname Lastname"
+=item * name            =E<gt> C<string>  "Firstname Lastname"
 
-=item * name_lf     =E<gt> C<string>  "Lastname, Firstname"
+=item * name_lf         =E<gt> C<string>  "Lastname, Firstname"
 
-=item * residence   =E<gt> C<string>  (might require login)
+=item * residence       =E<gt> C<string>  (might require login)
 
-=item * age         =E<gt> C<int>     (might require login)
+=item * age             =E<gt> C<int>     (might require login)
 
-=item * num_books   =E<gt> C<int>
+=item * num_books       =E<gt> C<int>     books shelfed, not books written (even if is_author == 1)
 
-=item * is_friend   =E<gt> C<bool>
+=item * is_friend       =E<gt> C<bool>
 
-=item * is_author   =E<gt> C<bool>
+=item * is_author       =E<gt> C<bool>
 
-=item * is_female   =E<gt> C<bool>
+=item * is_female       =E<gt> C<bool>
 
-=item * is_private  =E<gt> C<bool>
+=item * is_private      =E<gt> C<bool>
 
-=item * is_staff    =E<gt> C<bool>, is a Goodreads.com employee
+=item * is_staff        =E<gt> C<bool>   true if user is a Goodreads.com employee
 
-=item * url         =E<gt> C<string> URL to the user's profile page
+=item * is_mainstream   =E<gt> C<bool>  
+                           currently, guessed from number of ratings for any book, is_author == 1
 
-=item * works_url   =E<gt> C<string> URL to the author's distinct works (is_author == 1)
+=item * url             =E<gt> C<string> 
+                           URL to the user's profile page
 
-=item * img_url     =E<gt> C<string>
+=item * works_url       =E<gt> C<string> 
+                           URL to the author's distinct works (is_author == 1)
 
-=item * _seen       =E<gt> C<int>    incremented if user already exists in a load-target structure
+=item * img_url         =E<gt> C<string>
+
+=item * user_avg_rating =E<gt> C<float>
+                           3.3 for example (user of the program), requires is_author == 1, 
+                           value depends on the shelves involved
+
+=item * _seen           =E<gt> C<int>
+                           incremented if user already exists in a load-target structure
 
 =back
 
@@ -249,6 +262,7 @@ https://github.com/andre-st/
 =item * num_members =E<gt> int
 
 =back
+
 
 
 =head1 PUBLIC ROUTINES
@@ -374,7 +388,7 @@ https://github.com/andre-st/
 
 =over
 
-=item * reads a list of books present in the given shelves of the given user
+=item * reads a list of books (and/or authors) present in the given shelves of the given user
 
 =item * C<from_user_id    =E<gt> string>
 
@@ -382,9 +396,44 @@ https://github.com/andre-st/
 
 =item * C<rh_into         =E<gt> hash reference (id =E<gt> L<%book|"%book">,...)> [optional]
 
+=item * C<rh_authors_into =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)> [optional];
+        this parameter is for convenience and also replaces the former C<greadauthors()> function.
+        It's not required to access author data as author data is available from the book data too: 
+        $book-E<gt>{rh_author}-E<gt>{...}
+
 =item * C<on_book         =E<gt> sub( L<%book|"%book"> )> [optional]
 
 =item * C<on_progress     =E<gt> sub> see C<gmeter()> [optional]
+
+=item * doesn't add users to C<rh_authors_into> when C<gisbaduser()> is true
+
+=item * sets the C<user_XXX> and C<is_mainstream> fields in each author item
+
+=back
+
+=head2 C<void> greadshelfnames(I<{ ... }>)
+
+=over
+
+=item * reads the names of all shelves of the given user
+
+=item * C<from_user_id    =E<gt> string>
+
+=item * C<ra_into         =E<gt> array reference>
+
+=item * C<ra_exclude      =E<gt> array reference> won't add given names to the result  [optional]  
+
+=item * Precondition: glogin()
+
+=item * Postcondition: result includes 'read', 'to-read', 'currently-reading', but doesn't include '#ALL#'
+
+=back
+
+=head2 C<void> _update_author_stats(I<rh_from_books>)
+
+=over
+
+=item * sets the C<user_XXX> and C<is_mainstream> fields in each author item
 
 =back
 
@@ -392,7 +441,9 @@ https://github.com/andre-st/
 
 =over
 
-=item * gets a list of authors whose books are present in the given shelves of the given user
+=item * DEPRECATED: use C<greadshelf()> with C<rh_authors_into> parameter
+
+=item * gets a list of authors whose books are present in the given shelves of the given 
 
 =item * C<from_user_id    =E<gt> string>
 
@@ -407,6 +458,8 @@ https://github.com/andre-st/
 
 =item * skips authors where C<gisbaduser()> is true
 
+=item * sets the C<user_XXX> and C<is_mainstream> fields in each author item
+
 =back
 
 =head2 C<void> greadauthorbk(I<{ ... }>)
@@ -415,15 +468,15 @@ https://github.com/andre-st/
 
 =item * reads the Goodreads.com list of books written by the given author
 
-=item * C<author_id   =E<gt> string>
+=item * C<author_id      =E<gt> string>
 
-=item * C<limit       =E<gt> int> number of books to read into C<rh_into>
+=item * C<limit          =E<gt> int> number of books to read into C<rh_into>
 
-=item * C<rh_into     =E<gt> hash reference (id =E<gt> L<%book|"%book">,...)>
+=item * C<rh_into        =E<gt> hash reference (id =E<gt> L<%book|"%book">,...)>
 
-=item * C<on_book     =E<gt> sub( L<%book|"%book"> )> [optional]
+=item * C<on_book        =E<gt> sub( L<%book|"%book"> )> [optional]
 
-=item * C<on_progress =E<gt> sub> see C<gmeter()> [optional]
+=item * C<on_progress    =E<gt> sub> see C<gmeter()> [optional]
 
 =back
 
@@ -446,7 +499,10 @@ https://github.com/andre-st/
 
 =item * C<dict_path   =E<gt> string> path to a dictionary file (1 word per line) [optional]
 
-=item * C<text_only   =E<gt> bool> overwrites C<on_filter> argument [optional, default 0 ]
+=item * C<text_minlen =E<gt> int> overwrites C<on_filter> argument [optional, default 0 ]
+  
+   0  =  no text filtering
+   n  =  specified minimum length (see also GOOD_USEFUL_REVIEW_LEN constant)
 
 =item * C<rigor       =E<gt> int> [optional, default 2]
 
@@ -742,11 +798,13 @@ https://github.com/andre-st/
 
 =head2 C<L<%user|"%user">> _extract_author( $user_page_html_str )
 
-=head2 C<bool> _extract_books( I<$rh_books, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
+=head2 C<bool> _extract_books( I<$rh_books, $rh_authors, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
 
 =over
 
 =item * I<$rh_books>: C<(id =E<gt> L<%book|"\%book">,...)>
+
+=item * I<$rh_authors>: C<(id =E<gt> L<%user|"\%user">,...)>
 
 =item * returns 0 if no books, 1 if books, 2 if error
 
