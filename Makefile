@@ -22,7 +22,7 @@ MAKEFLAGS += --no-builtin-rules
 
 
 # Configure Make rules:
-PROJECT_VERSION   = 1.22
+PROJECT_VERSION   = 1.23
 RR_LOGFILE        = /var/log/good.log
 RR_DB_DIR         = /var/db/good
 CACHE_DIR         = /tmp/FileCache/Goodscrapes
