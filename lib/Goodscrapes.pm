@@ -2703,14 +2703,16 @@ sub _cookie2hash  # @TODO: ugly
 
 sub _setcurlopts
 {
-	my $curl = shift;	
+	my $curl = shift;
 	my $url  = shift // '';
 	
-	# Misc:
-	$curl->setopt( $curl->CURLOPT_FOLLOWLOCATION, 1           );
+	# Headers:
 	$curl->setopt( $curl->CURLOPT_USERAGENT,      $_USERAGENT );
 	$curl->setopt( $curl->CURLOPT_COOKIE,         $_cookie    ) if $_cookie;
-	$curl->setopt( $curl->CURLOPT_HEADER,         0           );
+	
+	# Connection options:
+	$curl->setopt( $curl->CURLOPT_FOLLOWLOCATION, 1           );
+	$curl->setopt( $curl->CURLOPT_HEADER,         0           );   # Response header
 	$curl->setopt( $curl->CURLOPT_HEADERFUNCTION, sub
 	{
 		my $chunk = shift;
@@ -2725,12 +2727,12 @@ sub _setcurlopts
 	# 
 	# The module works without any of these options, but probably slower.
 	# All `eval` due to https://github.com/andre-st/goodreads-toolbox/issues/20
-	eval{ $curl->setopt( $curl->CURLOPT_TIMEOUT,        60  ); };
-	eval{ $curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 60  ); };
+	eval{ $curl->setopt( $curl->CURLOPT_TIMEOUT,        20  ); };
+	eval{ $curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 20  ); };
 	eval{ $curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0   ); };  # CURL default
 	eval{ $curl->setopt( $curl->CURLOPT_FRESH_CONNECT,  0   ); };  # CURL default
-	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1   ); };  
-	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120 ); }; 
+	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1   ); };
+	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120 ); };
 	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  ); };
 	eval{ $curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   ); };
 	eval{ $curl->setopt( $curl->CURLOPT_MAXREDIRS,      5   ); };
