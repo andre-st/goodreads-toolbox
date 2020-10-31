@@ -414,8 +414,8 @@ for my $userid (sort{ $readers{$b}->{match} <=>
 			};
 			
 	print $fh qq{
-			<div><img src="${\ghtmlsafe( $authors{$_}->{img_url} )}"
-			              >${\ghtmlsafe( $authors{$_}->{name}    )}</div>
+			<gr-author><img src="${\ghtmlsafe( $authors{$_}->{img_url} )}"
+			                    >${\ghtmlsafe( $authors{$_}->{name}    )}</gr-author>
 			} foreach (keys %{$authors_read_by{$userid}});
 
 	print $fh qq{

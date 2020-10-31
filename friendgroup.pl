@@ -231,7 +231,7 @@ for my $gid (keys %joins)
 			};
 	
 	print $fh qq{
-			<a  href="${\ghtmlsafe( $members{$_}->{url}     )}" target="_blank">
+			<a  href="${\ghtmlsafe( $members{$_}->{url}     )}" target="_blank" class="gr-user">
 			<img src="${\ghtmlsafe( $members{$_}->{img_url} )}" 
 			   title="${\ghtmlsafe( $members{$_}->{name}    )}">
 			</a>

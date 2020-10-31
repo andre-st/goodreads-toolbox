@@ -188,7 +188,7 @@ More info in ./help/friendrated.md
 
 =head1 VERSION
 
-2019-11-16 (Since 2018-05-10)
+2020-01-21 (Since 2018-05-10)
 
 =cut
 
@@ -406,7 +406,7 @@ for my $bid (keys %bkfaved_for)
 			};
 	
 	print $bkfile qq{
-			<a  href="${\ghtmlsafe( $members{$_}->{url}     )}" target="_blank">
+			<a  href="${\ghtmlsafe( $members{$_}->{url}     )}" target="_blank" class="gr-user">
 			<img src="${\ghtmlsafe( $members{$_}->{img_url} )}" 
 			   title="${\ghtmlsafe( $members{$_}->{name}    )}">
 			</a>
@@ -445,7 +445,7 @@ for my $auname (keys %aufaved_for)
 			};
 	
 	print $aufile qq{
-			<a  href="${\ghtmlsafe( $members{$_}->{url}     )}" target="_blank">
+			<a  href="${\ghtmlsafe( $members{$_}->{url}     )}" target="_blank" class="gr-user">
 			<img src="${\ghtmlsafe( $members{$_}->{img_url} )}" 
 			   title="${\ghtmlsafe( $members{$_}->{name}    )}">
 			</a>

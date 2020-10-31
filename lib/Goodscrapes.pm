@@ -1421,9 +1421,20 @@ sub ghtmlhead
 		});
 		</script>
 		<style>
-			body { font-family: sans-serif; }
-			table th { border: 1px solid #ccc; }
-			kbd { 
+			body 
+			{
+				font-family: sans-serif; 
+			}
+			table th 
+			{
+				border: 1px solid #ccc; 
+			}
+			table.dataTable tbody td 
+			{
+				vertical-align: top; 
+			}
+			kbd 
+			{		    	
 				border-radius: 3px;
 				border: 1px solid #b4b4b4;
 				box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset;
@@ -1434,9 +1445,36 @@ sub ghtmlhead
 				padding: 2px 4px;
 				white-space: nowrap; 
 			}
+			.gr-user, gr-author
+			{
+				display: inline-block;
+				float: left;
+				width: 50px;
+				margin: 0 2px 7px 2px;
+			}
+			gr-author
+			{
+				font-size: 8pt;
+				text-align: center;
+				background-color: #eeeddf;
+				height: 120px;	
+			}
+			.gr-user img, gr-author img 
+			{
+				width: 100%;
+			}
+			gr-author img
+			{
+				margin: 0 0 5px 0;
+			}
+			img 
+			{
+				max-width: 150px;
+				display: block;
+			}
 		</style>
 		</head>
-		<body class="friendrated">
+		<body>
 		<table class="hover row-border order-column" style="width:100%">
 		<caption>Table: $title</caption>
 		<thead> <tr> $th </tr> </thead>
