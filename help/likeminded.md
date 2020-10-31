@@ -88,26 +88,27 @@ The program is designed to run unattended, outwaits connection issues etc.
 - long runtime: Goodreads slows down all requests and we have to load a lot of data
 - loading data could take a month given too many books
 - prefer loading from a separate _"best-of"_ shelf:
-	- use the program's `--shelf` parameter, avoid _"All"_ or _"Read"_ shelves
+	- use the program's `--shelf` option, avoid _"All"_ or _"Read"_ shelves
 	- add _100_ good but rare books (&lt;5000 ratings)
 	- the more popular your literature, the longer the program's runtime
 	- the more popular your lit, the more generic the results (500 million sales of Harry Potter)
 	- the more popular your lit, the less likely we detect reoccuring members (we cannot see all readers)
 	- you can add books to your shelf more quickly in Goodreads' [batch edit](https://2.bp.blogspot.com/-MBcqYj2mK_I/UsyW06AX43I/AAAAAAAAEdE/5V5z2_XJaCI/s1600/Step+1&2.jpg) mode   
-	- alternatively load from multiple smaller shelves by using multiple `--shelf` arguments
+	- alternatively load from multiple smaller shelves: 
+	  `./likeminded.pl --shelf=nonfiction --shelf=poetry ...`
 - make sure you have some _Gigabytes_ of free diskspace in `/tmp/`: 
 	- my last test run with 356 books filled 11 GB in ~24 hours (many small files)
 - there's no way to get _all_ readers of a book:
 	- the program tries different things to get as many as possible
-	- you can tune this with the `--rigor` parameter (increases runtime)
+	- you can tune this with the `--rigor` program option (increases runtime)
 	- there is a number of readers not considered in our statistics
 	- we cannot randomize in a way which would produce samples of similar size
 	- although, we don't get _all_ readers (for books with ten of thousand readers), 
 	  the final report still contains _enough_ members who read the same N authors
 - does _not_ list members with private accounts anymore
 - slow but good enough; you won't run it more often than 4x a year
-- _"...most number of shared books would be a list of children's books"_—`likeminded.pl` 
-  has a `--shelf` parameter
+- _"...most number of shared books would be a list of children's books"_ 
+	- exclude them by passing one or many `--shelf` arguments to the program
 
 
 #### Library sizes as ranking factor:
@@ -130,14 +131,18 @@ The program is designed to run unattended, outwaits connection issues etc.
   and only 1 member already on my hand-curated list of 137 followees
 - a minimum of 6 common books (2%) listed 43 members, more or less interesting
 - we learn: book combinations tend to become unique quickly
-- combinations of same books are more rare than combinations of same authors, while latter still satisfies the 'same taste' condition (the assumption with 'same books' is that likeminded people had the same exposure to the same books, but that's questionable - and comparing the _authors_ relaxes this assumption)
+- combinations of same books are more rare than combinations of same authors, 
+  while latter still satisfies the 'same taste' condition 
+  (the assumption with 'same books' is that likeminded people had the same exposure to the exact same books, but that's questionable - and comparing the _authors_ relaxes this assumption)
 - the new authors-version takes longer but yields better results, e.g.,
   more matches with my hand-curated followees list
-
+	- try program argument `--maxauthorbooks=50` to reduce runtime (checks max. 50 books per author)
   
+
 #### Alternatives to consider:
-- _"I look for people who __dislike__ the same books that I do. I don’t have a problem finding books to read. What I need is someone who can warn me about the books that everyone else seems to love."_
+- _"I look for people who __dislike__ the same books that I do. I don't have a problem finding books to read. What I need is someone who can warn me about the books that everyone else seems to love."_
 - current results based on stuff you already liked, model the past as identical to the future, based on who you are/were not who you want or could become (stuff that's out of your current wheelhouse but still has likeable features)
+- maybe recommendations from our to-read lists are more interesting/up-to-date than our read-lists
 
 
 ## Feedback
