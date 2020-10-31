@@ -136,6 +136,7 @@ our @EXPORT = qw(
 	greaduser
 	greadusergp
 	greadshelf
+	greadshelfnames
 	greadauthors
 	greadauthorbk
 	greadsimilaraut
@@ -696,7 +697,6 @@ sub greadusergp
 	my $pfn    = $args{ on_progress }  // sub{};
 	my $pag    = 1;
 	
-	# Just one page:
 	while( _extract_user_groups( $rh, $gfn, $pfn, _html( _user_groups_url( $uid, $pag++ )))) {};
 }
 
@@ -707,7 +707,7 @@ sub greadusergp
 
 =over
 
-=item * reads a list of books present in the given shelves of the given user
+=item * reads a list of books (and/or authors) present in the given shelves of the given user
 
 =item * C<from_user_id    =E<gt> string>
 
@@ -715,9 +715,18 @@ sub greadusergp
 
 =item * C<rh_into         =E<gt> hash reference (id =E<gt> L<%book|"%book">,...)> [optional]
 
+=item * C<rh_authors_into =E<gt> hash reference (id =E<gt> L<%user|"%user">,...)> [optional];
+        this parameter is for convenience and also replaces the former C<greadauthors()> function.
+        It's not required to access author data as author data is available from the book data too: 
+        $book-E<gt>{rh_author}-E<gt>{...}
+
 =item * C<on_book         =E<gt> sub( L<%book|"%book"> )> [optional]
 
 =item * C<on_progress     =E<gt> sub> see C<gmeter()> [optional]
+
+=item * doesn't add users to C<rh_authors_into> when C<gisbaduser()> is true
+
+=item * sets the C<user_XXX> and C<is_mainstream> fields in each author item
 
 =back
 
@@ -728,20 +737,117 @@ sub greadshelf
 	my (%args) = @_;
 	my $uid    = gverifyuser( $args{ from_user_id });
 	my $ra_shv =_require_arg( 'ra_from_shelves', $args{ ra_from_shelves });
-	my $rh     = $args{ rh_into     }  // undef;
-	my $bfn    = $args{ on_book     }  // sub{};
-	my $pfn    = $args{ on_progress }  // sub{};
-	my %books; # Using pre-populated $rh would confuse progess counters
+	my $rh     = $args{ rh_into         }  // undef;
+	my $rh_au  = $args{ rh_authors_into }  // ();
+	my $bfn    = $args{ on_book         }  // sub{};
+	my $pfn    = $args{ on_progress     }  // sub{};
+	my %books; # Using pre-populated $rh would confuse progess counters, so empty hash
 	
 	gverifyshelf( $_ ) foreach (@$ra_shv);
 	
+	# Scrape books and authors from paginated shelf pages:
 	for my $s (@$ra_shv)
 	{
 		my $pag = 1;
-		while( _extract_books( \%books, $bfn, $pfn, _html( _shelf_url( $uid, $s, $pag++ )))) {}
+		while( _extract_books( \%books, $rh_au, $bfn, $pfn, _html( _shelf_url( $uid, $s, $pag++ )))) {}
 	}
 	
-	%$rh = ( %$rh, %books ) if $rh;  # Merge
+	# Merge:
+	%$rh = ( %$rh, %books ) if $rh;
+	
+	_update_author_stats( $rh );  # Updates $rh_au too (all references)
+}
+
+
+
+
+=head2 C<void> greadshelfnames(I<{ ... }>)
+
+=over
+
+=item * reads the names of all shelves of the given user
+
+=item * C<from_user_id    =E<gt> string>
+
+=item * C<ra_into         =E<gt> array reference>
+
+=item * C<ra_exclude      =E<gt> array reference> won't add given names to the result  [optional]  
+
+=item * Precondition: glogin()
+
+=item * Postcondition: result includes 'read', 'to-read', 'currently-reading', but doesn't include '#ALL#'
+
+=back
+
+=cut
+
+sub greadshelfnames
+{
+	# The 'compare books' page allows us to scrape *all* shelf names using a
+	# single request. The user profile page wouldn't show *all* shelves
+	# and the shelf-view page is paginated using AJAX with authentication tokens
+	# (which also returns Javascript code for eval).
+	# So, scraping the 'compare books' page is much easier but requires a login.
+	
+	my (%args) = @_;
+	my $uid    = gverifyuser( $args{ from_user_id });
+	my $ra     = _require_arg( 'ra_into', $args{ ra_into });
+	my $ra_ex  = $args{ ra_exclude } // [];
+	my $htm    = _html( "https://www.goodreads.com/user/compare/${uid}" );
+	my $htmsel = $htm =~ /<select name="friend_shelf" (.*?)<\/select>/mgs ? $1 : '';
+	
+	while( $htmsel =~ /<option value="([^"]+)/gs )
+	{
+		my $name = $1;
+		push( @$ra, $name ) if none{ $_ eq $name } @{$ra_ex};
+	}
+
+}
+
+
+
+
+=head2 C<void> _update_author_stats(I<rh_from_books>)
+
+=over
+
+=item * sets the C<user_XXX> and C<is_mainstream> fields in each author item
+
+=back
+
+=cut
+
+sub _update_author_stats
+{
+	my $rh = shift;
+	my %rat_count_for;
+	my %rat_sum_for;
+	my %rat_min_for;
+	my %rat_max_for;
+	my %is_mainstream;
+	
+	# 1. Get an overview over all books:
+	for my $bid (keys %{$rh})
+	{
+		next unless $rh->{$bid}->{user_rating};
+		my $aid = $rh->{$bid}->{rh_author}->{id};
+		my $rat = $rh->{$bid}->{user_rating};
+		$rat_count_for{$aid} ++;
+		$rat_sum_for{$aid}   += $rat;
+		$is_mainstream{$aid}  = $is_mainstream{$aid} || $rh->{$bid}->{num_ratings} >= $_MAINSTREAM_NUM_RATINGS;
+		$rat_min_for{$aid}    = min( $rat, $rat_min_for{$aid} // $rat );
+		$rat_max_for{$aid}    = max( $rat, $rat_max_for{$aid} // $rat );
+	}
+	
+	# 2. Update each single book (author) with overall data:
+	for my $bid (keys %{$rh})
+	{
+		my $aid = $rh->{$bid}->{rh_author}->{id};
+		$rh->{$bid}->{rh_author}->{user_avg_rating} = $rat_count_for{$aid} ? $rat_sum_for{$aid} / $rat_count_for{$aid} : 0;  # Be aware of div by zero
+		$rh->{$bid}->{rh_author}->{user_min_rating} = $rat_min_for{$aid};
+		$rh->{$bid}->{rh_author}->{user_max_rating} = $rat_max_for{$aid};
+		$rh->{$bid}->{rh_author}->{is_mainstream  } = $is_mainstream{$aid};
+	}
 }
 
 
@@ -751,7 +857,9 @@ sub greadshelf
 
 =over
 
-=item * gets a list of authors whose books are present in the given shelves of the given user
+=item * DEPRECATED: use C<greadshelf()> with C<rh_authors_into> parameter
+
+=item * gets a list of authors whose books are present in the given shelves of the given 
 
 =item * C<from_user_id    =E<gt> string>
 
