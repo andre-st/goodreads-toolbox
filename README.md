@@ -1,6 +1,6 @@
 # :books: Andre's Goodreads Toolbox, v1.23
 
-![Maintenance](https://img.shields.io/maintenance/yes/2020.svg) ![Docker](https://img.shields.io/docker/cloud/build/datakadabra/goodreads-toolbox)
+![Maintenance](https://img.shields.io/maintenance/yes/2021.svg) ![Docker](https://img.shields.io/docker/cloud/build/datakadabra/goodreads-toolbox)
 
 9 Perl-scripts for Goodreads.com—the world largest book (cataloging) community. [What's new?](CHANGELOG.md)
 
