@@ -71,15 +71,16 @@
   also reminds you of GR reviews when you're shopping on Amazon (alternatively, try my
   [Tiny JS Injector](https://github.com/andre-st/chrome-injectjs))
 
-- **Add "profile" photos to your reviews**: 
-  Add photos to your reviews by uploading them to your Goodreads _profile_
-  photos. So you don't have to rely on external web space, e.g. paid or
+- **Photos in reviews**: 
+  Add photos to your reviews by uploading them to your Goodreads _user profile_
+  photos. So you don't have to find and rely on external web space, e.g. paid or
   shady, short-lived, free image hosts.  
   Such photos can be snapshots of individual book pages to give an
   impression of the inside of the book, but also diagrams or photos of
   events and lectures.  
   Use the caption "for Reviews &gt; BOOK-SHORT-TITLE #PHOTO-NUMBER"
   so that Goodreads later displays it like "User &gt; Photos &gt; for Reviews &gt; Nice Book #1".  
+  Add a link to your review to the photo description box: "Review: https://...".
   After uploading, simply copy the image URL ("largest") into your
   review (`<img src="URL">`).
 
@@ -122,6 +123,7 @@
   - [HackerNewsBooks.com](https://hackernewsbooks.com/)
   - [top books on Reddit](http://booksreddit.com/)
   - [RedditFavorites.com](https://redditfavorites.com/books)
+  - [BooksChatter.com](https://bookschatter.com) (scans Twitter)
 - search [books.google.com](https://www.google.com/search?tbm=bks&q=specific+interest) for "specific interest"; try Google's [Talk to Books](https://books.google.com/talktobooks/) (since April 2018)
 - search [Google scholar profiles](https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors=label%3A&btnG=) for `label:MY_AREA_OF_INTEREST` and check profile names against Amazon's book search
 - [Google Alerts](https://www.google.com/alerts): "new book" + "specific interest"
