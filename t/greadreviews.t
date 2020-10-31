@@ -47,16 +47,16 @@ my $since          = Time::Piece->strptime( '2016-01-01', '%Y-%m-%d' );
 greadreviews( rh_for_book => \%book,
               rigor       => 0,  # 0 = 300 reviews only (latest)
               rh_into     => \%reviews,
-              dict_path   => '../dict/default.lst',
-              text_only   => 0,
+              dict_path   => '../list-in/default.lst',
+              text_minlen => 0,
               since       => $since,
               on_progress => gmeter());
 
 greadreviews( rh_for_book => \%book,  # Uses some cached values from query above, which is fine for this test
               rigor       => 0,       # 0 = 300 reviews only (latest)
               rh_into     => \%reviews_textonly,
-              dict_path   => '../dict/default.lst',
-              text_only   => 1,
+              dict_path   => '../list-in/default.lst',
+              text_minlen => 1,
               on_progress => gmeter());
 
 print( "\n" );
@@ -90,15 +90,16 @@ map {
 	
 	# Not available or scraped yet, otherwise one of the following
 	# tests will fail and remind me of implementing a correct test:
-	is  ( $_->{rh_user}->{is_private}, undef, 'N/A: User is private'            );
-	is  ( $_->{rh_user}->{is_female},  undef, 'N/A: User gender'                );
-	is  ( $_->{rh_user}->{is_author},  undef, 'N/A: User is author'             );
-	is  ( $_->{rh_user}->{is_staff},   undef, 'N/A: User is Goodreads employee' );
-	is  ( $_->{rh_user}->{is_friend},  undef, 'N/A: User friend status'         );
-	is  ( $_->{rh_user}->{residence},  undef, 'N/A: User residence'             );
-	is  ( $_->{rh_user}->{age},        undef, 'N/A: User age'                   );
-	is  ( $_->{rh_user}->{num_books},  undef, 'N/A: Number of books'            );  # Works or books read?
-	is  ( $_->{rh_user}->{works_url},  undef, 'N/A: Works URL if author'        );
+	is  ( $_->{rh_user}->{is_private},     undef, 'N/A: User is private'            );
+	is  ( $_->{rh_user}->{is_female},      undef, 'N/A: User gender'                );
+	is  ( $_->{rh_user}->{is_author},      undef, 'N/A: User is author'             );
+	is  ( $_->{rh_user}->{is_staff},       undef, 'N/A: User is Goodreads employee' );
+	is  ( $_->{rh_user}->{is_friend},      undef, 'N/A: User friend status'         );
+	is  ( $_->{rh_user}->{is_mainstream},  undef, 'N/A: User mainstream status'     );
+	is  ( $_->{rh_user}->{residence},      undef, 'N/A: User residence'             );
+	is  ( $_->{rh_user}->{age},            undef, 'N/A: User age'                   );
+	is  ( $_->{rh_user}->{num_books},      undef, 'N/A: Number of books'            );  # Works or books read?
+	is  ( $_->{rh_user}->{works_url},      undef, 'N/A: Works URL if author'        );
 } values( %reviews );
 
 

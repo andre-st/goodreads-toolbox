@@ -69,6 +69,7 @@ ok( $b{num_reviews}  > 12000,          'Book has number of reviews' );
 #   is  ( $b{rh_author}->{is_staff},
 #   is  ( $b{rh_author}->{is_female},
 #   is  ( $b{rh_author}->{is_friend},
+#   is  ( $b{rh_author}->{is_mainstream},
 
 
 

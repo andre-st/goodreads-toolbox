@@ -48,25 +48,26 @@ ok( exists( $authors{2546} ), 'Expected author found via hash-key = Goodreads au
 my $a = $authors{2546};
 
 isa_ok( $a, 'HASH', 'Author datatype' );
-is  ( $a->{id},         '2546',                                                 'Author has ID'          );
-is  ( $a->{name_lf},    'Palahniuk, Chuck',                                     'Author has name'        );
-is  ( $a->{url},        'https://www.goodreads.com/author/show/2546',           'Author has URL'         );
-like( $a->{works_url},  qr/^https:\/\/www\.goodreads\.com\/author\/list\/2546/, 'Author has works URL'   );
-is  ( $a->{is_author},  1,                                                      'Author has author flag' );
-is  ( $a->{is_private}, 0,                                                      'Author not private'     );
+is  ( $a->{id},            '2546',                                                 'Author has ID'          );
+is  ( $a->{name_lf},       'Palahniuk, Chuck',                                     'Author has name'        );
+is  ( $a->{url},           'https://www.goodreads.com/author/show/2546',           'Author has URL'         );
+like( $a->{works_url},     qr/^https:\/\/www\.goodreads\.com\/author\/list\/2546/, 'Author has works URL'   );
+is  ( $a->{is_author},     1,                                                      'Author has author flag' );
+is  ( $a->{is_private},    0,                                                      'Author not private'     );
+is  ( $a->{is_mainstream}, 1,                                                      'Author is mainstream'   );
 
 
 # Not available or scraped yet, otherwise one of the following
 # tests will fail and remind me of implementing a correct test:
 is  ( $a->{name},       $a->{name_lf}, 'N/A: author name != name_lf' );  # "Chuck Palahniuk"
-is  ( $a->{residence},  undef,         'N/A: author residence'       );
-is  ( $a->{img_url},    undef,         'N/A: author image URL'       );
-is  ( $a->{age},        undef,         'N/A: author age'             );
-is  ( $a->{num_books},  undef,         'N/A: number of author books' );
-is  ( $a->{is_friend},  undef,         'N/A: author friend status'   );
-is  ( $a->{is_female},  undef,         'N/A: author gender status'   );
-is  ( $a->{is_staff},   undef,         'N/A: is Goodreads author'    );
-
-
+is  ( $a->{residence},        undef,         'N/A: author residence'       );
+is  ( $a->{img_url},          undef,         'N/A: author image URL'       );
+is  ( $a->{age},              undef,         'N/A: author age'             );
+is  ( $a->{num_books},        undef,         'N/A: number of author books' );
+is  ( $a->{is_friend},        undef,         'N/A: author friend status'   );
+is  ( $a->{is_female},        undef,         'N/A: author gender status'   );
+is  ( $a->{user_avg_rating},  undef,         'N/A: user avg rating'        );
+is  ( $a->{user_min_rating},  undef,         'N/A: user min rating'        );
+is  ( $a->{user_max_rating},  undef,         'N/A: user max rating'        );
 
 

@@ -68,23 +68,27 @@ ok  ( $b->{user_read_count}       > 0,     'User read count'            );
 ok  ( $b->{user_date_added}->year > 2006,  'User addition-date > 2006'  );  # GR was founded in 2007
 is  ( $b->{user_num_owned},       0,       'Number of user-owned books' ); 
 
-is  ( $b->{rh_author}->{id},         '2546',                                                 'Book has author ID'          );
-is  ( $b->{rh_author}->{name_lf},    'Palahniuk, Chuck',                                     'Book has author name'        );
-is  ( $b->{rh_author}->{url},        'https://www.goodreads.com/author/show/2546',           'Book has author URL'         );
-like( $b->{rh_author}->{works_url},  qr/^https:\/\/www\.goodreads\.com\/author\/list\/2546/, 'Book has author works URL'   );
-is  ( $b->{rh_author}->{is_author},  1,                                                      'Book author has author flag' );
-is  ( $b->{rh_author}->{is_private}, 0,                                                      'Book author not private'     );
+is  ( $b->{rh_author}->{id},               '2546',                                                 'Book has author ID'          );
+is  ( $b->{rh_author}->{name_lf},          'Palahniuk, Chuck',                                     'Book has author name'        );
+is  ( $b->{rh_author}->{url},              'https://www.goodreads.com/author/show/2546',           'Book has author URL'         );
+like( $b->{rh_author}->{works_url},        qr/^https:\/\/www\.goodreads\.com\/author\/list\/2546/, 'Book has author works URL'   );
+is  ( $b->{rh_author}->{is_author},        1,                                                      'Book author has author flag' );
+is  ( $b->{rh_author}->{is_private},       0,                                                      'Book author not private'     );
+is  ( $b->{rh_author}->{is_mainstream},    1,                                                      'Author is mainstream'        );
+is  ( $b->{rh_author}->{user_avg_rating},  5,                                                      'user avg rating'             );
+is  ( $b->{rh_author}->{user_min_rating},  5,                                                      'user min rating'             );
+is  ( $b->{rh_author}->{user_max_rating},  5,                                                      'user max rating'             );
 
 
 # Not available or scraped yet, otherwise one of the following
 # tests will fail and remind me of implementing a correct test:
-is  ( $b->{rh_author}->{residence},        undef,  'N/A: Author residence'        );
-is  ( $b->{rh_author}->{img_url},          undef,  'N/A: Author image URL'        );
-is  ( $b->{rh_author}->{is_staff},         undef,  'N/A: Is Goodreads author'     );
-is  ( $b->{rh_author}->{is_female},        undef,  'N/A: Author gender'           );
-is  ( $b->{rh_author}->{is_friend},        undef,  'N/A: Author friend status'    );
-is  ( $b->{rh_author}->{num_books},        undef,  'N/A: Number of author books'  );
-is  ( $b->{num_reviews},                   undef,  'N/A: Number of book reviews'  );
-#is  ( $b->{user_date_read},                undef,  'N/A: User reading-date'       );  # TODO
-is  ( scalar( @{$b->{ra_user_shelves}} ),  0,      'N/A: User shelves for book'   );
+is  ( $b->{rh_author}->{residence},        undef,  'N/A: Author residence'         );
+is  ( $b->{rh_author}->{img_url},          undef,  'N/A: Author image URL'         );
+is  ( $b->{rh_author}->{is_staff},         undef,  'N/A: Is Goodreads author'      );
+is  ( $b->{rh_author}->{is_female},        undef,  'N/A: Author gender'            );
+is  ( $b->{rh_author}->{is_friend},        undef,  'N/A: Author friend status'     );
+is  ( $b->{rh_author}->{num_books},        undef,  'N/A: Number of author books'   );
+is  ( $b->{rh_author}->{num_reviews},      undef,  'N/A: Number of book reviews'   );
+#is  ( $b->{user_date_read},                undef,  'N/A: User reading-date'        );  # TODO
+is  ( scalar( @{$b->{ra_user_shelves}} ),  0,      'N/A: User shelves for book'    );
 

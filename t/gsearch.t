@@ -50,20 +50,22 @@ my $b = firstval{ $_->{id} eq '11724436' } @books;
 isa_ok( $b, 'HASH', 'Book datatype' )
 	or BAIL_OUT( "Cannot test book attributes when expected book is missing." );
 
-is  ( $b->{id},                      '11724436',                                      'Book has Goodreads ID'      );
-is  ( $b->{title},                   'The Linux Command Line',                        'Book has title'             );
-is  ( $b->{url},                     'https://www.goodreads.com/book/show/11724436',  'Book has URL'               );
-is  ( $b->{img_url},                 'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1344692678i/11724436._SX50_.jpg', 'Book has image URL' );
-ok  ( $b->{stars}                    > 0,                                             'Book has stars rating'      );
-ok  ( $b->{avg_rating}               > 0,                                             'Book has average rating'    );
-ok  ( $b->{num_ratings}              > 0,                                             'Book has number of ratings' );
-is  ( $b->{year},                    2009,                                            'Book has year published'    );
-is  ( $b->{rh_author}->{id},         '4949703',                                       'Book has author ID'         );
-is  ( $b->{rh_author}->{name},       'William E. Shotts Jr.',                         'Book has author name'       );
-is  ( $b->{rh_author}->{url},        'https://www.goodreads.com/author/show/4949703', 'Book has author URL'        );
-like( $b->{rh_author}->{works_url},  qr/^https:\/\/www\.goodreads\.com\/author\/list\/4949703/, 'Book has author works URL' );
-is  ( $b->{rh_author}->{is_author},  1,                                              'Book author has author flag' );
-is  ( $b->{rh_author}->{is_private}, 0,                                              'Book author not private'     );
+is  ( $b->{id},                         '11724436',                                      'Book has Goodreads ID'      );
+is  ( $b->{title},                      'The Linux Command Line',                        'Book has title'             );
+is  ( $b->{url},                        'https://www.goodreads.com/book/show/11724436',  'Book has URL'               );
+is  ( $b->{img_url},                    'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1344692678i/11724436._SX50_.jpg', 'Book has image URL' );
+ok  ( $b->{stars}                       > 0,                                             'Book has stars rating'      );
+ok  ( $b->{avg_rating}                  > 0,                                             'Book has average rating'    );
+ok  ( $b->{num_ratings}                 > 0,                                             'Book has number of ratings' );
+is  ( $b->{year},                       2009,                                            'Book has year published'    );
+is  ( $b->{rh_author}->{id},            '4949703',                                       'Book has author ID'         );
+is  ( $b->{rh_author}->{name},          'William E. Shotts Jr.',                         'Book has author name'       );
+is  ( $b->{rh_author}->{url},           'https://www.goodreads.com/author/show/4949703', 'Book has author URL'        );
+like( $b->{rh_author}->{works_url},     qr/^https:\/\/www\.goodreads\.com\/author\/list\/4949703/, 'Book has author works URL' );
+is  ( $b->{rh_author}->{is_author},     1,                                               'Book author has author flag' );
+is  ( $b->{rh_author}->{is_private},    0,                                               'Book author not private'     );
+ok  (!$b->{rh_author}->{is_mainstream},                                                  'Book author not mainstream author' );
+
 
 # Not available or scraped yet, otherwise one of the following
 # tests will fail and remind me of implementing a correct test:
