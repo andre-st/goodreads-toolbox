@@ -1758,19 +1758,20 @@ sub _extract_user
 	my $fname = $htm =~ /<meta property="profile:first_name" content="([^"]+)/ ? _dec_entities( $1     )." " : "";
 	my $lname = $htm =~ /<meta property="profile:last_name" content="([^"]+)/  ? _dec_entities( $1     )." " : "";
 	my $uname = $htm =~ /<meta property="profile:username" content="([^"]+)/   ? _dec_entities( "($1)" )     : "";
-	$us{ name       } = _trim( $fname.$lname.$uname );
-	$us{ name_lf    } = $us{name};  # TODO
-	$us{ num_books  } = $htm =~ /<meta content='[^']+ has (\d+)[,.]?(\d*)[,.]?(\d*) books/ ? $1.$2.$3 : 0;
-	$us{ age        } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/               ? $1 : 0;
-	$us{ is_female  } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/                  ? 1  : 0;
-	$us{ is_private } = $htm =~ /<div id="privateProfile"/                                 ? 1  : 0;
-	$us{ is_staff   } = $htm =~ /Goodreads employee/                                       ? 1  : 0;
-	$us{ img_url    } = $htm =~ /<meta property="og:image" content="([^"]+)/               ? $1 : $_NOUSERIMGURL;
-	$us{ works_url  } = undef;
-	$us{ is_friend  } = undef;
-	$us{ is_author  } = 0;
-	$us{ url        } = _user_url( $us{id}, $us{is_author} );
-	$us{ _seen      } = 1;
+	$us{ name          } = _trim( $fname.$lname.$uname );
+	$us{ name_lf       } = $us{name};  # TODO
+	$us{ num_books     } = $htm =~ /<meta content='[^']+ has (\d+)[,.]?(\d*)[,.]?(\d*) books/ ? $1.$2.$3 : 0;
+	$us{ age           } = $htm =~ /<div class="infoBoxRowItem">[^<]*Age (\d+)/               ? $1 : 0;
+	$us{ is_female     } = $htm =~ /<div class="infoBoxRowItem">[^<]*Female/                  ? 1  : 0;
+	$us{ is_private    } = $htm =~ /<div id="privateProfile"/                                 ? 1  : 0;
+	$us{ is_staff      } = $htm =~ /(Goodreads employee|Goodreads Founder)/                   ? 1  : 0;
+	$us{ img_url       } = $htm =~ /<meta property="og:image" content="([^"]+)/               ? $1 : $_NOUSERIMGURL;
+	$us{ works_url     } = undef;
+	$us{ is_friend     } = undef;
+	$us{ is_author     } = 0;
+	$us{ is_mainstream } = undef;
+	$us{ url           } = _user_url( $us{id}, $us{is_author} );
+	$us{ _seen         } = 1;
 	
 	# Details string doesn't include Firstname/Middlename/Lastname, no Zip-Code
 	# Also depedent on viewer's login status
@@ -1780,7 +1781,7 @@ sub _extract_user
 	   $r =~ s/^\s+|\s+$//g;       # trim both ends
 	   $r =~ s/\s*,\s*/, /g;       # "City , State" -> "City, State" (some consistency)
 	$us{ residence } = ($r =~ m/any details yet/) ? '' : $r;  # remaining string is the residence (City, State)
-	
+		
 	return %us;
 }
 
@@ -1794,31 +1795,36 @@ sub _extract_author
 {
 	my $htm = shift or return;
 	my %us;
-	$us{ id         } = $htm =~ /<meta content='https:\/\/www\.goodreads\.com\/author\/show\/(\d+)/ ? $1 : undef;
-	$us{ name       } = $htm =~ /<meta content='([^']+)' property='og:title'>/ ? _dec_entities( $1 ) : "";
-	$us{ name_lf    } = $us{name};   # TODO
-	$us{ img_url    } = $htm =~ /<meta content='([^']+)' property='og:image'>/ ? $1 : $_NOUSERIMGURL;
-	$us{ is_staff   } = $htm =~ /<h3 class="right goodreadsAuthor">/           ? 1  : 0;
-	$us{ is_private } = 0;
-	$us{ is_female  } = undef;  # TODO
-	$us{ works_url  } = _author_books_url( $us{id} );
-	$us{ residence  } = undef;
-	$us{ num_books  } = $htm =~ /=reviews">(\d+)[,.]?(\d*)[,.]?(\d*) ratings</ ? $1.$2.$3 : 0; # Closest we can get
-	$us{ is_friend  } = undef;
-	$us{ is_author  } = 1;
-	$us{ url        } = _user_url( $us{id}, $us{is_author} );
-	$us{ _seen      } = 1;
+	my $num_ratings = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/ ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+	
+	$us{ id            } = $htm =~ /<meta content='https:\/\/www\.goodreads\.com\/author\/show\/(\d+)/ ? $1 : undef;
+	$us{ name          } = $htm =~ /<meta content='([^']+)' property='og:title'>/ ? _dec_entities( $1 ) : "";
+	$us{ name_lf       } = $us{name};   # TODO
+	$us{ img_url       } = $htm =~ /<meta content='([^']+)' property='og:image'>/ ? $1 : $_NOUSERIMGURL;
+	$us{ is_staff      } = $htm =~ /<h3 class="right goodreadsAuthor">/           ? 1  : 0;
+	$us{ is_private    } = 0;
+	$us{ is_female     } = undef;  # TODO
+	$us{ is_mainstream } = $num_ratings >= $_MAINSTREAM_NUM_RATINGS;
+	$us{ is_friend     } = undef;
+	$us{ is_author     } = 1;
+	$us{ works_url     } = _author_books_url( $us{id} );
+	$us{ residence     } = undef;
+	$us{ num_books     } = $htm =~ /=reviews">(\d+)[,.]?(\d*)[,.]?(\d*) ratings</ ? $1.$2.$3 : 0; # Closest we can get
+	$us{ url           } = _user_url( $us{id}, $us{is_author} );
+	$us{ _seen         } = 1;
 	
 	return %us;
 }
 
 
 
-=head2 C<bool> _extract_books( I<$rh_books, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
+=head2 C<bool> _extract_books( I<$rh_books, $rh_authors, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
 
 =over
 
 =item * I<$rh_books>: C<(id =E<gt> L<%book|"\%book">,...)>
+
+=item * I<$rh_authors>: C<(id =E<gt> L<%user|"\%user">,...)>
 
 =item * returns 0 if no books, 1 if books, 2 if error
 
@@ -1828,18 +1834,18 @@ sub _extract_author
 
 sub _extract_books
 {
-	my $rh  = shift;
-	my $bfn = shift;
-	my $pfn = shift;
-	my $htm = shift or return 2;
-	my $ret = 0;
+	my $rh    = shift;
+	my $rh_au = shift;  # Reuse author refs from here (if exists)
+	my $bfn   = shift;
+	my $pfn   = shift;
+	my $htm   = shift or return 2;
+	my $ret   = 0;
 	
 	# TODO verify if shelf is the given one or redirected by GR to #ALL# bc misspelled	
 	
 	while( $htm =~ /<tr id="review_\d+" class="bookalike review">(.*?)<\/tr>/gs ) # each book row
 	{	
 		my $row = $1;
-		my %au;
 		my %bk;
 		
 		my $tit = $row =~ />title<\/label><div class="value">\s*<a[^>]+>\s*(.*?)\s*<\/a>/s  ? $1 : '';
@@ -1859,17 +1865,6 @@ sub _extract_books
 		                     $_EARLIEST
 		                   : $_EARLIEST;
 		
-		$au{ id              } = $row =~ /author\/show\/([0-9]+)/       ? $1                  : undef;
-		$au{ name_lf         } = $row =~ /author\/show\/[^>]+>([^<]+)/  ? _dec_entities( $1 ) : '';
-		$au{ name            } = $au{name_lf};  # Shelves already list names with "lastname, firstname"
-		$au{ residence       } = undef;
-		$au{ url             } = _user_url( $au{id}, 1 );
-		$au{ works_url       } = _author_books_url( $au{id} );
-		$au{ is_author       } = 1;
-		$au{ is_private      } = 0;
-		$au{ _seen           } = 1;
-		
-		$bk{ rh_author       } = \%au;
 		$bk{ id              } = $row =~ /data-resource-id="([0-9]+)"/                                                ? $1 : undef;
 		$bk{ year            } = $row =~         />date pub<\/label><div class="value">.*?(-?\d+)\s*</s               ? $1 : 0;  # "2017" and "Feb 01, 2017" and "-50" (BC) and "177"
 		$bk{ year_edit       } = $row =~ />date pub edition<\/label><div class="value">.*?(-?\d+)\s*</s               ? $1 : 0;  # "2017" and "Feb 01, 2017" and "-50" (BC) and "177"
@@ -1884,13 +1879,40 @@ sub _extract_books
 		$bk{ user_date_added } = $tadd;
 		$bk{ user_date_read  } = $tread;
 		$bk{ user_rating     } = () = $row =~ /staticStar p10/g;        # Counts occurances
-		$bk{ ra_user_shelves } = [];      # TODO;
+		$bk{ ra_user_shelves } = [];     # TODO
 		$bk{ num_reviews     } = undef;  # Not available here!
 		$bk{ img_url         } = $row =~ /<img [^>]* src="([^"]+)"/                                                   ? $1 : $_NOBOOKIMGURL;
 		$bk{ review_id       } = $row =~ /review\/show\/([0-9]+)"/                                                    ? $1 : undef;
 		$bk{ title           } = _trim( $tit );
 		$bk{ url             } = _book_url( $bk{id} );
 		$bk{ stars           } = int( $bk{ avg_rating } + 0.5 );
+		
+		# Reuse author (by ref) or create new one:
+		my $aid = $row =~ /author\/show\/([0-9]+)/ ? $1 : undef;
+		if( $rh_au && exists $rh_au->{$aid} )
+		{
+			$bk{ rh_author } = $rh_au->{$aid};
+		}
+		else
+		{
+			my %au;
+			$au{ id         } = $aid;
+			$au{ name_lf    } = $row =~ /author\/show\/[^>]+>([^<]+)/  ? _dec_entities( $1 ) : '';
+			$au{ name       } = $au{name_lf};  # Shelves already list names with "lastname, firstname"
+			$au{ residence  } = undef;
+			$au{ url        } = _user_url( $au{id}, 1 );
+			$au{ works_url  } = _author_books_url( $au{id} );
+			$au{ is_author  } = 1;
+			$au{ is_private } = 0;
+			$au{ _seen      } = 1;
+			$bk{ rh_author  } = \%au;
+			
+			$rh_au->{ $aid } = \%au if $rh_au;  # Add to the given authors pool
+		}
+		
+		$bk{ rh_author }->{ is_mainstream } = $bk{ rh_author }->{ is_mainstream }
+		                                   || $bk{ num_ratings } >= $_MAINSTREAM_NUM_RATINGS;
+		
 		
 		$ret++ unless exists $rh->{$bk{id}};  # Don't count duplicates (multiple shelves)
 		$rh->{ $bk{id} } = \%bk if $rh;
@@ -1934,28 +1956,29 @@ sub _extract_author_books
 	
 	return $ret if $$r_limit == 0;
 	
+	my %au;
+	$au{ id         } = $aid;
+	$au{ name       } = _trim( $aunm );
+	$au{ name_lf    } = $au{name};  # TODO
+	$au{ residence  } = undef;
+	$au{ img_url    } = $auimg;
+	$au{ url        } = _user_url( $aid, 1 );
+	$au{ works_url  } = _author_books_url( $aid );
+	$au{ is_author  } = 1;
+	$au{ is_private } = 0;
+	$au{ _seen      } = 1;
+	
 	while( $htm =~ /<tr itemscope itemtype="http:\/\/schema.org\/Book">(.*?)<\/tr>/gs )
 	{
 		my $row = $1;
-		my %au;
 		my %bk;
 		
-		$au{ id          } = $aid;
-		$au{ name        } = _trim( $aunm );
-		$au{ name_lf     } = $au{name};  # TODO
-		$au{ residence   } = undef;
-  		$au{ img_url     } = $auimg;
-		$au{ url         } = _user_url( $aid, 1 );
-		$au{ works_url   } = _author_books_url( $aid );
-		$au{ is_author   } = 1;
-		$au{ is_private  } = 0;
-		$au{ _seen       } = 1;
-		
 		$bk{ rh_author   } = \%au;
-		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/               ? $1       : undef;
-		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/   ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
-		$bk{ img_url     } = $row =~ /src="([^"]+)/                       ? $1       : $_NOBOOKIMGURL;
-		$bk{ title       } = $row =~ /<span itemprop='name'[^>]*>([^<]+)/ ? _dec_entities( $1 ) : '';
+		$bk{ id          } = $row =~ /book\/show\/([0-9]+)/                 ? $1       : undef;
+		$bk{ num_ratings } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/     ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ avg_rating  } = $row =~ /(\d+)[,.]?(\d*)[,.]?(\d*) avg rating/ ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ img_url     } = $row =~ /src="([^"]+)/                         ? $1       : $_NOBOOKIMGURL;
+		$bk{ title       } = $row =~ /<span itemprop='name'[^>]*>([^<]+)/   ? _dec_entities( $1 ) : '';
 		$bk{ url         } = _book_url( $bk{id} );
 		$bk{ isbn        } = undef;  # TODO?
 		$bk{ isbn13      } = undef;  # TODO?
@@ -1963,6 +1986,8 @@ sub _extract_author_books
 		$bk{ num_pages   } = undef;  # TODO?
 		$bk{ year        } = undef;  # TODO?
 		$bk{ year_edit   } = undef;  # TODO?
+		$bk{ rh_author   }->{ is_mainstream } = $bk{ rh_author }->{ is_mainstream } 
+		                                     || $bk{num_ratings} >= $_MAINSTREAM_NUM_RATINGS;
 		
 		$ret++; # Count duplicates too: 10 books of author A, 9 of B; called for single author
 		$rh->{ $bk{id} } = \%bk;
@@ -2010,17 +2035,18 @@ sub _extract_followees
 		my $aid = $row =~ /\/author\/show\/([0-9]+)/   ? $1 : undef;	
 		my %us;
 		
-		$us{ id        } = $uid ? $uid : $aid;
-		$us{ name      } = $row =~ /img alt="([^"]+)/  ? _dec_entities( $1 ) : '';
-		$us{ name_lf   } = $us{name};  # TODO
-		$us{ img_url   } = $row =~ /src="([^"]+)/      ? $1                        : $_NOUSERIMGURL;
-		$us{ works_url } = $aid                        ? _author_books_url( $aid ) : '';
-		$us{ url       } = _user_url( $us{id}, $aid );
-		$us{ is_author } = defined $aid;
-		$us{ is_friend } = 0;
-		$us{ _seen     } = 1;
-		$us{ residence } = undef;  # TODO?
-		$us{ num_books } = undef;  # TODO?
+		$us{ id            } = $uid ? $uid : $aid;
+		$us{ name          } = $row =~ /img alt="([^"]+)/  ? _dec_entities( $1 ) : '';
+		$us{ name_lf       } = $us{name};  # TODO
+		$us{ img_url       } = $row =~ /src="([^"]+)/      ? $1                        : $_NOUSERIMGURL;
+		$us{ works_url     } = $aid                        ? _author_books_url( $aid ) : '';
+		$us{ url           } = _user_url( $us{id}, $aid );
+		$us{ is_author     } = defined $aid;
+		$us{ is_friend     } = 0;
+		$us{ is_mainstream } = undef;
+		$us{ _seen         } = 1;
+		$us{ residence     } = undef;  # TODO?
+		$us{ num_books     } = undef;  # TODO?
 		
 		next if !$iau && $us{is_author};
 		$ret++;
@@ -2065,17 +2091,18 @@ sub _extract_friends
 		my $aid = $row =~ /\/author\/show\/([0-9]+)/   ? $1 : undef;
 		my %us;
 		
-		$us{ id        } = $uid ? $uid : $aid;
-		$us{ name      } = $row =~ /img alt="([^"]+)/  ? _dec_entities( $1 ) : '';
-		$us{ name_lf   } = $us{name};  # TODO
-		$us{ img_url   } = $row =~     /src="([^"]+)/  ? $1                        : $_NOUSERIMGURL;
-		$us{ works_url } = $aid                        ? _author_books_url( $aid ) : '';
-		$us{ url       } = _user_url( $us{id}, $aid );
-		$us{ is_author } = defined $aid;
-		$us{ is_friend } = 1;
-		$us{ _seen     } = 1;
-		$us{ residence } = undef;  # TODO?
-		$us{ num_books } = undef;  # TODO?
+		$us{ id            } = $uid ? $uid : $aid;
+		$us{ name          } = $row =~ /img alt="([^"]+)/  ? _dec_entities( $1 ) : '';
+		$us{ name_lf       } = $us{name};  # TODO
+		$us{ img_url       } = $row =~     /src="([^"]+)/  ? $1                        : $_NOUSERIMGURL;
+		$us{ works_url     } = $aid                        ? _author_books_url( $aid ) : '';
+		$us{ url           } = _user_url( $us{id}, $aid );
+		$us{ is_author     } = defined $aid;
+		$us{ is_friend     } = 1;
+		$us{ is_mainstream } = undef;
+		$us{ _seen         } = 1;
+		$us{ residence     } = undef;  # TODO?
+		$us{ num_books     } = undef;  # TODO?
 		
 		next if !$iau && $us{ is_author };
 		$ret++;
@@ -2198,25 +2225,26 @@ sub _extract_revs
 		my $txt  = $row =~ /id=\\"freeText[0-9]+\\" style=\\"display:none\\"\\u003e(.*?)\\u003c\/span/  ? _dec_entities( $1 ) : '';
 		   $txt  = $txts if length( $txts ) > length( $txt );
 		
-   		$txt =~ s/\\"/"/g;
+		$txt =~ s/\\"/"/g;
 		$txt = _conv_uni_codepoints( $txt );
 		$txt =~ s/<br \/>/\n/g;
 		
-		$us{ id         } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
-		$us{ name       } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : _dec_entities( $1 )) : '';
-		$us{ name_lf    } = $us{name};  # TODO
-  		$us{ img_url    } = $_NOUSERIMGURL;  # TODO
-		$us{ url        } = _user_url( $us{id} );
-		$us{ _seen      } = 1;
+		$us{ id            } = $row =~ /\/user\/show\/([0-9]+)/ ? $1 : undef;
+		$us{ name          } = $row =~ /img alt=\\"(.*?)\\"/    ? ($1 eq '0' ? '"0"' : _dec_entities( $1 )) : '';
+		$us{ name_lf       } = $us{name};  # TODO
+		$us{ img_url       } = $_NOUSERIMGURL;  # TODO
+		$us{ url           } = _user_url( $us{id} );
+		$us{ is_mainstream } = undef;  # = $reviewed_book->{rh_author}->{is_mainstream}
+		$us{ _seen         } = 1;
 		
-		$rv{ id         } = $row =~ /\/review\/show\/([0-9]+)/ ? $1 : undef;
-		$rv{ text       } = $txt;
-		$rv{ rating     } = () = $row =~ /staticStar p10/g;  # Count occurances
-		$rv{ rating_str } = $rv{rating} ? ('[' . ($rv{text} ? (length($rv{text})>160?'T':'t') : '*') x $rv{rating} . ' ' x (5-$rv{rating}) . ']') : '[added]';
-		$rv{ url        } = _rev_url( $rv{id} );
-		$rv{ date       } = $dat_tpiece;
-		$rv{ book_id    } = $bid;
-		$rv{ rh_user    } = \%us;
+		$rv{ id            } = $row =~ /\/review\/show\/([0-9]+)/ ? $1 : undef;
+		$rv{ text          } = $txt;
+		$rv{ rating        } = () = $row =~ /staticStar p10/g;  # Count occurances
+		$rv{ rating_str    } = $rv{rating} ? ('[' . ($rv{text} ? (length($rv{text})>=$GOOD_USEFUL_REVIEW_LEN?'T':'t') : '*') x $rv{rating} . ' ' x (5-$rv{rating}) . ']') : '[added]';
+		$rv{ url           } = _rev_url( $rv{id} );
+		$rv{ date          } = $dat_tpiece;
+		$rv{ book_id       } = $bid;
+		$rv{ rh_user       } = \%us;
 		
 		if( $ffn->( \%rv ) )  # Filter
 		{
@@ -2257,13 +2285,13 @@ sub _extract_similar_authors
 	while( $htm =~ /<div data-react-class="ReactComponents.SimilarAuthorsList" data-react-props="([^"]*)/gs )
 	{	
 		my $json = _conv_uni_codepoints( _dec_entities( $1 ));
-		
-		while( $json =~ /\{"author":\{"id":([^,]+),"name":"([^"]+)",[^\{]*"profileImage":"([^"]+)/gs )
+		while( $json =~ /\{"author":\{"id":([^,]+),"name":"([^"]+)",[^\{]*"profileImage":"([^"]+)",.*?"ratingsCount":([0-9]+)/gs )
 		{
 			my %au;
 			$au{ id      } = $1;
 			$au{ name    } = _trim( $2 );
 			$au{ img_url } = $3;
+			my $num_rats   = $4 // 0;  # best book rating in the source but not visible on the website
 			
 			next if $au{id} eq $uid_to_skip;
 			
@@ -2275,14 +2303,15 @@ sub _extract_similar_authors
 				next;
 			}
 			
-			$au{ name_lf    } = $au{name};  # TODO
-			$au{ url        } = _user_url( $au{id}, 1 );
-			$au{ works_url  } = _author_books_url( $au{id} );
-			$au{ is_author  } = 1;
-			$au{ is_private } = 0;
-			$au{ _seen      } = 1;
-			$au{ residence  } = undef;  # TODO?
-			$au{ num_books  } = undef;  # TODO
+			$au{ name_lf       } = $au{name};  # TODO
+			$au{ url           } = _user_url( $au{id}, 1 );
+			$au{ works_url     } = _author_books_url( $au{id} );
+			$au{ is_author     } = 1;
+			$au{ is_private    } = 0;
+			$au{ is_mainstream } = $num_rats >= $_MAINSTREAM_NUM_RATINGS;
+			$au{ _seen         } = 1;
+			$au{ residence     } = undef;  # TODO?
+			$au{ num_books     } = undef;  # TODO
 			
 			$rh->{ $au{id} } = \%au;
 		}
@@ -2356,6 +2385,8 @@ sub _extract_search_books
 		$bk{ stars           } = int( $bk{ avg_rating } + 0.5 );
 		$bk{ rh_author       } = \%au;
 		$bk{ ra_user_shelves } = [];
+		
+		$au{ is_mainstream   } = $bk{num_ratings} >= $_MAINSTREAM_NUM_RATINGS;
 		
 		push( @$ra, \%bk );
 		$ret++;  # There are no duplicates, no extra checks
