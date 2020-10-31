@@ -159,9 +159,9 @@ our @EXPORT = qw(
 # Perl core:
 use Time::Piece;
 use Carp             qw( croak );
-use List::Util       qw( sum max );
+use List::Util       qw( sum max min );
 # Third party:
-use List::MoreUtils  qw( any );
+use List::MoreUtils  qw( any none );
 use Cache::Cache     qw( $EXPIRES_NEVER $EXPIRES_NOW );
 use Cache::FileCache;
 use IO::Prompter;
