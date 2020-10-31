@@ -918,9 +918,12 @@ sub greadauthors
 	my $pickauthorsfn = sub
 	{
 		my $aid = $_[0]->{rh_author}->{id};
-		return if gisbaduser( $aid );
-		$pfn->( 1 ) if !exists $auts{$aid};  # Don't count duplicates (multiple shelves)
-		$auts{$aid} = $_[0]->{rh_author};
+		return if gisbaduser( $aid );	
+		if( !exists $auts{$aid} )
+		{
+			$pfn->( 1 );  # Don't *count* duplicates (multiple shelves)
+			$auts{$aid} = $_[0]->{rh_author};
+		}
 	};
 	
 	greadshelf( from_user_id    => $args{ from_user_id    },
