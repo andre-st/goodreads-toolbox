@@ -126,6 +126,7 @@ use base 'Exporter';
 our @EXPORT = qw( 
 	$GOOD_ERRMSG_NOBOOKS
 	$GOOD_ERRMSG_NOMEMBERS
+	$GOOD_USEFUL_REVIEW_LEN
 	
 	gverifyuser
 	gverifyshelf
@@ -173,6 +174,8 @@ use WWW::Curl::Easy;
 our $GOOD_ERRMSG_NOBOOKS   = "[FATAL] No books found. Check the privacy settings at Goodreads.com and ensure access by 'anyone (including search engines)'.";
 our $GOOD_ERRMSG_NOMEMBERS = '[FATAL] No members found. Check cookie and try empty /tmp/FileCache/';
 
+# Public constants:
+our $GOOD_USEFUL_REVIEW_LEN = 160;
 
 # Module error codes:
 #   Severity levels:  0 < WARN < ERROR < CRITICAL < FATAL
