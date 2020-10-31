@@ -25,7 +25,7 @@ Table of contents:
 | Integrity                          | Users on GR might try to abuse scrapers such as our programs or other programs (reading our outputs) by saving rogue strings in reviews, usernames etc (XSS)
 
 
-1) [List of possible goals...](https://en.wikipedia.org/wiki/List_of_system_quality_attributes)  
+¹) [List of possible goals...](https://en.wikipedia.org/wiki/List_of_system_quality_attributes)  
 ²) Risks, worst-case, constraints, ...
 
 
