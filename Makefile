@@ -2,7 +2,26 @@
 # 
 # TODO: Install perl dependencies to a local dir (no root required), deps-local target?
 # 
+# 
+# Docker:
+#   - hub.docker.com automatically builds new images from the GitHub repository
+#     $ docker run -it datakadabra/goodreads-toolbox
+# 
+# 
 
+
+# Configure Make:
+# https://tech.davis-hansson.com/p/make/
+SHELL := bash
+.ONESHELL:
+.SHELLFLAGS := -eu -o pipefail -c
+.DELETE_ON_ERROR:
+MAKEFLAGS += --warn-undefined-variables
+MAKEFLAGS += --no-builtin-rules
+#.DEFAULT_GOAL := help
+
+
+# Configure Make rules:
 PROJECT_VERSION   = 1.22
 RR_LOGFILE        = /var/log/good.log
 RR_DB_DIR         = /var/db/good
@@ -17,9 +36,9 @@ DOCKER_HTPORT     = 8080
 RELEASE           = $(PACKAGE)-$(PROJECT_VERSION)
 GITDIR            = $(wildcard .git)
 
-
 LIBCURLDEV_ERR = "Required packages: build-essential libcurl-dev libwww-curl-perl (Debian/Ubuntu names)"
 LIBCURLDEV    := $(shell command -v curl-config 2> /dev/null)
+
 
 
 # ----------------------------------------------------------------------------
