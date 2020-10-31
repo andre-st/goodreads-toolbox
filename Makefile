@@ -125,7 +125,7 @@ docker-run:
 .PHONY: docs
 docs:
 	# vX.X, vX.XX.X, image:X.XX.X
-	sed -i -E "s/([v:])[0-9\.]+/\1${PROJECT_VERSION}/"  README.md INSTALL.txt
+	sed -i -E "s/([v])[0-9\.]+/\1${PROJECT_VERSION}/"  README.md INSTALL.txt
 
 
 # ----------------------------------------------------------------------------
