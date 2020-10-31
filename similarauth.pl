@@ -32,6 +32,11 @@ check another member instead of the one identified by the login-mail
 and password arguments. You find the ID by looking at the shelf URLs.
 
 
+=item B<-m, --minseen>=F<number>
+
+only report authors that were similar to N other authors; default is 1
+
+
 =item B<-c, --cache>=F<numdays>
 
 number of days to store and reuse downloaded data in F</tmp/FileCache/>,
@@ -109,7 +114,7 @@ More info in ./help/similarauth.md
 
 =head1 VERSION
 
-2019-11-16 (Since 2018-07-05)
+2020-01-21 (Since 2018-07-05)
 
 =cut
 
@@ -145,8 +150,10 @@ our $TSTART = time();
 our @SHELVES;
 our $OUTPATH;
 our $USERID;
+our $MINSEEN = 1;
 
 GetOptions( 'shelf|s=s'       => \@SHELVES,
+            'minseen|m=i'     => \$MINSEEN,
             'userid|u=s'      => \$USERID,
             'outfile|o=s'     => \$OUTPATH,
             'cache|c=i'       => sub{  gsetopt( cache_days => $_[1] );  },
@@ -229,6 +236,7 @@ my $line;
 for my $auid (keys %aufound)
 {
 	next if exists $auknown{$auid};
+	next if $aufound{$auid}->{_seen} < $MINSEEN;
 	
 	$line++;
 	print $fh qq{
