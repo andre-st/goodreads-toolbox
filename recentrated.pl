@@ -233,7 +233,7 @@ for my $id (@oldest_ids)
 	greadreviews( rh_for_book => $books{$id},
 	              since       => $lastcheck,
 	              rh_into     => \%revs,
-	              text_only   => $TEXTONLY,
+	              text_minlen => $TEXTONLY * $GOOD_USEFUL_REVIEW_LEN,
 	              rigor       => 0 );
 	
 	$db->{$id}->{num_ratings} = $books{$id}->{num_ratings};
