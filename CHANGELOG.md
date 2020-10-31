@@ -10,7 +10,37 @@ Version number 1.MINOR.PATCH, increments:
 
 ## [Unreleased]
 
-- see [GitHub issues labeled "Soon"](https://github.com/andre-st/goodreads-toolbox/issues?q=is%3Aopen+is%3Aissue+label%3Asoon)
+- see [GitHub issues labeled "next release"](https://github.com/andre-st/goodreads-toolbox/issues?q=is%3Aopen+is%3Aissue+label%3A"next+release")
+
+
+
+## [v1.23] - 2020-10-31
+## Note
+This is primary a maintenance update after a long time.
+
+
+## Fixed
+
+- similaraut.pl:
+	- failed to load authors because the source markup changed after the last version
+- some improvements on the looks of all HTML reports
+
+## Added
+
+- similarauth.pl:
+	- new `--minseen` parameter to drop authors that are not similar to at least N other authors;
+	  reduces the number of authors and size of the output file
+
+## Changed
+
+- recentrated.pl: 
+	`--textonly` option also drops smaller texts now,
+	 because the flag's purpose is to cut down "noisy" e-mails with too many ratings
+	 and smaller reviews are almost always useless too ("loved it so much!").
+	 Without this flag, [\*\*\*\* ], [TTTT ] and [tttt ] are shown as usual.
+- lib/Goodscrapes.pl:
+	- greadreviews() parameter `text_only` was renamed to `text_minlen`
+
 
 
 

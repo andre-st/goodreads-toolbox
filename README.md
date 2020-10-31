@@ -1,6 +1,6 @@
-# :books: Andre's Goodreads Toolbox, v1.22
+# :books: Andre's Goodreads Toolbox, v1.23
 
-![Maintenance](https://img.shields.io/maintenance/yes/2019.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2020.svg)
 
 9 Perl-scripts for Goodreads.com—the world largest book (cataloging) community. [What's new?](CHANGELOG.md)
 
@@ -96,11 +96,10 @@ $ cd goodreads-toolbox
    and view the results via web-browser at _localhost:8080_:
 
 ```console
-$ make docker-image
-$ make docker-run    # Type `make help` first to see options, or just go with defaults
+$ docker run -it --publish=8080:80 datakadabra/goodreads-toolbox
 ```
 
-2b\.  users without Docker can install the Toolbox directly on their systems:
+2b\.  users without Docker can try to install the Toolbox directly on their systems:
 
 ```console
 $ sudo make          # Gets required Perl modules from CPAN
@@ -134,7 +133,7 @@ Long program runtimes: Goodreads slows down all requests and we have to load a l
   - see the [tests directory](./t/) for examples on how to use the toolbox library
   - see the [toolbox library documentation](./lib/Goodscrapes.pod)
   - user scripts should contain a man page, take the existing user scripts as an example
-  - the [less complex issues](https://github.com/andre-st/goodreads-toolbox/labels/beginner)
+  - the [less complex issues](https://github.com/andre-st/goodreads-toolbox/labels/freshmen)
     would be good first issues to work on for users who want to contribute to this project
 
 
@@ -174,7 +173,8 @@ Long program runtimes: Goodreads slows down all requests and we have to load a l
 		is a command line interface for Goodreads (off. API)
   - untested: [Greasyfork Browser-Scripts](https://greasyfork.org/en/scripts/by-site/goodreads.com)
   - untested: the [Bookar Android app](https://github.com/intmainreturn00/Bookar) visualizes your books in augmented reality
-  - Amazon: [export and filter wishlists](https://github.com/andre-st/amazon-wishless) by price and priority
+  - untested: save your shelves and reviews [Goodreads data to SQLite](https://github.com/rixx/goodreads-to-sqlite)
+  - Amazon: [export and filter long wishlists](https://github.com/andre-st/amazon-wishless) by priority and price (bargains)
 - Other
   - Data: thousands of books and authors (not GR) https://openlibrary.org/developers/dumps
 - Personal
