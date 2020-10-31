@@ -251,6 +251,8 @@ our @_BADPROFILES   =     # TODO external config file
 	'5158478',  # 10.000 books   "Anonymous"  author
 	'67012749'  # 46429 ratings  "Subhajit Das" spam?
 );
+our $_MAINSTREAM_NUM_RATINGS   = 10000;
+our $_MAINSTREAM_NUM_FOLLOWERS = 10000;  # Rowlings = 210,542; Nassim Taleb = 7,811, Martin Fowler = 740
 
 our $_cookie    = undef;
 our $_cache_age = $EXPIRES_NOW;  # see gsetopt()
