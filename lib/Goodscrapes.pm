@@ -958,7 +958,10 @@ sub greadauthorbk
 
 =item * C<dict_path   =E<gt> string> path to a dictionary file (1 word per line) [optional]
 
-=item * C<text_only   =E<gt> bool> overwrites C<on_filter> argument [optional, default 0 ]
+=item * C<text_minlen =E<gt> int> overwrites C<on_filter> argument [optional, default 0 ]
+  
+   0  =  no text filtering
+   n  =  specified minimum length (see also GOOD_USEFUL_REVIEW_LEN constant)
 
 =item * C<rigor       =E<gt> int> [optional, default 2]
 
@@ -978,14 +981,14 @@ sub greadreviews
 	my $rigor    = $args{ rigor       }  // 2;
 	my $dictpath = $args{ dict_path   }  // undef;
 	my $rh       = $args{ rh_into     }  // undef;
-	my $istxt    = $args{ text_only   }  // 0;
+	my $txtlen   = $args{ text_minlen }  // 0;
 	my $pfn      = $args{ on_progress }  // sub{};
 	my $since    = $args{ since       }  // $_EARLIEST;
 	   $since    = Time::Piece->strptime( $since->ymd, '%Y-%m-%d' );  # Nullified time in GR too
-	my $limit    = $istxt ? ( $rh_book->{num_reviews}  // 5000000 ) 
-	                      : ( $rh_book->{num_ratings}  // 5000000 );
-	my $ffn      = $istxt ? ( sub{ $_[0]->{text} } )
-	                      : ( $args{ on_filter }  // sub{ return 1 } );
+	my $limit    = $txtlen ? ( $rh_book->{num_reviews}  // 5000000 ) 
+	                       : ( $rh_book->{num_ratings}  // 5000000 );
+	my $ffn      = $txtlen ? ( sub{ length( $_[0]->{text} ) >= $txtlen })
+	                       : ( $args{ on_filter }  // sub{ return 1 } );
 	my $bid      = $rh_book->{id};
 	my %revs;    # Unique and empty, otherwise we cannot easily compute limits
 	
