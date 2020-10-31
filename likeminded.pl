@@ -32,12 +32,15 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =item B<-m, --common>=F<number>
 
-value between 0 and 100; members with 100% commonality have read *all* the
+value between 0 and 100. Members with 100% commonality have read *all* the
 authors you did, which is unlikely, so better use lower values. 
 Default is 5, that is, members who have read at least 5% of your authors.
 There's a huge bulge of members with low commonality and just a few with 
 higher commonality. Cut away the huge bulge, and check the rest manually.
-In my tests, 5% cut away 99% of members.
+In my tests, 5% cut away 99% of members. 
+If you primarily read fiction and popular authors you should try a value
+between 20 and 30. You can correct to a lower value later and restart
+the program, it will run faster as it loads previous data from the cache.
 
 
 =item B<-a, --maxauthorbooks>=F<number>
@@ -45,7 +48,7 @@ In my tests, 5% cut away 99% of members.
 some authors list over 2000 books, either due to bad cataloging on the 
 Goodreads site or too different editions which couldn't be combined.
 Chewing them all would significantly increase the program's runtime.
-Better we limit the number to the most N popular; default is 600
+Better we limit the number to the most N popular; default is 100
 
 
 =item B<-x, --rigor>=F<numlevel>
@@ -105,6 +108,8 @@ and you're okay with some values missing in your result.
 This option is not recommended when you run the program unattended.
 
 
+
+
 =item B<-?, --help>
 
 show full man page
@@ -154,7 +159,7 @@ More info in ./help/likeminded.md
 
 =head1 VERSION
 
-2019-11-16 (Since 2018-06-22)
+2020-01-23 (Since 2018-06-22)
 
 =cut
 
@@ -211,7 +216,7 @@ GetOptions( 'common|m=i'         => \$MINCOMMON,
 
 pod2usage( 1 ) if !$ARGV[0];
 
-glogin( usermail => $ARGV[0],  # Login not really required at the moment
+glogin( usermail => $ARGV[0],  # Login also allows to load 200 books in 1 request
         userpass => $ARGV[1],  # Asks pw if omitted
         r_userid => \$USERID );
 
@@ -267,7 +272,7 @@ for my $auid (keys %authors)
 	
 	greadauthorbk( author_id   => $auid,
 	               limit       => $MAXAUBOOKS,
-	               rh_into     => \%books, 
+	               rh_into     => \%books,
 	               on_book     => $imgurlupdatefn,
 	               on_progress => gmeter( 'books' ));
 	
@@ -302,7 +307,7 @@ for my $b (values %books)
 	              dict_path   => $DICTPATH,
 	              on_progress => gmeter( 'memb' ));
 	
-	$authors_read_by{ $_->{rh_user}->{id} }{ $b->{rh_author}->{id} } = 1 
+	$authors_read_by{ $_->{rh_user}->{id} }{ $b->{rh_author}->{id} } = 1  # (2,3,5,5,3) $authors{id}->user_avg vs rev_user's avg author rating
 		foreach( values %revs );
 	
 	printf( "\t%6.2fs\n", time()-$t0 );
@@ -359,6 +364,8 @@ for my $userid (keys %authors_read_by)
 	
 	my $t0 = time();
 	my %u  = greaduser( $userid );
+	
+	next unless %u;  # Probably due to errors (Timeouts etc)
 	
 	printf( "\t%6.2fs", time()-$t0 );
 	
