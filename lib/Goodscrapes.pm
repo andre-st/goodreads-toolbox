@@ -248,7 +248,8 @@ our $_EARLIEST      = Time::Piece->strptime( '1970-01-01', '%Y-%m-%d' );
 our @_BADPROFILES   =     # TODO external config file
 (
 	'1000834',  #  3.000 books   "NOT A BOOK" author
-	'5158478'   # 10.000 books   "Anonymous"  author
+	'5158478',  # 10.000 books   "Anonymous"  author
+	'67012749'  # 46429 ratings  "Subhajit Das" spam?
 );
 
 our $_cookie    = undef;
