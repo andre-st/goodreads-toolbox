@@ -190,7 +190,7 @@ gsetopt( cache_days => 31 );
 
 our $TSTART     = time();
 our $MINCOMMON  = 5;
-our $MAXAUBOOKS = 600;
+our $MAXAUBOOKS = 100;
 our $RIGOR      = 1;
 our $DICTPATH   = File::Spec->catfile( $FindBin::Bin, 'list-in', 'dict.lst' );
 our $OUTPATH;
