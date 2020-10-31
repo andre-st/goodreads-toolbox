@@ -16,7 +16,7 @@ Version number 1.MINOR.PATCH, increments:
 
 ## [v1.23] - 2020-10-31
 ## Note
-This is primary a maintenance update after a long time.
+This is primarily a maintenance update after a long time.
 
 
 ## Fixed
