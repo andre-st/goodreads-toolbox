@@ -66,11 +66,11 @@ requires password).
 
 =item B<-q, --textonly>
 
-output links to text reviews only, this drops all non-text 
-ratings (stars only). This option is useful if you have many 
-books which get many ratings every day. But it shifts the use 
-case from finding new people to mere reading new ideas about 
-a book.
+output links to text-reviews only. This drops all non-text 
+ratings (stars only) and the smaller text-reviews too ("Loved it so much!"). 
+This option is useful if you have many books which get many ratings every day. 
+But it shifts the use case from finding new people to mere reading 
+new ideas about a book.
 
 
 =item B<-?, --help>
@@ -119,7 +119,7 @@ More info in ./help/recentrated.md
 
 =head1 VERSION
 
-2019-10-10 (Since 2018-01-09)
+2019-12-02 (Since 2018-01-09)
 
 =cut
 
@@ -291,8 +291,9 @@ print "\n\n\nToo many ratings?\n"
     . ">> Use a separate shelf \"watch\" on Goodreads.com with 50-150 "
     . "special but lesser-known books, and fine-tune this mail by dropping "
     . "some books from that shelf over time. "
-    . "Reply \"shelf new-shelf-name\" when ready."
-	if $MAILFROM && $num_hits > 25;
+    . "Reply \"shelf new-shelf-name\" when ready. "
+    . "You can also reply \"textonly\" to skip the ratings without text. "
+	if $MAILFROM && $num_hits > 20;
 
 
 # Without a hint, the user doesn't know whether there are simply no 
