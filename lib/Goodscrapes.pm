@@ -84,7 +84,10 @@ our $VERSION = '1.59';  # X.XX version format required by Perl
 
 =over
 
-=item * for real-world usage examples see Andre's Goodreads Toolbox
+=item * for real-world usage examples see Andre's Goodreads Toolbox.
+        There are unit tests in the "t" directory, too. 
+        Tests are good (up-to-date) tutorials and might help comprehending 
+        the yet terse API documentation.
 
 =item * C<_> prefix means I<private> function or constant (use in module only)
 
@@ -236,7 +239,7 @@ our $_USERAGENT     = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.
 our $_NOBOOKIMGURL  = 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png';
 our $_NOUSERIMGURL  = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png';
 our $_NOGROUPIMGURL = 'https://s.gr-assets.com/assets/nophoto/group/50x66-14672b6c5b97a4836a13efdb6a1958d2.jpg';
-our $_ANYPRIVATEURL = 'https://www.goodreads.com/friend';
+our $_ANYPRIVATEURL = 'https://www.goodreads.com/recommendations/to_me';
 our $_SIGNINURL     = 'https://www.goodreads.com/user/sign_in';
 our $_HOMEURL       = 'https://www.goodreads.com';
 our $_SORTNEW       = 'newest';
@@ -288,21 +291,21 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =item * num_ratings     =E<gt> C<int>    103 for example
 
-=item * avg_rating      =E<gt> C<float>  4.36 for example
+=item * avg_rating      =E<gt> C<float>  4.36 for example, 0 if no rating
 
 =item * stars           =E<gt> C<int>    rounded avg_rating, e.g., 4
 
 =item * format          =E<gt> C<string> (binding)
 
-=item * user_rating     =E<gt> C<int>    number of stars 1,2,3,4 or 5
+=item * user_rating     =E<gt> C<int>    number of stars 1,2,3,4 or 5  (program user)
 
-=item * user_read_count =E<gt> C<int>
+=item * user_read_count =E<gt> C<int>    (program user)
 
-=item * user_num_owned  =E<gt> C<int>
+=item * user_num_owned  =E<gt> C<int>    (program user)
 
-=item * user_date_read  =E<gt> C<Time::Piece>
+=item * user_date_read  =E<gt> C<Time::Piece>   (program user)
 
-=item * user_date_added =E<gt> C<Time::Piece>
+=item * user_date_added =E<gt> C<Time::Piece>   (program user)
 
 =item * ra_user_shelves =E<gt> C<string[]> reference
 
@@ -326,35 +329,51 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =over
 
-=item * id          =E<gt> C<string>
+=item * id              =E<gt> C<string>
 
-=item * name        =E<gt> C<string>  "Firstname Lastname"
+=item * name            =E<gt> C<string>  "Firstname Lastname"
 
-=item * name_lf     =E<gt> C<string>  "Lastname, Firstname"
+=item * name_lf         =E<gt> C<string>  "Lastname, Firstname"
 
-=item * residence   =E<gt> C<string>  (might require login)
+=item * residence       =E<gt> C<string>  (might require login)
 
-=item * age         =E<gt> C<int>     (might require login)
+=item * age             =E<gt> C<int>     (might require login)
 
-=item * num_books   =E<gt> C<int>
+=item * num_books       =E<gt> C<int>     books shelfed, not books written (even if is_author == 1)
 
-=item * is_friend   =E<gt> C<bool>
+=item * is_friend       =E<gt> C<bool>
 
-=item * is_author   =E<gt> C<bool>
+=item * is_author       =E<gt> C<bool>
 
-=item * is_female   =E<gt> C<bool>
+=item * is_female       =E<gt> C<bool>
 
-=item * is_private  =E<gt> C<bool>
+=item * is_private      =E<gt> C<bool>
 
-=item * is_staff    =E<gt> C<bool>, is a Goodreads.com employee
+=item * is_staff        =E<gt> C<bool>   true if user is a Goodreads.com employee
 
-=item * url         =E<gt> C<string> URL to the user's profile page
+=item * is_mainstream   =E<gt> C<bool>  
+                           currently, guessed from number of ratings for any book, is_author == 1
 
-=item * works_url   =E<gt> C<string> URL to the author's distinct works (is_author == 1)
+=item * url             =E<gt> C<string> 
+                           URL to the user's profile page
 
-=item * img_url     =E<gt> C<string>
+=item * works_url       =E<gt> C<string> 
+                           URL to the author's distinct works (is_author == 1)
 
-=item * _seen       =E<gt> C<int>    incremented if user already exists in a load-target structure
+=item * img_url         =E<gt> C<string>
+
+=item * user_min_rating =E<gt> C<int>
+                           requires is_author == 1
+
+=item * user_max_rating =E<gt> C<int>
+                           requires is_author == 1
+
+=item * user_avg_rating =E<gt> C<float>
+                           3.3 for example (user of the program), requires is_author == 1, 
+                           value depends on the shelves involved
+
+=item * _seen           =E<gt> C<int>
+                           incremented if user already exists in a load-target structure
 
 =back
 
@@ -510,7 +529,7 @@ sub gmeter
 		   $v  = 100 if defined $_[1] && $v > 100;  # Allows to trigger "100%" by passing (1, 1)
 		my $s  = sprintf( $f, $v );
 		
-		my $ansicodeslen = sum( map( length, $s =~ /\x1b\[[0-9;]*m/g ) ) || 0;
+		my $ansicodeslen = sum( map( length, $s =~ /\x1b\[[0-9;]*m/g )) || 0;
 		
 		print "\b" x (length( $s )-$ansicodeslen) if !$is_first;     # Backspaces prev meter if any (same-width format str)
 		print $s;
@@ -526,6 +545,8 @@ sub gmeter
 =over
 
 =item * some Goodreads.com pages are only accessible by authenticated members
+
+=item * some Goodreads.com pages are optimized for authenticated members (e.g. get 200 books vs 30 books per request)
 
 =item * C<usermail =E<gt> string>
 
@@ -581,8 +602,11 @@ sub glogin
 	#$formdata = '#' x length( $formdata );
 	
 	# Check success:
-	$htm    = _html( $_HOMEURL, $_ENO_ERROR, 0 );
-	my $uid = $htm =~ /index_rss\/(\d+)/ ? $1 : undef;
+	#$htm    = _html( $_HOMEURL, $_ENO_ERROR, 0 );
+	#my $uid = $htm =~ /index_rss\/(\d+)/ ? $1 : undef;
+	#
+	$htm    = _html( $_ANYPRIVATEURL, $_ENO_ERROR, 0 );
+	my $uid = $htm =~ /uid: '(\d+)'/ ? $1 : undef;
 	
 	print( "OK!\n" ) if $uid && !$args{ userpass };  # Only out if prompt before
 	croak( _errmsg( $_ENO_BADLOGIN )) unless $uid;
@@ -622,6 +646,7 @@ sub glogin
 
 sub gsetopt
 {
+	# TODO:  die on unknown parameters (typos etc)
 	my (%args)  = @_;
 	%_OPTIONS   = ( %_OPTIONS, %args );
 	$_cache_age = $args{cache_days}.' days' if $args{cache_days};
@@ -874,6 +899,8 @@ sub _update_author_stats
 
 =item * skips authors where C<gisbaduser()> is true
 
+=item * sets the C<user_XXX> and C<is_mainstream> fields in each author item
+
 =back
 
 =cut
@@ -909,15 +936,15 @@ sub greadauthors
 
 =item * reads the Goodreads.com list of books written by the given author
 
-=item * C<author_id   =E<gt> string>
+=item * C<author_id      =E<gt> string>
 
-=item * C<limit       =E<gt> int> number of books to read into C<rh_into>
+=item * C<limit          =E<gt> int> number of books to read into C<rh_into>
 
-=item * C<rh_into     =E<gt> hash reference (id =E<gt> L<%book|"%book">,...)>
+=item * C<rh_into        =E<gt> hash reference (id =E<gt> L<%book|"%book">,...)>
 
-=item * C<on_book     =E<gt> sub( L<%book|"%book"> )> [optional]
+=item * C<on_book        =E<gt> sub( L<%book|"%book"> )> [optional]
 
-=item * C<on_progress =E<gt> sub> see C<gmeter()> [optional]
+=item * C<on_progress    =E<gt> sub> see C<gmeter()> [optional]
 
 =back
 
