@@ -84,14 +84,7 @@ program in 2015.
 
 ## Getting started
 
-1\. GNU/Linux terminal:
-
-```console
-$ git clone https://github.com/andre-st/goodreads-toolbox.git
-$ cd goodreads-toolbox
-```
-
-2a\.  [Docker](https://opensource.com/resources/what-docker) users can run the Toolbox in its own 
+1a\.  [Docker](https://opensource.com/resources/what-docker) users can run the Toolbox in its own 
    container([?](https://www.docker.com/resources/what-container)),
    and view the results via web-browser at _localhost:8080_:
 
@@ -99,13 +92,15 @@ $ cd goodreads-toolbox
 $ docker run -it --publish=8080:80 datakadabra/goodreads-toolbox
 ```
 
-2b\.  users without Docker can try to install the Toolbox directly on their systems:
+1b\.  users without Docker can try to install the Toolbox directly on their systems:
 
 ```console
+$ git clone https://github.com/andre-st/goodreads-toolbox.git
+$ cd goodreads-toolbox
 $ sudo make          # Gets required Perl modules from CPAN
 ```
 
-3\.  at the prompt, try out the Toolbox programs:
+2\.  at the prompt, try out the Toolbox programs:
 
 ```console
 $ ./example-script.pl --help
