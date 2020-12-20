@@ -6,7 +6,7 @@ Table of contents:
 - [Evaluation](#evaluation)
 - [Setup unit tests](#setup-unit-tests)
 - [Conventions](#conventions)
-
+- [Lessons learned](#lessons-learned)
 
 
 ## Quality goals
@@ -14,7 +14,7 @@ Table of contents:
 | Essential Goals¹                   | Why² + Scope
 |------------------------------------|-------------------------------------
 | Monetary costs &#8815; PC+Internet | Solo-developer non-profit side-project; Out of scope: distributed scraping with unique IP addresses (due to request throttling); we can easily wait for results
-| Correctness                        | Worst case: wasted computer time and power-consumption, missed book discovery opportunities, too many annoying/useless emails (recentrated)
+| Correctness                        | Worst case: wasted computer time and power-consumption, missed book discovery opportunities, too many annoying/useless emails (recentrated); Out of scope: formal proofs, deep specifications
 | Unattendability                    | Scraping can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
 | Fault-tolerance                    | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions and is sometimes over capacity or in maintenance mode, invalid dates, ...; supports unattendability goal (FT is not high availability)
 | Resumability                       | Scraping can take hours: allow intentional breaks, expect program or computer crashes, power issues -- we don't want to start from the beginning
@@ -127,8 +127,24 @@ Don't redesignate these switches in new or extended programs:
 ```
 
 
+## Lessons learned
 
+### Speeding up scraping
 
+- use a cache
+- pay attention to the _print_ functions of Goodreads, they may offer more data for 1 request than the web view, e.g., 200 book titles instead of 30 (requires login!)
+- due to Goodreads request throttling, multi-threading requests had no significant performance impact but made code more complex;
+	It will likely require access with multiple IP addresses. 
+	So far it didn't seem worth the effort.
+- the official API is slow too; 
+	there is also the risk that this will be slowed down even more if Goodreads has capacity problems again. 
+	This API is [not used internally](https://www.goodreads.com/topic/show/18536888-is-the-public-api-maintained-at-all#comment_number_1) and is rather neglected.
+	API users are of secondary importance compared to web users.
 
+### Typical scraping mistakes on Goodreads pages
+
+- number formats: "1,123,123"
+- dates such as "12.01.1000"
+- TODO
 
 
