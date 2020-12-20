@@ -128,7 +128,6 @@ Long program runtimes: Goodreads slows down all requests and we have to load a l
   - see the [tests directory](./t/) for examples on how to use the toolbox library
   - see the [toolbox library documentation](./lib/Goodscrapes.pod)
   - [non-functional considerations](./t/README.md)
-  - user scripts should contain a man page, take the existing user scripts as an example
   - the [less complex issues](https://github.com/andre-st/goodreads-toolbox/labels/freshmen)
     would be good first issues to work on for users who want to contribute to this project
 
