@@ -119,7 +119,7 @@ More info in ./help/recentrated.md
 
 =head1 VERSION
 
-2019-12-02 (Since 2018-01-09)
+2021-02-15 (Since 2018-01-09)
 
 =cut
 
@@ -134,14 +134,15 @@ use 5.18.0;
 # Perl core:
 use FindBin;
 use lib "$FindBin::Bin/lib/";
-use POSIX      qw( locale_h );
-use List::Util qw( max );
+use POSIX           qw( locale_h );
+use List::Util      qw( max );
 use Time::Piece;
 use Getopt::Long;
 use Pod::Usage;
 # Third party:
-use Log::Any  '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
-use Text::CSV  qw( csv );
+use Log::Any        '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
+use Text::CSV       qw( csv );
+use List::MoreUtils qw( any );
 # Ours:
 use Goodscrapes;
 
@@ -288,12 +289,19 @@ for my $id (@oldest_ids)
 
 # Help user to help himself:
 print "\n\n\nToo many ratings?\n"
-    . ">> Use a separate shelf \"watch\" on Goodreads.com with 50-150 "
-    . "special but lesser-known books, and fine-tune this mail by dropping "
-    . "some books from that shelf over time. "
-    . "Reply \"shelf new-shelf-name\" when ready. "
+    . ">> Create a shelf \"watch-ratings\" or similar on Goodreads.com "
+    . "with 50-150 special but lesser-known books, "
+    . "and drop or add books from time to time. "
+    . "Reply \"shelf watch-ratings\" when ready. "
     . "You can also reply \"textonly\" to skip the ratings without text. "
 	if $MAILFROM && $num_hits > 20;
+
+print "\n\n\nObserving shelf \"All\" or \"Read\" is often a bad idea.\n"
+    . ">> There are a lot of books there whose reviews may not interest you at all. "
+    . "In addition, only a certain number of your books are checked every day. "
+    . "Better create a specialized shelf \"watch-ratings\" or similar on Goodreads. "
+    . "Reply \"shelf watch-ratings\" when ready. "
+	if $MAILFROM && (any{ $_ eq "%23ALL%23" || $_ eq "read" } @SHELVES);
 
 
 # Without a hint, the user doesn't know whether there are simply no 
@@ -303,19 +311,21 @@ print "\n\n\nRatings without text were ignored (Reply 'all' otherwise)."
 
 
 # E-mail signature block if run for other users:
-print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
-    . " [***  ] 3/5 stars rating without text           \n"
-    . " [ttt  ] 3/5 stars rating with tweet-size text   \n"
-    . " [TTT  ] 3/5 stars rating with text              \n"
-    . " [9 new] ratings better viewed on the book page  \n"
-    . "                                                 \n"
-    . " Reply 'textonly'     to skip ratings w/o text   \n"
-#   . " Reply 'hateonly'     to see negative rat. only  \n"
-#   . " Reply 'weekly'       to avoid daily mails       \n"
-    . " Reply 'shelf NAME'   to check alternative shelf \n"
-    . " Reply 'unsubscribe'  to unsubscribe             \n"
-    . " Via https://andre-st.github.io/goodreads/       \n\n"
-	if( $MAILFROM && $num_hits > 0 );
+if( $MAILFROM && $num_hits > 0 )
+{
+	print "\n\n-- \n"  # RFC 3676 sig delimiter (has space char)
+	    . " [***  ] 3/5 stars rating without text           \n"
+	    . " [ttt  ] 3/5 stars rating with tweet-size text   \n"
+	    . " [TTT  ] 3/5 stars rating with text              \n"
+	    . " [9 new] ratings better viewed on the book page  \n"
+	    . "                                                 \n";
+	print " Reply 'textonly'     to skip ratings w/o text   \n"  if !$TEXTONLY;
+	print " Reply 'shelf NAME'   to check alternative shelf \n"
+	#   . " Reply 'hateonly'     to see negative rat. only  \n"
+	#   . " Reply 'weekly'       to avoid daily mails       \n"
+	    . " Reply 'unsubscribe'  to unsubscribe             \n"
+	    . " Via https://andre-st.github.io/goodreads/       \n\n";
+}
 
 
 
