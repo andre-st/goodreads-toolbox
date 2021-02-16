@@ -298,7 +298,7 @@ print "\n\n\nToo many ratings?\n"
 
 print "\n\n\nObserving shelf \"All\" or \"Read\" is often a bad idea.\n"
     . ">> There are a lot of books there whose reviews may not interest you at all. "
-    . "In addition, only a certain number of your books are checked every day. "
+    . "In addition, only a certain number of your books are checked every day (different books each time). "
     . "Better create a specialized shelf \"watch-ratings\" or similar on Goodreads. "
     . "Reply \"shelf watch-ratings\" when ready. "
 	if $MAILFROM && (any{ $_ eq "%23ALL%23" || $_ eq "read" } @SHELVES);
