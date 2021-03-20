@@ -131,7 +131,6 @@ Don't redesignate these switches in new or extended programs:
 
 ### Speeding up scraping
 
-- use a cache
 - pay attention to the _print_ functions of Goodreads, they may offer more data for 1 request than the web view, e.g., 200 book titles instead of 30 (requires login!)
 - due to Goodreads request throttling, multi-threading requests had no significant performance impact but made code more complex;
 	It will likely require access with multiple IP addresses. 
@@ -140,11 +139,14 @@ Don't redesignate these switches in new or extended programs:
 	there is also the risk that this will be slowed down even more if Goodreads has capacity problems again. 
 	This API is [not used internally](https://www.goodreads.com/topic/show/18536888-is-the-public-api-maintained-at-all#comment_number_1) and is rather neglected.
 	API users are of secondary importance compared to web users.
+- use a cache
+- although good idea when scraping, on Goodreads there's no need to retain backwards compatibility to older page versions from other servers
+
 
 ### Typical scraping mistakes on Goodreads pages
 
 - number formats: "1,123,123"
-- dates such as "12.01.1000"
+- dates such as "Jan 01, 1010"
 - TODO
 
 
