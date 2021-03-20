@@ -33,21 +33,21 @@ glogin( usermail => get_gooduser_mail(),
 
 
 # Normal user:
+my $user_id = '62730330';
+my %u       = greaduser( $user_id );
 
-my %u = greaduser( '56501259' );
-
-is  ( $u{id},         '56501259',                                       'User has Goodreads ID'    );
-is  ( $u{name},       'Nimmy Mathew (Kurian) (nimmy-mathew)',           'User has name'            );
-is  ( $u{is_female},  1,                                                'User is female'           );
-ok  ( $u{num_books}   > 10,                                             'User has number of books' );
-#ok ( $u{age}         > 40,                                             'User has age'             );   # login
-#is ( $u{residence},  '',                                               'User has residence'       );   # login
-#is ( $u{is_private}, 0,                                                'User is not private'      );   # login
-is  ( $u{is_author},  0,                                                'User not an author'       );
-is  ( $u{is_staff},   1,                                                'User is GR employee'      );
-is  ( $u{url},        'https://www.goodreads.com/user/show/' . $u{id},  'User has URL'             );
-like( $u{img_url},    qr/^https:\/\/[a-z0-9]+\.gr-assets\.com\//,       'User has image URL'       );
-is  ( $u{works_url},  undef,                                            'User has no works URL (not an author) ' );
+is  ( $u{id},         $user_id,                                           'User has Goodreads ID'    );
+is  ( $u{name},       'Paola Quiros (pbarrant)',                          'User has name'            );
+is  ( $u{is_female},  1,                                                  'User is female'           );
+ok  ( $u{num_books}   >  10,                                              'User has number of books' );
+ok  ( $u{age}         >= 38,                                              'User has age'             );   # login
+#is ( $u{residence},  '',                                                 'User has residence'       );   # login
+#is ( $u{is_private}, 0,                                                  'User is not private'      );   # login
+is  ( $u{is_author},  0,                                                  'User not an author'       );
+is  ( $u{is_staff},   1,                                                  'User is GR employee'      );
+is  ( $u{url},        'https://www.goodreads.com/user/show/' . $user_id,  'User has URL'             );
+like( $u{img_url},    qr/^https:\/\/[a-z0-9]+\.gr-assets\.com\//,         'User has image URL'       );
+is  ( $u{works_url},  undef,                                              'User has no works URL (not an author) ' );
 
 # Not available or scraped yet, otherwise one of the following
 # tests will fail and remind me of implementing a correct test:

@@ -4,7 +4,7 @@
 #   [x] latest and check attributes (detects changed markup)
 #   [x] text only
 #   [x] date range
-#   [ ] rigor 2, 3, ...
+#   [x] dict
 #   [ ] 
 #   [ ] invalid arguments
 
@@ -36,18 +36,18 @@ print( 'Loading reviews...' );
 
 my %reviews;
 my %reviews_textonly;
+my %reviews_by_dict;
 
 my %book;
 $book{id}          = '984394';  # "Hacking the Xbox"
-$book{num_ratings} = 228;       # This value can be obtained using greadbook() or ignored, it helps optimizing
-$book{num_reviews} =  24;       #     "      "
+$book{num_ratings} = 228;       # This value can be obtained using greadbook() or ignored, it helps optimizing; TODO: constant might break test
+$book{num_reviews} =  26;       #     "      "                                                                  TODO: constant might break test
 my $since          = Time::Piece->strptime( '2016-01-01', '%Y-%m-%d' );
 
 
 greadreviews( rh_for_book => \%book,
               rigor       => 0,  # 0 = 300 reviews only (latest)
               rh_into     => \%reviews,
-              dict_path   => '../list-in/default.lst',
               text_minlen => 0,
               since       => $since,
               on_progress => gmeter());
@@ -55,23 +55,41 @@ greadreviews( rh_for_book => \%book,
 greadreviews( rh_for_book => \%book,  # Uses some cached values from query above, which is fine for this test
               rigor       => 0,       # 0 = 300 reviews only (latest)
               rh_into     => \%reviews_textonly,
-              dict_path   => '../list-in/default.lst',
+              text_minlen => 1,
+              on_progress => gmeter());
+
+greadreviews( rh_for_book => \%book,  # Uses some cached values from query above, which is fine for this test
+              rigor       => 3,       # Include dict in every case
+              rh_into     => \%reviews_by_dict,
+              dict_path   => '../list-in/test.lst',
               text_minlen => 1,
               on_progress => gmeter());
 
 print( "\n" );
 
 
-ok( scalar( keys( %reviews )) > 0, 'Load some reviews' )
+# Check numbers:
+my $num_reviews          = scalar( keys( %reviews          ));
+my $num_reviews_textonly = scalar( keys( %reviews_textonly ));
+my $num_reviews_by_dict  = scalar( keys( %reviews_by_dict  ));
+
+ok( $num_reviews > 0, 'Load some reviews' )
 	or BAIL_OUT( "Cannot test review attributes when there are no reviews." );
 
-ok( scalar( keys( %reviews_textonly )) > 0, 'Load some text reviews' )
+ok( $num_reviews_textonly > 0, 'Load some text reviews' )
 	or BAIL_OUT( "Cannot test text reviews when there are no text reviews." );
 
+ok( $num_reviews_by_dict >= $num_reviews_textonly, 'Load more or equal number of reviews compared to rigor-level 0' )
+	or BAIL_OUT( "Book specimen might not sufficient for this test anymore or adjust book's num_reviews constant in this testfile. Expected #reviews from dict ($num_reviews_by_dict) >= #reviews from latest ($num_reviews_textonly)" );
+
+
+# Check contents:
 ok(( !all { $_->{text} } values( %reviews          )), 'Reviews include text and non-text ratings');
 ok((  all { $_->{text} } values( %reviews_textonly )), 'All reviews include text');
+ok((  all { $_->{text} } values( %reviews_by_dict  )), 'All dict-searched reviews include text');
 
 
+# Check contents in detail:
 map {
 	ok  ( $_->{rating} >= 0,           "Review $_->{id} has rating"            );
 	ok  ( $_->{rating_str},            "Review $_->{id} has rating code"       );
