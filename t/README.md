@@ -47,6 +47,7 @@ Table of contents:
 | Unit test = tutorial   | libraries, emergent                                   | Reduce errors caused by incorrect use or assumptions; no need to write (outdated) tutorials
 | Inline man pages       | user-scripts, program parameters, examples            | Use Man-page POD-header in each script: more likely to be up-to-date, and can be extracted and displayed on incorrect program use
 | Help files             | user-scripts, everything but program parameters (DRY) | Markdown-file in help-directory, with screenshot, motivation, install instructions, lessons learned etc; program parameters documented in man pages
+| Documented conventions | user-scripts, common program parameters               | developer, consistent look and feel, principle of least astonishment (POLA)
 | Field failure reports  | ask for reports, contact opts in scripts / help       | 
 | Issue tracking         | all                                                   | GitHub Issue Tracker: feedback (feature requests, usage problems), troubleshooting history
 | Version control        | all                                                   | Git and GitHub: reverting code/source history, releasing, sync between computers
@@ -65,18 +66,18 @@ Considerable:
 
 ## Evaluation
 
-| Goal                  | Unit | Regr | ManT | Synt | Down | Cach | Wait | HtmE | Dock | Make | ManP | Help | Issu | VC   | Free | Overall
-|-----------------------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|
-| Monetary costs        | none | none | none | none | none | none | none | none | none | none | none | none | none | none | +++  | strong
-| Correctness           | +++  | +++  | +++  | ++   | +++  | none | none | none | none | none | +    | +    | ++   | none | none | strong
-| Unattendability       | none | none | none | none | none | none | +++  | none | none | none | none | none | none | none | none | weak
-| Fault-tolerance       | none | none | +    | none | none | none | +++  | none | none | none | none | none | none | none | none | weak
-| Resumability          | none | none | none | none | none | +++  | +    | none | none | none | none | none | none | none | none | strong
-| Testability           | +++  | +++  | none | none | +++  | +    | none | none | +    | none | none | none | none | none | none | strong
-| RepairTurnaroundTime  | +++  | +++  | none | none | ++   | +++  | none | none | none | none | none | none | none | +    | none | strong
-| Ease of Use on UNIX   | none | none | none | none | none | none | none | none | +++  | ++   | +++  | +++  | none | none | none | strong
-| Learnability          | ++   | none | none | none | none | none | none | none | none | none | +++  | +++  | none | none | none | strong
-| Integrity             | none | none | none | none | none | none | none | ++   | none | none | none | none | none | none | none | at-risk
+| Goal                  | Unit | Regr | ManT | Synt | Down | Cach | Wait | HtmE | Dock | Make | ManP | Help | Conv | Issu | VC   | Free | Overall
+|-----------------------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|
+| Monetary costs        | none | none | none | none | none | none | none | none | none | none | none | none | none | none | none | +++  | strong
+| Correctness           | +++  | +++  | +++  | ++   | +++  | none | none | none | none | none | +    | +    | +    | ++   | none | none | strong
+| Unattendability       | none | none | none | none | none | none | +++  | none | none | none | none | none | none | none | none | none | weak
+| Fault-tolerance       | none | none | +    | none | none | none | +++  | none | none | none | none | none | none | none | none | none | weak
+| Resumability          | none | none | none | none | none | +++  | +    | none | none | none | none | none | none | none | none | none | strong
+| Testability           | +++  | +++  | none | none | +++  | +    | none | none | +    | none | none | none | none | none | none | none | strong
+| RepairTurnaroundTime  | +++  | +++  | none | none | ++   | +++  | none | none | none | none | none | none | none | none | +    | none | strong
+| Ease of Use on UNIX   | none | none | none | none | none | none | none | none | +++  | ++   | +++  | +++  | +    | none | none | none | strong
+| Learnability          | ++   | none | none | none | none | none | none | none | none | none | +++  | +++  | +    | none | none | none | strong
+| Integrity             | none | none | none | none | none | none | none | ++   | none | none | none | none | none | none | none | none | at-risk
 
 Values: +++, ++, +, none (does not address this goal)  
 Overall assurance: strong, weak, at-risk
