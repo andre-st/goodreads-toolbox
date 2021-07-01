@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2020-10-31
+=item * Updated: 2021-06-16
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =cut
 
-our $VERSION = '1.70';  # X.XX version format required by Perl
+our $VERSION = '1.71';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -1041,7 +1041,6 @@ sub greadreviews
 	my $gotsigint   = 0;
 	#local $SIG{INT} = sub{ $gotsigint = 1; };  	
 	
-	
 	# Goodreads reviews filters get us dissimilar(!) subsets which are merged
 	# here: Don't assume that these filters just load a _subset_ of what you
 	# see if _no filters_ are applied. Given enough ratings and reviews, each
@@ -1078,7 +1077,7 @@ sub greadreviews
 	goto DONE if $rigor <  2;
 	goto DONE if $rigor == 2 && $limit < 3000;
 	
- 	my $stalltime = $rigor * 60;  
+	my $stalltime = $rigor * 60;
 	my $t0        = time;  # Stuff above might already take 60s
 	
 	open( my $fh, '<', $dictpath ) or croak( _errmsg( $_ENO_NODICT, $dictpath ));
