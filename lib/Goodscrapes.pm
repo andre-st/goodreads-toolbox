@@ -198,6 +198,7 @@ our $_ENO_BADSHELF    = $_ENO_FATAL + 2;
 our $_ENO_BADUSER     = $_ENO_FATAL + 3;
 our $_ENO_BADARG      = $_ENO_FATAL + 4;
 our $_ENO_BADLOGIN    = $_ENO_FATAL + 5;
+our $_ENO_CAPTCHA     = $_ENO_FATAL + 6;
 
 our %_OPTIONS =  # See gseterr() for documentation
 (
@@ -231,7 +232,8 @@ our %_ERRMSG =
 	$_ENO_BADSHELF   => "\n[FATAL] Invalid Goodreads shelf name \"%s\". Look at your shelf URLs.",  # name
 	$_ENO_BADUSER    => "\n[FATAL] Invalid Goodreads user ID \"%s\".",  # id
 	$_ENO_BADARG     => "\n[FATAL] Argument \"%s\" expected.",             # name
-	$_ENO_BADLOGIN   => "\n[FATAL] Incorrect login."
+	$_ENO_BADLOGIN   => "\n[FATAL] Incorrect login.",
+	$_ENO_CAPTCHA    => "\n[FATAL] CAPTCHA prompted to the user. Usually short-term problem, as bots are currently taking over and users are complaining about CAPTCHAs at the same time (help forum). Retry in a few days."
 );
 sub _errmsg { no warnings 'redundant'; my $eno = shift; return sprintf( $_ERRMSG{$eno}, @_ ); }
 
@@ -616,7 +618,12 @@ sub glogin
 	my $uid = $htm =~ /uid: '(\d+)'/ ? $1 : undef;
 	
 	print( "OK!\n" ) if $uid && !$args{ userpass };  # Only out if prompt before
-	croak( _errmsg( $_ENO_BADLOGIN )) unless $uid;
+	
+	if( !$uid )
+	{
+		my $is_captcha = $htm =~ /g-recaptcha-response/;
+		croak( _errmsg( $is_captcha ? $_ENO_CAPTCHA : $_ENO_BADLOGIN ));
+	}
 	
 	$$ruid = $uid if defined $ruid && !$$ruid;       # Update userid if needed
 }
