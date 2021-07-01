@@ -53,7 +53,10 @@ LABEL org.label-schema.vcs-url        = "https://github.com/andre-st/goodreads-t
 #     allow host to access generated HTML reports via web-browser (instead of bindmounts)
 #
 
+
+# Use .dockerignore to exclude everything but the minimum necessary set of files.
 COPY . $PROGDIR
+
 WORKDIR $PROGDIR/
 
 RUN apt-get update   \
