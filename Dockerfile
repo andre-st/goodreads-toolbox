@@ -100,6 +100,6 @@ text/plain                     txt text conf def list lst log in \n\
 
 # bash already in WORKDIR:
 # CMD service webfs start
-ENTRYPOINT webfsd -p $HTPORT -r $HTDOCS && bash
+ENTRYPOINT mkdir -p $HTDOCS && webfsd -p $HTPORT -r $HTDOCS && bash
 
 
