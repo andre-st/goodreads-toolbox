@@ -175,7 +175,7 @@ our $GOOD_ERRMSG_NOBOOKS   = "[FATAL] No books found. Check the privacy settings
 our $GOOD_ERRMSG_NOMEMBERS = '[FATAL] No members found. Check cookie and try empty /tmp/FileCache/';
 
 # Public constants:
-our $GOOD_USEFUL_REVIEW_LEN = 160;
+our $GOOD_USEFUL_REVIEW_LEN = 500;
 
 # Module error codes:
 #   Severity levels:  0 < WARN < ERROR < CRITICAL < FATAL
