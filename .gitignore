@@ -10,6 +10,8 @@
 *.zip
 *.sh
 *.xcf
+*.secret
+*.token
 t/config.pl
 .build
 .obsolete

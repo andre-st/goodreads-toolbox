@@ -1,18 +1,36 @@
-*~
-*.bak
-*.tmp
-*.csv
-*.swp
-*.xml
-*.html
-*.log
-*.tar.gz
-*.zip
-*.sh
-*.xcf
-*.md
-*.txt
-.git/
-www/
+# Ignore everything:
+**
+
+# Allow files and directories:
+!/LICENSE
+!/Dockerfile
+
+!/*.md
+
+!/Makefile
+
+!/*.pm
+!/*.pl
+
+!/lib/*.pm
+!/lib/*.pl
+!/lib/*.pod
+
+!/list-in/*.lst
+# "list-out" will be created empty
+
+!/help/*.md
+!/help/img/**
+
+!/t/*.t
+!/t/*.md
+!/t/config.pl-example
+
+
+# Except:
+**/staff-*
+**/shelfoverlap.pl
+**/newreleases.pl
+
 
 
