@@ -117,6 +117,7 @@
 - checkout the bibliography section of a good book (best signal-to-noise ratio); I use a separate _"bibliogr-to-check"_ Goodreads shelf to keep track of unchecked books
 - notice books mentioned in the _footnotes_ and literature sections of Wikipedia articles
 - notice books mentioned in magazine articles
+- notice alternative books mentioned in book reviews
 - notice names dropped in magazine articles and check them against Amazon
 - scan interesting websites/blogs for books 
   - internal search or google for `book site:anygoodblog.com`
@@ -171,7 +172,9 @@ I try to develop my system for markings, notes etc in physical books, which is s
 - X: strongly disagree, faulty reasoning, ...
 - ?: don't get it, fishy, not backed up well, hard to believe but don't know counter arguments yet
 - 1, 2, 3: restructure text - these blocks are self-contained
-- Ex.: examples
+- Ex: examples
+- Lit: literature references
+- URL: web addresses
 - circle around words: keywords in this important sentence, emphasis
 
 ### Other:
