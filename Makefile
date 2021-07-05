@@ -1,11 +1,8 @@
 # Andre's Goodreads Toolbox Makefile
 # 
 # TODO: Install perl dependencies to a local dir (no root required), deps-local target?
+# TODO: build github packages docker image from the commited github trunk head or official remote repo instead of the dirty local working copy
 # 
-# 
-# Docker:
-#   - hub.docker.com automatically builds new images from the GitHub repository
-#     $ docker run -it datakadabra/goodreads-toolbox
 # 
 # 
 
@@ -22,7 +19,7 @@ MAKEFLAGS += --no-builtin-rules
 
 
 # Configure Make rules:
-PROJECT_VERSION   = 1.23
+PROJECT_VERSION   = 1.23.1
 RR_LOGFILE        = /var/log/good.log
 RR_DB_DIR         = /var/db/good
 CACHE_DIR         = /tmp/FileCache/Goodscrapes
@@ -32,7 +29,10 @@ DOCKER_BUILD_DATE = $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 DOCKER_IMG_VER    = ${PROJECT_VERSION}
 DOCKER_IMG_NAME   = ${PACKAGE}
 DOCKER_CON_NAME   = ${PACKAGE}
+DOCKER_DIR        = .
 DOCKER_HTPORT     = 8080
+GITHUB_USER       = andre-st
+GITHUB_REPONAME   = ${PACKAGE}
 RELEASE           = $(PACKAGE)-$(PROJECT_VERSION)
 GITDIR            = $(wildcard .git)
 
@@ -42,12 +42,12 @@ LIBCURLDEV    := $(shell command -v curl-config 2> /dev/null)
 
 
 # ----------------------------------------------------------------------------
-## make all          :  Installs programs and dependencies from CPAN (default)
+## make all            :  Installs programs and dependencies from CPAN (default)
 all: deps installdirs
 
 
 # ----------------------------------------------------------------------------
-## make installdirs  :  Creates work- and log-files in /var if not existing, prepares program-dir (symlinks)
+## make installdirs    :  Creates work- and log-files in /var if not existing, prepares program-dir (symlinks)
 .PHONY: installdirs $(GITDIR)
 installdirs: | $(GITDIR)
 	chmod +x *.pl
@@ -65,7 +65,7 @@ $(GITDIR):
 
 
 # ----------------------------------------------------------------------------
-## make uninstall    :  Deletes work- and log-files in /var
+## make uninstall      :  Deletes work- and log-files in /var
 .PHONY: uninstall
 uninstall:
 	rm -rf "${RR_DB_DIR}"
@@ -74,7 +74,7 @@ uninstall:
 
 
 # ----------------------------------------------------------------------------
-## make deps         :  Downloads and installs dependencies from CPAN
+## make deps           :  Downloads and installs dependencies from CPAN
 # CPAN complains without YAML::Any (warning not error)
 .PHONY: deps
 deps:
@@ -85,24 +85,29 @@ endif
 
 
 # ----------------------------------------------------------------------------
-## make check        :  Runs unit tests
+## make check          :  Runs unit tests
 .PHONY: check
 check:
 	prove
 
 
 # ----------------------------------------------------------------------------
-## make docker-image :  Builds a Docker image
-## make docker-run   :  Runs Docker image, optionally:
+## make docker-image   :  Builds a Docker image from the dirty working copy
+## make docker-run     :  Runs Docker image, optionally:
 ##                        make docker-run DOCKER_HTPORT=8080
 ##                        make docker-run DOCKER_CON_NAME=goodreads-toolbox
+## make github-package :  Builds a Docker image from the official repo and pushes it to GitHub Packages
+##                        Expects a PAT from GitHub > Account > Settings > Developer Settings > Personal access tokens
+##                        in local file .github-packages.secret
+##                        See packages: https://github.com/users/andre-st/packages
 
 .PHONY: docker-image
 docker-image: Dockerfile
 	docker build \
 			--build-arg BUILD_DATE="${DOCKER_BUILD_DATE}"      \
 			--build-arg PROJECT_VERSION="${PROJECT_VERSION}"   \
-			--tag "${DOCKER_IMG_NAME}:${DOCKER_IMG_VER}" .
+			--tag "${DOCKER_IMG_NAME}:${DOCKER_IMG_VER}"       \
+			${DOCKER_DIR}
 	@echo "[NEXT] You might like to start the new Docker image with 'make docker-run'"
 
 
@@ -119,8 +124,20 @@ docker-run:
 			"${DOCKER_IMG_NAME}:${DOCKER_IMG_VER}" || true
 
 
+.PHONY: github-package
+github-package: .github-packages.secret
+	rm    -rf  "${BUILD_DIR}/official-latest/"
+	mkdir -p   "${BUILD_DIR}/official-latest/"
+	pushd      "${BUILD_DIR}/official-latest/"
+	git   clone  "https://github.com/${GITHUB_USER}/${GITHUB_REPONAME}/"  .
+	make  docker-image  DOCKER_IMG_NAME=ghcr.io/${GITHUB_USER}/${GITHUB_REPONAME}  DOCKER_IMG_VER=latest
+	popd
+	cat .github-packages.secret | docker login ghcr.io -u ${GITHUB_USER} --password-stdin
+	docker push "ghcr.io/${GITHUB_USER}/${GITHUB_REPONAME}"
+
+
 # ----------------------------------------------------------------------------
-## make docs         :  Updates documentation, optionally:
+## make docs           :  Updates documentation, optionally:
 ##                        make docs PROJECT_VERSION=1.22
 .PHONY: docs
 docs:
@@ -129,7 +146,7 @@ docs:
 
 
 # ----------------------------------------------------------------------------
-## make help         :  Prints this help screen
+## make help           :  Prints this help screen
 #
 # Prints all comments with two leading # characters in this Makefile
 #
