@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 Version number 1.MINOR.PATCH, increments:
 - MINOR version when relevant functionality was added, removed, changed
-- PATCH version on bug fixes or small aesthetic changes
+- PATCH version on bug fixes, small aesthetic changes, config changes
 
 
 ## [Unreleased]
@@ -14,10 +14,26 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
-## [v1.23] - 2020-10-31
-## Note
-This is primarily a maintenance update after a long time.
 
+## [v1.23.1] - 2021-07-01
+
+Small maintenance update
+
+## Changed
+
+- migrated from DockerHub to GitHub Packages (ghcr.io); DockerHub no longer supports GitHub integration for free (for new accounts)
+- a larger review text is indicated by at least 500 characters now (was 160 characters)
+
+## Added
+
+- Makefile offers a Github Packages target
+- clearer error message in a CAPTCHA situation
+
+
+
+## [v1.23] - 2020-10-31
+
+This is primarily a maintenance update after a long time.
 
 ## Fixed
 
@@ -40,7 +56,6 @@ This is primarily a maintenance update after a long time.
 	 Without this flag, [\*\*\*\* ], [TTTT ] and [tttt ] are shown as usual.
 - lib/Goodscrapes.pl:
 	- greadreviews() parameter `text_only` was renamed to `text_minlen`
-
 
 
 

@@ -1,6 +1,6 @@
-# :books: Andre's Goodreads Toolbox, v1.23
+# :books: Andre's Goodreads Toolbox, v1.23.1
 
-![Maintenance](https://img.shields.io/maintenance/yes/2021.svg) ![Docker](https://img.shields.io/docker/cloud/build/datakadabra/goodreads-toolbox)
+![Maintenance](https://img.shields.io/maintenance/yes/2021.svg)
 
 9 Perl-scripts for Goodreads.com—the world largest book (cataloging) community. [What's new?](CHANGELOG.md)
 
@@ -89,7 +89,7 @@ program in 2015.
    and view the results via web-browser at _localhost:8080_:
 
 ```console
-$ docker run -it --publish=8080:80 datakadabra/goodreads-toolbox
+$ docker run -it --publish=8080:80 ghcr.io/andre-st/goodreads-toolbox
 ```
 
 1b\.  users without Docker can try to install the Toolbox directly on their systems:
