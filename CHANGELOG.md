@@ -19,12 +19,12 @@ Version number 1.MINOR.PATCH, increments:
 
 Small maintenance update
 
-## Changed
+### Changed
 
 - migrated from DockerHub to GitHub Packages (ghcr.io); DockerHub no longer supports GitHub integration for free (for new accounts)
 - a larger review text is indicated by at least 500 characters now (was 160 characters)
 
-## Added
+### Added
 
 - Makefile offers a Github Packages target
 - clearer error message in a CAPTCHA situation
@@ -35,19 +35,19 @@ Small maintenance update
 
 This is primarily a maintenance update after a long time.
 
-## Fixed
+### Fixed
 
 - similaraut.pl:
 	- failed to load authors because the source markup changed after the last version
 - some improvements on the looks of all HTML reports
 
-## Added
+### Added
 
 - similarauth.pl:
 	- new `--minseen` parameter to drop authors that are not similar to at least N other authors;
 	  reduces the number of authors and size of the output file
 
-## Changed
+### Changed
 
 - recentrated.pl: 
 	`--textonly` option also drops smaller texts now,
@@ -60,13 +60,13 @@ This is primarily a maintenance update after a long time.
 
 
 ## [v1.22] - 2019-11-16
-## Fixed
+### Fixed
 
 - possible cross-site scripting attacks (XSS) against our HTML reports
   by adding Javascript to reviews, usernames, book titles on the Goodreads website.
   This software is too insignificant to be a real target, but you never know.
   
-## Added
+### Added
 
 - `Dockerfile`: Docker is a popular software that allows users to run apps
   in an isolated container with all dependencies included/matched; 
@@ -76,7 +76,7 @@ This is primarily a maintenance update after a long time.
   ([#30](https://github.com/andre-st/goodreads-toolbox/issues/30))
   
 
-## Changed
+### Changed
 
 - all programs write to the new `list-out` directory by default and 
   not to the main directory any longer.
@@ -88,20 +88,20 @@ This is primarily a maintenance update after a long time.
 
 
 ## [v1.21.1] - 2019-10-13
-## Fixed
+### Fixed
 
 - savreviews.pl: "Undefined subroutine &Goodscrapes::max called at Goodscrapes.pm"
 
 
 
 ## [v1.21.0] - 2019-10-10
-## Fixed
+### Fixed
 
 - "Use of uninitialized value $uid in concatenation (.) or string at Goodscrapes.pm" 
   was caused by "NOT A BOOK" books, which actually have different book IDs but lack 
   author info etc
 
-## Added
+### Added
 
 - all programs support the `--ignore-errors` option which disables retries and let
   a program keep going on despite of errors. This is useful when Goodreads has
@@ -110,7 +110,7 @@ This is primarily a maintenance update after a long time.
   You also can re-run a program without this option, so that missing resources
   are loaded from the web again (and everything else from your local cache)
 
-## Removed
+### Removed
 
 - developers: function `gsetcache()` was removed in favor of `gsetopt( cache_days => int )`
 
