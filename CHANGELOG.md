@@ -14,7 +14,7 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
-## [v1.23.2] - 2021-07-01
+## [v1.23.2] - 2021-12-30
 
 Small maintenance update
 
