@@ -1795,7 +1795,7 @@ sub _book_url
 
 sub _user_url
 {
-	my $uid   = shift;
+	my $uid   = shift or return undef;
 	my $is_au = shift // 0;
 	return 'https://www.goodreads.com/'.( $is_au ? 'author' : 'user' )."/show/${uid}";
 }
@@ -1868,7 +1868,7 @@ sub _rev_url
 
 sub _author_books_url
 {
-	my $uid = shift;
+	my $uid = shift or return undef;
 	my $pag = shift // 1;
 	return "https://www.goodreads.com/author/list/${uid}?per_page=100&sort=popularity&page=${pag}";
 }
@@ -1923,7 +1923,7 @@ sub _similar_authors_url
 sub _search_url
 {
 	my $q   = uri_escape( shift );
-	my $pag = shift;
+	my $pag = shift // 1;
 	return "https://www.goodreads.com/search?page=${pag}&tab=books&q=${q}";
 }
 
