@@ -146,6 +146,7 @@ our @EXPORT = qw(
 	greadsimilaraut
 	greadreviews
 	greadfolls 
+	greadcomments
 	gsocialnet
 	
 	amz_book_html
@@ -431,6 +432,23 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =back
 
+
+
+=head2 %comment
+
+=over
+
+=item * text       =E<gt> C<string>
+
+=item * rh_to_user =E<gt> C<L<%user|"%user">> reference, addressed user
+
+=item * rh_review  =E<gt> C<L<%review|"%review">> reference, addressed review,
+                          undefined if not comment on a review
+                          (but group, another user's status, book list, ...)
+
+=item * rh_book    =E<gt> C<L<%book|"%book">> reference, undefined if rh_review is undefined and vice versa
+
+=back
 
 
 =cut
@@ -1160,6 +1178,40 @@ sub greadfolls
 		while( _extract_friends( $rh, $pfn, $isaut, $dishold, _html( _friends_url( $uid, $pag++ )))) {};
 	}
 	
+}
+
+
+
+
+=head2 C<void> greadcomments(I<{ ... }>)
+
+=over
+
+=item * reads a list of all comments posted from the given user on goodreads.com;
+        it does not read a conversion by multiple userson some thing
+
+=item * C<from_user_id =E<gt> string>
+
+=item * C<ra_into      =E<gt> array reference (L<%comment|"%comment">,...)> [optional]
+
+=item * C<limit        =E<gt> int> stop after reading N comments [optional, default 0 ]
+
+=item * C<on_progress  =E<gt> sub> see C<gmeter()> [optional]
+
+=back
+
+=cut
+
+sub greadcomments
+{
+	my (%args) = @_;
+	my $uid    = gverifyuser( $args{ from_user_id });
+	my $ra     = $args{ ra_into     }  // undef;
+	my $limit  = $args{ limit       }  // 0;
+	my $pfn    = $args{ on_progress }  // sub{   };
+	
+	my $pag = 1;
+	while( _extract_comments( $ra, $pfn, _html( _comments_url( $uid, $pag++ )))) {}
 }
 
 
@@ -1896,13 +1948,27 @@ sub _group_url
 
 
 
+=head2 C<string> _comments_url( I<$user_id, $page_number = 1> )
+
+=cut
+
+sub _comments_url
+{
+	my $uid = shift;
+	my $pag = shift // 1;
+	return "https://www.goodreads.com/comment/list/${uid}?page=${pag}";
+}
+
+
+
+
 #==============================================================================
 
 =head1 PRIVATE HTML-EXTRACTION ROUTINES
 
 
 
-=head2 C<L<%book|"%book">> _extract_book( $book_page_html_str )
+=head2 C<L<%book|"%book">> _extract_book( I<$book_page_html_str> )
 
 =cut
 
@@ -2299,6 +2365,77 @@ sub _extract_friends
 		next if !$iau && $us{ is_author };
 		$ret++;
 		$rh->{ $us{id} } = \%us;
+	}
+	
+	$pfn->( $ret );
+	return $ret;
+}
+
+
+
+
+=head2 C<bool> _extract_comments( I<$ra, $on_progress, $comment_history_html_str> )
+
+=cut
+
+sub _extract_comments
+{
+	
+	my $ra  = shift;
+	my $pfn = shift;
+	my $htm = shift or return 2;
+	my $ret = 0;
+	
+	# UserA's comments:
+	#   UserA's review of BookX   (comments thread about own review, might address UserC)
+	#   UserB's review of BookX   (comments thread about other's review, might address UserD)
+	#   UserA's status            (comments thread about own status), might address UserE)
+	#   UserB's status            (comments thread about other's status, might address userF)
+	#   UserB's answer to "QuestionX?"
+	#   UserB is a friend of UserC
+	#   AuthorX's quote: "QuoteX"
+	#   GroupX group.             (comment on a topic in this group)
+	#   ...?
+	
+	while( $htm =~ /<div class='brownBox'>(.*?)(<div class='brownBox'>|<\/form>)/gs )
+	{
+		my $row = $1;
+		my %cm;
+		my %bk;
+		my %rv;
+		my %to_us;
+		
+		my $img_url  = $row =~ /<img src="([^"]*)/       ? $1 : undef;
+		   $rv{ id } = $row =~ /review\/show\/([0-9]+)/  ? $1 : undef;
+		
+		if( $rv{ id } )  # Comment on a review
+		{
+			$to_us{ name   } = $row =~ />([^<]*)<\/a>'s review/  ? $1 : undef;
+			
+			$rv{ url       } = _rev_url( $rv{ id });
+			$rv{ rh_user   } = \%to_us;
+			
+			$bk{ title     } = $row =~ /review of <a [^>]*>([^<]*)/  ? $1 : undef;
+			$bk{ review_id } = $rv{ id };
+			$bk{ url       } = _search_url( $bk{title} );
+			$bk{ img_url   } = $img_url // $_NOBOOKIMGURL;
+			
+			$cm{ rh_review } = \%rv;
+			$cm{ rh_book   } = \%bk;
+			$cm{ text      } = $row =~ /<img [^>]*><\/a>(.*?)<div/s  ? $1 : '';
+		}
+		else  # Comment on a status or sth else
+		{
+			$to_us{ name } =  $row =~ />(.*?)(&#39;|\xe2\x80\x99|')s (status|answer)</  ? $1 :
+			                 ($row =~ />(.*?) is a friend of/                           ? $1 : undef);
+			
+			$cm{ text    } = $row =~ /commentsListBodyText'>(.*?)<div class='clear'/s  ? $1 : '';
+		}
+		
+		$cm{ text       } =~ s/^\s+|\s+$//g;  # trim
+		$cm{ rh_to_user } = \%to_us  if( $to_us{ name });
+		$ret++;
+		push( @$ra, \%cm );
 	}
 	
 	$pfn->( $ret );
