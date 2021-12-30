@@ -74,7 +74,7 @@ Recently rated books in your "watch-ratings" shelf:
 	Such a shelf prevents unnecessary mails and eases manual checks if this system is discontinued someday
 
 
-### Installation to a server:
+### Installation on a server:
 
 1. open a GNU/Linux terminal and install the Goodreads Toolbox:
 	```console
