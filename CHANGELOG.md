@@ -14,6 +14,23 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
+## [v1.23.2] - 2021-07-01
+
+Small maintenance update
+
+### Fixed
+
+- `user_rating` bug when extracting own(?) shelf; shelves of other users still work with the old code
+
+### Changed
+
+- updated unit tests
+
+### Added
+
+- new `greadcomments()` function in the Toolbox library to extract a user's comments on reviews, status updates etc.
+
+
 
 ## [v1.23.1] - 2021-07-01
 

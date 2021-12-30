@@ -1,6 +1,6 @@
-# :books: Andre's Goodreads Toolbox, v1.23.1
+# :books: Andre's Goodreads Toolbox, v1.23.2
 
-![Maintenance](https://img.shields.io/maintenance/yes/2021.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
 
 9 Perl-scripts for Goodreads.com—the world largest book (cataloging) community. [What's new?](CHANGELOG.md)
 
