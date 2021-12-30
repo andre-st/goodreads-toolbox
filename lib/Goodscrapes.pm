@@ -2129,18 +2129,19 @@ sub _extract_books
 		$bk{ isbn            } = $row =~             />isbn<\/label><div class="value">\s*([0-9X\-]*)/                ? $1 : '';
 		$bk{ isbn13          } = $row =~           />isbn13<\/label><div class="value">\s*([0-9X\-]*)/                ? $1 : '';
 		$bk{ avg_rating      } = $row =~       />avg rating<\/label><div class="value">\s*([0-9\.]*)/                 ? $1 : 0;
-		$bk{ num_pages       } = $row =~        />num pages<\/label><div class="value">\s*<nobr>\s*([0-9]*)/          ? $1 : 0;
+		$bk{ num_pages       } = $row =~        />num pages<\/label><div class="value">\s*<nobr>\s*(\d*)/             ? $1 : 0;
 		$bk{ num_ratings     } = $row =~      />num ratings<\/label><div class="value">\s*(\d+)[,.]?(\d*)[,.]?(\d*)/  ? $1.$2.$3 : 0;
 		$bk{ format          } = $row =~           />format<\/label><div class="value">\s*((.*?)(\s*<))/s             ? _dec_entities( $2 ) : ""; # also trims ">  avc def  <"
-		$bk{ user_read_count } = $row =~     /># times read<\/label><div class="value">\s*([0-9]*)/                   ? ($1?$1:0) : 0;
-		$bk{ user_num_owned  } = $row =~            />owned<\/label><div class="value">\s*([0-9]*)/                   ? ($1?$1:0) : 0;
+		$bk{ user_read_count } = $row =~     /># times read<\/label><div class="value">\s*(\d+)/                      ? $1 : 0;
+		$bk{ user_num_owned  } = $row =~            />owned<\/label><div class="value">\s*(\d+)/                      ? $1 : 0;
 		$bk{ user_date_added } = $tadd;
 		$bk{ user_date_read  } = $tread;
-		$bk{ user_rating     } = () = $row =~ /staticStar p10/g;        # Counts occurances
+		$bk{ user_rating     } =      $row =~ /data-rating="(\d+)"/                                                   ? $1 : undef;  #  User 2 has staticStar, my own shelf data-rating
+		$bk{ user_rating     } = () = $row =~ /staticStar p10/g                                                       if(! $bk{user_rating});  # Counts occurances
 		$bk{ ra_user_shelves } = [];     # TODO
 		$bk{ num_reviews     } = undef;  # Not available here!
 		$bk{ img_url         } = $row =~ /<img [^>]* src="([^"]+)"/                                                   ? $1 : $_NOBOOKIMGURL;
-		$bk{ review_id       } = $row =~ /review\/show\/([0-9]+)"/                                                    ? $1 : undef;
+		$bk{ review_id       } = $row =~ /review\/show\/(\d+)"/                                                    ? $1 : undef;
 		$bk{ title           } = _trim( $tit );
 		$bk{ url             } = _book_url( $bk{id} );
 		$bk{ stars           } = int( $bk{ avg_rating } + 0.5 );
