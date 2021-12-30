@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2021-06-16
+=item * Updated: 2021-12-39
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =cut
 
-our $VERSION = '1.71';  # X.XX version format required by Perl
+our $VERSION = '1.77';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -74,8 +74,17 @@ our $VERSION = '1.71';  # X.XX version format required by Perl
         speed things up significantly with a pool of work-sharing computers 
         and unique IP addresses...
 
-=item * just text pattern matching, no ECMAScript execution and DOM parsing
-        (so far sufficient and faster)
+=item * just text pattern matching, no ECMAScript execution and DOM parsing with a headless renderer
+        (so far sufficient and faster). 
+        Regex is not meant for HTML parsing and a HTML parser
+        would had been easier from time to time, I would use one today.
+        However, regular expressions proved good enough for goodreads.com,
+        given that user generated content is very restricted
+        and cannot easily confuse the regex patterns.
+        The Regex code is small too.
+        We just look at the server response as text with some features
+        which mark the start and end of a value of interest.
+
 
 =back
 
@@ -2001,7 +2010,7 @@ sub _extract_book
 
 
 
-=head2 C<L<%user|"%user">> _extract_user( $user_page_html_str )
+=head2 C<L<%user|"%user">> _extract_user( I<$user_page_html_str> )
 
 =cut
 
@@ -2045,7 +2054,7 @@ sub _extract_user
 
 
 
-=head2 C<L<%user|"%user">> _extract_author( $user_page_html_str )
+=head2 C<L<%user|"%user">> _extract_author( I<$user_page_html_str> )
 
 =cut
 
