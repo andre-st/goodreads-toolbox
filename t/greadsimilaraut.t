@@ -40,7 +40,7 @@ greadsimilaraut( author_id   => '3137322',  # Fyodor Dostoyevsky
 print( "\n" );
 
 
-ok( scalar( keys( %authors )) > 10, 'At least 10 similar authors' );
+ok( scalar( keys( %authors )) >= 10, 'At least 10 similar authors' );
 
 ok( exists( $authors{$SIMILAR_AUTHOR_ID} ), 'Expected author found via hash-key = Goodreads author ID' ) 
 	or BAIL_OUT( "Cannot test author attributes when expected author is missing." );

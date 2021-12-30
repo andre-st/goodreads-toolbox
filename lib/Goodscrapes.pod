@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2021-06-16
+=item * Updated: 2021-12-39
 
 =item * Since: 2014-11-05
 
@@ -60,8 +60,17 @@ Goodscrapes - Goodreads.com HTML-API
         speed things up significantly with a pool of work-sharing computers 
         and unique IP addresses...
 
-=item * just text pattern matching, no ECMAScript execution and DOM parsing
-        (so far sufficient and faster)
+=item * just text pattern matching, no ECMAScript execution and DOM parsing with a headless renderer
+        (so far sufficient and faster). 
+        Regex is not meant for HTML parsing and a HTML parser
+        would had been easier from time to time, I would use one today.
+        However, regular expressions proved good enough for goodreads.com,
+        given that user generated content is very restricted
+        and cannot easily confuse the regex patterns.
+        The Regex code is small too.
+        We just look at the server response as text with some features
+        which mark the start and end of a value of interest.
+
 
 =back
 
@@ -269,6 +278,23 @@ https://github.com/andre-st/
 
 =back
 
+
+
+=head2 %comment
+
+=over
+
+=item * text       =E<gt> C<string>
+
+=item * rh_to_user =E<gt> C<L<%user|"%user">> reference, addressed user
+
+=item * rh_review  =E<gt> C<L<%review|"%review">> reference, addressed review,
+                          undefined if not comment on a review
+                          (but group, another user's status, book list, ...)
+
+=item * rh_book    =E<gt> C<L<%book|"%book">> reference, undefined if rh_review is undefined and vice versa
+
+=back
 
 
 =head1 PUBLIC ROUTINES
@@ -548,6 +574,23 @@ https://github.com/andre-st/
 
 =back
 
+=head2 C<void> greadcomments(I<{ ... }>)
+
+=over
+
+=item * reads a list of all comments posted from the given user on goodreads.com;
+        it does not read a conversion by multiple userson some thing
+
+=item * C<from_user_id =E<gt> string>
+
+=item * C<ra_into      =E<gt> array reference (L<%comment|"%comment">,...)> [optional]
+
+=item * C<limit        =E<gt> int> stop after reading N comments [optional, default 0 ]
+
+=item * C<on_progress  =E<gt> sub> see C<gmeter()> [optional]
+
+=back
+
 =head2 C<void> gsocialnet(I<{ ... }>)
 
 =over
@@ -796,15 +839,17 @@ https://github.com/andre-st/
 
 =head2 C<string> _group_url( I<$group_id> )
 
+=head2 C<string> _comments_url( I<$user_id, $page_number = 1> )
+
 =head1 PRIVATE HTML-EXTRACTION ROUTINES
 
 
 
-=head2 C<L<%book|"%book">> _extract_book( $book_page_html_str )
+=head2 C<L<%book|"%book">> _extract_book( I<$book_page_html_str> )
 
-=head2 C<L<%user|"%user">> _extract_user( $user_page_html_str )
+=head2 C<L<%user|"%user">> _extract_user( I<$user_page_html_str> )
 
-=head2 C<L<%user|"%user">> _extract_author( $user_page_html_str )
+=head2 C<L<%user|"%user">> _extract_author( I<$user_page_html_str> )
 
 =head2 C<bool> _extract_books( I<$rh_books, $rh_authors, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str> )
 
@@ -849,6 +894,8 @@ https://github.com/andre-st/
 =item * returns 0 if no friends, 1 if friends, 2 if error
 
 =back
+
+=head2 C<bool> _extract_comments( I<$ra, $on_progress, $comment_history_html_str> )
 
 =head2 C<string> _conv_uni_codepoints( I<$string> )
 
