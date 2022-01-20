@@ -40,8 +40,8 @@ my %reviews_by_dict;
 
 my %book;
 $book{id}          = '984394';  # "Hacking the Xbox"
-$book{num_ratings} = 228;       # This value can be obtained using greadbook() or ignored, it helps optimizing; TODO: constant might break test
-$book{num_reviews} =  26;       #     "      "                                                                  TODO: constant might break test
+$book{num_ratings} = 253;       # This value can be obtained using greadbook() or ignored, it helps optimizing; TODO: constant might break test
+$book{num_reviews} =  27;       #     "      "                                                                  TODO: constant might break test
 my $since          = Time::Piece->strptime( '2016-01-01', '%Y-%m-%d' );
 
 
