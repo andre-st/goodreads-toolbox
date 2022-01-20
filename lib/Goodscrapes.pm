@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2021-12-39
+=item * Updated: 2022-01-21
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =cut
 
-our $VERSION = '1.77';  # X.XX version format required by Perl
+our $VERSION = '1.78';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -642,7 +642,7 @@ sub glogin
 	#my $uid = $htm =~ /index_rss\/(\d+)/ ? $1 : undef;
 	#
 	$htm    = _html( $_ANYPRIVATEURL, $_ENO_ERROR, 0 );
-	my $uid = $htm =~ /uid: '(\d+)'/ ? $1 : undef;
+	my $uid = $htm =~ /currentUser.*?profileUrl":"\/user\/show\/(\d+)/ ? $1 : undef;
 	
 	print( "OK!\n" ) if $uid && !$args{ userpass };  # Only out if prompt before
 	
