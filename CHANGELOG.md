@@ -14,9 +14,15 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
-## [v1.23.2] - 2021-12-30
+## [v1.23.3] - 2022-01-21
 
-Small maintenance update
+### Fixed
+
+- login didn't worked anymore due to HTML changes on a Goodreads webpage
+
+
+
+## [v1.23.2] - 2021-12-30
 
 ### Fixed
 
@@ -33,8 +39,6 @@ Small maintenance update
 
 
 ## [v1.23.1] - 2021-07-01
-
-Small maintenance update
 
 ### Changed
 

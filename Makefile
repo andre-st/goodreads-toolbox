@@ -1,7 +1,6 @@
 # Andre's Goodreads Toolbox Makefile
 # 
 # TODO: Install perl dependencies to a local dir (no root required), deps-local target?
-# TODO: build github packages docker image from the commited github trunk head or official remote repo instead of the dirty local working copy
 # 
 # 
 # 
@@ -19,7 +18,7 @@ MAKEFLAGS += --no-builtin-rules
 
 
 # Configure Make rules:
-PROJECT_VERSION   = 1.23.2
+PROJECT_VERSION   = 1.23.3
 RR_LOGFILE        = /var/log/good.log
 RR_DB_DIR         = /var/db/good
 CACHE_DIR         = /tmp/FileCache/Goodscrapes
