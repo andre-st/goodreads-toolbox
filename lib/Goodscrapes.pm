@@ -1197,7 +1197,7 @@ sub greadfolls
 =over
 
 =item * reads a list of all comments posted from the given user on goodreads.com;
-        it does not read a conversion by multiple userson some thing
+        it does not read a conversation by multiple users on some topic
 
 =item * C<from_user_id =E<gt> string>
 

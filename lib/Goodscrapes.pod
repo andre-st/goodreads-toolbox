@@ -11,7 +11,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2021-12-39
+=item * Updated: 2022-01-21
 
 =item * Since: 2014-11-05
 
@@ -579,7 +579,7 @@ https://github.com/andre-st/
 =over
 
 =item * reads a list of all comments posted from the given user on goodreads.com;
-        it does not read a conversion by multiple userson some thing
+        it does not read a conversation by multiple users on some topic
 
 =item * C<from_user_id =E<gt> string>
 
