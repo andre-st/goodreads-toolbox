@@ -26,10 +26,13 @@ use_ok( 'Goodscrapes' );
 # We need to test against the most up-to-date markup from Goodreads.com
 # Having no cache during development is annoying, tho. 
 # So we leave a small window:
-gsetopt( cache_days => 1 );
+gsetopt( cache_days    => 1 );
+gsetopt( ignore_errors => 1 );
+gsetopt( maxretries    => 0 );
 
 
 diag( 'takes ~1 minute' );
+
 
 print( 'Loading reviews...' );
 
@@ -40,7 +43,7 @@ my %reviews_by_dict;
 my %book;
 $book{id}          = '984394';  # "Hacking the Xbox"
 $book{num_ratings} = 253;       # This value can be obtained using greadbook() or ignored, it helps optimizing; TODO: constant might break test
-$book{num_reviews} =  27;       #     "      "                                                                  TODO: constant might break test
+$book{num_reviews} =  28;       #     "      "                                                                  TODO: constant might break test
 my $since          = Time::Piece->strptime( '2016-01-01', '%Y-%m-%d' );
 
 

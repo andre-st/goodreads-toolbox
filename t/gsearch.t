@@ -24,10 +24,12 @@ use_ok( 'Goodscrapes' );
 # We need to test against the most up-to-date markup from Goodreads.com
 # Having no cache during development is annoying, tho. 
 # So we leave a small window:
-gsetopt( cache_days => 1 );
+gsetopt( cache_days    => 1 );
+gsetopt( ignore_errors => 1 );
+gsetopt( maxretries    => 0 );
 
 
-diag( "takes ~8 minutes" );
+diag( 'takes ~8 minutes' );
 
 
 print( 'Searching books... ' );
