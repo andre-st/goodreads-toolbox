@@ -19,8 +19,6 @@ MAKEFLAGS += --no-builtin-rules
 
 # Configure Make rules:
 PROJECT_VERSION   = 1.23.3
-RR_LOGFILE        = /var/log/good.log
-RR_DB_DIR         = /var/db/good
 CACHE_DIR         = /tmp/FileCache/Goodscrapes
 BUILD_DIR         = .build
 PACKAGE           = goodreads-toolbox
@@ -46,14 +44,15 @@ all: deps installdirs
 
 
 # ----------------------------------------------------------------------------
-## make installdirs    :  Creates work- and log-files in /var if not existing, prepares program-dir (symlinks)
+## make installdirs    :  Creates needed directories, adds symlinks etc
+#
 .PHONY: installdirs $(GITDIR)
 installdirs: | $(GITDIR)
 	chmod +x *.pl
+	chmod +x t/*.t
 	ln -sf word-en-l.lst ./list-in/dict.lst
-	mkdir -p "${RR_DB_DIR}"
-	touch "${RR_LOGFILE}"
-	chown --reference=recentrated.pl "${RR_DB_DIR}" "${RR_LOGFILE}"
+	# recentrated.pl:
+	mkdir -p ./list-out/recentrated
 
 # Developers:
 $(GITDIR):
@@ -64,11 +63,10 @@ $(GITDIR):
 
 
 # ----------------------------------------------------------------------------
-## make uninstall      :  Deletes work- and log-files in /var
+## make uninstall      :  Deletes files created outside the project directory
+#
 .PHONY: uninstall
 uninstall:
-	rm -rf "${RR_DB_DIR}"
-	rm -rf "${RR_LOGFILE}"
 	rm -rf "${CACHE_DIR}"
 
 

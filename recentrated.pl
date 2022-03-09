@@ -142,7 +142,7 @@ use Time::Piece;
 use Getopt::Long;
 use Pod::Usage;
 # Third party:
-use Log::Any        '$_log', default_adapter => [ 'File' => '/var/log/good.log' ];
+use Log::Any        '$_log', default_adapter => [ 'File' => File::Spec->catfile( $FindBin::Bin, 'list-out', 'recentrated', 'log.txt' )];
 use Text::CSV       qw( csv );
 use List::MoreUtils qw( any );
 # Ours:
@@ -182,7 +182,11 @@ say( "[CRIT ] Missing --userid option or goodloginmail argument." )
 
 
 # Path to the database files which contain last check states
-our $DBPATH = sprintf( "/var/db/good/%s-%s.csv", $USERID, join( '-', @SHELVES ));
+our $DBPATH = File::Spec->catfile( 
+		$FindBin::Bin, 
+		'list-out', 
+		'recentrated', 
+		sprintf( "%s-%s.csv", $USERID, join( '-', @SHELVES )));
 
 # The more URLs, the longer and untempting the mail.
 # If number exceeded, we link to the book page with *all* reviews.

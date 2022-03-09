@@ -4,32 +4,18 @@
 #
 # Put me to: /etc/cron.daily
 #
+#
+# Tool "ifne" is part of the "moreutils" package.
 
-readonly MAILFROM="adminuser@gmail.com"
-readonly PASSWORD=""
-readonly SCRIPT="/path/to/recentrated.pl"
-readonly DB_DIR="/var/db/good"
+readonly MAILFROM="GOODREADS@EXAMPLE.COM"
+readonly PASSWORD="GOODREADSPASSWORD"
+readonly SCRIPT="/path/to/goodreads/recentrated.pl"
+readonly DB_DIR="/path/to/goodreads/list-out/recentrated"
 readonly MAILERS=(
 		[0]="ifne /usr/sbin/sendmail -t"
 		[1]="ifne ip netns exec NS_PRIVATE /usr/sbin/sendmail -t"
 		[9]="cat" )
 		# 9 for debugging, CSV restored
-
-
-
-# Script might not be present at the moment as its volume is still 
-# unmounted or encrypted. We retry every 5 minutes for one hour:
-#
-until [ -e "${SCRIPT}" ]
-do
-	/bin/sleep 5m
-	let retry++
-	if [ $retry -eq 12 ]
-	then
-		(>&2 echo "FATAL: Missing ${SCRIPT}")
-		exit 1
-	fi
-done
 
 
 
