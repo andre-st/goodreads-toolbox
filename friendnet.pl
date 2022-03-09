@@ -121,7 +121,7 @@ More info in ./help/friendnet.md
 
 =head1 VERSION
 
-2019-11-16 (Since 2019-06-14)
+2022-03-08 (Since 2019-06-14)
 
 =cut
 
@@ -135,7 +135,8 @@ use 5.18.0;
 
 # Perl core:
 use FindBin;
-use lib "$FindBin::Bin/lib/";
+use local::lib "$FindBin::Bin/lib/local/";
+use        lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( strftime locale_h );
 use File::Spec; # Platform indep. directory separator

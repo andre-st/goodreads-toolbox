@@ -10,10 +10,11 @@
 use diagnostics;  # More debugging info
 use warnings;
 use strict;
+use FindBin;
+use local::lib "$FindBin::Bin/../lib/local/";
+use        lib "$FindBin::Bin/../lib/";
 use Test::More qw( no_plan );
 use Test::Exception;
-use FindBin;
-use lib "$FindBin::Bin/../lib/";
 
 
 use_ok( 'Goodscrapes' );

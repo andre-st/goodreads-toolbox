@@ -7,14 +7,14 @@
 #   [ ] exact matches
 #   [ ] invalid arguments
 
-
 use diagnostics;  # More debugging info
 use warnings;
 use strict;
-use Test::More qw( no_plan );
-use List::MoreUtils qw( firstval );
 use FindBin;
-use lib "$FindBin::Bin/../lib/";
+use local::lib "$FindBin::Bin/../lib/local/";
+use        lib "$FindBin::Bin/../lib/";
+use Test::More      qw( no_plan  );
+use List::MoreUtils qw( firstval );
 
 
 use_ok( 'Goodscrapes' );

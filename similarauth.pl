@@ -114,7 +114,7 @@ More info in ./help/similarauth.md
 
 =head1 VERSION
 
-2020-01-21 (Since 2018-07-05)
+2022-03-08 (Since 2018-07-05)
 
 =cut
 
@@ -127,7 +127,8 @@ use 5.18.0;
 
 # Perl core:
 use FindBin;
-use lib "$FindBin::Bin/lib/";
+use local::lib "$FindBin::Bin/lib/local/";
+use        lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( strftime );
 use File::Spec; # Platform indep. directory separator

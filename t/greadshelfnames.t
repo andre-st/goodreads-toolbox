@@ -7,11 +7,13 @@
 use diagnostics;  # More debugging info
 use warnings;
 use strict;
-use Test::More qw( no_plan );
-use List::MoreUtils qw( any none );
 use FindBin;
-use lib "$FindBin::Bin/../lib/";
-use lib "$FindBin::Bin/../t/";
+use local::lib "$FindBin::Bin/../lib/local/";
+use        lib "$FindBin::Bin/../lib/";
+use        lib "$FindBin::Bin/../t/";
+use Test::More      qw( no_plan  );
+use List::MoreUtils qw( any none );
+
 
 use_ok( 'Goodscrapes' );
 require( 'config.pl' );

@@ -119,7 +119,7 @@ More info in ./help/recentrated.md
 
 =head1 VERSION
 
-2021-02-15 (Since 2018-01-09)
+2022-03-08 (Since 2018-01-09)
 
 =cut
 
@@ -133,9 +133,11 @@ use 5.18.0;
 
 # Perl core:
 use FindBin;
-use lib "$FindBin::Bin/lib/";
+use local::lib "$FindBin::Bin/lib/local/";
+use        lib "$FindBin::Bin/lib/";
 use POSIX           qw( locale_h );
-use List::Util      qw( max );
+use List::Util      qw( max      );
+use File::Spec;     # Platform indep. directory separator
 use Time::Piece;
 use Getopt::Long;
 use Pod::Usage;

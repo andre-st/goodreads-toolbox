@@ -102,7 +102,8 @@ use warnings;
 
 # Perl core:
 use FindBin;
-use lib "$FindBin::Bin/lib/";
+use local::lib "$FindBin::Bin/lib/local/";
+use        lib "$FindBin::Bin/lib/";
 # Third party:
 # Ours:
 use Goodscrapes;

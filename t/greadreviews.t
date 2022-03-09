@@ -8,16 +8,15 @@
 #   [ ] 
 #   [ ] invalid arguments
 
-
-
 use diagnostics;  # More debugging info
 use warnings;
 use strict;
-use Time::Piece;
-use Test::More qw( no_plan );
-use List::MoreUtils qw( any all firstval );
 use FindBin;
-use lib "$FindBin::Bin/../lib/";
+use local::lib "$FindBin::Bin/../lib/local/";
+use        lib "$FindBin::Bin/../lib/";
+use Time::Piece;
+use Test::More      qw( no_plan          );
+use List::MoreUtils qw( any all firstval );
 
 
 use_ok( 'Goodscrapes' );

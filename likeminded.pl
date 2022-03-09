@@ -159,7 +159,7 @@ More info in ./help/likeminded.md
 
 =head1 VERSION
 
-2020-01-23 (Since 2018-06-22)
+2022-03-08 (Since 2018-06-22)
 
 =cut
 
@@ -173,7 +173,8 @@ use 5.18.0;
 
 # Perl core:
 use FindBin;
-use lib "$FindBin::Bin/lib/";
+use local::lib "$FindBin::Bin/lib/local/";
+use        lib "$FindBin::Bin/lib/";
 use Time::HiRes   qw( time tv_interval );
 use POSIX         qw( strftime floor locale_h );
 use File::Spec; # Platform indep. directory separator

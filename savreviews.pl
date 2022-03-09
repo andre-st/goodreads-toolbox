@@ -103,7 +103,7 @@ More info in ./help/savreviews.md
 
 =head1 VERSION
 
-2019-11-16 (Since 2018-08-13)
+2022-03-08 (Since 2018-08-13)
 
 =cut
 
@@ -117,7 +117,8 @@ use 5.18.0;
 
 # Perl core:
 use FindBin;
-use lib "$FindBin::Bin/lib/";
+use local::lib "$FindBin::Bin/lib/local/";
+use        lib "$FindBin::Bin/lib/";
 use Time::HiRes qw( time tv_interval );
 use POSIX       qw( locale_h );
 use File::Spec; # Platform indep. directory separator

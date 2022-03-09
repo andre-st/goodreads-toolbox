@@ -12,6 +12,7 @@
 *.xcf
 *.secret
 *.token
+lib/local/*
 t/config.pl
 .build
 .obsolete
