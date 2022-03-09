@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2022-01-21
+=item * Updated: 2022-03-08
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =cut
 
-our $VERSION = '1.78';  # X.XX version format required by Perl
+our $VERSION = '1.85';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -105,7 +105,7 @@ our $VERSION = '1.78';  # X.XX version format required by Perl
 =item * C<on> prefix or C<fn> suffix means function variable
 
 =item * constants are uppercase, functions lowercase
-	   
+
 =item * Goodscrapes code in your program is usually recognizable by the
         'g' or 'GOOD' prefix in the function or constant name
 
@@ -177,7 +177,7 @@ use Cache::FileCache;
 use IO::Prompter;
 use URI::Escape;
 use HTML::Entities;
-use WWW::Curl::Easy;
+use HTTP::Tiny;
 
 
 # Non-module message strings to be used in programs:
@@ -200,7 +200,7 @@ our $_ENO_GRUNEXPECT  = $_ENO_ERROR + 2;
 our $_ENO_CRIT        = 500;  # retry until user CTRL-C
 our $_ENO_GRCAPACITY  = $_ENO_CRIT  + 1;
 our $_ENO_GRMAINTNC   = $_ENO_CRIT  + 2;
-our $_ENO_CURL        = $_ENO_CRIT  + 3;
+our $_ENO_TRANSPORT   = $_ENO_CRIT  + 3;
 our $_ENO_NOHTML      = $_ENO_CRIT  + 4;
 our $_ENO_FATAL       = 600;  # abort
 our $_ENO_NODICT      = $_ENO_FATAL + 1;
@@ -235,7 +235,7 @@ our %_ERRMSG =
 	$_ENO_GRUNEXPECT => "\n[ERROR] Goodreads.com encountered an \"unexpected error\": %s",  #url
 	$_ENO_GRCAPACITY => "\n[CRIT ] Goodreads.com is over capacity.",
 	$_ENO_GRMAINTNC  => "\n[CRIT ] Goodreads.com is down for maintenance.",
-	$_ENO_CURL       => "\n[CRIT ] %s - %s %s",       # url, err, errbuf
+	$_ENO_TRANSPORT  => "\n[CRIT ] %s - %s %s",       # url, err, err
 	$_ENO_NOHTML     => "\n[CRIT ] No HTML body: %s", # url
 	$_ENO_FATAL      => "\n[FATAL] %s",               # url
 	$_ENO_NODICT     => "\n[FATAL] Cannot open dictionary file: %s",       # path
@@ -509,7 +509,7 @@ sub gverifyshelf
 	my $nam = shift // ''; # '%23ALL%23';
 	
 	croak( _errmsg( $_ENO_BADSHELF, $nam ))
- 		if length $nam == 0 || $nam =~ /[^%a-zA-Z0-9_\-,]/;
+		if length $nam == 0 || $nam =~ /[^%a-zA-Z0-9_\-,]/;
 		
 	return $nam;
 }
@@ -616,21 +616,15 @@ sub glogin
 	my $nonce = $htm =~ /name='n' type='hidden' value='([^']+)/    ? $1 : undef;
 	
 	# Send login form:
-	my $formdata = 'sign_in=1'
-	             . "&n=${nonce}"
-	             . '&authenticity_token=' . uri_escape( $tok  )
-	             . '&user%5Bemail%5D='    . uri_escape( $mail )
-	             . '&user%5Bpassword%5D=' . uri_escape( $pass )
-	             . '&remember_me=on'
-	             . '&next=Sign+in';
-	
-	my $curl = WWW::Curl::Easy->new;
-	_setcurlopts( $curl );
-	$curl->setopt( $curl->CURLOPT_URL,        $_SIGNINURL );
-	$curl->setopt( $curl->CURLOPT_POST,       1           );
-	$curl->setopt( $curl->CURLOPT_POSTFIELDS, $formdata   );
-	$curl->setopt( $curl->CURLOPT_WRITEDATA,  \$htm       );
-	$curl->perform();   # Saves login data to $_cookie (set by _setcurlopts)
+	my %form;
+	$form{ 'sign_in'            } = 1;
+	$form{ 'n'                  } = $nonce;
+	$form{ 'authenticity_token' } = $tok;
+	$form{ 'user[email]'        } = $mail;
+	$form{ 'user[password]'     } = $pass;
+	$form{ 'remember_me'        } = 'on';
+	$form{ 'next'               } = 'Sign in';
+	$htm = _html_post( $_SIGNINURL, \%form );
 	
 	# Don't leave password in memory:
 	# This f'ups $curl->perform() although noted afterwards, concurrent?
@@ -1971,7 +1965,7 @@ sub _comments_url
 
 
 
-#==============================================================================
+###############################################################################
 
 =head1 PRIVATE HTML-EXTRACTION ROUTINES
 
@@ -2900,6 +2894,7 @@ sub _check_page
 sub _updcookie
 {
 	my $changes = shift or return;
+	$changes    = join( '; ', @{$changes} ) if eval{ \@$changes };  # Array instead of string given
 	my %new     = _cookie2hash( $changes );
 	my %c       = _cookie2hash( $_cookie );
 	$c{$_}      = $new{$_} for keys %new;   # Merge new and old
@@ -2916,64 +2911,6 @@ sub _cookie2hash  # @TODO: ugly
 		$r{$1}=$2 if $1 && $2;
 	}
 	return %r;
-}
-
-
-
-
-
-=head2 C<void> _setcurlopts(I< $curl_ref >, I< $url_str >)
-
-=over
-
-=item Sets default options for GET, POST, PUT, DELETE
-
-=back
-
-=cut
-
-sub _setcurlopts
-{
-	my $curl = shift;
-	my $url  = shift // '';
-	
-	# Headers:
-	$curl->setopt( $curl->CURLOPT_USERAGENT,      $_USERAGENT );
-	$curl->setopt( $curl->CURLOPT_COOKIE,         $_cookie    ) if $_cookie;
-	
-	# Connection options:
-	$curl->setopt( $curl->CURLOPT_FOLLOWLOCATION, 1           );
-	$curl->setopt( $curl->CURLOPT_HEADER,         0           );   # Response header
-	$curl->setopt( $curl->CURLOPT_HEADERFUNCTION, sub
-	{
-		my $chunk = shift;
-		_updcookie( $chunk =~ /Set-Cookie:(.*)/i ? $1 : undef );  # for CSRF-Token
-		return length( $chunk );
-	});
-	
-	# Performance options:
-	# - don't hang too long, better disconnect and retry
-	# - reduce number of SSL handshakes (reuse connection)
-	# - reduce SSL overhead
-	# 
-	# The module works without any of these options, but probably slower.
-	# All `eval` due to https://github.com/andre-st/goodreads-toolbox/issues/20
-	eval{ $curl->setopt( $curl->CURLOPT_TIMEOUT,        20  ); };
-	eval{ $curl->setopt( $curl->CURLOPT_CONNECTTIMEOUT, 20  ); };
-	eval{ $curl->setopt( $curl->CURLOPT_FORBID_REUSE,   0   ); };  # CURL default
-	eval{ $curl->setopt( $curl->CURLOPT_FRESH_CONNECT,  0   ); };  # CURL default
-	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPALIVE,  1   ); };
-	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPIDLE,   120 ); };
-	eval{ $curl->setopt( $curl->CURLOPT_TCP_KEEPINTVL,  60  ); };
-	eval{ $curl->setopt( $curl->CURLOPT_SSL_VERIFYPEER, 0   ); };
-	eval{ $curl->setopt( $curl->CURLOPT_MAXREDIRS,      5   ); };
-	
-	# Tweaks:
-	if( index( $url, '/book/reviews/' ) != -1 )  # "No HTML body" error sometimes
-	{
-		$curl->setopt( $curl->CURLOPT_COOKIE,         undef );  # Cookie triggers error
-		$curl->setopt( $curl->CURLOPT_HEADERFUNCTION, undef );  # No cookie updates
-	}
 }
 
 
@@ -3001,28 +2938,31 @@ sub _html
 	my $retry     = $_OPTIONS{maxretries};
 	my $htm;
 	
-	$htm = $_cache->get( $url ) 
+	$htm = $_cache->get( $url )
 		if $cancache && $_cache_age ne $EXPIRES_NOW;
 	
-	return $htm 
+	return $htm
 		if defined $htm;
 	
 DOWNLOAD:
-	state $curl;
-	my    $curlret;
-	my    $errno;
+	my %headers;
+	   $headers{'User-Agent'       } = $_USERAGENT;
+#	   $headers{'Referer'          } = $url;
+	   $headers{'Cookie'           } = $_cookie         if $_cookie;
+	   $headers{'X-Requested-With' } = 'XMLHttpRequest' if index( $url, '/book/reviews/' ) != -1;
 	
-	$curl = WWW::Curl::Easy->new if !$curl;
-	_setcurlopts( $curl, $url );
-	$curl->setopt( $curl->CURLOPT_URL,       $url  );
-	$curl->setopt( $curl->CURLOPT_REFERER,   $url  );  # https://www.goodreads.com/...  [F5]
-	$curl->setopt( $curl->CURLOPT_HTTPGET,   1     );
-	$curl->setopt( $curl->CURLOPT_WRITEDATA, \$htm );
+	my $resp = HTTP::Tiny
+			->new( timeout => 20 )
+			->get( $url, { headers => \%headers });
 	
-	$curlret = $curl->perform;
-	$errno   = $curlret == 0 ? _check_page( $htm ) : $_ENO_CURL;
+	_updcookie( $resp->{headers}->{'set-cookie'} )  # For CSRF-Token
+		if $resp->{headers}->{'set-cookie'};
 	
-	warn( _errmsg( $errno, $url, $curl->strerror( $curlret ), $curl->errbuf ))
+	my $errno = $resp->{status} < 599               # Pseudo status code
+			? _check_page( $resp->{content} )     # HTTP or GR app errors
+			: $_ENO_TRANSPORT;                    # Tiny-lib intern error
+	
+	warn( _errmsg( $errno, $url, $resp->{content}, $resp->{reason}))
 		if $errno >= $warnlevel;
 	
 	if(( $errno >= $_ENO_CRIT  && !$_OPTIONS{ignore_errors}                 )
@@ -3032,17 +2972,44 @@ DOWNLOAD:
 				? $_MSG_RETRYING_FOREVER
 				: sprintf( $_MSG_RETRYING_NTIMES, $retry + 1 ));
 		
-		$curl = undef;  # disconnect
 		sleep( $_OPTIONS{retrydelay_secs} );
 		goto DOWNLOAD;
 	}
 	
-DONE:	
-	$_cache->set( $url, $htm, $_cache_age )
-		if $cancache && $errno == 0;
+DONE:
+	$_cache->set( $url, $resp->{content}, $_cache_age )
+		if $cancache && $errno == 0;  # Don't cache errors
 	
-	return $htm;
+	return $resp->{content};
 }
+
+
+
+
+=head2 C<string> _html_post( I<$url, $rh_form_fields> )
+
+=over
+
+=cut
+
+sub _html_post
+{
+	my $url       = shift or return '';
+	my $rh_fields = shift;
+	my %headers;
+	   $headers{'User-Agent'} = $_USERAGENT;
+	   $headers{'Cookie'    } = $_cookie if $_cookie;
+	
+	my $resp = HTTP::Tiny
+			->new( timeout => 20 )
+			->post_form( $url, $rh_fields, { headers => \%headers });
+	
+	_updcookie( $resp->{headers}->{'set-cookie'} )   # for CSRF-Token
+		if $resp->{headers}->{'set-cookie'};
+	
+	return $resp->{content};
+}
+
 
 
 

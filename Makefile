@@ -33,13 +33,12 @@ GITHUB_REPONAME   = ${PACKAGE}
 RELEASE           = $(PACKAGE)-$(PROJECT_VERSION)
 GITDIR            = $(wildcard .git)
 
-LIBCURLDEV_ERR = "Required packages: build-essential libcurl-dev libwww-curl-perl (Debian/Ubuntu names)"
-LIBCURLDEV    := $(shell command -v curl-config 2> /dev/null)
 
 
 
 # ----------------------------------------------------------------------------
 ## make all            :  Installs programs and dependencies from CPAN (default)
+#
 all: deps installdirs
 
 
@@ -71,18 +70,24 @@ uninstall:
 
 
 # ----------------------------------------------------------------------------
-## make deps           :  Downloads and installs dependencies from CPAN
+## make deps           :  Downloads and installs dependencies from CPAN.
+##                        Files go to the project's ./lib/local/ dir to ease software removal.
+##                        It does not install modules system-wide.
+##                        Doesn't require root too if local::lib module is already installed.
+#
 # CPAN complains without YAML::Any (warning not error)
+# We install without testing modules (significantly faster)
+#
 .PHONY: deps
 deps:
-ifndef LIBCURLDEV
-	$(error ${LIBCURLDEV_ERR})
-endif
-	perl -MCPAN -e 'install YAML::Any, List::MoreUtils, HTML::Entities, URI::Escape, Cache::FileCache, WWW::Curl::Easy, Text::CSV, Log::Any, IO::Prompter, Test::More, Test::Exception'
+	mkdir -p ./lib/local
+	PERL_MM_USE_DEFAULT=1 perl -MCPAN -Mlocal::lib=./lib/local -e 'CPAN::Shell->notest( "install", "YAML::Any", "List::MoreUtils", "HTML::Entities", "URI::Escape", "Cache::FileCache", "HTTP::Tiny", "Text::CSV", "Log::Any", "IO::Prompter", "Test::More", "Test::Exception" )'
+
 
 
 # ----------------------------------------------------------------------------
 ## make check          :  Runs unit tests
+#
 .PHONY: check
 check:
 	prove
@@ -97,7 +102,7 @@ check:
 ##                        Expects a PAT from GitHub > Account > Settings > Developer Settings > Personal access tokens
 ##                        in local file .github-packages.secret
 ##                        See packages: https://github.com/users/andre-st/packages
-
+#
 .PHONY: docker-image
 docker-image: Dockerfile
 	docker build \
