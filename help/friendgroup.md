@@ -1,6 +1,6 @@
 # friendgroup.pl
 
-![Maintenance](https://img.shields.io/maintenance/yes/2021.svg)
+![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
 
 
 ## Discussion groups common among the people you follow
