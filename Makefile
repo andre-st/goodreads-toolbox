@@ -33,7 +33,8 @@ GITHUB_REPONAME   = ${PACKAGE}
 RELEASE           = $(PACKAGE)-$(PROJECT_VERSION)
 GITDIR            = $(wildcard .git)
 
-
+IS_ROOT           := $(shell test $(shell id -u) = 0 && echo 1)
+IS_LOCAL_LIB      := $(shell perldoc -l local::lib 2> /dev/null )
 
 
 # ----------------------------------------------------------------------------
@@ -80,8 +81,14 @@ uninstall:
 #
 .PHONY: deps
 deps:
+ifndef IS_LOCAL_LIB
+ifndef IS_ROOT
+	$(error "Please run as root -or- install Perl module local::lib first (apt-get install liblocal-lib-perl)")
+endif
+	PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'CPAN::Shell->notest( "install", "local::lib" )'
+endif
 	mkdir -p ./lib/local
-	PERL_MM_USE_DEFAULT=1 perl -MCPAN -Mlocal::lib=./lib/local -e 'CPAN::Shell->notest( "install", "YAML::Any", "List::MoreUtils", "HTML::Entities", "URI::Escape", "Cache::FileCache", "HTTP::Tiny", "Text::CSV", "Log::Any", "IO::Prompter", "Test::More", "Test::Exception" )'
+	PERL_MM_USE_DEFAULT=1 perl -MCPAN -Mlocal::lib=./lib/local -e 'CPAN::Shell->notest( "install", "YAML::Any", "List::MoreUtils", "HTML::Entities", "URI::Escape", "Cache::FileCache", "IO::Socket::SSL", "Net::SSLeay", "HTTP::Tiny", "Text::CSV", "Log::Any", "IO::Prompter", "Test::More", "Test::Exception" )'
 
 
 
@@ -155,6 +162,16 @@ docs:
 .PHONY: help
 help: Makefile
 	@sed -n 's/^## //p' $<
-
-
+	
+	# Debugging info:
+ifdef IS_ROOT
+	@echo IS_ROOT=yes
+else
+	@echo IS_ROOT=no
+endif
+ifdef IS_LOCAL_LIB
+	@echo IS_LOCAL_LIB=yes
+else
+	@echo IS_LOCAL_LIB=no
+endif
 
