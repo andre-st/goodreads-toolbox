@@ -84,27 +84,36 @@ Recently rated books in your "watch-ratings" shelf:
 	```
 2. have a sendmail MTA set up. 
 	Most simple thing is 
-	[ssmtp](https://wiki.debian.org/sSMTP) or 
+	[ssmtp](https://wiki.debian.org/sSMTP) (deprecated) or 
 	[nullmailer](http://untroubled.org/nullmailer/) or 
-	[msmtp](http://msmtp.sourceforge.net), 
+	[msmtp-mta](http://msmtp.sourceforge.net), 
 	with your original sendmail being renamed and symlinked to one of them:
 	```sh
-	$ su
-	$ mv    /usr/sbin/sendmail  /usr/sbin/sendmail.orig
-	$ ln -s /usr/sbin/ssmtp     /usr/sbin/sendmail
-	$ vi /etc/ssmtp/ssmtp.conf
-		# Config example for SSMTP forwarding to Google Mail:
-		hostname=YOURCOMPUTERNAME
-		FromLineOverride=yes
-		root=YOURMAIL@gmail.com
-		mailhub=smtp.gmail.com:587
-		UseTLS=YES
-		UseSTARTTLS=YES
-		AuthUser=YOURMAIL@gmail.com
-		AuthPass=YOURPASSWORD
-	$ vi /etc/ssmtp/revaliases
-		root:YOURMAIL@gmail.com:smtp.gmail.com:587
+	$ vi ~/.msmtprc
+			# All accounts:
+			defaults
+			auth           on
+			tls            on
+			tls_starttls   on
+			tls_trust_file /etc/ssl/certs/ca-certificates.crt  # or .../ca-bundle.crt
+			logfile        ~/.msmtp.log
+			
+			# Gmail account:
+			account        gmail
+			host           smtp.gmail.com  # smtp-relay.gmail.com for G Suite users
+			port           587
+			from           XXXXXXXX@gmail.com
+			user           XXXXXXXX@gmail.com
+			password       XXXXXXXXXXXXXXXXXX
+			
+			# Default account:
+			account default : gmail
+			
+	$ chmod u=rw,go= ~/.msmtprc
+	$ echo "Test message"         | mail -s "Mailer Test" XXXXXXXX@gmail.com
+	$ echo "Subject: Mailer Test" | sendmail -v XXXXXXXX@gmail.com
 	```
+
 3. add a cron-job (I prefer 
 	[anacrony](https://en.wikipedia.org/wiki/Anacron "performs pending jobs if the computer was previously shut down") 
 	daemons such as 
