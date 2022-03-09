@@ -18,11 +18,13 @@ t/config.pl
 .obsolete
 test*
 TODO.txt
-cve*
+cve
 lib/Goodgrief*
 staff*
 savreviews-*.txt
 revs-*.txt
 q
 export.pl
+cron.daily/goodratings.sh
+list-out/recentrated*
 
