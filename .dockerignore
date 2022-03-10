@@ -9,8 +9,14 @@
 
 !/Makefile
 
-!/*.pm
-!/*.pl
+!/friendgroup.pl
+!/friendnet.pl
+!/friendrated.pl
+!/likeminded.pl
+!/recentrated.pl
+!/savreviews.pl
+!/search.pl
+!/similarauth.pl
 
 !/lib/*.pm
 !/lib/*.pl
@@ -27,10 +33,7 @@
 !/t/config.pl-example
 
 
-# Except:
-**/staff-*
-**/shelfoverlap.pl
-**/newreleases.pl
-
+# REMOVE LATER AGAIN!
+#!/t/config.pl
 
 
