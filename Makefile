@@ -18,16 +18,18 @@ MAKEFLAGS += --no-builtin-rules
 
 
 # Configure Make rules:
-PROJECT_VERSION   = 1.23.3
+PROJECT_VERSION   = 1.24
 CACHE_DIR         = /tmp/FileCache/Goodscrapes
 BUILD_DIR         = .build
 PACKAGE           = goodreads-toolbox
+
 DOCKER_BUILD_DATE = $(shell date -u +'%Y-%m-%dT%H:%M:%SZ')
 DOCKER_IMG_VER    = ${PROJECT_VERSION}
 DOCKER_IMG_NAME   = ${PACKAGE}
 DOCKER_CON_NAME   = ${PACKAGE}
 DOCKER_DIR        = .
 DOCKER_HTPORT     = 8080
+
 GITHUB_USER       = andre-st
 GITHUB_REPONAME   = ${PACKAGE}
 RELEASE           = $(PACKAGE)-$(PROJECT_VERSION)
@@ -112,7 +114,7 @@ check:
 #
 .PHONY: docker-image
 docker-image: Dockerfile
-	docker build \
+	docker build                                                 \
 			--build-arg BUILD_DATE="${DOCKER_BUILD_DATE}"      \
 			--build-arg PROJECT_VERSION="${PROJECT_VERSION}"   \
 			--tag "${DOCKER_IMG_NAME}:${DOCKER_IMG_VER}"       \
@@ -125,11 +127,11 @@ docker-run:
 	docker stop         ${DOCKER_CON_NAME} || true
 	docker container rm ${DOCKER_CON_NAME} || true
 	@echo "[NOTE] Goodreads results are written to 'list-out/', accessible via web-browser at localhost:${DOCKER_HTPORT}"
-	@docker run \
-			--name=${DOCKER_CON_NAME} \
-			--publish=${DOCKER_HTPORT}:80 \
-			--interactive \
-			--tty \
+	@docker run                               \
+			--name=${DOCKER_CON_NAME}       \
+			--publish=${DOCKER_HTPORT}:80   \
+			--interactive                   \
+			--tty                           \
 			"${DOCKER_IMG_NAME}:${DOCKER_IMG_VER}" || true
 
 

@@ -14,6 +14,33 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
+## [v1.24] - 2022-03-10
+
+This release does not add any new features. 
+However, some major internal renewals took place.
+
+### Changed
+
+- Perl5 module dependencies are not installed system-wide anymore.
+	Now these go into the project's _local_ lib-directory.
+	This helps non-Docker users to remove the toolbox with less residue.
+	Also easens installation without root-privileges, 
+	given that Perl's `local::lib` module is installed.
+
+- replaced outdated Perl5 module `WWW::Curl::Easy` with `HTTP::Tiny`.
+	This should fix Curl-based installation problems on newer systems;
+	Non-Docker-users have to run `make deps` and `make installdirs` after updating an existing installation.
+
+- recentrated.pl:
+	- no longer saves to `/var/db/good` but to `./list-out/recentrated/`
+	- log-file written to `./list-out/recentrated/log.txt` now
+
+- Docker:
+	- image is based on Alpine Linux now
+	- webserver webfs was replaced with thttpd
+
+
+
 ## [v1.23.3] - 2022-01-21
 
 ### Fixed
@@ -70,11 +97,11 @@ This is primarily a maintenance update after a long time.
 
 ### Changed
 
-- recentrated.pl: 
-	`--textonly` option also drops smaller texts now,
-	 because the flag's purpose is to cut down "noisy" e-mails with too many ratings
-	 and smaller reviews are almost always useless too ("loved it so much!").
-	 Without this flag, [\*\*\*\* ], [TTTT ] and [tttt ] are shown as usual.
+- recentrated.pl:
+	- `--textonly` option also drops smaller texts now,
+	   because the flag's purpose is to cut down "noisy" e-mails with too many ratings
+	   and smaller reviews are almost always useless too ("loved it so much!").
+	   Without this flag, [\*\*\*\* ], [TTTT ] and [tttt ] are shown as usual.
 - lib/Goodscrapes.pl:
 	- greadreviews() parameter `text_only` was renamed to `text_minlen`
 
@@ -111,7 +138,8 @@ This is primarily a maintenance update after a long time.
 ## [v1.21.1] - 2019-10-13
 ### Fixed
 
-- savreviews.pl: "Undefined subroutine &Goodscrapes::max called at Goodscrapes.pm"
+- savreviews.pl:
+	- "Undefined subroutine &Goodscrapes::max called at Goodscrapes.pm"
 
 
 
@@ -140,18 +168,22 @@ This is primarily a maintenance update after a long time.
 ## [v1.20.2] - 2019-08-31
 ### Fixed
 
-- friendnet.pl: missing ");" at the end (syntax error)
-- friendrated.pl: poor table-caption in authors-report file
+- friendnet.pl:
+	- missing ");" at the end (syntax error)
+- friendrated.pl: 
+	- poor table-caption in authors-report file
 
 ### Added
 
-- friendrated.pl: new column 'GR Avg' with average rating by the Goodreads community
+- friendrated.pl:
+	- new column 'GR Avg' with average rating by the Goodreads community
 - git-hooks (developers): automatically check syntax of user-scripts and run library 
   unit-tests before pushing changes to GitHub
 
 ### Changed
 
-- friendrated.pl: output-filenames include stars-range and number of favorers
+- friendrated.pl:
+	- output-filenames include stars-range and number of favorers
 - covers and titles are not in the same column any more; each its own
 - renamed "doc" folder to "help"
 
@@ -193,19 +225,23 @@ This is primarily a maintenance update after a long time.
 ## [v1.19.2] - 2019-05-26
 ### Fixed
 
-- search.pl: Titles were missing in the generated HTML file due to changes
-  in the source markup
+- search.pl:
+	- Titles were missing in the generated HTML file due to changes in the source markup
 
 ### Added
 
-- friendrated.pl: `--hate` option to list most hated books among the members you follow
-  ([#24](https://github.com/andre-st/goodreads-toolbox/issues/24))
-- recentrated.pl: allows login and can be run against non-public member accounts
+- friendrated.pl:
+	- `--hate` option to list most hated books among the members you follow
+	  ([#24](https://github.com/andre-st/goodreads-toolbox/issues/24))
+- recentrated.pl:
+	- allows login and can be run against non-public member accounts
 
 ### Changed
 
-- friendrated.pl: `--rated` option changed to `--minrated`
-- recentrated.pl: all option names and positional parameters changed (see --help)
+- friendrated.pl:
+	- `--rated` option changed to `--minrated`
+- recentrated.pl:
+	- all option names and positional parameters changed (see --help)
 
 
 
@@ -217,10 +253,11 @@ This is primarily a maintenance update after a long time.
 
 ### Added
 
-- friendrated: new `--toread` option lists the most wished-for 
-  books among the members you follow (program checks the "to-read" 
-  shelves instead of the "read" shelves and sets `--rated=0`)
-- recentrated: 
+- friendrated.pl:
+	- new `--toread` option lists the most wished-for 
+	  books among the members you follow (program checks the "to-read" 
+	  shelves instead of the "read" shelves and sets `--rated=0`)
+- recentrated.pl:
 	- indicate active text-only option in mail body
 	- indicate tweet-size text reviews by [tttt ] versus [TTTT ]
 
@@ -263,7 +300,7 @@ This is primarily a maintenance update after a long time.
 
 ### Changed
 
-- savreviews: 
+- savreviews.pl:
 	- writes multiple files at once, with one file per star-rating 
 	  ([#14](https://github.com/andre-st/goodreads-toolbox/issues/14))
 	- reviews contain review date too
@@ -271,15 +308,17 @@ This is primarily a maintenance update after a long time.
 
 ### Added
 
-- friendrated: second table in document with most read authors
-- savreviews: prints statistics with number of reviews per year
+- friendrated.pl:
+	- second table in document with most read authors
+- savreviews.pl:
+	- prints statistics with number of reviews per year
 
 
 
 ## [v1.13.0] - 2019-01-18
 ### Changed
 
-- likeminded: 
+- likeminded.pl:
 	- `--similar` option was renamed to `--common`
 	- final report does not rank members by the number of common authors only but
 	  includes library-sizes ([#18](https://github.com/andre-st/goodreads-toolbox/issues/18))
@@ -295,11 +334,12 @@ This is primarily a maintenance update after a long time.
 
 ### Added
 
-- likeminded: new option `--maxauthorbooks` to limit the amount of books per author
-  since some authors list more than 2000 books; default is 600 most popular books
-- friendrated: more filters, e.g., _"books with less than 1000 ratings 
-  and published between 1950 to 1980 and ..."_ 
-  ([#16](https://github.com/andre-st/goodreads-toolbox/issues/16))
+- likeminded.pl:
+	- new option `--maxauthorbooks` to limit the amount of books per author
+	  since some authors list more than 2000 books; default is 600 most popular books
+- friendrated.pl:
+	- more filters, e.g., "books with less than 1000 ratings and published between 1950 to 1980 and ..."
+	  ([#16](https://github.com/andre-st/goodreads-toolbox/issues/16))
 
 ### Changed
 
@@ -366,8 +406,9 @@ This is primarily a maintenance update after a long time.
 ## [v1.6.0] - 2018-07-21
 ### Added
 
-- likeminded: dictionary-based reviews-search (builtin Ngrams dict) 
-  ([#9](https://github.com/andre-st/goodreads-toolbox/issues/9))
+- likeminded.pl: 
+	- dictionary-based reviews-search (builtin Ngrams dict)
+	  ([#9](https://github.com/andre-st/goodreads-toolbox/issues/9))
     
 
 
@@ -386,7 +427,8 @@ This is primarily a maintenance update after a long time.
 
 ### Changed
 
-- likeminded: compares authors now, not books (see likeminded.md for details)
+- likeminded.pl: 
+	- compares authors now, not books (see likeminded.md for details)
 - all programs write to HTML files now, no XML/XSLT any longer
 
 
