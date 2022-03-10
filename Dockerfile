@@ -65,7 +65,6 @@ ls -1 *.pl | nl -bn \n\
 # Running the container:
 
 # bash already in WORKDIR:
-# CMD service webfs start
 ENTRYPOINT  thttpd -h 0.0.0.0 -p $HTPORT -d $HTDOCS -l /dev/null  &&  bash
 
 
