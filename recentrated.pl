@@ -94,9 +94,9 @@ $ ./recentrated.pl -u 55554444 -s read -t friend@mail.com admin@mail.com
 
 =head1 FILES
 
-Log written to F</var/log/good.log>
+Log written to F<./list-out/recrentrated/log.txt>
 
-Database stored in F</var/db/good/>
+Database stored in F<./list-out/recentrated/>
 
 
 =head1 REPORTING BUGS
@@ -119,7 +119,7 @@ More info in ./help/recentrated.md
 
 =head1 VERSION
 
-2022-03-08 (Since 2018-01-09)
+2022-03-10 (Since 2018-01-09)
 
 =cut
 

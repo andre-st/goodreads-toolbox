@@ -67,7 +67,8 @@ is a very time consuming process.
 
 =item B<-o, --outdir>=F<dirpath>
 
-write CSV-files to this directory, default is the current working directory
+write CSV-files to this directory, 
+default see section FILES
 
 
 =item B<-i, --ignore-errors>
@@ -89,9 +90,9 @@ show full man page
 
 F</tmp/FileCache/>
 
-F<./list-out/friendnet-$USERID-edges.csv>
+F<./list-out/friendnet-$GOODUSERID-edges.csv>
 
-F<./list-out/friendnet-$USERID-nodes.csv>
+F<./list-out/friendnet-$GOODUSERID-nodes.csv>
 
 
 =head1 EXAMPLES
@@ -121,7 +122,7 @@ More info in ./help/friendnet.md
 
 =head1 VERSION
 
-2022-03-08 (Since 2019-06-14)
+2022-03-10 (Since 2019-06-14)
 
 =cut
 

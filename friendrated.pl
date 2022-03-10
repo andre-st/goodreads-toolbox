@@ -116,7 +116,7 @@ is a very time consuming process.
 =item B<-o, --outdir>=F<path>
 
 directory path where the final reports will be saved,
-default is the working directory
+default see section FILES
 
 
 =item B<-i, --ignore-errors>
@@ -136,9 +136,9 @@ show full man page
 
 =head1 FILES
 
-F<./list-out/friendrated-$USERID-$SHELF-$FLAGS.html>
+F<./list-out/friendrated-$GOODUSERID-$SHELF-$FLAGS.html>
 
-F<./list-out/friendrated-$USERID-$SHELF-$FLAGS-authors.html>
+F<./list-out/friendrated-$GOODUSERID-$SHELF-$FLAGS-authors.html>
 
 F<./list-out/friendrated-1234567-read-45by3.html>
 
@@ -188,7 +188,7 @@ More info in ./help/friendrated.md
 
 =head1 VERSION
 
-2022-03-08 (Since 2018-05-10)
+2022-03-10 (Since 2018-05-10)
 
 =cut
 

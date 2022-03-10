@@ -38,7 +38,7 @@ Mandatory arguments to long options are mandatory for short options too.
 
 =item B<-d, --dict>=F<filename>
 
-default is F<./list-in/dict.lst>
+default see section FILES
 
 
 =item B<-c, --cache>=F<numdays>
@@ -51,7 +51,7 @@ Loading data from Goodreads is a time consuming process.
 =item B<-o, --outdir>=F<path>
 
 directory path where the final reports will be saved,
-default is the working directory
+default see section FILES
 
 
 =item B<-i, --ignore-errors>
@@ -103,7 +103,7 @@ More info in ./help/savreviews.md
 
 =head1 VERSION
 
-2022-03-08 (Since 2018-08-13)
+2022-03-10 (Since 2018-08-13)
 
 =cut
 

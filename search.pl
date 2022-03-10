@@ -53,8 +53,8 @@ Loading data from Goodreads is a time consuming process.
 
 =item B<-o, --outfile>=F<filename>
 
-name of the HTML file where we write results to, default is
-"./search-F<keyword>.html"
+name of the HTML file where we write results to, 
+default see section FILES
 
 
 =item B<-i, --ignore-errors>
@@ -110,7 +110,7 @@ More info in ./help/search.md
 
 =head1 VERSION
 
-2022-03-08 (Since 2018-07-29)
+2022-03-10 (Since 2018-07-29)
 
 =cut
 

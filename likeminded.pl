@@ -67,7 +67,7 @@ and 2+ (dict-search) has a bad cost/benefit ratio given hundreds of books.
 
 =item B<-d, --dict>=F<filename>
 
-default is F<./list-in/dict.lst>
+default see section FILES
 
 
 =item B<-u, --userid>=F<number>
@@ -86,8 +86,8 @@ is a very time consuming process.
 
 =item B<-o, --outfile>=F<filename>
 
-name of the HTML file where we write results to, default is
-"./likeminded-F<goodusernumber>-F<shelfname>.html"
+name of the HTML file where we write results to, 
+default see section FILES
 
 
 =item B<-s, --shelf>=F<shelfname>
@@ -159,7 +159,7 @@ More info in ./help/likeminded.md
 
 =head1 VERSION
 
-2022-03-08 (Since 2018-06-22)
+2022-03-10 (Since 2018-06-22)
 
 =cut
 

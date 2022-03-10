@@ -41,8 +41,8 @@ and password arguments. You find the ID by looking at the shelf URLs.
 
 =item B<-o, --outfile>=F<filename>
 
-name of the HTML file where we write results to, default is
-"./friendgroup-F<goodusernumber>.html"
+name of the HTML file where we write results to, 
+default see section FILES
 
 
 =item B<-i, --ignore-errors>
@@ -62,7 +62,7 @@ show full man page
 
 =head1 FILES
 
-F<./list-out/friendgroup-$USERID.html>
+F<./list-out/friendgroup-$GOODUSERID.html>
 
 F</tmp/FileCache/>
 
@@ -94,7 +94,7 @@ More info in ./help/friendgroup.md
 
 =head1 VERSION
 
-2022-03-08 (Since 2018-09-26)
+2022-03-10 (Since 2018-09-26)
 
 =cut
 

@@ -47,8 +47,8 @@ is a very time consuming process.
 
 =item B<-o, --outfile>=F<filename>
 
-name of the HTML file where we write results to, default is
-"./similarauth-F<goodusernumber>-F<shelfname>.html"
+name of the HTML file where we write results to, 
+default see section FILES
 
 
 =item B<-s, --shelf>=F<shelfname>
