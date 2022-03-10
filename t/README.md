@@ -35,14 +35,14 @@ Table of contents:
 | Activity¹              | Coverage/Frequency                                    | Operational Notes
 |------------------------|-------------------------------------------------------|-------------------------------------------
 | Unit testing           | libraries' public functions                           | Use cache &lt; 24h
-| Regression testing     | run unit-tests before changes are pushed to GitHub    | Automatically via [a git-hook](../git-hooks/pre-push) reduces chance of distributing a buggy release; per-commit would be annoying because some tests need 3-8 minutes (w/o cache)
-| Manual testing         | user-scripts, when sth. significant changed           | Automated UI tests are not worth the effort here. <br>Manual fault-injection: Disable network, ...?
+| Regression testing     | before pushing to GitHub and inside new Docker images | Running unit-tests automatically via [a git-hook](../git-hooks/pre-push) reduces chance of distributing a buggy release; per-commit would be annoying because some tests need 3-8 minutes (w/o cache)
+| Manual testing         | user-scripts, when sth. significant changed           | Automated UI tests are not worth the effort here. <br>Manual fault-injection: Disable network. <br>As a one-man project, this also has its limits in terms of effort
 | Syntactic check        | user-scripts, before each commit                      | Automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but break things too; `use strict; use warnings;`
-| PushLogicDownTheStack  | user-scripts                                          | Have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). Tests covering the libs would cover most fallible code, good enough to gain confidence; less repetition in user-scripts, centralized changes, technical debt isolated
-| Persistent caching     | all scraped raw source data (not results)             | Caching the _sources_ makes it easier (faster) to fix scraping and calculation errors. Caching (false) _results_ would require to download sources again which takes much time. Also easier to build apps _on top_ of that, because no need to care about caching/it's fully transparent.
+| PushLogicDownTheStack  | user-scripts                                          | Have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). <br>Tests covering the libs would cover most fallible code, good enough to gain confidence. <br>Less repetition in user-scripts, centralized changes, technical debt and code smells isolated (API higher importance)
+| Persistent caching     | all scraped raw source data (not results)             | Caching the _sources_ makes it easier (faster) to fix scraping and calculation errors. Caching (false) _results_ would require to download sources again which takes much time. <br>Also easier to build apps _on top_ of that, because no need to care about caching/it's fully transparent.
 | Outwait I/O issues     | libraries                                             | Wait, retry n times, skip less important
 | HTML entity encoding   | user-scripts HTML generation                          | Prevent XSS
-| Docker container       | all                                                   | DockerHub automatic builds (#34)
+| Docker container       | all                                                   | Scripted builds/uploads via Makefile; I moved from DockerHub to GitHub, automatic builds cost money now
 | Makefile               | dependencies, Docker, developer-setup                 | 
 | Unit test = tutorial   | libraries, emergent                                   | Reduce errors caused by incorrect use or assumptions; no need to write (outdated) tutorials
 | Inline man pages       | user-scripts, program parameters, examples            | Use Man-page POD-header in each script: more likely to be up-to-date, and can be extracted and displayed on incorrect program use
@@ -51,7 +51,7 @@ Table of contents:
 | Field failure reports  | ask for reports, contact opts in scripts / help       | 
 | Issue tracking         | all                                                   | GitHub Issue Tracker: feedback (feature requests, usage problems), troubleshooting history
 | Version control        | all                                                   | Git and GitHub: reverting code/source history, releasing, sync between computers
-| Use free softw. only   | all                                                   |
+| Use free softw. only   | all                                                   | Free as in beer
 
 
 ¹) Quality assurance activities: defect prevention and product evaluation (quality control/testing)
@@ -69,7 +69,7 @@ Considerable:
 | Goal                  | Unit | Regr | ManT | Synt | Down | Cach | Wait | HtmE | Dock | Make | ManP | Help | Conv | Issu | VC   | Free | Overall
 |-----------------------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|------|
 | Monetary costs        | none | none | none | none | none | none | none | none | none | none | none | none | none | none | none | +++  | strong
-| Correctness           | +++  | +++  | +++  | ++   | +++  | none | none | none | none | none | +    | +    | +    | ++   | none | none | strong
+| Correctness           | +++  | +++  | +++  | ++   | +++  | none | none | none | ++   | none | +    | +    | +    | ++   | none | none | strong
 | Unattendability       | none | none | none | none | none | none | +++  | none | none | none | none | none | none | none | none | none | weak
 | Fault-tolerance       | none | none | +    | none | none | none | +++  | none | none | none | none | none | none | none | none | none | weak
 | Resumability          | none | none | none | none | none | +++  | +    | none | none | none | none | none | none | none | none | none | strong
