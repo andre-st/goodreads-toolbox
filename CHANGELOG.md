@@ -19,6 +19,9 @@ Version number 1.MINOR.PATCH, increments:
 This release does not add any new features. 
 However, some major internal renewals took place.
 
+**Note:** This will break your existing Toolbox installation.
+Users have to run `make deps` and `make installdirs` after updating.
+
 ### Changed
 
 - Perl5 module dependencies are not installed system-wide anymore.
@@ -29,7 +32,6 @@ However, some major internal renewals took place.
 
 - replaced outdated Perl5 module `WWW::Curl::Easy` with `HTTP::Tiny`.
 	This should fix Curl-based installation problems on newer systems;
-	Non-Docker-users have to run `make deps` and `make installdirs` after updating an existing installation.
 
 - recentrated.pl:
 	- no longer saves to `/var/db/good` but to `./list-out/recentrated/`
