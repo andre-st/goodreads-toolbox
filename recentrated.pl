@@ -119,7 +119,7 @@ More info in ./help/recentrated.md
 
 =head1 VERSION
 
-2022-03-10 (Since 2018-01-09)
+2022-03-27 (Since 2018-01-09)
 
 =cut
 
@@ -184,18 +184,15 @@ say( "[CRIT ] Missing --userid option or goodloginmail argument." )
 
 
 # Path to the database files which contain last check states
-our $DBPATH = File::Spec->catfile( 
-		$FindBin::Bin, 
-		'list-out', 
-		'recentrated', 
-		sprintf( "%s-%s.csv", $USERID, join( '-', @SHELVES )));
+my  $dbname = sprintf( "%s-%s.csv", $USERID, join( '-', @SHELVES ));
+our $DBPATH = File::Spec->catfile( $FindBin::Bin, 'list-out', 'recentrated', $dbname );
 
 # The more URLs, the longer and untempting the mail.
 # If number exceeded, we link to the book page with *all* reviews.
 our $MAX_REVURLS_PER_BOOK = 3;
 
-# Limit number of books in the mail and the program runtime if not admin
-our $maxbooks = $MAILFROM && $MAILTO && $MAILFROM ne $MAILTO ? 50 : 999999;
+# Limit number of books in the mail and limit the program runtime for non-admins
+our $MAX_BOOKS_TO_CHECK = ($MAILFROM && $MAILTO && $MAILFROM ne $MAILTO) ? 50 : 999999;
 
 # GR-URLs in mail padded to average length, with "https://" stripped
 sub prettyurl{ return sprintf '%-36s', substr( shift, 8 ); }
@@ -227,10 +224,10 @@ delete $db->{$_} for( @removed );
 my @oldest_ids = sort{ $db->{$a}->{checked} <=> 
                        $db->{$b}->{checked} } keys %{$db};  # Oldest first
 
-
+my $limit = $MAX_BOOKS_TO_CHECK;
 for my $id (@oldest_ids)
 {
-	last unless $maxbooks;  # Mail the rest the next time
+	last unless $limit--;  # Mail the rest the next time
 	
 	my $num_new_rat = $books{$id}->{num_ratings} - $db->{$id}->{num_ratings};
 	
@@ -247,7 +244,6 @@ for my $id (@oldest_ids)
 	
 	$db->{$id}->{num_ratings} = $books{$id}->{num_ratings};
 	$db->{$id}->{checked    } = time;  # GR locale
-	$maxbooks--;
 	
 	next unless %revs;
 	
@@ -343,8 +339,12 @@ $db->{$_} = { 'id'          => $_,
               'checked'     => time } for( @added );
 
 # Cronjob audits:
-$_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s"', 
-              $num_hits, scalar keys %books, $USERID, join( '" and "', @SHELVES ));
+$_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s" (check limit %d)', 
+		$num_hits, 
+		scalar keys %books, 
+		$USERID, 
+		join( '" and "', @SHELVES ), 
+		$MAX_BOOKS_TO_CHECK );
 
 # Update database:
 my @lines = values %{$db};
