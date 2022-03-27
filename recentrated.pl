@@ -171,6 +171,8 @@ our $MAILFROM = $ARGV[0];
 our $PASSWORD = $ARGV[1];
     $MAILTO   = $MAILFROM if !$MAILTO;
 
+gsetopt( ignore_errors => 1 );  # Don't get stuck, maybe next time
+
 glogin( usermail => $MAILFROM,  # Login required for reading private members
         userpass => $PASSWORD,  # Asks pw if omitted
         r_userid => \$USERID )
