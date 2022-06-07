@@ -1,6 +1,6 @@
 # :books: Andre's Goodreads Toolbox, v1.24
 
-![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
+![Maintenance](https://img.shields.io/maintenance/no/2022.svg)
 
 9 Perl-scripts for Goodreads.com—the world largest book (cataloging) community. [What's new?](CHANGELOG.md)
 
@@ -106,11 +106,10 @@ $ sudo make          # Gets required Perl modules from CPAN
 $ ./example-script.pl --help
 ```
 
-A Windows user wrote me that he ran the Toolbox on the 
-  [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL). 
-  Now, you can try [Docker for Windows or Mac](https://github.com/docker/toolbox/releases):
-  unpack the [project files](https://github.com/andre-st/goodreads-toolbox/archive/master.zip) somewhere, 
-  and run the ./Dockerfile
+Before [Docker for Windows or Mac](https://github.com/docker/toolbox/releases) 
+and the project's Docker-images became available,
+a Windows user wrote me that he ran the Toolbox on the [Windows 10 Subsystem for Linux](https://linuxhint.com/install_ubuntu_windows_10_wsl/) (WSL).
+
 
 Long program runtimes: Goodreads slows down all requests and we have to load a lot of data.
   Start one program and do other things in the meantime.

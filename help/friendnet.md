@@ -1,6 +1,6 @@
 # friendnet.pl
 
-![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
+![Maintenance](https://img.shields.io/maintenance/no/2022.svg)
 
 
 ## Analyze your Goodreads.com social network

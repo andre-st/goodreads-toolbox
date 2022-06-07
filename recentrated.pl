@@ -119,7 +119,7 @@ More info in ./help/recentrated.md
 
 =head1 VERSION
 
-2022-03-27 (Since 2018-01-09)
+2022-04-05 (Since 2018-01-09)
 
 =cut
 
@@ -171,12 +171,12 @@ our $MAILFROM = $ARGV[0];
 our $PASSWORD = $ARGV[1];
     $MAILTO   = $MAILFROM if !$MAILTO;
 
-gsetopt( ignore_errors => 1 );  # Don't get stuck, maybe next time
+gsetopt( ignore_errors => 1 );  # Don't get stuck, may get book or review next time
 
-glogin( usermail => $MAILFROM,  # Login required for reading private members
-        userpass => $PASSWORD,  # Asks pw if omitted
-        r_userid => \$USERID )
-	if $MAILFROM && $PASSWORD;
+#glogin( usermail => $MAILFROM,  # Login required for reading private members
+#        userpass => $PASSWORD,  # Asks pw if omitted
+#        r_userid => \$USERID )
+#	if $MAILFROM && $PASSWORD;
 
 
 say( "[CRIT ] Missing --userid option or goodloginmail argument." )
@@ -187,12 +187,15 @@ say( "[CRIT ] Missing --userid option or goodloginmail argument." )
 my  $dbname = sprintf( "%s-%s.csv", $USERID, join( '-', @SHELVES ));
 our $DBPATH = File::Spec->catfile( $FindBin::Bin, 'list-out', 'recentrated', $dbname );
 
+
 # The more URLs, the longer and untempting the mail.
 # If number exceeded, we link to the book page with *all* reviews.
 our $MAX_REVURLS_PER_BOOK = 3;
 
+
 # Limit number of books in the mail and limit the program runtime for non-admins
 our $MAX_BOOKS_TO_CHECK = ($MAILFROM && $MAILTO && $MAILFROM ne $MAILTO) ? 50 : 999999;
+
 
 # GR-URLs in mail padded to average length, with "https://" stripped
 sub prettyurl{ return sprintf '%-36s', substr( shift, 8 ); }
@@ -202,8 +205,8 @@ sub prettyurl{ return sprintf '%-36s', substr( shift, 8 ); }
 # ----------------------------------------------------------------------------
 # Looking just at the shelves, we can already see the number of current 
 # ratings for each individual book. We compare them with the numbers from the
-# last check (stored in a CSV-file $db). For those books whose numbers differ,
-# we actually load the most recent ratings. This gets us info about the
+# last check (stored in a CSV-file $db). Only for those books whose numbers
+# differ, we actually load the most recent ratings, which gets us info about the
 # members who rated the books, how they rated it, and whether they added text.
 # 
 my $db       = ( -e $DBPATH  ?  csv( in => $DBPATH, key => 'id' )  :  {} );
@@ -227,7 +230,7 @@ my @oldest_ids = sort{ $db->{$a}->{checked} <=>
 my $limit = $MAX_BOOKS_TO_CHECK;
 for my $id (@oldest_ids)
 {
-	last unless $limit--;  # Mail the rest the next time
+	last unless $limit--;  # Mail other books the next time
 	
 	my $num_new_rat = $books{$id}->{num_ratings} - $db->{$id}->{num_ratings};
 	
@@ -291,7 +294,14 @@ for my $id (@oldest_ids)
 }
 
 
-# Help user to help himself:
+# Help user to help himself.
+#
+# Experience has shown
+# that users cannot be dissuaded from their shelf choice by giving advice.
+# Therefore, the admin should use the program option `--text-only`
+# for large shelves - especially "ALL", "read", "to-read" - by default
+# to keep the mails small.
+#
 print "\n\n\nToo many ratings?\n"
     . ">> Create a shelf \"watch-ratings\" or similar on Goodreads.com "
     . "with 50-150 special but lesser-known books, "
@@ -300,16 +310,10 @@ print "\n\n\nToo many ratings?\n"
     . "You can also reply \"textonly\" to skip the ratings without text. "
 	if $MAILFROM && $num_hits > 20;
 
-print "\n\n\nObserving shelf \"All\" or \"Read\" is often a bad idea.\n"
-    . ">> There are a lot of books there whose reviews may not interest you at all. "
-    . "In addition, only a certain number of your books are checked every day (different books each time). "
-    . "Better create a specialized shelf \"watch-ratings\" or similar on Goodreads. "
-    . "Reply \"shelf watch-ratings\" when ready. "
-	if $MAILFROM && (any{ $_ eq "%23ALL%23" || $_ eq "read" } @SHELVES);
 
-
-# Without a hint, the user doesn't know whether there are simply no 
+# Without a hint, the user doesn't know whether there are simply no
 # stars-only ratings or whether they were intentionally ignored:
+#
 print "\n\n\nRatings without text were ignored (Reply 'all' otherwise)." 
 	if $TEXTONLY;
 
@@ -332,11 +336,11 @@ if( $MAILFROM && $num_hits > 0 )
 }
 
 
-
 # Add new books:
 $db->{$_} = { 'id'          => $_, 
               'num_ratings' => $books{$_}->{num_ratings}, 
               'checked'     => time } for( @added );
+
 
 # Cronjob audits:
 $_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s" (check limit %d)', 
@@ -346,10 +350,13 @@ $_log->infof( 'Recently rated: %d of %d books in %s\'s shelf "%s" (check limit %
 		join( '" and "', @SHELVES ), 
 		$MAX_BOOKS_TO_CHECK );
 
+
 # Update database:
 my @lines = values %{$db};
 csv( in      => \@lines, 
      out     => $DBPATH, 
      headers => [qw( id num_ratings checked )] );
 
+
 # Done.
+

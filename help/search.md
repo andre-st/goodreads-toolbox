@@ -1,6 +1,6 @@
 # search.pl
 
-![Maintenance](https://img.shields.io/maintenance/yes/2022.svg)
+![Maintenance](https://img.shields.io/maintenance/no/2022.svg)
 
 
 ## Sort Goodreads search results by popularity or date published
