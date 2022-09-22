@@ -90,7 +90,7 @@ endif
 	PERL_MM_USE_DEFAULT=1 perl -MCPAN -e 'CPAN::Shell->notest( "install", "local::lib" )'
 endif
 	mkdir -p ./lib/local
-	PERL_MM_USE_DEFAULT=1 perl -MCPAN -Mlocal::lib=./lib/local -e 'CPAN::Shell->notest( "install", "YAML::Any", "List::MoreUtils", "HTML::Entities", "URI::Escape", "Cache::FileCache", "IO::Socket::SSL", "Net::SSLeay", "HTTP::Tiny", "Text::CSV", "Log::Any", "IO::Prompter", "Test::More", "Test::Exception" )'
+	PERL_MM_USE_DEFAULT=1 perl -MCPAN -Mlocal::lib=./lib/local -e 'CPAN::Shell->notest( "install", "Term::ReadKey", "YAML::Any", "List::MoreUtils", "HTML::Entities", "URI::Escape", "Cache::FileCache", "IO::Socket::SSL", "Net::SSLeay", "HTTP::Tiny", "Text::CSV", "Log::Any", "IO::Prompter", "Test::More", "Test::Exception" )'
 
 
 
