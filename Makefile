@@ -48,6 +48,7 @@ installdirs: | $(GITDIR)
 	chmod +x *.pl
 	chmod +x t/*.t
 	ln -sf word-en-l.lst ./list-in/dict.lst
+	ln -sf dict.lst      ./list-in/test.lst
 	# recentrated.pl:
 	mkdir -p ./list-out/recentrated
 

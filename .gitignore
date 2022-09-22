@@ -16,7 +16,6 @@ lib/local/*
 t/config.pl
 .build
 .obsolete
-test*
 TODO.txt
 cve
 lib/Goodgrief*
