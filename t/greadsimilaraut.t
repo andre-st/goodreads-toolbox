@@ -30,7 +30,7 @@ gsetopt( cache_days => 1 );
 print( 'Reading book shelf... ');
 
 my %authors;
-my $SIMILAR_AUTHOR_ID = '1466';  # Sartre
+my $SIMILAR_AUTHOR_ID = '1938';  # Nietzsche
 
 greadsimilaraut( author_id   => '3137322',  # Fyodor Dostoyevsky
                  rh_into     => \%authors,
@@ -50,14 +50,14 @@ ok( exists( $authors{$SIMILAR_AUTHOR_ID} ), 'Expected author found via hash-key 
 my $a = $authors{$SIMILAR_AUTHOR_ID};
 
 isa_ok( $a, 'HASH', 'Author datatype' );
-is  ( $a->{id},             $SIMILAR_AUTHOR_ID,                                     'Author has ID'             );
-is  ( $a->{name},           'Jean-Paul Sartre',                                     'Author has name'           );
-is  ( $a->{url},            'https://www.goodreads.com/author/show/1466',           'Author has URL'            );
-like( $a->{works_url},      qr/^https:\/\/www\.goodreads\.com\/author\/list\/1466/, 'Author has works URL'      );
-is  ( $a->{img_url},        'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/authors/1475567078i/1466._UY75_CR1,0,75,75_.jpg', 'Author has image URL' );
-is  ( $a->{is_author},      1,                                                      'Author has author flag'    );
-is  ( $a->{is_private},     0,                                                      'Author not private'        );
-is  ( $a->{is_mainstream},  1,                                                      'N/A: is mainstream author' );
+is  ( $a->{id},             $SIMILAR_AUTHOR_ID,                                         'Author has ID'             );
+is  ( $a->{name},           'Friedrich Nietzsche',                                      'Author has name'           );
+is  ( $a->{url},            "https://www.goodreads.com/author/show/$SIMILAR_AUTHOR_ID", 'Author has URL'            );
+like( $a->{works_url},      qr/^https:\/\/www\.goodreads\.com\/author\/list\/$SIMILAR_AUTHOR_ID/, 'Author has works URL'      );
+like( $a->{img_url},        qr/^https:\/\/i\.gr-assets.com\/images\/S\/compressed\.photo\.goodreads\.com\/authors/, 'Author has image URL' );
+is  ( $a->{is_author},      1,                                                          'Author has author flag'    );
+is  ( $a->{is_private},     0,                                                          'Author not private'        );
+is  ( $a->{is_mainstream},  1,                                                          'N/A: is mainstream author' );
 
 # Not available or scraped yet, otherwise one of the following
 # tests will fail and remind me of implementing a correct test:

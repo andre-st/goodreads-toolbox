@@ -63,7 +63,7 @@ greadreviews( rh_for_book => \%book,  # Uses some cached values from query above
 greadreviews( rh_for_book => \%book,  # Uses some cached values from query above, which is fine for this test
               rigor       => 3,       # Include dict in every case
               rh_into     => \%reviews_by_dict,
-              dict_path   => '../list-in/test.lst',
+              dict_path   => "$FindBin::Bin/../list-in/test.lst",
               text_minlen => 1,
               on_progress => gmeter());
 
@@ -104,7 +104,7 @@ map {
 	like( $_->{rh_user}->{url},        qr/^https:\/\/www\.goodreads\.com\/user\/show\//,   "Review $_->{id} has author URL"        );
 	like( $_->{rh_user}->{id},         qr/^\d+$/,                                          "Review $_->{id} has author ID"         );
 	like( $_->{rh_user}->{img_url},    qr/^https:\/\/[a-z0-9]+\.gr-assets\.com\//,         "Review $_->{id} has author image URL"  );
-	ok  ( $_->{rh_user}->{name},       "Review $_->{id} has author name"                 );
+	ok  ( $_->{rh_user}->{name},       "Review $_->{id} has author name: $_->{rh_user}->{name}" );
 	ok  ( $_->{rh_user}->{name_lf},    "Review $_->{id} has author lastname, firstname"  );
 	
 	
