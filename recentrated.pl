@@ -119,7 +119,7 @@ More info in ./help/recentrated.md
 
 =head1 VERSION
 
-2022-04-05 (Since 2018-01-09)
+2022-09-22 (Since 2018-01-09)
 
 =cut
 
@@ -173,10 +173,10 @@ our $PASSWORD = $ARGV[1];
 
 gsetopt( ignore_errors => 1 );  # Don't get stuck, may get book or review next time
 
-#glogin( usermail => $MAILFROM,  # Login required for reading private members
-#        userpass => $PASSWORD,  # Asks pw if omitted
-#        r_userid => \$USERID )
-#	if $MAILFROM && $PASSWORD;
+glogin( usermail => $MAILFROM,  # Login required for reading private members
+        userpass => $PASSWORD,  # Asks pw if omitted
+        r_userid => \$USERID )
+	if $MAILFROM && $PASSWORD;
 
 
 say( "[CRIT ] Missing --userid option or goodloginmail argument." )

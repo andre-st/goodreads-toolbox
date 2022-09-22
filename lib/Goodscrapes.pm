@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2022-03-08
+=item * Updated: 2022-09-22
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =cut
 
-our $VERSION = '1.85';  # X.XX version format required by Perl
+our $VERSION = '1.88';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -250,12 +250,20 @@ sub _errmsg { no warnings 'redundant'; my $eno = shift; return sprintf( $_ERRMSG
 
 # Misc module constants:
 #our $_USERAGENT     = 'Googlebot/2.1 (+http://www.google.com/bot.html)';
-our $_USERAGENT     = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13';
+our $_USERAGENT     = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36';
 our $_NOBOOKIMGURL  = 'https://s.gr-assets.com/assets/nophoto/book/50x75-a91bf249278a81aabab721ef782c4a74.png';
 our $_NOUSERIMGURL  = 'https://s.gr-assets.com/assets/nophoto/user/u_50x66-632230dc9882b4352d753eedf9396530.png';
 our $_NOGROUPIMGURL = 'https://s.gr-assets.com/assets/nophoto/group/50x66-14672b6c5b97a4836a13efdb6a1958d2.jpg';
 our $_ANYPRIVATEURL = 'https://www.goodreads.com/recommendations/to_me';
-our $_SIGNINURL     = 'https://www.goodreads.com/user/sign_in';
+our $_SIGNINFORMURL = 'https://www.goodreads.com/ap/signin?'
+					. 'language=en_US'
+					. '&openid.assoc_handle=amzn_goodreads_web_na'
+					. '&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select'
+					. '&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select'
+					. '&openid.mode=checkid_setup'
+					. '&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0'
+					. '&openid.pape.max_auth_age=0'
+					. '&openid.return_to=https%3A%2F%2Fwww.goodreads.com%2Fap-handler%2Fsign-in';
 our $_HOMEURL       = 'https://www.goodreads.com';
 our $_SORTNEW       = 'newest';
 our $_SORTOLD       = 'oldest';
@@ -270,6 +278,7 @@ our $_MAINSTREAM_NUM_RATINGS   = 10000;
 our $_MAINSTREAM_NUM_FOLLOWERS = 10000;  # Rowlings = 210,542; Nassim Taleb = 7,811, Martin Fowler = 740
 
 our $_cookie    = undef;
+our $_last_url  = 'https://www.goodreads.com';
 our $_cache_age = $EXPIRES_NOW;  # see gsetopt()
 our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
@@ -603,6 +612,7 @@ sub glogin
 	
 	# Some people don't want their password on the command line 
 	# as it shows up in the command history, process list etc.
+	# So we start a small dialog here if password argument is missing:
 	# 
 	$pass = prompt( -prompt => "Enter GR password for $mail:", 
 	                -echo   => '*',
@@ -611,30 +621,18 @@ sub glogin
 	                -in     => *STDIN ) while !$pass;
 	
 	# Scrape current security tokens:
-	my $htm   = _html( $_SIGNINURL, $_ENO_ERROR, 0 );
-	my $tok   = $htm =~ /name="authenticity_token" value="([^"]+)/ ? $1 : undef;
-	my $nonce = $htm =~ /name='n' type='hidden' value='([^']+)/    ? $1 : undef;
+	my %form;
+	my $htm             = _html( $_SIGNINFORMURL, $_ENO_ERROR, 0 );
+	my $signin_post_url = $htm =~ /<form.*?action="([^"]+)/ ? $1 : undef;
+	$form{$1}           = $2 while( $htm =~ /<input.*?name="([^"]+).*?value="([^"]+)/gs );
+	$form{'email'     } = $mail;
+	$form{'password'  } = $pass;
+	$form{'rememberMe'} = 'true';
 	
 	# Send login form:
-	my %form;
-	$form{ 'sign_in'            } = 1;
-	$form{ 'n'                  } = $nonce;
-	$form{ 'authenticity_token' } = $tok;
-	$form{ 'user[email]'        } = $mail;
-	$form{ 'user[password]'     } = $pass;
-	$form{ 'remember_me'        } = 'on';
-	$form{ 'next'               } = 'Sign in';
-	$htm = _html_post( $_SIGNINURL, \%form );
-	
-	# Don't leave password in memory:
-	# This f'ups $curl->perform() although noted afterwards, concurrent?
-	#$pass     = '#' x length( $pass     );
-	#$formdata = '#' x length( $formdata );
+	$htm = _html_post( $signin_post_url, \%form );
 	
 	# Check success:
-	#$htm    = _html( $_HOMEURL, $_ENO_ERROR, 0 );
-	#my $uid = $htm =~ /index_rss\/(\d+)/ ? $1 : undef;
-	#
 	$htm    = _html( $_ANYPRIVATEURL, $_ENO_ERROR, 0 );
 	my $uid = $htm =~ /currentUser.*?profileUrl":"\/user\/show\/(\d+)/ ? $1 : undef;
 	
@@ -2773,27 +2771,6 @@ sub _extract_user_groups
 
 
 
-=head2 C<string> _extract_csrftok(I< $html >)
-
-=over
-
-=item Example:
-	my $csrftok = _extract_csrftok( _html( _user_url( $uid ) ) );
-	$curl->setopt( $curl->CURLOPT_HTTPHEADER, [ "X-CSRF-Token: ${csrftok}",
-
-=back
-
-=cut
-
-sub _extract_csrftok
-{
-	my $htm = shift or return 0;
-	return $htm =~ /<meta name="csrf-token" content="([^"]*)/ ? $1 : undef;
-}
-
-
-
-
 ###############################################################################
 
 =head1 PRIVATE I/O PLUMBING SUBROUTINES
@@ -2901,7 +2878,7 @@ sub _updcookie
 	$_cookie    = join( '; ', map{ "$_=$c{$_}" } keys %c );
 }
 
-sub _cookie2hash  # @TODO: ugly
+sub _cookie2hash  # @TODO: ugly, we should hold a dict and construct the string only in _html
 {
 	my @fields = split( /;/, shift // '' );
 	my %r      = ();
@@ -2946,19 +2923,22 @@ sub _html
 	
 DOWNLOAD:
 	my %headers;
-	   $headers{'User-Agent'       } = $_USERAGENT;
-#	   $headers{'Referer'          } = $url;
-	   $headers{'Cookie'           } = $_cookie         if $_cookie;
-	   $headers{'X-Requested-With' } = 'XMLHttpRequest' if index( $url, '/book/reviews/' ) != -1;
+	   $headers{'User-Agent'      } = $_USERAGENT;
+	   $headers{'Cookie'          } = $_cookie         if $_cookie;
+	   $headers{'X-Requested-With'} = 'XMLHttpRequest' if index( $url, '/book/reviews/' ) != -1;
+	   $headers{'Referer'         } = $_last_url; 
+	   $headers{'Accept-Language' } = 'en-US;q=0.8,en;q=0.7';  # OpenID sign-in requirement
+	
+	$_last_url = $url;
 	
 	my $resp = HTTP::Tiny
 			->new( timeout => 20 )
 			->get( $url, { headers => \%headers });
 	
-	_updcookie( $resp->{headers}->{'set-cookie'} )  # For CSRF-Token
+	_updcookie( $resp->{headers}->{'set-cookie'} )  # Security tokens, session ids etc
 		if $resp->{headers}->{'set-cookie'};
 	
-	my $errno = $resp->{status} < 599               # Pseudo status code
+	my $errno = $resp->{status} < 599               # Tiny exception pseudo status code
 			? _check_page( $resp->{content} )     # HTTP or GR app errors
 			: $_ENO_TRANSPORT;                    # Tiny-lib intern error
 	
@@ -2997,15 +2977,24 @@ sub _html_post
 	my $url       = shift or return '';
 	my $rh_fields = shift;
 	my %headers;
-	   $headers{'User-Agent'} = $_USERAGENT;
-	   $headers{'Cookie'    } = $_cookie if $_cookie;
+	   $headers{'User-Agent'     } = $_USERAGENT;
+	   $headers{'Cookie'         } = $_cookie if $_cookie;
+	   $headers{'Referer'        } = $_last_url;
+	   $headers{'Accept-Language'} = 'en-US;q=0.8,en;q=0.7';  # OpenID sign-in requirement
+	
+	$_last_url = $url;
 	
 	my $resp = HTTP::Tiny
 			->new( timeout => 20 )
 			->post_form( $url, $rh_fields, { headers => \%headers });
 	
-	_updcookie( $resp->{headers}->{'set-cookie'} )   # for CSRF-Token
+	_updcookie( $resp->{headers}->{'set-cookie'} )   # Security tokens, session ids etc
 		if $resp->{headers}->{'set-cookie'};
+	
+	# HTTP::Tiny does auto-redirect for GET and HEAD only
+	# so we have to do it manually here:
+	return _html( $resp->{headers}->{location}, $_ENO_WARN, 0 )
+		if $resp->{status} == 302;  # Goodreads all temporary redirs on POST
 	
 	return $resp->{content};
 }
