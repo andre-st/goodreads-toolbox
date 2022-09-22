@@ -16,8 +16,9 @@ done
 if git ls-files --modified ./lib/Goodscrapes.pm
 then
 	echo "Generating documentation: Goodscrapes.pod"
-	podselect ./lib/Goodscrapes.pm > ./lib/Goodscrapes.pod \
-		&& git add ./lib/Goodscrapes.pod
+	
+	pod2html ./lib/Goodscrapes.pm > ./lib/Goodscrapes.html \
+		&& git add ./lib/Goodscrapes.html
 fi
 
 

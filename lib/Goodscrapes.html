@@ -1,0 +1,1239 @@
+<?xml version="1.0" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Goodscrapes - Goodreads.com HTML-API</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rev="made" href="mailto:" />
+</head>
+
+<body>
+
+
+
+<ul id="index">
+  <li><a href="#NAME">NAME</a></li>
+  <li><a href="#VERSION">VERSION</a></li>
+  <li><a href="#COMPARED-TO-THE-OFFICIAL-API">COMPARED TO THE OFFICIAL API</a></li>
+  <li><a href="#LIMITATIONS">LIMITATIONS</a></li>
+  <li><a href="#HOW-TO-USE">HOW TO USE</a></li>
+  <li><a href="#AUTHOR">AUTHOR</a></li>
+  <li><a href="#DATA-STRUCTURES">DATA STRUCTURES</a>
+    <ul>
+      <li><a href="#Note">Note</a></li>
+      <li><a href="#book">%book</a></li>
+      <li><a href="#user">%user</a></li>
+      <li><a href="#review">%review</a></li>
+      <li><a href="#group">%group</a></li>
+      <li><a href="#comment">%comment</a></li>
+    </ul>
+  </li>
+  <li><a href="#PUBLIC-ROUTINES">PUBLIC ROUTINES</a>
+    <ul>
+      <li><a href="#string-gverifyuser-user_id_to_verify">string gverifyuser( $user_id_to_verify )</a></li>
+      <li><a href="#string-gverifyshelf-name_to_verify">string gverifyshelf( $name_to_verify )</a></li>
+      <li><a href="#bool-gisbaduser-user_or_author_id">bool gisbaduser( $user_or_author_id )</a></li>
+      <li><a href="#sub-gmeter-unit_str">sub gmeter( $unit_str = &#39;&#39; )</a></li>
+      <li><a href="#void-glogin">void glogin({ ... })</a></li>
+      <li><a href="#void-gsetopt">void gsetopt({ ... })</a></li>
+      <li><a href="#book-greadbook-book_id">%book greadbook( $book_id )</a></li>
+      <li><a href="#user-greaduser-user_id-prefer_author-0">%user greaduser( $user_id, $prefer_author = 0 )</a></li>
+      <li><a href="#void-greadusergp">void greadusergp({ ... })</a></li>
+      <li><a href="#void-greadshelf">void greadshelf({ ... })</a></li>
+      <li><a href="#void-greadshelfnames">void greadshelfnames({ ... })</a></li>
+      <li><a href="#void-_update_author_stats-rh_from_books">void _update_author_stats(rh_from_books)</a></li>
+      <li><a href="#void-greadauthors">void greadauthors({ ... })</a></li>
+      <li><a href="#void-greadauthorbk">void greadauthorbk({ ... })</a></li>
+      <li><a href="#void-greadreviews">void greadreviews({ ... })</a></li>
+      <li><a href="#void-greadfolls">void greadfolls({ ... })</a></li>
+      <li><a href="#void-greadcomments">void greadcomments({ ... })</a></li>
+      <li><a href="#void-gsocialnet">void gsocialnet({ ... })</a></li>
+      <li><a href="#void-greadsimilaraut">void greadsimilaraut({ ... })</a></li>
+      <li><a href="#void-gsearch">void gsearch({ ... })</a></li>
+      <li><a href="#string-amz_book_html-book">string amz_book_html( %book )</a></li>
+    </ul>
+  </li>
+  <li><a href="#PUBLIC-REPORT-GENERATION-HELPERS">PUBLIC REPORT-GENERATION HELPERS</a>
+    <ul>
+      <li><a href="#string-ghtmlhead-title-ra_cols">string ghtmlhead( $title, $ra_cols  )</a></li>
+      <li><a href="#string-ghtmlfoot">string ghtmlfoot()</a></li>
+      <li><a href="#string-ghtmlsafe-string">string ghtmlsafe($string)</a></li>
+      <li><a href="#void-ghistogram">void ghistogram({ ... })</a></li>
+    </ul>
+  </li>
+  <li><a href="#PRIVATE-URL-GENERATION-ROUTINES">PRIVATE URL-GENERATION ROUTINES</a>
+    <ul>
+      <li><a href="#string-_amz_url-book">string _amz_url( %book )</a></li>
+      <li><a href="#string-_shelf_url-user_id-shelf_name-page_number-1">string _shelf_url( $user_id, $shelf_name, $page_number = 1 )</a></li>
+      <li><a href="#string-_followees_url-user_id-page_number-1">string _followees_url( $user_id, $page_number = 1 )</a></li>
+      <li><a href="#string-_friends_url-user_id-page_number-1">string _friends_url( $user_id, $page_number = 1 )</a></li>
+      <li><a href="#string-_book_url-book_id">string _book_url( $book_id )</a></li>
+      <li><a href="#string-_user_url-user_id-is_author-0">string _user_url( $user_id, $is_author = 0 )</a></li>
+      <li><a href="#string-_revs_url-book_id-str_sort_newest_oldest-undef-search_text-undef-rating-undef-is_text_only-undef-page_number-1">string _revs_url( $book_id, $str_sort_newest_oldest = undef, $search_text = undef, $rating = undef, $is_text_only = undef, $page_number = 1 )</a></li>
+      <li><a href="#string-_rev_url-review_id">string _rev_url( $review_id )</a></li>
+      <li><a href="#string-_author_books_url-user_id-page_number-1">string _author_books_url( $user_id, $page_number = 1 )</a></li>
+      <li><a href="#string-_author_followings_url-author_id-page_number-1">string _author_followings_url( $author_id, $page_number = 1 )</a></li>
+      <li><a href="#string-_similar_authors_url-author_id">string _similar_authors_url( $author_id )</a></li>
+      <li><a href="#string-_search_url-phrase_str-page_number-1">string _search_url( phrase_str, $page_number = 1 )</a></li>
+      <li><a href="#string-_user_groups_url-user_id-page_number-1">string _user_groups_url( $user_id, $page_number = 1 )</a></li>
+      <li><a href="#string-_group_url-group_id">string _group_url( $group_id )</a></li>
+      <li><a href="#string-_comments_url-user_id-page_number-1">string _comments_url( $user_id, $page_number = 1 )</a></li>
+    </ul>
+  </li>
+  <li><a href="#PRIVATE-HTML-EXTRACTION-ROUTINES">PRIVATE HTML-EXTRACTION ROUTINES</a>
+    <ul>
+      <li><a href="#book-_extract_book-book_page_html_str">%book _extract_book( $book_page_html_str )</a></li>
+      <li><a href="#user-_extract_user-user_page_html_str">%user _extract_user( $user_page_html_str )</a></li>
+      <li><a href="#user-_extract_author-user_page_html_str">%user _extract_author( $user_page_html_str )</a></li>
+      <li><a href="#bool-_extract_books-rh_books-rh_authors-on_book_fn-on_progress_fn-shelf_tableview_html_str">bool _extract_books( $rh_books, $rh_authors, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str )</a></li>
+      <li><a href="#bool-_extract_author_books-rh_books-r_limit-on_book_fn-on_progress_fn-html_str">bool _extract_author_books( $rh_books, $r_limit, $on_book_fn, $on_progress_fn, $html_str )</a></li>
+      <li><a href="#bool-_extract_followees-rh_users-on_progress_fn-incl_authors-discard_threshold-following_page_html_str">bool _extract_followees( $rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $following_page_html_str )</a></li>
+      <li><a href="#bool-_extract_friends-rh_users-on_progress_fn-incl_authors-discard_threshold-friends_page_html_str">bool _extract_friends( $rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $friends_page_html_str )</a></li>
+      <li><a href="#bool-_extract_comments-ra-on_progress-comment_history_html_str">bool _extract_comments( $ra, $on_progress, $comment_history_html_str )</a></li>
+      <li><a href="#string-_conv_uni_codepoints-string">string _conv_uni_codepoints( $string )</a></li>
+      <li><a href="#string-_dec_entities-string">string _dec_entities( $string )</a></li>
+      <li><a href="#value-_require_arg-name-value">$value _require_arg( $name, $value )</a></li>
+      <li><a href="#string-_trim-string">string _trim( $string )</a></li>
+      <li><a href="#bool-_extract_revs-rh_revs-on_progress_fn-filter_fn-since_time_piece-reviews_xhr_html_str">bool _extract_revs( $rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str )</a></li>
+      <li><a href="#bool-_extract_similar_authors-rh_into-author_id_to_skip-on_progress_fn-similar_page_html_str">bool _extract_similar_authors( $rh_into, $author_id_to_skip, $on_progress_fn, $similar_page_html_str )</a></li>
+      <li><a href="#bool-_extract_search_books-ra_books-on_progress_fn-search_result_html_str">bool _extract_search_books( $ra_books, $on_progress_fn, $search_result_html_str )</a></li>
+      <li><a href="#bool-_extract_user_groups-rh_into-on_group_fn-on_progress_fn-groups_html_str">bool _extract_user_groups( $rh_into, $on_group_fn, on_progress_fn, $groups_html_str )</a></li>
+    </ul>
+  </li>
+  <li><a href="#PRIVATE-I-O-PLUMBING-SUBROUTINES">PRIVATE I/O PLUMBING SUBROUTINES</a>
+    <ul>
+      <li><a href="#int-_check_page-any_html_str">int _check_page( $any_html_str )</a></li>
+      <li><a href="#void-_updcookie-string_with_changed_fields">void _updcookie( $string_with_changed_fields )</a></li>
+      <li><a href="#string-_html-url-warn_level-_ENO_WARN-can_cache-1">string _html( $url, $warn_level = $_ENO_WARN, $can_cache = 1 )</a></li>
+      <li><a href="#string-_html_post-url-rh_form_fields">string _html_post( $url, $rh_form_fields )</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="NAME">NAME</h1>
+
+<p>Goodscrapes - Goodreads.com HTML-API</p>
+
+<h1 id="VERSION">VERSION</h1>
+
+<ul>
+
+<li><p>Updated: 2022-09-22</p>
+
+</li>
+<li><p>Since: 2014-11-05</p>
+
+</li>
+</ul>
+
+<h1 id="COMPARED-TO-THE-OFFICIAL-API">COMPARED TO THE OFFICIAL API</h1>
+
+<ul>
+
+<li><p>focuses on analysing, not updating info on GR</p>
+
+</li>
+<li><p>less limited, e.g., reading shelves and reviews of other members: Goodscrapes can scrape thousands of fulltext reviews.</p>
+
+</li>
+<li><p>official is slow too; API users are even second-class citizen</p>
+
+</li>
+<li><p>theoretically this library is more likely to break, but Goodreads progresses very very slowly: nothing actually broke between 2019-2014 (I started this); actually their API seems to change more often than their web pages; they can and do disable API functions without being noticed by the majority, but they cannot easily disable important webpages that we use too; There are unit-tests to detect markup changes on the scraped Goodreads.com website.</p>
+
+</li>
+<li><p>this library grew with every new usecase and program; it retries operations on errors on Goodreads.com, which are not seldom (over capacity, exceptions etc); it saw a lot of flawed data such as wrong review dates (&quot;Jan 01, 1010&quot;), which broke Time::Piece.</p>
+
+</li>
+<li><p>Goodreads &quot;isn&#39;t eating its own dog food&quot; https://www.goodreads.com/topic/show/18536888-is-the-public-api-maintained-at-all#comment_number_1</p>
+
+</li>
+</ul>
+
+<h1 id="LIMITATIONS">LIMITATIONS</h1>
+
+<ul>
+
+<li><p>slow: version with concurrent AnyEvent::HTTP requests was marginally faster, so I sticked with simpler code; doesn&#39;t actually matter due to Amazon&#39;s and Goodreads&#39; request throttling. You can only speed things up significantly with a pool of work-sharing computers and unique IP addresses...</p>
+
+</li>
+<li><p>just text pattern matching, no ECMAScript execution and DOM parsing with a headless renderer (so far sufficient and faster). Regex is not meant for HTML parsing and a HTML parser would had been easier from time to time, I would use one today. However, regular expressions proved good enough for goodreads.com, given that user generated content is very restricted and cannot easily confuse the regex patterns. The Regex code is small too. We just look at the server response as text with some features which mark the start and end of a value of interest.</p>
+
+</li>
+</ul>
+
+<h1 id="HOW-TO-USE">HOW TO USE</h1>
+
+<ul>
+
+<li><p>for real-world usage examples see Andre&#39;s Goodreads Toolbox. There are unit tests in the &quot;t&quot; directory, too. Tests are good (up-to-date) tutorials and might help comprehending the yet terse API documentation.</p>
+
+</li>
+<li><p><code>_</code> prefix means <i>private</i> function or constant (use in module only)</p>
+
+</li>
+<li><p><code>ra</code> prefix means array reference, <code>rh</code> prefix means hash reference</p>
+
+</li>
+<li><p><code>on</code> prefix or <code>fn</code> suffix means function variable</p>
+
+</li>
+<li><p>constants are uppercase, functions lowercase</p>
+
+</li>
+<li><p>Goodscrapes code in your program is usually recognizable by the &#39;g&#39; or &#39;GOOD&#39; prefix in the function or constant name</p>
+
+</li>
+<li><p>common internal abbreviations: pfn = progress function, bfn = book handler function, pag = page number, nam = name, au = author, bk = book, uid = user id, bid = book id, aid = author id, rat = rating, tit = title, q = query string, slf = shelf name, shv = shelves names, t0 = start time of an operation, ret = return code, tmp = temporary helper variable, gp = group, gid = group id, us = user</p>
+
+</li>
+</ul>
+
+<h1 id="AUTHOR">AUTHOR</h1>
+
+<p>https://github.com/andre-st/</p>
+
+<h1 id="DATA-STRUCTURES">DATA STRUCTURES</h1>
+
+<h2 id="Note">Note</h2>
+
+<ul>
+
+<li><p>never cast &#39;id&#39; to int or use %d format string, despite digits only, compare as strings</p>
+
+</li>
+<li><p>don&#39;t expect all attributes set (<code>undef</code>), this depends on the available info on the scraped page</p>
+
+</li>
+</ul>
+
+<h2 id="book">%book</h2>
+
+<ul>
+
+<li><p>id =&gt; <code>string</code></p>
+
+</li>
+<li><p>title =&gt; <code>string</code></p>
+
+</li>
+<li><p>isbn =&gt; <code>string</code></p>
+
+</li>
+<li><p>isbn13 =&gt; <code>string</code></p>
+
+</li>
+<li><p>num_pages =&gt; <code>int</code></p>
+
+</li>
+<li><p>num_reviews =&gt; <code>int</code></p>
+
+</li>
+<li><p>num_ratings =&gt; <code>int</code> 103 for example</p>
+
+</li>
+<li><p>avg_rating =&gt; <code>float</code> 4.36 for example, 0 if no rating</p>
+
+</li>
+<li><p>stars =&gt; <code>int</code> rounded avg_rating, e.g., 4</p>
+
+</li>
+<li><p>format =&gt; <code>string</code> (binding)</p>
+
+</li>
+<li><p>user_rating =&gt; <code>int</code> number of stars 1,2,3,4 or 5 (program user)</p>
+
+</li>
+<li><p>user_read_count =&gt; <code>int</code> (program user)</p>
+
+</li>
+<li><p>user_num_owned =&gt; <code>int</code> (program user)</p>
+
+</li>
+<li><p>user_date_read =&gt; <code>Time::Piece</code> (program user)</p>
+
+</li>
+<li><p>user_date_added =&gt; <code>Time::Piece</code> (program user)</p>
+
+</li>
+<li><p>ra_user_shelves =&gt; <code>string[]</code> reference</p>
+
+</li>
+<li><p>url =&gt; <code>string</code></p>
+
+</li>
+<li><p>img_url =&gt; <code>string</code></p>
+
+</li>
+<li><p>review_id =&gt; <code>string</code></p>
+
+</li>
+<li><p>year =&gt; <code>int</code> (original publishing date)</p>
+
+</li>
+<li><p>year_edit =&gt; <code>int</code> (edition publishing date)</p>
+
+</li>
+<li><p>rh_author =&gt; <code><a href="#user">%user</a></code> reference</p>
+
+</li>
+</ul>
+
+<h2 id="user">%user</h2>
+
+<ul>
+
+<li><p>id =&gt; <code>string</code></p>
+
+</li>
+<li><p>name =&gt; <code>string</code> &quot;Firstname Lastname&quot;</p>
+
+</li>
+<li><p>name_lf =&gt; <code>string</code> &quot;Lastname, Firstname&quot;</p>
+
+</li>
+<li><p>residence =&gt; <code>string</code> (might require login)</p>
+
+</li>
+<li><p>age =&gt; <code>int</code> (might require login)</p>
+
+</li>
+<li><p>num_books =&gt; <code>int</code> books shelfed, not books written (even if is_author == 1)</p>
+
+</li>
+<li><p>is_friend =&gt; <code>bool</code></p>
+
+</li>
+<li><p>is_author =&gt; <code>bool</code></p>
+
+</li>
+<li><p>is_female =&gt; <code>bool</code></p>
+
+</li>
+<li><p>is_private =&gt; <code>bool</code></p>
+
+</li>
+<li><p>is_staff =&gt; <code>bool</code> true if user is a Goodreads.com employee</p>
+
+</li>
+<li><p>is_mainstream =&gt; <code>bool</code> currently, guessed from number of ratings for any book, is_author == 1</p>
+
+</li>
+<li><p>url =&gt; <code>string</code> URL to the user&#39;s profile page</p>
+
+</li>
+<li><p>works_url =&gt; <code>string</code> URL to the author&#39;s distinct works (is_author == 1)</p>
+
+</li>
+<li><p>img_url =&gt; <code>string</code></p>
+
+</li>
+<li><p>user_min_rating =&gt; <code>int</code> requires is_author == 1</p>
+
+</li>
+<li><p>user_max_rating =&gt; <code>int</code> requires is_author == 1</p>
+
+</li>
+<li><p>user_avg_rating =&gt; <code>float</code> 3.3 for example (user of the program), requires is_author == 1, value depends on the shelves involved</p>
+
+</li>
+<li><p>_seen =&gt; <code>int</code> incremented if user already exists in a load-target structure</p>
+
+</li>
+</ul>
+
+<h2 id="review">%review</h2>
+
+<ul>
+
+<li><p>id =&gt; <code>string</code></p>
+
+</li>
+<li><p>rh_user =&gt; <code><a href="#user">%user</a></code> reference</p>
+
+</li>
+<li><p>book_id =&gt; <code>string</code></p>
+
+</li>
+<li><p>rating =&gt; <code>int</code> with 0 meaning no rating, &quot;added&quot; or &quot;marked it as abandoned&quot; or something similar</p>
+
+</li>
+<li><p>rating_str =&gt; <code>string</code> represention of rating, e.g., 3/5 as <span style="white-space: nowrap;">&quot;[*** ]&quot;</span> or <span style="white-space: nowrap;">&quot;[TTT ]&quot;</span> if there&#39;s additional text, or <span style="white-space: nowrap;">&quot;[ttt ]&quot;</span> if not longer than 160 chars</p>
+
+</li>
+<li><p>text =&gt; <code>string</code></p>
+
+</li>
+<li><p>date =&gt; <code>Time::Piece</code></p>
+
+</li>
+<li><p>url =&gt; <code>string</code> full text review</p>
+
+</li>
+</ul>
+
+<h2 id="group">%group</h2>
+
+<ul>
+
+<li><p>id =&gt; <code>string</code></p>
+
+</li>
+<li><p>name =&gt; <code>string</code></p>
+
+</li>
+<li><p>url =&gt; <code>string</code></p>
+
+</li>
+<li><p>img_url =&gt; <code>string</code></p>
+
+</li>
+<li><p>num_members =&gt; int</p>
+
+</li>
+</ul>
+
+<h2 id="comment">%comment</h2>
+
+<ul>
+
+<li><p>text =&gt; <code>string</code></p>
+
+</li>
+<li><p>rh_to_user =&gt; <code><a href="#user">%user</a></code> reference, addressed user</p>
+
+</li>
+<li><p>rh_review =&gt; <code><a href="#review">%review</a></code> reference, addressed review, undefined if not comment on a review (but group, another user&#39;s status, book list, ...)</p>
+
+</li>
+<li><p>rh_book =&gt; <code><a href="#book">%book</a></code> reference, undefined if rh_review is undefined and vice versa</p>
+
+</li>
+</ul>
+
+<h1 id="PUBLIC-ROUTINES">PUBLIC ROUTINES</h1>
+
+<h2 id="string-gverifyuser-user_id_to_verify"><code>string</code> gverifyuser( <i>$user_id_to_verify</i> )</h2>
+
+<ul>
+
+<li><p>returns a sanitized, valid Goodreads user id or kills the current process with an error message</p>
+
+</li>
+</ul>
+
+<h2 id="string-gverifyshelf-name_to_verify"><code>string</code> gverifyshelf( <i>$name_to_verify</i> )</h2>
+
+<ul>
+
+<li><p>returns the given shelf name if valid</p>
+
+</li>
+<li><p>returns a shelf which includes all books if no name given</p>
+
+</li>
+<li><p>kills the current process with an error message if name is malformed</p>
+
+</li>
+</ul>
+
+<h2 id="bool-gisbaduser-user_or_author_id"><code>bool</code> gisbaduser( <i>$user_or_author_id</i> )</h2>
+
+<ul>
+
+<li><p>returns true if the given user or author is blacklisted and would slow down any analysis</p>
+
+</li>
+</ul>
+
+<h2 id="sub-gmeter-unit_str"><code>sub</code> gmeter( <i>$unit_str = &#39;&#39;</i> )</h2>
+
+<ul>
+
+<li><p>generates and returns a CLI progress indicator function $f, with <i>$f-&gt;( 20 )</i> adding 20 to the last values and printing the sum like &quot;40 unit_str&quot;. Given a second (max value) argument <i>$f-&gt;( 10, 100 )</i>, it will print a percentage without any unit: &quot;10%&quot;. Given a modern terminal, the text remains at the same position if the progress function is called multiple times.</p>
+
+</li>
+</ul>
+
+<h2 id="void-glogin"><code>void</code> glogin(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>some Goodreads.com pages are only accessible by authenticated members</p>
+
+</li>
+<li><p>some Goodreads.com pages are optimized for authenticated members (e.g. get 200 books vs 30 books per request)</p>
+
+</li>
+<li><p><code>usermail =&gt; string</code></p>
+
+</li>
+<li><p><code>userpass =&gt; string</code></p>
+
+</li>
+<li><p><code>r_userid =&gt; string ref</code> set user ID if variable is empty/undef [optional]</p>
+
+</li>
+</ul>
+
+<h2 id="void-gsetopt"><code>void</code> gsetopt(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>change one or multiple library-scope parameters</p>
+
+</li>
+<li><p><code>ignore_errors =&gt; bool</code> disables retries for [ERROR] and [CRIT] with the process just keep going with the next step</p>
+
+</li>
+<li><p><code>maxretries =&gt; int</code> sets number of retries when there is an error, critical issues are retried indefinitely (if ignore_errors is false)</p>
+
+</li>
+<li><p><code>retrydelay_secs =&gt; int</code></p>
+
+</li>
+<li><p><code>cache_days =&gt; int</code> sets the number of days that a resource can be loaded from the local storage. Scraping Goodreads.com is a very slow process; scraped documents can be cached if you don&#39;t need them &quot;fresh&quot; during development time or long running sessions (cheap recovery on crash, power blackout or pauses), or when experimenting with parameters</p>
+
+</li>
+</ul>
+
+<h2 id="book-greadbook-book_id"><code><a href="#book">%book</a></code> greadbook( $book_id )</h2>
+
+<h2 id="user-greaduser-user_id-prefer_author-0"><code><a href="#user">%user</a></code> greaduser( $user_id, $prefer_author = 0 )</h2>
+
+<ul>
+
+<li><p>there can be a different user and author with the same ID (2456: Joana vs Chuck Palahniuk); if there&#39;s no user but an author, Goodreads would redirect to the author page with the same ID and this function would return the author</p>
+
+</li>
+<li><p>if ambiguous you can set the <i>$prefer_author</i> flag</p>
+
+</li>
+</ul>
+
+<h2 id="void-greadusergp"><code>void</code> greadusergp(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>reads all group memberships of the given user into <i>rh_into</i></p>
+
+</li>
+<li><p><code>from_user_id =&gt; string</code></p>
+
+</li>
+<li><p><code>rh_into =&gt; hash reference (id =&gt; <a href="#group">%group</a>,...)</code></p>
+
+</li>
+<li><p><code>on_group =&gt; sub( <a href="#group">%group</a> )</code> [optional]</p>
+
+</li>
+<li><p><code>on_progress =&gt; sub</code> see <code>gmeter()</code> [optional]</p>
+
+</li>
+</ul>
+
+<h2 id="void-greadshelf"><code>void</code> greadshelf(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>reads a list of books (and/or authors) present in the given shelves of the given user</p>
+
+</li>
+<li><p><code>from_user_id =&gt; string</code></p>
+
+</li>
+<li><p><code>ra_from_shelves =&gt; string-array reference</code> with shelf names</p>
+
+</li>
+<li><p><code>rh_into =&gt; hash reference (id =&gt; <a href="#book">%book</a>,...)</code> [optional]</p>
+
+</li>
+<li><p><code>rh_authors_into =&gt; hash reference (id =&gt; <a href="#user">%user</a>,...)</code> [optional]; this parameter is for convenience and also replaces the former <code>greadauthors()</code> function. It&#39;s not required to access author data as author data is available from the book data too: $book-&gt;{rh_author}-&gt;{...}</p>
+
+</li>
+<li><p><code>on_book =&gt; sub( <a href="#book">%book</a> )</code> [optional]</p>
+
+</li>
+<li><p><code>on_progress =&gt; sub</code> see <code>gmeter()</code> [optional]</p>
+
+</li>
+<li><p>doesn&#39;t add users to <code>rh_authors_into</code> when <code>gisbaduser()</code> is true</p>
+
+</li>
+<li><p>sets the <code>user_XXX</code> and <code>is_mainstream</code> fields in each author item</p>
+
+</li>
+</ul>
+
+<h2 id="void-greadshelfnames"><code>void</code> greadshelfnames(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>reads the names of all shelves of the given user</p>
+
+</li>
+<li><p><code>from_user_id =&gt; string</code></p>
+
+</li>
+<li><p><code>ra_into =&gt; array reference</code></p>
+
+</li>
+<li><p><code>ra_exclude =&gt; array reference</code> won&#39;t add given names to the result [optional]</p>
+
+</li>
+<li><p>Precondition: glogin()</p>
+
+</li>
+<li><p>Postcondition: result includes &#39;read&#39;, &#39;to-read&#39;, &#39;currently-reading&#39;, but doesn&#39;t include &#39;#ALL#&#39;</p>
+
+</li>
+</ul>
+
+<h2 id="void-_update_author_stats-rh_from_books"><code>void</code> _update_author_stats(<i>rh_from_books</i>)</h2>
+
+<ul>
+
+<li><p>sets the <code>user_XXX</code> and <code>is_mainstream</code> fields in each author item</p>
+
+</li>
+</ul>
+
+<h2 id="void-greadauthors"><code>void</code> greadauthors(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>DEPRECATED: use <code>greadshelf()</code> with <code>rh_authors_into</code> parameter</p>
+
+</li>
+<li><p>gets a list of authors whose books are present in the given shelves of the given</p>
+
+</li>
+<li><p><code>from_user_id =&gt; string</code></p>
+
+</li>
+<li><p><code>ra_from_shelves =&gt; string-array reference</code> with shelf names</p>
+
+</li>
+<li><p><code>rh_into =&gt; hash reference (id =&gt; <a href="#user">%user</a>,...)</code> [optional]</p>
+
+</li>
+<li><p><code>on_progress =&gt; sub</code> see <code>gmeter()</code> [optional]</p>
+
+</li>
+<li><p>If you need authors <i>and</i> books data, then use <code>greadshelf</code> which also populates the <i>author</i> property of every book</p>
+
+</li>
+<li><p>skips authors where <code>gisbaduser()</code> is true</p>
+
+</li>
+<li><p>sets the <code>user_XXX</code> and <code>is_mainstream</code> fields in each author item</p>
+
+</li>
+</ul>
+
+<h2 id="void-greadauthorbk"><code>void</code> greadauthorbk(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>reads the Goodreads.com list of books written by the given author</p>
+
+</li>
+<li><p><code>author_id =&gt; string</code></p>
+
+</li>
+<li><p><code>limit =&gt; int</code> number of books to read into <code>rh_into</code></p>
+
+</li>
+<li><p><code>rh_into =&gt; hash reference (id =&gt; <a href="#book">%book</a>,...)</code></p>
+
+</li>
+<li><p><code>on_book =&gt; sub( <a href="#book">%book</a> )</code> [optional]</p>
+
+</li>
+<li><p><code>on_progress =&gt; sub</code> see <code>gmeter()</code> [optional]</p>
+
+</li>
+</ul>
+
+<h2 id="void-greadreviews"><code>void</code> greadreviews(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>loads ratings (no text), reviews (text), &quot;to-read&quot;, &quot;added&quot; etc; you can filter later or via <i>on_filter</i> parameter</p>
+
+</li>
+<li><p><code>rh_for_book =&gt; hash reference <a href="#book">%book</a></code>, see <code>greadbook()</code></p>
+
+</li>
+<li><p><code>rh_into =&gt; hash reference (id =&gt; <a href="#review">%review</a>,...)</code></p>
+
+</li>
+<li><p><code>since =&gt; Time::Piece</code> [optional]</p>
+
+</li>
+<li><p><code>on_filter =&gt; sub( <a href="#review">%review</a> )</code>, return 0 to drop [optional]</p>
+
+</li>
+<li><p><code>on_progress =&gt; sub</code> see <code>gmeter()</code> [optional]</p>
+
+</li>
+<li><p><code>dict_path =&gt; string</code> path to a dictionary file (1 word per line) [optional]</p>
+
+</li>
+<li><p><code>text_minlen =&gt; int</code> overwrites <code>on_filter</code> argument [optional, default 0 ]</p>
+
+<pre><code>0  =  no text filtering
+n  =  specified minimum length (see also GOOD_USEFUL_REVIEW_LEN constant)</code></pre>
+
+</li>
+<li><p><code>rigor =&gt; int</code> [optional, default 2]</p>
+
+<pre><code>level 0   = search newest reviews only (max 300 ratings)
+level 1   = search with a combination of filters (max 5400 ratings)
+level 2   = like 1 plus dict-search if more than 3000 ratings with stall-time of 2 minutes
+level n   = like 1 plus dict-search with stall-time of n minutes</code></pre>
+
+</li>
+</ul>
+
+<h2 id="void-greadfolls"><code>void</code> greadfolls(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>queries Goodreads.com for the friends and followees list of the given user</p>
+
+</li>
+<li><p><code>rh_into =&gt; hash reference (id =&gt; <a href="#user">%user</a>,...)</code></p>
+
+</li>
+<li><p><code>from_user_id =&gt; string</code></p>
+
+</li>
+<li><p><code>on_user =&gt; sub( %user )</code> return false to exclude user from $rh_into [optional]</p>
+
+</li>
+<li><p><code>on_progress =&gt; sub</code> see <code>gmeter()</code> [optional]</p>
+
+</li>
+<li><p><code>discard_threshold</code> =&gt; number&gt; don&#39;t add anything to $rh_into if number of folls exceeds limit [optional]; use this to drop degenerated accounts which would just add noise to the data</p>
+
+</li>
+<li><p><code>incl_authors =&gt; bool</code> [optional, default 1]</p>
+
+</li>
+<li><p><code>incl_friends =&gt; bool</code> [optional, default 1]</p>
+
+</li>
+<li><p><code>incl_followees =&gt; bool</code> [optional, default 1]</p>
+
+</li>
+<li><p>Precondition: glogin()</p>
+
+</li>
+</ul>
+
+<h2 id="void-greadcomments"><code>void</code> greadcomments(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>reads a list of all comments posted from the given user on goodreads.com; it does not read a conversation by multiple users on some topic</p>
+
+</li>
+<li><p><code>from_user_id =&gt; string</code></p>
+
+</li>
+<li><p><code>ra_into =&gt; array reference (<a href="#comment">%comment</a>,...)</code> [optional]</p>
+
+</li>
+<li><p><code>limit =&gt; int</code> stop after reading N comments [optional, default 0 ]</p>
+
+</li>
+<li><p><code>on_progress =&gt; sub</code> see <code>gmeter()</code> [optional]</p>
+
+</li>
+</ul>
+
+<h2 id="void-gsocialnet"><code>void</code> gsocialnet(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p><code>from_user_id =&gt; string</code></p>
+
+</li>
+<li><p><code>rh_into_nodes =&gt; hash reference (id =&gt; <a href="#user">%user</a>,...)</code></p>
+
+</li>
+<li><p><code>ra_into_edges =&gt; array reference ({from =&gt; id, to =&gt; id},...)</code></p>
+
+</li>
+<li><p><code>ignore_nhood_gt =&gt; int</code> ignore users with with a neighbourhood &gt; N [optional, default 1000]; such users just add noise to the data and waste computing time</p>
+
+</li>
+<li><p><code>depth =&gt; int</code> [optional, default 1]</p>
+
+</li>
+<li><p><code>incl_authors =&gt; bool</code> [optional, default 0]</p>
+
+</li>
+<li><p><code>incl_friends =&gt; bool</code> [optional, default 1]</p>
+
+</li>
+<li><p><code>incl_followees =&gt; bool</code> [optional, default 1]</p>
+
+</li>
+<li><p><code>on_progress =&gt; sub({ done =&gt; int, count =&gt; int, perc =&gt; int, depth =&gt; int })</code> [optional]</p>
+
+</li>
+<li><p><code>on_user =&gt; sub( %user )</code> return false to exclude user [optional]</p>
+
+</li>
+<li><p>Precondition: glogin()</p>
+
+</li>
+</ul>
+
+<h2 id="void-greadsimilaraut"><code>void</code> greadsimilaraut(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>reads the Goodreads.com list of authors who are similar to the given author</p>
+
+</li>
+<li><p><code>rh_into =&gt; hash reference (id =&gt; <a href="#user">%user</a>,...)</code></p>
+
+</li>
+<li><p><code>author_id =&gt; string</code></p>
+
+</li>
+<li><p><code>on_progress =&gt; sub</code> see <code>gmeter()</code> [optional]</p>
+
+</li>
+<li><p>increments <code>&#39;_seen&#39;</code> counter of each author if already in <i>%$rh_into</i></p>
+
+</li>
+</ul>
+
+<h2 id="void-gsearch"><code>void</code> gsearch(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>searches the Goodreads.com database for books that match a given phrase</p>
+
+</li>
+<li><p><code>ra_into =&gt; array reference (<a href="#book">%book</a>,...)</code></p>
+
+</li>
+<li><p><code>phrase =&gt; string</code> with space separated keywords</p>
+
+</li>
+<li><p><code>is_exact =&gt; bool</code> [optional, default 0]</p>
+
+</li>
+<li><p><code>ra_order_by =&gt; array reference</code> property names from <code><a href="#book">%book</a></code> [optional, default: &#39;stars&#39;, &#39;num_ratings&#39;, &#39;year&#39;]</p>
+
+</li>
+<li><p><code>num_ratings =&gt; int</code> only list books with at least N ratings [optional, default 0]</p>
+
+</li>
+<li><p><code>on_progress =&gt; sub</code> see <code>gmeter()</code> [optional]</p>
+
+</li>
+</ul>
+
+<h2 id="string-amz_book_html-book"><code>string</code> amz_book_html( <i><a href="#book">%book</a></i> )</h2>
+
+<ul>
+
+<li><p>HTML body of an Amazon article page</p>
+
+</li>
+</ul>
+
+<h1 id="PUBLIC-REPORT-GENERATION-HELPERS">PUBLIC REPORT-GENERATION HELPERS</h1>
+
+<h2 id="string-ghtmlhead-title-ra_cols"><code>string</code> ghtmlhead( <i>$title, $ra_cols </i> )</h2>
+
+<ul>
+
+<li><p>returns a string with HTML boiler plate code for a table-based report</p>
+
+</li>
+<li><p>$title: HTML title, Table caption</p>
+
+</li>
+<li><p>$ra_cols: [ &quot;Normal&quot;, &quot;&gt;Sort ASC&quot;, &quot;&lt;Sort DESC&quot;, &quot;!Not sortable/searchable&quot;, &quot;Right-Aligned:&quot;, &quot;&gt;Sort ASC, right-aligned:&quot;, &quot;:Centered:&quot; ]</p>
+
+</li>
+</ul>
+
+<h2 id="string-ghtmlfoot"><code>string</code> ghtmlfoot()</h2>
+
+<ul>
+
+<li><p>returns a string with HTML boiler plate code for a table-based report</p>
+
+</li>
+</ul>
+
+<h2 id="string-ghtmlsafe-string"><code>string</code> ghtmlsafe(<i>$string</i>)</h2>
+
+<ul>
+
+<li><p>always use this when generating HTML reports in order to prevent cross site scripting attacks (XSS) through malicious text on the Goodreads.com website</p>
+
+</li>
+</ul>
+
+<h2 id="void-ghistogram"><code>void</code> ghistogram(<i>{ ... }</i>)</h2>
+
+<ul>
+
+<li><p>prints a year-based histogram for the given hash on the terminal</p>
+
+</li>
+<li><p><code>rh_from =&gt; hash reference (id =&gt; %any,...)</code></p>
+
+</li>
+<li><p><code>date_key =&gt; string</code> name of the Time::Piece component of any hash item [optional, default &#39;date&#39;]</p>
+
+</li>
+<li><p><code>start_year =&gt; int</code> [optional, default 2007]</p>
+
+</li>
+<li><p><code>title =&gt; string</code> [optional, default &#39;...reviews...&#39;]</p>
+
+</li>
+<li><p><code>bar_width =&gt; int</code> [optional, default 40]</p>
+
+</li>
+<li><p><code>bar_char =&gt; char</code> [optional, default &#39;#&#39;]</p>
+
+</li>
+</ul>
+
+<h1 id="PRIVATE-URL-GENERATION-ROUTINES">PRIVATE URL-GENERATION ROUTINES</h1>
+
+<h2 id="string-_amz_url-book"><code>string</code> _amz_url( <i><a href="#book">%book</a></i> )</h2>
+
+<ul>
+
+<li><p>Requires at least {isbn=&gt;string}</p>
+
+</li>
+</ul>
+
+<h2 id="string-_shelf_url-user_id-shelf_name-page_number-1"><code>string</code> _shelf_url( <i>$user_id, $shelf_name, $page_number = 1</i> )</h2>
+
+<ul>
+
+<li><p>URL for a page with a list of books (not all books)</p>
+
+</li>
+<li><p>&quot;&amp;print=true&quot; allows 200 items per page with a single request, which is a huge speed improvement over loading books from the &quot;normal&quot; view with max 20 books per request. Showing 100 books in normal view is oddly realized by 5 AJAX requests on the Goodreads.com website.</p>
+
+</li>
+<li><p>&quot;&amp;per_page&quot; in print-view can be any number if you work with your own shelf, otherwise max 200 if print view; ignored in non-print view; per_page&gt;20 requires access with a cookie, see glogin()</p>
+
+</li>
+<li><p>&quot;&amp;view=table&quot; puts <i>all</i> book data in code, although invisible (display=none)</p>
+
+</li>
+<li><p>&quot;&amp;sort=rating&quot; is important for `friendrated.pl` with its book limit: Some users read 9000+ books and scraping would take forever. We sort lower-rated books to the end and <i>could</i> just scrape the first pages: Even those with 9000+ books haven&#39;t top-rated more than 2700 books.</p>
+
+</li>
+<li><p>&quot;&amp;shelf&quot; supports intersection &quot;shelf1%2Cshelf2&quot; (comma)</p>
+
+</li>
+<li><p><b>Warning:</b> changes to the URL structure will bust the file-cache</p>
+
+</li>
+</ul>
+
+<h2 id="string-_followees_url-user_id-page_number-1"><code>string</code> _followees_url( <i>$user_id, $page_number = 1</i> )</h2>
+
+<ul>
+
+<li><p>URL for a page with a list of the people $user is following</p>
+
+</li>
+<li><p><b>Warning:</b> changes to the URL structure will bust the file-cache</p>
+
+</li>
+</ul>
+
+<h2 id="string-_friends_url-user_id-page_number-1"><code>string</code> _friends_url( <i>$user_id, $page_number = 1</i> )</h2>
+
+<ul>
+
+<li><p>URL for a page with a list of people befriended to <code>$user_id</code></p>
+
+</li>
+<li><p>&quot;&amp;sort=date_added&quot; (as opposed to &#39;last online&#39;) avoids moving targets while reading page by page</p>
+
+</li>
+<li><p>&quot;&amp;skip_mutual_friends=false&quot; because we&#39;re not doing this just for me</p>
+
+</li>
+<li><p><b>Warning:</b> changes to the URL structure will bust the file-cache</p>
+
+</li>
+</ul>
+
+<h2 id="string-_book_url-book_id"><code>string</code> _book_url( <i>$book_id</i> )</h2>
+
+<h2 id="string-_user_url-user_id-is_author-0"><code>string</code> _user_url( <i>$user_id, $is_author = 0</i> )</h2>
+
+<h2 id="string-_revs_url-book_id-str_sort_newest_oldest-undef-search_text-undef-rating-undef-is_text_only-undef-page_number-1"><code>string</code> _revs_url( <i>$book_id, $str_sort_newest_oldest = undef, $search_text = undef, $rating = undef, $is_text_only = undef, $page_number = 1</i> )</h2>
+
+<ul>
+
+<li><p>&quot;&amp;sort=newest&quot; and &quot;&amp;sort=oldest&quot; reduce the number of reviews for some reason (also observable on the Goodreads website), so only use if really needed (&amp;sort=default)</p>
+
+</li>
+<li><p>&quot;&amp;search_text=example&quot; invalidates sort order argument</p>
+
+</li>
+<li><p>&quot;&amp;rating=5&quot;</p>
+
+</li>
+<li><p>&quot;&amp;text_only=true&quot; just returns 1 page, you might get more text-reviews without this flag</p>
+
+</li>
+<li><p>the maximum of retrievable pages is 10 (300 reviews), see https://www.goodreads.com/topic/show/18937232-why-can-t-we-see-past-page-10-of-book-s-reviews?comment=172163745#comment_172163745</p>
+
+</li>
+<li><p>seems less throttled, not true for text-search</p>
+
+</li>
+</ul>
+
+<h2 id="string-_rev_url-review_id"><code>string</code> _rev_url( <i>$review_id</i> )</h2>
+
+<h2 id="string-_author_books_url-user_id-page_number-1"><code>string</code> _author_books_url( <i>$user_id, $page_number = 1</i> )</h2>
+
+<h2 id="string-_author_followings_url-author_id-page_number-1"><code>string</code> _author_followings_url( <i>$author_id, $page_number = 1</i> )</h2>
+
+<h2 id="string-_similar_authors_url-author_id"><code>string</code> _similar_authors_url( <i>$author_id</i> )</h2>
+
+<ul>
+
+<li><p>page number &gt; N just returns same page, so no easy stop criteria; not sure, if there&#39;s more than page, though</p>
+
+</li>
+</ul>
+
+<h2 id="string-_search_url-phrase_str-page_number-1"><code>string</code> _search_url( <i>phrase_str, $page_number = 1</i> )</h2>
+
+<ul>
+
+<li><p>&quot;&amp;q=&quot; URL-encoded, e.g., linux+%40+&quot;hase (linux @ &quot;hase)</p>
+
+</li>
+</ul>
+
+<h2 id="string-_user_groups_url-user_id-page_number-1"><code>string</code> _user_groups_url( <i>$user_id</i>, <i>$page_number = 1</i> )</h2>
+
+<h2 id="string-_group_url-group_id"><code>string</code> _group_url( <i>$group_id</i> )</h2>
+
+<h2 id="string-_comments_url-user_id-page_number-1"><code>string</code> _comments_url( <i>$user_id, $page_number = 1</i> )</h2>
+
+<h1 id="PRIVATE-HTML-EXTRACTION-ROUTINES">PRIVATE HTML-EXTRACTION ROUTINES</h1>
+
+<h2 id="book-_extract_book-book_page_html_str"><code><a href="#book">%book</a></code> _extract_book( <i>$book_page_html_str</i> )</h2>
+
+<h2 id="user-_extract_user-user_page_html_str"><code><a href="#user">%user</a></code> _extract_user( <i>$user_page_html_str</i> )</h2>
+
+<h2 id="user-_extract_author-user_page_html_str"><code><a href="#user">%user</a></code> _extract_author( <i>$user_page_html_str</i> )</h2>
+
+<h2 id="bool-_extract_books-rh_books-rh_authors-on_book_fn-on_progress_fn-shelf_tableview_html_str"><code>bool</code> _extract_books( <i>$rh_books, $rh_authors, $on_book_fn, $on_progress_fn, $shelf_tableview_html_str</i> )</h2>
+
+<ul>
+
+<li><p><i>$rh_books</i>: <code>(id =&gt; <a href="#book">%book</a>,...)</code></p>
+
+</li>
+<li><p><i>$rh_authors</i>: <code>(id =&gt; <a href="#user">%user</a>,...)</code></p>
+
+</li>
+<li><p>returns 0 if no books, 1 if books, 2 if error</p>
+
+</li>
+</ul>
+
+<h2 id="bool-_extract_author_books-rh_books-r_limit-on_book_fn-on_progress_fn-html_str"><code>bool</code> _extract_author_books( <i>$rh_books, $r_limit, $on_book_fn, $on_progress_fn, $html_str</i> )</h2>
+
+<ul>
+
+<li><p><i>$rh_books</i>: <code>(id =&gt; <a href="#book">%book</a>,...)</code></p>
+
+</li>
+<li><p><i>$r_limit</i>: is counted to zero</p>
+
+</li>
+<li><p>returns 0 if no books, 1 if books, 2 if error</p>
+
+</li>
+</ul>
+
+<h2 id="bool-_extract_followees-rh_users-on_progress_fn-incl_authors-discard_threshold-following_page_html_str"><code>bool</code> _extract_followees( <i>$rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $following_page_html_str</i> )</h2>
+
+<ul>
+
+<li><p><i>$rh_users</i>: <code>(user_id =&gt; <a href="#user">%user</a>,...)</code></p>
+
+</li>
+<li><p>returns 0 if no followees, 1 if followees, 2 if error</p>
+
+</li>
+</ul>
+
+<h2 id="bool-_extract_friends-rh_users-on_progress_fn-incl_authors-discard_threshold-friends_page_html_str"><code>bool</code> _extract_friends( <i>$rh_users, $on_progress_fn, $incl_authors, $discard_threshold, $friends_page_html_str</i> )</h2>
+
+<ul>
+
+<li><p><i>$rh_users</i>: <code>(user_id =&gt; <a href="#user">%user</a>,...)</code></p>
+
+</li>
+<li><p>returns 0 if no friends, 1 if friends, 2 if error</p>
+
+</li>
+</ul>
+
+<h2 id="bool-_extract_comments-ra-on_progress-comment_history_html_str"><code>bool</code> _extract_comments( <i>$ra, $on_progress, $comment_history_html_str</i> )</h2>
+
+<h2 id="string-_conv_uni_codepoints-string"><code>string</code> _conv_uni_codepoints( <i>$string</i> )</h2>
+
+<dl>
+
+<dt id="Convert-Unicode-codepoints-such-as-u003c">Convert Unicode codepoints such as \u003c</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="string-_dec_entities-string"><code>string</code> _dec_entities( <i>$string</i> )</h2>
+
+<h2 id="value-_require_arg-name-value"><code>$value</code> _require_arg( <i>$name, $value</i> )</h2>
+
+<h2 id="string-_trim-string"><code>string</code> _trim( <i>$string</i> )</h2>
+
+<h2 id="bool-_extract_revs-rh_revs-on_progress_fn-filter_fn-since_time_piece-reviews_xhr_html_str"><code>bool</code> _extract_revs( <i>$rh_revs, $on_progress_fn, $filter_fn, $since_time_piece, $reviews_xhr_html_str</i> )</h2>
+
+<ul>
+
+<li><p><i>$rh_revs</i>: <code>(review_id =&gt; <a href="#review">%review</a>,...)</code></p>
+
+</li>
+<li><p>returns 0 if no reviews, 1 if reviews, 2 if error</p>
+
+</li>
+</ul>
+
+<h2 id="bool-_extract_similar_authors-rh_into-author_id_to_skip-on_progress_fn-similar_page_html_str"><code>bool</code> _extract_similar_authors( <i>$rh_into, $author_id_to_skip, $on_progress_fn, $similar_page_html_str</i> )</h2>
+
+<ul>
+
+<li><p>returns 0 if no authors, 1 if authors, 2 if error</p>
+
+</li>
+</ul>
+
+<h2 id="bool-_extract_search_books-ra_books-on_progress_fn-search_result_html_str"><code>bool</code> _extract_search_books( <i>$ra_books, $on_progress_fn, $search_result_html_str</i> )</h2>
+
+<ul>
+
+<li><p>result pages sometimes have different number of items: P1: 20, P2: 16, P3: 19</p>
+
+</li>
+<li><p>website says &quot;about 75 results&quot; but shows 70 (I checked that manually). So we fake &quot;100%&quot; to the progress indicator function at the end, otherwise it stops with &quot;93%&quot;.</p>
+
+</li>
+<li><p><i>ra_books</i>: <code>(<a href="#book">%book</a>,...)</code></p>
+
+</li>
+<li><p>returns 0 if no books, 1 if books, 2 if error</p>
+
+</li>
+</ul>
+
+<h2 id="bool-_extract_user_groups-rh_into-on_group_fn-on_progress_fn-groups_html_str"><code>bool</code> _extract_user_groups( <i>$rh_into, $on_group_fn, on_progress_fn, $groups_html_str</i> )</h2>
+
+<ul>
+
+<li><p>returns 0 if no groups, 1 if groups, 2 if error</p>
+
+</li>
+</ul>
+
+<h1 id="PRIVATE-I-O-PLUMBING-SUBROUTINES">PRIVATE I/O PLUMBING SUBROUTINES</h1>
+
+<h2 id="int-_check_page-any_html_str"><code>int</code> _check_page( <i>$any_html_str</i> )</h2>
+
+<ul>
+
+<li><p>returns <i>$_ENO_XXX</i> constants</p>
+
+</li>
+<li><p>warn if sign-in page (https://www.goodreads.com/user/sign_in) or in-page message</p>
+
+</li>
+<li><p>warn if &quot;page unavailable, Goodreads request took too long&quot;</p>
+
+</li>
+<li><p>warn if &quot;page not found&quot;</p>
+
+</li>
+<li><p>error if page unavailable: &quot;An unexpected error occurred. We will investigate this problem as soon as possible&quot;</p>
+
+</li>
+<li><p>error if over capacity (TODO UNTESTED): &quot;&lt;?&gt;Goodreads is over capacity.&lt;/?&gt; &lt;?&gt;You can never have too many books, but Goodreads can sometimes have too many visitors. Don&#39;t worry! We are working to increase our capacity.&lt;/?&gt; &lt;?&gt;Please reload the page to try again.&lt;/?&gt; &lt;a ...&gt;get the latest on Twitter&lt;/a&gt;&quot; https://pbs.twimg.com/media/DejvR6dUwAActHc.jpg https://pbs.twimg.com/media/CwMBEJAUIAA2bln.jpg https://pbs.twimg.com/media/CFOw6YGWgAA1H9G.png (with title)</p>
+
+</li>
+<li><p>error if maintenance mode (TODO UNTESTED): &quot;&lt;?&gt;Goodreads is down for maintenance.&lt;/?&gt; &lt;?&gt;We expect to be back within minutes. Please try again soon!&lt;?&gt; &lt;a ...&gt;Get the latest on Twitter&lt;/a&gt;&quot; https://pbs.twimg.com/media/DgKMR6qXUAAIBMm.jpg https://i.redditmedia.com/-Fv-2QQx2DeXRzFBRKmTof7pwP0ZddmEzpRnQU1p9YI.png</p>
+
+</li>
+<li><p>error if website temporarily unavailable (TODO UNTESTED): &quot;Our website is currently unavailable while we make some improvements to our service. We&#39;ll be open for business again soon, please come back shortly to try again. &lt;?&gt; Thank you for your patience.&quot; (No Alice error) https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/hostedimages/1404319071i/10224522.png</p>
+
+</li>
+</ul>
+
+<h2 id="void-_updcookie-string_with_changed_fields"><code>void</code> _updcookie(<i> $string_with_changed_fields </i>)</h2>
+
+<dl>
+
+<dt id="updates-_session_id2-for-X-CSRF-Token-csid-u-user-.-p-password">updates &quot;_session_id2&quot; for X-CSRF-Token, &quot;csid&quot;, &quot;u&quot; (user?). &quot;p&quot; (password?)</dt>
+<dd>
+
+</dd>
+</dl>
+
+<h2 id="string-_html-url-warn_level-_ENO_WARN-can_cache-1"><code>string</code> _html( <i>$url, $warn_level = $_ENO_WARN, $can_cache = 1</i> )</h2>
+
+<ul>
+
+<li><p>HTML body of a web document</p>
+
+</li>
+<li><p>caches documents (if <i>$can_cache</i> is true)</p>
+
+</li>
+<li><p>retries on errors</p>
+
+</li>
+</ul>
+
+<h2 id="string-_html_post-url-rh_form_fields"><code>string</code> _html_post( <i>$url, $rh_form_fields</i> )</h2>
+
+<ul>
+
+<li><p>Sends a POST request with given payload to the given URL</p>
+
+</li>
+</ul>
+
+
+</body>
+
+</html>
+
+

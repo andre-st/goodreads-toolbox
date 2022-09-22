@@ -5,6 +5,7 @@
 *.swp
 *.xml
 *.html
+!lib/Goodscrapes.html
 *.log
 *.tar.gz
 *.zip
