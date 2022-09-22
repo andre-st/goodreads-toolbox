@@ -59,7 +59,7 @@ me or [add an issue](https://github.com/andre-st/goodreads-toolbox/issues).
 
 ```console
 $ ./savreviews.pl --help
-$ ./savreviews.pl GOODREADSBOOKID
+$ ./savreviews.pl 59716  # Goodreads Book-ID in URL
 
 Loading reviews for "To the Lighthouse"... 5271 of 5860 [searching]
 
