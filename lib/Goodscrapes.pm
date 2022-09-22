@@ -2970,6 +2970,10 @@ DONE:
 
 =over
 
+=item * Sends a POST request with given payload to the given URL
+
+=back
+
 =cut
 
 sub _html_post
