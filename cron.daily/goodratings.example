@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
-#
+
 # Reports recent book ratings to some Goodreads members
 #
 # Put me to: /etc/cron.daily
 #
+# NOTE:
+#   Cron- and/or run-parts limitations:
+#     1. This file must not have a dot in its filename
+#     2. This file must be owned by root and by a distinctive group of $SCRIPTUSER
+#     3. This file must be executable (chmod ug=rwx,o= <file>)
 #
-# Tool "ifne" is part of the "moreutils" package.
+#   Depends:
+#     1. "ifne" is part of the "moreutils" package.
+#
 
+readonly SCRIPTUSER=root
 readonly MAILFROM="GOODREADS@EXAMPLE.COM"
 readonly PASSWORD="GOODREADSPASSWORD"
 readonly SCRIPT="/path/to/goodreads/recentrated.pl"
@@ -18,10 +26,16 @@ readonly MAILERS=(
 		# 9 for debugging, CSV restored
 
 
+# Re-run as another user
+if [ $( id -u ) = 0 ]
+then
+	su ${SCRIPTUSER} --command "$0"
+	exit;
+fi
+
 
 # Wait for Internet connection:
 # TODO
-
 
 
 chk()
