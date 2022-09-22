@@ -14,6 +14,26 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
+## [v1.25] - 2022-09-22
+
+### Fixed
+
+- Many Goodreads tools were broken due to new Goodreads login procedure
+  ([#38](https://github.com/andre-st/goodreads-toolbox/issues/38),
+   [#39](https://github.com/andre-st/goodreads-toolbox/issues/39)),
+  login (`glogin()`) should work again now
+- "Warning: next input will be in plaintext" 
+   on password prompt on some systems without Term::ReadKey module.
+   If important to you, run `make deps`. 
+- some unit test code was broken 
+
+
+### Removed
+
+- `cron.monthly` wasn't used for a long time so I don't want to maintain it any longer
+
+
+
 ## [v1.24] - 2022-03-10
 
 This release does not add any new features. 

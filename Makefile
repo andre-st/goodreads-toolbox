@@ -1,9 +1,4 @@
 # Andre's Goodreads Toolbox Makefile
-# 
-# TODO: Install perl dependencies to a local dir (no root required), deps-local target?
-# 
-# 
-# 
 
 
 # Configure Make:
@@ -18,7 +13,7 @@ MAKEFLAGS += --no-builtin-rules
 
 
 # Configure Make rules:
-PROJECT_VERSION   = 1.24
+PROJECT_VERSION   = 1.25
 CACHE_DIR         = /tmp/FileCache/Goodscrapes
 BUILD_DIR         = .build
 PACKAGE           = goodreads-toolbox
