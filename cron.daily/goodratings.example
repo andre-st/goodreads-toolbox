@@ -16,7 +16,8 @@
 
 readonly SCRIPTUSER=root
 readonly MAILFROM="GOODREADS@EXAMPLE.COM"
-readonly PASSWORD="GOODREADSPASSWORD"
+readonly GOODMAIL="GOODREADSPASSWORD"
+readonly GOODPASS="GOODREADSPASSWORD"
 readonly SCRIPT="/path/to/goodreads/recentrated.pl"
 readonly DB_DIR="/path/to/goodreads/list-out/recentrated"
 readonly MAILERS=(
@@ -64,9 +65,10 @@ chk()
 	( "${SCRIPT}" ${opts}                      \
 	              "--userid=${gooduser}"       \
 	              "--shelf=${goodshelf}"       \
+	              "--from=${MAILFROM}"         \
 	              "--to=${mailto}"             \
-	              "${MAILFROM}"                \
-	              "${PASSWORD}" | ${mailer} )  \
+	              "${GOODMAIL}"                \
+	              "${GOODPASS}" | ${mailer} )  \
 		&& [ "$mailerid" != "9" ]             \
 		&& rm --force "${csvbakpath}"
 }

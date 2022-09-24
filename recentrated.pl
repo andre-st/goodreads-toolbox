@@ -13,6 +13,7 @@ recentrated - know when people rate or write reviews about a book
 
 B<recentrated.pl> 
 [B<-t> F<mailaddr>] 
+[B<-f> F<mailaddr>] 
 [B<-u> F<number>] 
 [B<-s> F<shelfname>] 
 [B<-q>] 
@@ -43,7 +44,14 @@ the password that is required for the Goodreads website login
 
 =item B<-t, --to>=F<emailaddr>
 
-prepend an email header.
+by default "TO:" mail header is set to I<goodloginmail>.
+This tool does not send mails by its own.
+You would have to pipe its output into a C<sendmail> programm.
+
+
+=item B<-f, --from>=F<emailaddr>
+
+by default "FROM:" mail header is set to I<goodloginmail>.
 This tool does not send mails by its own.
 You would have to pipe its output into a C<sendmail> programm.
 
@@ -119,7 +127,7 @@ More info in ./help/recentrated.md
 
 =head1 VERSION
 
-2022-09-22 (Since 2018-01-09)
+2022-09-25 (Since 2018-01-09)
 
 =cut
 
@@ -158,25 +166,28 @@ setlocale( LC_CTYPE, "en_US" );  # GR dates all en_US
 
 our $TEXTONLY = 0;
 our @SHELVES;
-our $MAILTO;
 our $USERID;
+our $MAILTO;
+our $MAILFROM;
 
 GetOptions( 'userid|u=s' => \$USERID,
             'shelf|s=s'  => \@SHELVES,
             'to|t=s'     => \$MAILTO,
+            'from|f=s'   => \$MAILFROM,
             'textonly|q' => \$TEXTONLY,
             'help|?'     => sub{ pod2usage( -verbose => 2 ) });
 
-our $MAILFROM = $ARGV[0];
-our $PASSWORD = $ARGV[1];
-    $MAILTO   = $MAILFROM if !$MAILTO;
-
 gsetopt( ignore_errors => 1 );  # Don't get stuck, may get book or review next time
 
-glogin( usermail => $MAILFROM,  # Login required for reading private members
-        userpass => $PASSWORD,  # Asks pw if omitted
+our $LOGINMAIL = $ARGV[0];
+our $LOGINPASS = $ARGV[1];
+    $MAILFROM  = $LOGINMAIL if !$MAILFROM;
+    $MAILTO    = $LOGINMAIL if !$MAILTO;
+
+glogin( usermail => $LOGINMAIL,  # Login required for reading private members
+        userpass => $LOGINPASS,   # Asks pw if omitted
         r_userid => \$USERID )
-	if $MAILFROM && $PASSWORD;
+	if $LOGINPASS;
 
 
 say( "[CRIT ] Missing --userid option or goodloginmail argument." )
