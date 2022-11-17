@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2022-09-22
+=item * Updated: 2022-11-17
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =cut
 
-our $VERSION = '1.88';  # X.XX version format required by Perl
+our $VERSION = '1.89';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -2932,7 +2932,7 @@ DOWNLOAD:
 	$_last_url = $url;
 	
 	my $resp = HTTP::Tiny
-			->new( timeout => 20 )
+			->new( timeout => 20, max_redirect => 7 )
 			->get( $url, { headers => \%headers });
 	
 	_updcookie( $resp->{headers}->{'set-cookie'} )  # Security tokens, session ids etc
