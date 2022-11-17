@@ -14,14 +14,14 @@ Table of contents:
 | Essential Goals¹                   | Why² + Scope
 |------------------------------------|-------------------------------------
 | Monetary costs &#8815; PC+Internet | Solo-developer non-profit side-project; Out of scope: distributed scraping with unique IP addresses (due to request throttling); we can easily wait for results
-| Correctness                        | Worst case: wasted computer time and power-consumption, missed book discovery opportunities, too many annoying/useless emails (recentrated); Out of scope: formal proofs, deep specifications
 | Unattendability                    | Scraping can take hours: allow people leaving the computer/process or running the toolbox on a remote computer/server
 | Fault-tolerance                    | Scraping can take hours: expect Internet connection issues, Goodreads has exceptions and is sometimes over capacity or in maintenance mode, invalid dates, ...; supports unattendability goal (FT is not high availability)
 | Resumability                       | Scraping can take hours: allow intentional breaks, expect program or computer crashes, power issues -- we don't want to start from the beginning
 | Testability                        | Scraping the Goodreads website expects stable HTML/JS-parts and we cannot know in advance when and where changes will occur (long-term failure). So regular and throughout (i.e., automated) testing is needed.
+| Correctness                        | Worst case: wasted computer time and power-consumption, missed book discovery opportunities, too many annoying/useless emails (recentrated); Out of scope: formal proofs, deep specifications
 | Repair Turnaround Time             | Scraping can take hours: shouldn't impact regular debugging too much
 | Ease of use on UNIX systems        | Out of scope: Windows, GUIs, Browser-Addons, SaaS too much effort, although it would increase potential user base
-| Learnability                       | Many program options and functions (libs), you cannot remember everything; no docs = no users; correct use and some expectation management supports correctness goal
+| Learnability                       | Lot of program options and functions (libs), you cannot remember everything; no docs = no users; correct use and some expectation management supports correctness goal
 | Integrity                          | Users on GR might try to abuse scrapers such as our programs or other programs (reading our outputs) by saving rogue strings in reviews, usernames etc (XSS)
 
 
@@ -38,8 +38,8 @@ Table of contents:
 | Regression testing     | before pushing to GitHub and inside new Docker images | Running unit-tests automatically via [a git-hook](../git-hooks/pre-push) reduces chance of distributing a buggy release; per-commit would be annoying because some tests need 3-8 minutes (w/o cache)
 | Manual testing         | user-scripts, when sth. significant changed           | Automated UI tests are not worth the effort here. <br>Manual fault-injection: Disable network. <br>As a one-man side project, this also has its limits in terms of effort
 | Syntactic check        | user-scripts, before each commit                      | Automatically via [a git-hook](../git-hooks/pre-commit), because small (accidental) changes are not always manually tested but break things too; `use strict; use warnings;`
-| PushLogicDownTheStack  | user-scripts                                          | Have very little code in the user-scripts by moving as much code as possible into the libs (down the stack). <br>Tests covering the libs would cover most fallible code, good enough to gain confidence. <br>Less repetition in user-scripts, centralized changes, technical debt and code smells isolated (API higher importance)
-| Persistent caching     | all scraped raw source data (not results)             | Caching the _sources_ makes it easier (faster) to fix scraping and calculation errors. Caching (false) _results_ would require to download sources again which takes much time. <br>Also easier to build apps _on top_ of that, because no need to care about caching/it's fully transparent.
+| PushLogicDownTheStack  | user-scripts                                          | Have very little code in the user-scripts by moving as much code as possible into the libs (down the technology stack). <br>Tests covering the libs would cover most fallible code, good enough to gain confidence. External libraries are usually more mature. <br>Less repetition in user-scripts, centralized changes, technical debt and code smells isolated (API higher importance)
+| Persistent caching     | all scraped raw source data (not results)             | Caching the _sources_ makes it easier (faster) to fix scraping and calculation errors. Caching (false) _results_ would require to download sources again which takes much time. CPU is cheap, I/O expensive. <br>Also easier to build apps _on top_ of that, apps don't need to care about caching/it's fully transparent.
 | Outwait I/O issues     | libraries                                             | Wait, retry n times, skip less important
 | HTML entity encoding   | user-scripts HTML generation                          | Prevent XSS
 | Docker container       | all                                                   | Scripted builds/uploads via Makefile; I moved from DockerHub to GitHub, automatic builds cost money now

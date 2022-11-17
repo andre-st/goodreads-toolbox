@@ -30,9 +30,9 @@ gsetopt( cache_days => 1 );
 print( 'Reading book shelf... ');
 
 my %authors;
-my $SIMILAR_AUTHOR_ID = '1938';  # Nietzsche
+my $SIMILAR_AUTHOR_ID = '783247';  # Dietmar Dath
 
-greadsimilaraut( author_id   => '3137322',  # Fyodor Dostoyevsky
+greadsimilaraut( author_id   => '1734373',  # Karl Held
                  rh_into     => \%authors,
                  on_progress => gmeter( 'similar' ));
 
@@ -41,7 +41,7 @@ greadsimilaraut( author_id   => '3137322',  # Fyodor Dostoyevsky
 print( "\n" );
 
 
-ok( scalar( keys( %authors )) >= 10, 'At least 10 similar authors' );
+ok( scalar( keys( %authors )) >= 4, 'At least 4 similar authors' );
 
 ok( exists( $authors{$SIMILAR_AUTHOR_ID} ), 'Expected author found via hash-key = Goodreads author ID' ) 
 	or BAIL_OUT( "Cannot test author attributes when expected author is missing." );
@@ -51,13 +51,13 @@ my $a = $authors{$SIMILAR_AUTHOR_ID};
 
 isa_ok( $a, 'HASH', 'Author datatype' );
 is  ( $a->{id},             $SIMILAR_AUTHOR_ID,                                         'Author has ID'             );
-is  ( $a->{name},           'Friedrich Nietzsche',                                      'Author has name'           );
+is  ( $a->{name},           'Dietmar Dath',                                             'Author has name'           );
 is  ( $a->{url},            "https://www.goodreads.com/author/show/$SIMILAR_AUTHOR_ID", 'Author has URL'            );
 like( $a->{works_url},      qr/^https:\/\/www\.goodreads\.com\/author\/list\/$SIMILAR_AUTHOR_ID/, 'Author has works URL'      );
 like( $a->{img_url},        qr/^https:\/\/i\.gr-assets.com\/images\/S\/compressed\.photo\.goodreads\.com\/authors/, 'Author has image URL' );
 is  ( $a->{is_author},      1,                                                          'Author has author flag'    );
 is  ( $a->{is_private},     0,                                                          'Author not private'        );
-is  ( $a->{is_mainstream},  1,                                                          'N/A: is mainstream author' );
+ok  (!$a->{is_mainstream},                                                              'is mainstream author'      );
 
 # Not available or scraped yet, otherwise one of the following
 # tests will fail and remind me of implementing a correct test:
