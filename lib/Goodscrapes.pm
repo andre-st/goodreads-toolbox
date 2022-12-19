@@ -20,7 +20,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =over
 
-=item * Updated: 2022-11-17
+=item * Updated: 2022-12-19
 
 =item * Since: 2014-11-05
 
@@ -28,7 +28,7 @@ Goodscrapes - Goodreads.com HTML-API
 
 =cut
 
-our $VERSION = '1.89';  # X.XX version format required by Perl
+our $VERSION = '1.90';  # X.XX version format required by Perl
 
 
 =head1 COMPARED TO THE OFFICIAL API
@@ -507,6 +507,8 @@ sub gverifyuser
 
 =item * returns a shelf which includes all books if no name given
 
+=item * returns a corrected shelf name for shelves that are *displayed& differently on GR
+
 =item * kills the current process with an error message if name is malformed
 
 =back
@@ -518,8 +520,17 @@ sub gverifyshelf
 	my $nam = shift // ''; # '%23ALL%23';
 	
 	croak( _errmsg( $_ENO_BADSHELF, $nam ))
-		if length $nam == 0 || $nam =~ /[^%a-zA-Z0-9_\-,]/;
-		
+		if length $nam == 0 || $nam =~ /[^#%a-zA-Z0-9_\-,]/;
+	
+	# All shelves:
+	$nam = lc( $nam );  # 'Read' -> 'read'
+	
+	# GR default shelves:
+	$nam = 'to-read'           if $nam eq 'to_read';
+	$nam = 'to-read'           if $nam =~ /^want[\-_]to[\-_]read$/;
+	$nam = 'currently-reading' if $nam eq 'currently_reading';
+	$nam = '#ALL#'             if $nam =~ /^#?all#?$/;  # xxx_url() routines do percent-encoding
+	
 	return $nam;
 }
 
@@ -795,16 +806,15 @@ sub greadshelf
 	my (%args) = @_;
 	my $uid    = gverifyuser( $args{ from_user_id });
 	my $ra_shv =_require_arg( 'ra_from_shelves', $args{ ra_from_shelves });
+	my @shv    = map gverifyshelf( $_ ), @$ra_shv;
 	my $rh     = $args{ rh_into         }  // undef;
 	my $rh_au  = $args{ rh_authors_into }  // ();
 	my $bfn    = $args{ on_book         }  // sub{};
 	my $pfn    = $args{ on_progress     }  // sub{};
 	my %books; # Using pre-populated $rh would confuse progess counters, so empty hash
 	
-	gverifyshelf( $_ ) foreach (@$ra_shv);
-	
 	# Scrape books and authors from paginated shelf pages:
-	for my $s (@$ra_shv)
+	for my $s (@shv)
 	{
 		my $pag = 1;
 		while( _extract_books( \%books, $rh_au, $bfn, $pfn, _html( _shelf_url( $uid, $s, $pag++ )))) {}
