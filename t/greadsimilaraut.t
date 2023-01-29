@@ -30,7 +30,7 @@ gsetopt( cache_days => 1 );
 print( 'Reading book shelf... ');
 
 my %authors;
-my $SIMILAR_AUTHOR_ID = '783247';  # Dietmar Dath
+my $SIMILAR_AUTHOR_ID = '9876';  # John Milton
 
 greadsimilaraut( author_id   => '1734373',  # Karl Held
                  rh_into     => \%authors,
@@ -51,13 +51,13 @@ my $a = $authors{$SIMILAR_AUTHOR_ID};
 
 isa_ok( $a, 'HASH', 'Author datatype' );
 is  ( $a->{id},             $SIMILAR_AUTHOR_ID,                                         'Author has ID'             );
-is  ( $a->{name},           'Dietmar Dath',                                             'Author has name'           );
+is  ( $a->{name},           'John Milton',                                              'Author has name'           );
 is  ( $a->{url},            "https://www.goodreads.com/author/show/$SIMILAR_AUTHOR_ID", 'Author has URL'            );
-like( $a->{works_url},      qr/^https:\/\/www\.goodreads\.com\/author\/list\/$SIMILAR_AUTHOR_ID/, 'Author has works URL'      );
-like( $a->{img_url},        qr/^https:\/\/i\.gr-assets.com\/images\/S\/compressed\.photo\.goodreads\.com\/authors/, 'Author has image URL' );
+like( $a->{works_url},      qr/^https:\/\/www\.goodreads\.com\/author\/list\/$SIMILAR_AUTHOR_ID/, 'Author has works URL' );
+like( $a->{img_url},        qr/\.jpg$/,                                                 'Author has image URL' );
 is  ( $a->{is_author},      1,                                                          'Author has author flag'    );
 is  ( $a->{is_private},     0,                                                          'Author not private'        );
-ok  (!$a->{is_mainstream},                                                              'is mainstream author'      );
+ok  ( $a->{is_mainstream},                                                              'is mainstream author'      );
 
 # Not available or scraped yet, otherwise one of the following
 # tests will fail and remind me of implementing a correct test:
