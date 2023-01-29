@@ -651,7 +651,8 @@ sub glogin
 	
 	if( !$uid )
 	{
-		my $is_captcha = $htm =~ /g-recaptcha-response/;
+		#my $is_captcha = $htm =~ /g-recaptcha-response)/;
+		my $is_captcha = $htm =~ /captcha/i;
 		croak( _errmsg( $is_captcha ? $_ENO_CAPTCHA : $_ENO_BADLOGIN ));
 	}
 	
