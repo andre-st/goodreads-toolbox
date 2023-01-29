@@ -13,7 +13,7 @@ MAKEFLAGS += --no-builtin-rules
 
 
 # Configure Make rules:
-PROJECT_VERSION   = 1.25
+PROJECT_VERSION   = 1.25.1
 CACHE_DIR         = /tmp/FileCache/Goodscrapes
 BUILD_DIR         = .build
 PACKAGE           = goodreads-toolbox

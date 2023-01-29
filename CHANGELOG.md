@@ -14,14 +14,25 @@ Version number 1.MINOR.PATCH, increments:
 
 
 
-## [v1.25] - 2022-09-22
+## [v1.25.1] - 2023-01-29
 
 ### Fixed
 
-- Many Goodreads tools were broken due to new Goodreads login procedure
+- `greadbook()` works with the new (and old) Goodreads book page, now
+- some unit test code was broken
+
+
+
+## [v1.25] - 2022-09-22
+
+After months, a necessary maintenance update without new features.
+
+### Fixed
+
+- many tools were broken due to the new Goodreads OpenID login procedure
   ([#38](https://github.com/andre-st/goodreads-toolbox/issues/38),
    [#39](https://github.com/andre-st/goodreads-toolbox/issues/39)),
-  login (`glogin()`) should work again now
+  login (`glogin()`) should work now, unit tests are passing again
 - "Warning: next input will be in plaintext" 
    on password prompt on some systems without Term::ReadKey module.
    If important to you, run `make deps`. 
@@ -68,13 +79,6 @@ Users have to run `make deps` and `make installdirs` after updating.
 ### Fixed
 
 - login didn't worked anymore due to HTML changes on a Goodreads webpage
-
-
-
-## [v1.23.2] - 2021-12-30
-
-### Fixed
-
 - `user_rating` bug when extracting own(?) shelf; shelves of other users still work with the old code
 
 ### Changed
