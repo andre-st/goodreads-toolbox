@@ -1988,25 +1988,40 @@ sub _extract_book
 	my $htm = shift or return;
 	my %bk;
 	
-	$bk{ id          } = $htm =~ /id="book_id" value="([^"]+)"/                         ? $1 : undef;
+	$bk{ id } = $htm =~ /id="book_id" value="([^"]+)"/ ? $1 : undef;
+	if( $bk{id} )  # Legacy page:
+	{
+		$bk{ isbn13      } = $htm =~ /<meta content='([^']+)' property='books:isbn'/        ? $1 : '';
+		$bk{ isbn        } = undef;  # TODO
+		$bk{ img_url     } = $htm =~ /<meta content='([^']+)' property='og:image'/          ? $1 : $_NOBOOKIMGURL;
+		$bk{ title       } = $htm =~ /<meta content='([^']+)' property='og:title'/          ? _dec_entities( $1 ) : '';
+		$bk{ num_pages   } = $htm =~ /<meta content='([^']+)' property='books:page_count'/  ? $1 : 0;
+		$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) review/    ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/    ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
+		$bk{ avg_rating  } = $htm =~ /itemprop="ratingValue">\s*([0-9.]+)/ ? $1       : 0;  # # 3.77
+		$bk{ format      } = undef;  # TODO
+	}
+	else # New Goodreads books page:
+	{
+		$bk{ id } = $htm =~ /\\"legacyId\\":\\"([^\\]+)/ ? $1 : undef;  # Rest of Goodreads is using legacy IDs
+		return if !$bk{id};
+		
+		$bk{ isbn13      } = $htm =~ /,"isbn13":"([^"]+)/           ? $1 : '';
+		$bk{ isbn        } = $htm =~ /,"isbn":"([0-9X]{1,10})"/     ? $1 : '';
+		$bk{ img_url     } = $htm =~ /,"imageUrl":"([^"]+)/         ? $1 : $_NOBOOKIMGURL;
+		$bk{ title       } = $htm =~ /,"title":"([^"]+)/            ? _dec_entities( $1 ) : '';
+		$bk{ num_pages   } = $htm =~ /,"numPages":(\d+)/            ? $1 : 0;
+		$bk{ num_reviews } = $htm =~ /,"reviewCount":(\d+)/         ? $1 : 0;
+		$bk{ num_ratings } = $htm =~ /,"ratingCount":(\d+)/         ? $1 : 0;
+		$bk{ avg_rating  } = $htm =~ /,"averageRating":([0-9\.]+)/  ? $1 : 0;  # # 3.77
+		$bk{ format      } = $htm =~ /,"format":"([^"]+)/           ? _dec_entities( $1 ) : '';
+	}
 	
-	return if !$bk{id};
-	
-	$bk{ isbn13      } = $htm =~ /<meta content='([^']+)' property='books:isbn'/        ? $1 : ''; # ISBN13
-	$bk{ isbn        } = undef;  # TODO
-	$bk{ img_url     } = $htm =~ /<meta content='([^']+)' property='og:image'/          ? $1 : '';
-	$bk{ title       } = $htm =~ /<meta content='([^']+)' property='og:title'/          ? _dec_entities( $1 ) : '';
-	$bk{ num_pages   } = $htm =~ /<meta content='([^']+)' property='books:page_count'/  ? $1 : $_NOBOOKIMGURL;
-	$bk{ num_reviews } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) review/    ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
-	$bk{ num_ratings } = $htm =~ /(\d+)[,.]?(\d*)[,.]?(\d*) rating/    ? $1.$2.$3 : 0;  # 1,600,200 -> 1600200
-	$bk{ avg_rating  } = $htm =~ /itemprop="ratingValue">\s*([0-9.]+)/ ? $1       : 0;  # # 3.77
-	$bk{ stars       } = int( $bk{ avg_rating } + 0.5 );
-	$bk{ url         } = _book_url( $bk{id} );
-	$bk{ rh_author   } = undef;  # TODO
-	$bk{ year        } = undef;  # TODO
-	$bk{ year_edit   } = undef;  # TODO
-	$bk{ format      } = undef;  # TODO
-	
+	$bk{ rh_author } = undef;  # TODO
+	$bk{ year      } = undef;  # TODO
+	$bk{ year_edit } = undef;  # TODO
+	$bk{ stars     } = int( $bk{ avg_rating } + 0.5 );
+	$bk{ url       } = _book_url( $bk{id} );
 	return %bk;
 }
 
