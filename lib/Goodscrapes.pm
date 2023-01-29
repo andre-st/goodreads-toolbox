@@ -322,7 +322,7 @@ our $_cache     = new Cache::FileCache({ namespace => 'Goodscrapes' });
 
 =item * stars           =E<gt> C<int>    rounded avg_rating, e.g., 4
 
-=item * format          =E<gt> C<string> (binding)
+=item * format          =E<gt> C<string> (binding, "Kindle Edition", ...)
 
 =item * user_rating     =E<gt> C<int>    number of stars 1,2,3,4 or 5  (program user)
 
